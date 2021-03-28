@@ -53,6 +53,12 @@ export const commonStyles = StyleSheet.create({
         paddingVertical: getHP(0.05),
     },
     margH5: {},
+    absoluteBottomWrapper: {
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        right: 0,
+    },
 });
 
 export const PH = (percentage?: number): ViewStyle => {
