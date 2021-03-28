@@ -8,12 +8,14 @@
 
 import React from 'react';
 import type { Node } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import 'react-native-gesture-handler';
+import { SafeAreaView, ScrollView, StyleSheet, Text, useColorScheme, View, StatusBar } from 'react-native';
 import Welcome from './src/screens/auth/Welcome';
 
 const App: () => Node = () => {
     return (
         <>
+            <StatusBar hidden={true} />
             <Welcome />
         </>
     );
