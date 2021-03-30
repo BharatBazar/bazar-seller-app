@@ -104,4 +104,10 @@ export const commonStyles = StyleSheet.create({
         //borderColor: colorCode.SAFFRON,
         backgroundColor: colorCode.CHAKRALOW(70),
     },
+    shadow: {
+        shadowColor: 'black',
+        shadowOffset: { width: 5, height: 10 },
+        shadowOpacity: 0.5,
+        shadowRadius: 10,
+    },
 });

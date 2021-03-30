@@ -31,45 +31,50 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
         return (
             <ScreenHOC>
-                <View style={[{ flex: 1 }, PH(), BGCOLOR(colorCode.WHITE)]}>
-                    <View style={{ height: getHP(0.5) }}>
+                <>
+                    <View style={[{ height: getHP(0.5), width: '100%', backgroundColor: colorCode.WHITE }]}>
                         <View style={[commonStyles.fdr, commonStyles.aic]}>
                             <WrappedText text={'Create Your Dukan'} fontSize={fs28} />
                         </View>
                     </View>
-
-                    <WrappedText
-                        text={'Provide shop owner details'}
-                        fontSize={fs21}
-                        textColor={'#000'}
-                        textStyle={{ marginTop: getHP(0.1) }}
-                    />
-                    <WrappedText
-                        text={CreateDukanText.MESSAGE}
-                        fontSize={fs12}
-                        textColor={'#000000' + colorTransparency[50]}
-                        textStyle={{ marginTop: getHP(0.1) }}
-                    />
-                    <View style={{ marginTop: getHP(0.2) }}>
-                        <WrappedTextInput value={''} placeholder={'Name'} {...componentProps.textInputProps} />
-                        <WrappedTextInput placeholder={'Mobile number'} value={''} {...componentProps.textInputProps} />
-                        <WrappedTextInput placeholder={'Email'} value={''} {...componentProps.textInputProps} />
-                        <WrappedTextInput
-                            placeholder={'Create a password'}
-                            value={''}
-                            eyeButton={true}
-                            {...componentProps.textInputProps}
+                    <View style={[{ flex: 1 }, PH(), BGCOLOR(colorCode.WHITE)]}>
+                        <WrappedText
+                            text={'Provide shop owner details'}
+                            fontSize={fs21}
+                            textColor={'#000'}
+                            textStyle={{ marginTop: getHP(0.1) }}
                         />
-                        <TextButton
-                            text={'Sign-In'}
-                            textProps={componentProps.buttonTextProps}
-                            containerStyle={commonStyles.buttonContainerStyle}
-                            onPress={() => {
-                                this.props.navigation.navigate(NavigationKey.SHOPDETAILS);
-                            }}
+                        <WrappedText
+                            text={CreateDukanText.MESSAGE}
+                            fontSize={fs12}
+                            textColor={'#000000' + colorTransparency[50]}
+                            textStyle={{ marginTop: getHP(0.1) }}
                         />
+                        <View style={{ marginTop: getHP(0.2) }}>
+                            <WrappedTextInput value={''} placeholder={'Name'} {...componentProps.textInputProps} />
+                            <WrappedTextInput
+                                placeholder={'Mobile number'}
+                                value={''}
+                                {...componentProps.textInputProps}
+                            />
+                            <WrappedTextInput placeholder={'Email'} value={''} {...componentProps.textInputProps} />
+                            <WrappedTextInput
+                                placeholder={'Create a password'}
+                                value={''}
+                                eyeButton={true}
+                                {...componentProps.textInputProps}
+                            />
+                            <TextButton
+                                text={'Sign-In'}
+                                textProps={componentProps.buttonTextProps}
+                                containerStyle={commonStyles.buttonContainerStyle}
+                                onPress={() => {
+                                    this.props.navigation.navigate(NavigationKey.SHOPDETAILS);
+                                }}
+                            />
+                        </View>
                     </View>
-                </View>
+                </>
             </ScreenHOC>
         );
     }

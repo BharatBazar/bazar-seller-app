@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View } from 'react-native';
-import { fs15 } from '../../common';
+import { View, ImageBackground } from 'react-native';
+import { fs12, fs15, fs28 } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
 import { commonStyles, PH } from '../../common/styles';
@@ -92,7 +92,11 @@ const AddMember = ({
                             }}
                             containerStyle={{ elevation: 1, backgroundColor: colorCode.WHITE }}
                         >
-                            <Icons name={'x'} />
+                            <Icons
+                                name={'x'}
+                                size={getHP(0.2)}
+                                style={{ alignSelf: 'center', height: getHP(0.2), width: getHP(0.2) }}
+                            />
                         </WrappedRoundButton>
                     </View>
                 );
@@ -140,27 +144,35 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = () => {
         }
     };
 
-    console.log(coOwner);
     return (
         <ScreenHOC>
             <View style={{ flex: 1, backgroundColor: colorCode.WHITE, ...PH(0.2) }}>
-                <WrappedText text={'Add member to your shop'} />
-                <WrappedText text={'You can do this later'} />
+                <WrappedText text={'Add member to your shop'} fontSize={fs28} />
+                <WrappedText
+                    text={
+                        'Add details related to coOwner, worker. coOwner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and coOwner account any time.'
+                    }
+                    fontSize={fs12}
+                    textColor={colorCode.BLACKLOW(50)}
+                    containerStyle={{ marginTop: getHP(0.1) }}
+                />
 
-                <AddMember
-                    onPressPlus={addCoOwner}
-                    onPressCross={deleteMember}
-                    data={coOwner}
-                    role={'coOwner'}
-                    setField={setField}
-                />
-                <AddMember
-                    onPressPlus={addWorker}
-                    onPressCross={deleteMember}
-                    data={worker}
-                    role={'worker'}
-                    setField={setField}
-                />
+                <View style={{ marginTop: getHP(0.4) }}>
+                    <AddMember
+                        onPressPlus={addCoOwner}
+                        onPressCross={deleteMember}
+                        data={coOwner}
+                        role={'coOwner'}
+                        setField={setField}
+                    />
+                    <AddMember
+                        onPressPlus={addWorker}
+                        onPressCross={deleteMember}
+                        data={worker}
+                        role={'worker'}
+                        setField={setField}
+                    />
+                </View>
             </View>
         </ScreenHOC>
     );

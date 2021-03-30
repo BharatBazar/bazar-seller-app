@@ -11,4 +11,7 @@ export const colorCode = {
     GREEN: '#138808',
     GREENLOW: (percentage?: any) => applyColorCode(colorCode.GREEN, percentage),
     WHITE: '#FFFFFF',
+    WHITELOW: (percentage?: any) => applyColorCode(colorCode.WHITE, percentage),
+    BLACK: '#000000',
+    BLACKLOW: (percentage?: any) => applyColorCode(colorCode.BLACK, percentage),
 };
