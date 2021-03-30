@@ -1,4 +1,5 @@
-import { getHP } from '../common/dimension';
+import { colorCode } from './color';
+import { getHP } from './dimension';
 import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 export const colorTransparency = {
@@ -59,6 +60,15 @@ export const commonStyles = StyleSheet.create({
         left: 0,
         right: 0,
     },
+    textInputContainerStyle: {
+        height: getHP(0.4),
+        borderWidth: 0.2,
+        width: '100%',
+        borderRadius: getHP(0.05),
+        borderColor: colorCode.SAFFRON,
+        flexDirection: 'row',
+        marginTop: getHP(0.1),
+    },
 });
 
 export const PH = (percentage?: number): ViewStyle => {
@@ -77,4 +87,8 @@ export const MV = (percentage?: number): ViewStyle => {
 
 export const BR = (percentage?: number): ViewStyle => {
     return { borderRadius: getHP(percentage || 0.05) };
+};
+
+export const BGCOLOR = (color?: string): ViewStyle => {
+    return { backgroundColor: color || '#ffffff' };
 };

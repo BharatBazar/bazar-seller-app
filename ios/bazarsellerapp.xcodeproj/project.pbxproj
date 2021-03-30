@@ -114,7 +114,6 @@
 				F46B6AE2862EECC8B67C15AF /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */,
 				FE94A9766E271C1CD2F1D2C8 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode } from '../../common/color';
-import { BR, commonStyles, MH, MV, PH, PV } from '../../common/styles';
+import { BGCOLOR, BR, commonStyles, MH, MV, PH, PV } from '../../common/styles';
 import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
 import { GlobalText, WelcomeText } from '../../common/customScreenText';
 import { fs12, fs18, fs28 } from '../../common';
+import { NavigationKey } from '../../labels';
 
 export interface WelcomeProps {}
 
@@ -25,14 +26,24 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
 
         return (
             <ScreenHOC>
-                <View style={[{ flex: 1 }, MH(0.2)]}>
+                <View style={[{ flex: 1 }, PH(0.3), BGCOLOR(colorCode.WHITE)]}>
                     <WrappedText text={GlobalText.companyName} fontSize={fs28} textColor={colorCode.SAFFRON} />
                     <WrappedText text={GlobalText.companyMessage} fontSize={fs12} />
                     <View style={styles.buttonsWrapper}>
-                        <WrappedRectangleButton {...componentProps.buttonProps}>
+                        <WrappedRectangleButton
+                            {...componentProps.buttonProps}
+                            onPress={() => {
+                                this.props.navigation.navigate(NavigationKey.CREATEDUKAN);
+                            }}
+                        >
                             <WrappedText text={WelcomeText.SHOP_EXIST} {...componentProps.buttonTextProps} />
                         </WrappedRectangleButton>
-                        <WrappedRectangleButton {...componentProps.buttonProps}>
+                        <WrappedRectangleButton
+                            {...componentProps.buttonProps}
+                            onPress={() => {
+                                this.props.navigation.navigate(NavigationKey.CREATEDUKAN);
+                            }}
+                        >
                             <WrappedText text={WelcomeText.SHOP_NOT_EXIST} {...componentProps.buttonTextProps} />
                         </WrappedRectangleButton>
                     </View>
@@ -48,7 +59,7 @@ const styles = StyleSheet.create({
     buttonContainerStyle: {
         ...PH(),
         ...PV(),
-        ...MH(),
+        ...MH(0.3),
         ...BR(),
         ...MV(),
         ...commonStyles.alcjcc,
