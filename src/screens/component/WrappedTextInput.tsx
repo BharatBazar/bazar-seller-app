@@ -69,14 +69,15 @@ export default class WrappedTextInput extends Component<Props, State> {
             errorContainer,
             eyeButtonHeight,
             paddingLeft,
-            rest,
+            onChangeText,
         } = this.props;
         const { secureTextEntry } = this.state;
         return (
             <View>
                 <View style={[styles.mainContainer, containerStyle]}>
                     <TextInput
-                        {...rest}
+                        onChangeText={onChangeText}
+                        autoCorrect={false}
                         placeholder={placeholder}
                         placeholderTextColor={placeholderTextColor || '#1A202C4D'}
                         style={[styles.textInput, textInputStyle, { paddingLeft: paddingLeft || 0 }]}

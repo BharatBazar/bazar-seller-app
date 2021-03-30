@@ -1,3 +1,4 @@
+import { StackNavigationProp } from '@react-navigation/stack';
 import { getHP, getWP } from './dimension';
 const ratio = getHP(1) / getWP(1);
 
@@ -35,3 +36,7 @@ export const fs42 = provideFontSize(42);
 export const fs80 = provideFontSize(80);
 export const fs90 = provideFontSize(90);
 export const fs104 = provideFontSize(104);
+
+export interface NavigationProps {
+    navigation: StackNavigationProp<any>;
+}

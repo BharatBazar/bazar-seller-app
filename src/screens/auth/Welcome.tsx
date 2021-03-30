@@ -27,13 +27,13 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
         return (
             <ScreenHOC>
                 <View style={[{ flex: 1 }, PH(0.3), BGCOLOR(colorCode.WHITE)]}>
-                    <WrappedText text={GlobalText.companyName} fontSize={fs28} textColor={colorCode.SAFFRON} />
+                    <WrappedText text={GlobalText.companyName} fontSize={fs28} />
                     <WrappedText text={GlobalText.companyMessage} fontSize={fs12} />
                     <View style={styles.buttonsWrapper}>
                         <WrappedRectangleButton
                             {...componentProps.buttonProps}
                             onPress={() => {
-                                this.props.navigation.navigate(NavigationKey.CREATEDUKAN);
+                                this.props.navigation.navigate(NavigationKey.OPENDUKAN);
                             }}
                         >
                             <WrappedText text={WelcomeText.SHOP_EXIST} {...componentProps.buttonTextProps} />
