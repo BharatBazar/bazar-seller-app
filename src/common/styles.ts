@@ -84,19 +84,25 @@ export const commonStyles = StyleSheet.create({
     },
     textInputContainerStyle: {
         height: getHP(0.4),
-        borderWidth: 0.2,
+        borderWidth: 0.18,
         width: '100%',
         borderRadius: getHP(0.03),
-        //borderColor: colorCode.SAFFRON,
+        borderColor: colorCode.BLACKLOW(30),
         flexDirection: 'row',
         marginTop: getHP(0.1),
+        elevation: 2,
+        shadowColor: colorCode.BLACKLOW(50),
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        backgroundColor: colorCode.WHITE,
     },
     buttonContainerStyle: {
         ...PH(),
         ...PV(),
-        ...MH(),
+
         ...BR(),
-        ...MV(),
+
         marginTop: getHP(0.2),
         alignItems: 'center',
         justifyContent: 'center',
@@ -106,8 +112,8 @@ export const commonStyles = StyleSheet.create({
     },
     shadow: {
         shadowColor: 'black',
-        shadowOffset: { width: 5, height: 10 },
-        shadowOpacity: 0.5,
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
         shadowRadius: 10,
     },
 });

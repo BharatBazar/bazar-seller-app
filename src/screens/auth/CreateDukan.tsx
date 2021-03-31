@@ -51,13 +51,22 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                             textStyle={{ marginTop: getHP(0.1) }}
                         />
                         <View style={{ marginTop: getHP(0.2) }}>
-                            <WrappedTextInput value={''} placeholder={'Name'} {...componentProps.textInputProps} />
                             <WrappedTextInput
-                                placeholder={'Mobile number'}
+                                placeholder={'Owner mobile number'}
                                 value={''}
                                 {...componentProps.textInputProps}
                             />
-                            <WrappedTextInput placeholder={'Email'} value={''} {...componentProps.textInputProps} />
+                            <WrappedTextInput
+                                value={''}
+                                placeholder={'Owner name'}
+                                {...componentProps.textInputProps}
+                            />
+
+                            <WrappedTextInput
+                                placeholder={'Owner email or other active email'}
+                                value={''}
+                                {...componentProps.textInputProps}
+                            />
                             <WrappedTextInput
                                 placeholder={'Create a password'}
                                 value={''}

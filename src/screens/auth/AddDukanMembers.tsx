@@ -1,21 +1,22 @@
 import React, { useState } from 'react';
-import { View, ImageBackground } from 'react-native';
-import { fs12, fs15, fs28 } from '../../common';
+import { View, ImageBackground, ScrollView } from 'react-native';
+import { fs12, fs13, fs14, fs15, fs20, fs28 } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { commonStyles, PH } from '../../common/styles';
+import { BGCOLOR, commonStyles, MH, MV, PH, PV } from '../../common/styles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
 import Icons from 'react-native-vector-icons/Feather';
 import WrappedTextInput from '../component/WrappedTextInput';
+import TextButton from '../component/TextButton';
 
 export interface AddDukanMembersProps {}
 
 type member = {
     name: string;
     phoneNumber: string;
-    role: 'owner' | 'coOwner' | 'worker';
+    role: 'owner' | 'Co-owner' | 'Worker';
     _id: string;
 };
 
@@ -28,30 +29,32 @@ const AddMember = ({
 }: {
     onPressPlus: Function;
     onPressCross: Function;
-    role: 'worker' | 'coOwner';
+    role: 'worker' | 'Co-owner';
     data: member[];
     setField: Function;
 }) => {
     const componentProps = {
         buttonTextProps: {
             textColor: colorCode.WHITE,
+            textStyle: { fontSize: fs12 },
         },
         textInputProps: {
-            containerStyle: { ...commonStyles.textInputContainerStyle, width: getWP(4) },
-            textInputStyle: { fontSize: fs15 },
+            containerStyle: { ...commonStyles.textInputContainerStyle, width: getWP(6) },
+            textInputStyle: { fontSize: fs13 },
             paddingLeft: getWP(0.2),
         },
     };
 
     return (
-        <View>
-            <View style={[commonStyles.fdr]}>
-                <WrappedText text={'Add ' + role + ' to your dukan'} />
+        <View style={[]}>
+            <View style={[commonStyles.fdr, MV(0.4)]}>
+                <WrappedText text={'Add ' + role + ' to your dukan'} fontSize={fs20} />
                 <WrappedRoundButton
-                    height={getHP(0.4)}
+                    height={getHP(0.3)}
                     onPress={() => {
                         onPressPlus();
                     }}
+                    containerStyle={[commonStyles.shadow, { backgroundColor: colorCode.WHITE, marginLeft: getWP(0.2) }]}
                 >
                     <Icons name={'plus'} />
                 </WrappedRoundButton>
@@ -60,44 +63,47 @@ const AddMember = ({
                 return (
                     <View
                         style={[
-                            commonStyles.fdr,
-                            commonStyles.aic,
-                            { justifyContent: 'space-around' },
                             { width: '100%' },
+                            commonStyles.shadow,
+                            BGCOLOR(colorCode.WHITE),
+                            PH(0.3),
+                            PV(0.2),
+                            { marginVertical: '2%', borderRadius: getWP(0.2) },
                         ]}
                         key={item._id}
                     >
                         <WrappedTextInput
                             value={item.name}
-                            placeholder={'Name'}
+                            placeholder={role + ' name'}
                             {...componentProps.textInputProps}
                             onChangeText={(text) => {
-                                console.log(text);
-                                setField(text, 'coOwner', index, 'name');
+                                setField(text, 'Co-owner', index, 'name');
                             }}
                         />
                         <WrappedTextInput
-                            placeholder={'Mobile number'}
+                            placeholder={role + ' mobile number'}
                             value={item.phoneNumber}
                             onChangeText={(text) => {
-                                console.log(text);
-                                setField(text, 'coOwner', index, 'phoneNumber');
+                                setField(text, 'Co-owner', index, 'phoneNumber');
                             }}
                             {...componentProps.textInputProps}
                         />
-                        <WrappedRoundButton
-                            height={getHP(0.4)}
-                            onPress={() => {
-                                onPressCross(role, index);
-                            }}
-                            containerStyle={{ elevation: 1, backgroundColor: colorCode.WHITE }}
-                        >
-                            <Icons
-                                name={'x'}
-                                size={getHP(0.2)}
-                                style={{ alignSelf: 'center', height: getHP(0.2), width: getHP(0.2) }}
+                        <View style={[commonStyles.fdr, { justifyContent: 'flex-end' }]}>
+                            <TextButton
+                                onPress={() => {}}
+                                textProps={componentProps.buttonTextProps}
+                                text={'Add'}
+                                containerStyle={[commonStyles.buttonContainerStyle, { marginHorizontal: 0 }]}
                             />
-                        </WrappedRoundButton>
+                            <TextButton
+                                onPress={() => {
+                                    onPressCross(role, index);
+                                }}
+                                textProps={componentProps.buttonTextProps}
+                                text={'Delete'}
+                                containerStyle={[commonStyles.buttonContainerStyle, { marginHorizontal: 10 }]}
+                            />
+                        </View>
                     </View>
                 );
             })}
@@ -110,34 +116,34 @@ const getId = () => {
 };
 
 const AddDukanMembers: React.FC<AddDukanMembersProps> = () => {
-    const [coOwner, setcoOwner] = useState<member[]>([{ name: '', phoneNumber: '', role: 'coOwner', _id: getId() }]);
+    const [coOwner, setcoOwner] = useState<member[]>([{ name: '', phoneNumber: '', role: 'Co-owner', _id: getId() }]);
     const [worker, setWorker] = useState<member[]>([{ name: '', phoneNumber: '', role: 'worker', _id: getId() }]);
 
-    const addCoOwner = () => {
-        setcoOwner([...coOwner, { name: '', phoneNumber: '', role: 'coOwner', _id: getId() }]);
+    const addcoOwner = () => {
+        setcoOwner([...coOwner, { name: '', phoneNumber: '', role: 'Co-owner', _id: getId() }]);
     };
 
     const addWorker = () => {
         setWorker([...worker, { name: '', phoneNumber: '', role: 'worker', _id: getId() }]);
     };
 
-    const setField = (value: string, role: 'coOwner' | 'worker', index: number, field: 'name' | 'phoneNumber') => {
-        let data = role == 'coOwner' ? [...coOwner] : [...worker];
+    const setField = (value: string, role: 'Co-owner' | 'worker', index: number, field: 'name' | 'phoneNumber') => {
+        let data = role == 'Co-owner' ? [...coOwner] : [...worker];
         data[index][field] = value;
 
-        if (role == 'coOwner') {
+        if (role == 'Co-owner') {
             setcoOwner([...data]);
         } else {
             setWorker([...data]);
         }
     };
 
-    const deleteMember = (role: 'coOwner' | 'worker', index: number) => {
-        let data = role == 'coOwner' ? [...coOwner] : [...worker];
+    const deleteMember = (role: 'Co-owner' | 'worker', index: number) => {
+        let data = role == 'Co-owner' ? [...coOwner] : [...worker];
         console.log(index);
         data.splice(index, 1);
 
-        if (role == 'coOwner') {
+        if (role == 'Co-owner') {
             setcoOwner([...data]);
         } else {
             setWorker([...data]);
@@ -146,11 +152,11 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = () => {
 
     return (
         <ScreenHOC>
-            <View style={{ flex: 1, backgroundColor: colorCode.WHITE, ...PH(0.2) }}>
+            <ScrollView style={{ flex: 1, backgroundColor: colorCode.WHITE, ...PH(0.5) }}>
                 <WrappedText text={'Add member to your shop'} fontSize={fs28} />
                 <WrappedText
                     text={
-                        'Add details related to coOwner, worker. coOwner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and coOwner account any time.'
+                        'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and Co-owner account any time.'
                     }
                     fontSize={fs12}
                     textColor={colorCode.BLACKLOW(50)}
@@ -159,21 +165,21 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = () => {
 
                 <View style={{ marginTop: getHP(0.4) }}>
                     <AddMember
-                        onPressPlus={addCoOwner}
+                        onPressPlus={addcoOwner}
                         onPressCross={deleteMember}
                         data={coOwner}
-                        role={'coOwner'}
+                        role={'Co-owner'}
                         setField={setField}
                     />
                     <AddMember
                         onPressPlus={addWorker}
                         onPressCross={deleteMember}
                         data={worker}
-                        role={'worker'}
+                        role={'Worker'}
                         setField={setField}
                     />
                 </View>
-            </View>
+            </ScrollView>
         </ScreenHOC>
     );
 };

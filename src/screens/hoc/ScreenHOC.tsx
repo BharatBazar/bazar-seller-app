@@ -9,12 +9,7 @@ export interface ScreenHOCProps {
 }
 
 const ScreenHOC: React.FC<ScreenHOCProps> = ({ children, statusbarColor }) => {
-    return (
-        <View style={{ flex: 1 }}>
-            <StatusBar statusBarColor={statusbarColor} />
-            {children && children}
-        </View>
-    );
+    return <View style={{ flex: 1 }}>{children && children}</View>;
 };
 
 export default ScreenHOC;
