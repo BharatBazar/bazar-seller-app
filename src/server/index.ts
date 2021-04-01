@@ -3,10 +3,10 @@ import { Storage, StorageItemKeys } from '../storage';
 
 export const apiEndPoint = 'http://localhost:2112';
 
-async function setUpAxios() {
+export async function setUpAxios() {
     axios.defaults.baseURL = apiEndPoint;
-    const token = await Storage.getItem(StorageItemKeys.Token);
-    axios.defaults.headers.common['Streak-Auth-Token'] = token;
+    // const token = await Storage.getItem(StorageItemKeys.Token);
+    // axios.defaults.headers.common['Streak-Auth-Token'] = token;
 }
 
 export const handleError = (error) => {

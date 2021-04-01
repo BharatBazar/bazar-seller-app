@@ -61,7 +61,7 @@ export default class WrappedTextInput extends Component<Props, State> {
     render() {
         const {
             errorText,
-
+            value,
             eyeButton,
             containerStyle,
             placeholder,
@@ -77,6 +77,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             <View>
                 <View style={[styles.mainContainer, containerStyle]}>
                     <TextInput
+                        value={value}
                         onChangeText={onChangeText}
                         autoCorrect={false}
                         placeholder={placeholder}

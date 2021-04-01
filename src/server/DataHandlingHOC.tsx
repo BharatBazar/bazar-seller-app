@@ -10,7 +10,7 @@ export class DataHandling extends Component {
         this.setState({ isLoading });
     };
 
-    fetchData = async (routeName, data) => {
+    fetchData = async () => {
         try {
             const response = await apiHandler(routeName, data);
             if (response.success) {

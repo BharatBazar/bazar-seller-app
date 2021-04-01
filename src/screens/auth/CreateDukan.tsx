@@ -12,11 +12,18 @@ import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
 import HeaderBar from '../component/HeaderBar';
+import { createShopMember, triggerOtp } from '../../server/apis/shopMember/shopMember.api';
+import { IRCheckPhoneNumber, IRCreateShopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { setUpAxios } from '../../server';
+import API from '../../server/apis';
 
 export interface CreateDukanProps {}
 
 type formState = {
     phoneNumber: string;
+    otp: string;
+    name: string;
+    email: string;
 };
 
 type formError = {
@@ -40,10 +47,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: true,
+            otpSent: false,
             signInButtonState: 1,
             otpButtonState: 1,
-            formState: { phoneNumber: '' },
+            formState: { phoneNumber: '', otp: '', name: '', email: '' },
             error: {},
             timer: -1,
         };
@@ -65,6 +72,52 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     clearTimeOut = () => {
         clearInterval(this.timer);
     };
+
+    handleError = (error) => {
+        function isNetworkError(err) {
+            return err.isAxiosError && !err.response;
+        }
+
+        let message = '';
+        if (isNetworkError(error)) {
+            message = 'Network Error';
+            return { success: false, isNetworkError: true, message };
+        } else {
+            const data = error.response.data;
+            console.log('error', data);
+            message = data.message;
+            return { success: false, isNetworkError: false, message };
+        }
+    };
+
+    async submitDetails() {
+        try {
+            console.log('Form data', this.state.formState);
+            const response: IRCreateShopMember = await createShopMember({
+                ...this.state.formState,
+                role: 'owner',
+            });
+            console.log(response);
+        } catch (error) {
+            console.log(this.handleError(error));
+        }
+    }
+
+    async sendOtp() {
+        this.setState({ otpButtonState: 2 });
+        const response: IRCheckPhoneNumber = await triggerOtp({ phoneNumber: this.state.formState.phoneNumber });
+        if (response.status == 1) {
+            console.log(response);
+            this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
+            this.setTimer();
+            this.setField('otp', response.payload);
+        }
+    }
+
+    async componentDidMount() {
+        await setUpAxios();
+    }
+
     componentDidUpdate() {
         if (this.state.timer == 0) {
             this.clearTimeOut();
@@ -78,18 +131,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 delete prevState.error['phoneNumber'];
                 return prevState;
             });
-            this.triggerOtp();
+            this.sendOtp();
         } else {
             this.setState({ error: { ...this.state.error, phoneNumber: 'Please enter correct mobile number.' } });
         }
-    };
-
-    triggerOtp = () => {
-        this.setState({ otpButtonState: 2 });
-        setTimeout(() => {
-            this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
-            this.setTimer();
-        }, 500);
     };
 
     componentWillUnmount() {
@@ -112,7 +157,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             otpSent,
             signInButtonState,
             otpButtonState,
-            formState: { phoneNumber },
+            formState: { phoneNumber, otp, name, email },
             error,
             timer,
         } = this.state;
@@ -171,8 +216,9 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 <>
                                     <WrappedTextInput
                                         placeholder={'Verification Code'}
-                                        value={''}
+                                        value={otp}
                                         {...componentProps.textInputProps}
+                                        onChangeText={(otp) => this.setField('otp', otp)}
                                     />
                                     {otpSent && (
                                         <WrappedText
@@ -185,8 +231,9 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     )}
 
                                     <WrappedTextInput
-                                        value={''}
+                                        value={name}
                                         placeholder={'Owner name'}
+                                        onChangeText={(name) => this.setField('name', name)}
                                         {...componentProps.textInputProps}
                                     />
                                     <WrappedText
@@ -198,7 +245,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     />
                                     <WrappedTextInput
                                         placeholder={'Owner email or other active email'}
-                                        value={''}
+                                        value={email}
+                                        onChangeText={(email) => this.setField('email', email)}
                                         {...componentProps.textInputProps}
                                     />
                                     <WrappedText
@@ -213,7 +261,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                         textProps={componentProps.buttonTextProps}
                                         containerStyle={commonStyles.buttonContainerStyle}
                                         onPress={() => {
-                                            this.props.navigation.navigate(NavigationKey.SHOPDETAILS);
+                                            this.submitDetails();
+                                            //this.props.navigation.navigate(NavigationKey.SHOPDETAILS);
                                         }}
                                         isLoading={signInButtonState == 2 ? true : false}
                                         disabled={signInButtonState == 2}
