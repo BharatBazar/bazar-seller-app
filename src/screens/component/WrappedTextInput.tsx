@@ -9,6 +9,7 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
+import { color } from 'react-native-reanimated';
 import Icon from 'react-native-vector-icons/Feather';
 import { fs12, fs17 } from '../../common';
 import { colorCode } from '../../common/color';
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     },
     errorText: {
         fontSize: fs12,
-        color: colorCode.GREENLOW(40),
+        color: colorCode.RED,
         fontStyle: 'normal',
     },
     eye: {

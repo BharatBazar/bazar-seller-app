@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 
-export class DataHandling extends Component {
-    state = {
-        isLoading: false,
-    };
+export class DataHandling<Props, State> extends Component<Props, State> {
+    handleError = (error) => {
+        function isNetworkError(err) {
+            return err.isAxiosError && !err.response;
+        }
 
-    setLoader = (isLoading: boolean) => {
-        this.setState({ isLoading });
-    };
-
-    fetchData = async () => {
-        try {
-            const response = await apiHandler(routeName, data);
-            if (response.success) {
-                return response;
-            } else {
-                this.setState({ isLoading: false });
-            }
-        } catch (error) {
-            console.log(error);
+        let message = '';
+        if (isNetworkError(error)) {
+            message = 'Network Error';
+            return { isNetworkError: true, message, status: 0 };
+        } else {
+            const data = error.response.data;
+            console.log('error', data);
+            message = data.message;
+            return { isNetworkError: false, message, status: 0 };
         }
     };
 
-    returnLoader = () => {
-        return this.state.isLoading ? <View /> : <View />;
+    fetchData = async (handler: Function, data: Object, successCallback = () => {}, errorCallback = () => {}) => {
+        try {
+            const response = await handler(data);
+            if (response.status == 1) {
+                successCallback();
+                return { ...response, success: true };
+            }
+        } catch (error) {
+            errorCallback();
+            return this.handleError(error);
+        }
     };
 }

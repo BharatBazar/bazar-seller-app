@@ -14,6 +14,7 @@ export const colorCode = {
     WHITELOW: (percentage?: any) => applyColorCode(colorCode.WHITE, percentage),
     BLACK: '#000000',
     BLACKLOW: (percentage?: any) => applyColorCode(colorCode.BLACK, percentage),
+    RED: 'red',
 };
 
 export const messageColor = colorCode.BLACKLOW(40);

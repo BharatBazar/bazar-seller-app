@@ -40,3 +40,6 @@ export const fs104 = provideFontSize(104);
 export interface NavigationProps {
     navigation: StackNavigationProp<any>;
 }
+
+export const emailValidation = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+export const mobileValidation = /^[1-9]{1}[0-9]{9}$/;
