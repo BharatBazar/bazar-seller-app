@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { View } from 'react-native';
-import StatusBar from '../component/StatusBar';
+import StatusBar, { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 
 export interface ScreenHOCProps {
     children: React.ReactChild;
@@ -9,7 +9,7 @@ export interface ScreenHOCProps {
 }
 
 const ScreenHOC: React.FC<ScreenHOCProps> = ({ children, statusbarColor }) => {
-    return <View style={{ flex: 1 }}>{children && children}</View>;
+    return <View style={{ flex: 1, paddingTop: STATUS_BAR_HEIGHT }}>{children && children}</View>;
 };
 
 export default ScreenHOC;

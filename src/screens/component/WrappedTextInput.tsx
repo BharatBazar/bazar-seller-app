@@ -10,7 +10,8 @@ import {
     View,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { fs17 } from '../../common';
+import { fs12, fs17 } from '../../common';
+import { colorCode } from '../../common/color';
 import { getHP } from '../../common/dimension';
 import { commonStyles } from '../../common/styles';
 import WrappedRoundButton from './WrappedRoundButton';
@@ -141,7 +142,8 @@ const styles = StyleSheet.create({
         //paddingLeft: 20,
     },
     errorText: {
-        fontSize: 12,
+        fontSize: fs12,
+        color: colorCode.GREENLOW(40),
         fontStyle: 'normal',
     },
     eye: {

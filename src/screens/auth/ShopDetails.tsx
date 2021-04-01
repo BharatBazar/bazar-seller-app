@@ -11,6 +11,7 @@ import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
+import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 
 export interface ShopDetailsProps extends NavigationProps {}
 
@@ -26,36 +27,34 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ navigation }) => {
         },
     };
     return (
-        <ScreenHOC>
-            <View style={[{ flex: 1 }, PH(0.2), BGCOLOR(colorCode.WHITE)]}>
-                <WrappedText text={'Dukan Details'} fontSize={fs28} />
-                <WrappedText
-                    text={ShopDetailsText.MESSAGE}
-                    fontSize={fs12}
-                    textColor={'#000000' + colorTransparency[50]}
-                    textStyle={{ marginTop: getHP(0.1) }}
-                />
-                <View style={{ marginTop: getHP(0.2) }}>
-                    <WrappedTextInput value={''} placeholder={'Dukan ka nam'} {...componentProps.textInputProps} />
-                    <WrappedTextInput placeholder={'Dukan ka pata'} value={''} {...componentProps.textInputProps} />
-                    {/* <WrappedTextInput placeholder={'Email'} value={''} {...componentProps.textInputProps} />
+        <View style={[{ flex: 1 }, PH(0.2), BGCOLOR(colorCode.WHITE), { paddingTop: STATUS_BAR_HEIGHT }]}>
+            <WrappedText text={'Dukan Details'} fontSize={fs28} />
+            <WrappedText
+                text={ShopDetailsText.MESSAGE}
+                fontSize={fs12}
+                textColor={'#000000' + colorTransparency[50]}
+                textStyle={{ marginTop: getHP(0.1) }}
+            />
+            <View style={{ marginTop: getHP(0.2) }}>
+                <WrappedTextInput value={''} placeholder={'Dukan ka nam'} {...componentProps.textInputProps} />
+                <WrappedTextInput placeholder={'Dukan ka pata'} value={''} {...componentProps.textInputProps} />
+                {/* <WrappedTextInput placeholder={'Email'} value={''} {...componentProps.textInputProps} />
                     <WrappedTextInput
                         placeholder={'Create a password'}
                         value={''}
                         eyeButton={true}
                         {...componentProps.textInputProps}
                     /> */}
-                    <TextButton
-                        text={'Submit'}
-                        textProps={componentProps.buttonTextProps}
-                        containerStyle={commonStyles.buttonContainerStyle}
-                        onPress={() => {
-                            navigation.navigate(NavigationKey.ADDDUKANMEMBERS);
-                        }}
-                    />
-                </View>
+                <TextButton
+                    text={'Submit'}
+                    textProps={componentProps.buttonTextProps}
+                    containerStyle={commonStyles.buttonContainerStyle}
+                    onPress={() => {
+                        navigation.navigate(NavigationKey.ADDDUKANMEMBERS);
+                    }}
+                />
             </View>
-        </ScreenHOC>
+        </View>
     );
 };
 

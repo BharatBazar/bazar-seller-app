@@ -1,3 +1,4 @@
+import { STATUS_BAR_HEIGHT } from './../screens/component/StatusBar';
 import { colorCode } from './color';
 import { getHP, getWP } from './dimension';
 import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
@@ -21,6 +22,10 @@ export const PH = (percentage?: number): ViewStyle => {
 
 export const PV = (percentage?: number): ViewStyle => {
     return { paddingVertical: getHP(percentage || 0.05) };
+};
+
+export const PT = (percentage?: number): ViewStyle => {
+    return { paddingTop: getHP(percentage || 0.05) };
 };
 export const MH = (percentage?: number): ViewStyle => {
     return { marginHorizontal: getWP(percentage || 0.5) };
@@ -115,5 +120,9 @@ export const commonStyles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
         shadowRadius: 10,
+    },
+    containerPadidng: {
+        flex: 1,
+        paddingTop: STATUS_BAR_HEIGHT,
     },
 });

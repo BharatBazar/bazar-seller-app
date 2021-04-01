@@ -4,7 +4,7 @@ import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { View } from 'react-native';
 import { colorCode } from '../../common/color';
 
-const STATUS_BAR_HEIGHT = getStatusBarHeight();
+export const STATUS_BAR_HEIGHT = getStatusBarHeight();
 
 export interface StatusBarProps {
     statusBarColor?: string;

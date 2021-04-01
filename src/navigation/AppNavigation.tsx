@@ -14,8 +14,8 @@ class AppNavigation extends React.Component {
     render() {
         return (
             <NavigationContainer>
-                <Stack.Navigator headerMode={'none'} screenOptions={{ headerShown: true }}>
-                    <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} />
+                <Stack.Navigator screenOptions={{ headerShown: false }}>
+                    <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
                     <Stack.Screen name={NavigationKey.SHOPDETAILS} component={ShopDetails} />
                     <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />

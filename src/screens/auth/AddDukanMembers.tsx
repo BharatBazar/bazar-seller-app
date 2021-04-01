@@ -10,6 +10,7 @@ import ScreenHOC from '../hoc/ScreenHOC';
 import Icons from 'react-native-vector-icons/Feather';
 import WrappedTextInput from '../component/WrappedTextInput';
 import TextButton from '../component/TextButton';
+import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 
 export interface AddDukanMembersProps {}
 
@@ -151,36 +152,34 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = () => {
     };
 
     return (
-        <ScreenHOC>
-            <ScrollView style={{ flex: 1, backgroundColor: colorCode.WHITE, ...PH(0.5) }}>
-                <WrappedText text={'Add member to your shop'} fontSize={fs28} />
-                <WrappedText
-                    text={
-                        'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and Co-owner account any time.'
-                    }
-                    fontSize={fs12}
-                    textColor={colorCode.BLACKLOW(50)}
-                    containerStyle={{ marginTop: getHP(0.1) }}
-                />
+        <ScrollView style={{ flex: 1, backgroundColor: colorCode.WHITE, ...PH(0.5), paddingTop: STATUS_BAR_HEIGHT }}>
+            <WrappedText text={'Add member to your shop'} fontSize={fs28} />
+            <WrappedText
+                text={
+                    'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and Co-owner account any time.'
+                }
+                fontSize={fs12}
+                textColor={colorCode.BLACKLOW(50)}
+                containerStyle={{ marginTop: getHP(0.1) }}
+            />
 
-                <View style={{ marginTop: getHP(0.4) }}>
-                    <AddMember
-                        onPressPlus={addcoOwner}
-                        onPressCross={deleteMember}
-                        data={coOwner}
-                        role={'Co-owner'}
-                        setField={setField}
-                    />
-                    <AddMember
-                        onPressPlus={addWorker}
-                        onPressCross={deleteMember}
-                        data={worker}
-                        role={'Worker'}
-                        setField={setField}
-                    />
-                </View>
-            </ScrollView>
-        </ScreenHOC>
+            <View style={{ marginTop: getHP(0.4) }}>
+                <AddMember
+                    onPressPlus={addcoOwner}
+                    onPressCross={deleteMember}
+                    data={coOwner}
+                    role={'Co-owner'}
+                    setField={setField}
+                />
+                <AddMember
+                    onPressPlus={addWorker}
+                    onPressCross={deleteMember}
+                    data={worker}
+                    role={'Worker'}
+                    setField={setField}
+                />
+            </View>
+        </ScrollView>
     );
 };
 
