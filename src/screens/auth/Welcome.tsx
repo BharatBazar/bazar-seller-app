@@ -41,7 +41,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
                         <WrappedRectangleButton
                             {...componentProps.buttonProps}
                             onPress={() => {
-                                this.props.navigation.navigate(NavigationKey.CREATEDUKAN);
+                                this.props.navigation.navigate(NavigationKey.AUTHNAVIGATOR);
                             }}
                         >
                             <WrappedText text={WelcomeText.SHOP_NOT_EXIST} {...componentProps.buttonTextProps} />

@@ -53,10 +53,11 @@ export default HeaderBar;
 const styles = StyleSheet.create({
     container: {
         height: getHP(0.5) + getStatusBarHeight(),
-        shadowColor: '#000000',
-        shadowOffset: { width: 5, height: 10 },
-        shadowOpacity: 0.1,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
         shadowRadius: 10,
+        backgroundColor: colorCode.WHITE,
     },
     statusbar: {
         height: getStatusBarHeight(),

@@ -3,10 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
 import { NavigationKey } from '../labels';
 import Welcome from '../screens/auth/Welcome';
-import CreateDukan from '../screens/auth/CreateDukan';
-import ShopDetails from '../screens/auth/ShopDetails';
-import OpenDukan from '../screens/auth/OpenDukan';
-import AddDukanMembers from '../screens/auth/AddDukanMembers';
+import AuthNavigation from '../screens/auth/navigator';
 
 const Stack = createStackNavigator();
 
@@ -16,10 +13,7 @@ class AppNavigation extends React.Component {
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{ headerShown: false }}>
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
-                    <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
-                    <Stack.Screen name={NavigationKey.SHOPDETAILS} component={ShopDetails} />
-                    <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
-                    <Stack.Screen name={NavigationKey.ADDDUKANMEMBERS} component={AddDukanMembers} />
+                    <Stack.Screen name={NavigationKey.AUTHNAVIGATOR} component={AuthNavigation} />
                 </Stack.Navigator>
             </NavigationContainer>
         );

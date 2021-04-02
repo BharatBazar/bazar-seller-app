@@ -4,7 +4,7 @@ import { colorCode, messageColor } from '../../common/color';
 import { BGCOLOR, BR, colorTransparency, commonStyles, MH, MV, PH, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText } from '../../common/customScreenText';
-import { fs12, fs15, fs21, fs28, NavigationProps } from '../../common';
+import { fs12, fs13, fs15, fs21, fs28, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
@@ -16,6 +16,7 @@ import { setUpAxios } from '../../server';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
+import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 
 export interface CreateDukanProps extends NavigationProps {}
 
@@ -137,6 +138,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
     async componentDidMount() {
         await setUpAxios();
+        this.props.navigation.navigate(NavigationKey.OPENDUKAN);
     }
 
     componentDidUpdate() {
@@ -174,7 +176,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
             },
             textInputProps: {
                 containerStyle: { ...commonStyles.textInputContainerStyle, marginTop: getHP(0.2) },
-                textInputStyle: { fontSize: fs15, color: '#000000' },
+                textInputStyle: { fontSize: fs13, color: '#000000' },
                 paddingLeft: getWP(0.2),
             },
         };
@@ -189,10 +191,9 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
         } = this.state;
 
         return (
-            <View style={{ height: '100%', backgroundColor: '#ffffff' }}>
-                <HeaderBar statusBarColor={'#ffffff'} headerBackgroundColor={'#ffffff'} />
-                <View style={[{ flex: 1 }, PH(0.3), PV(0.3)]}>
-                    <View style={[commonStyles.shadow, BGCOLOR(colorCode.WHITE), BR(0.2), PH(0.5), PV(0.3)]}>
+            <View style={[{ flex: 1 }, PH(0.3), PV(0.3)]}>
+                <ShadowWrapperHOC>
+                    <>
                         <WrappedText text={'Step 1'} fontSize={fs28} textColor={colorCode.SAFFRON} />
                         <WrappedText
                             text={'Provide shop owner details'}
@@ -203,7 +204,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                         <WrappedText
                             text={CreateDukanText.MESSAGE}
                             fontSize={fs12}
-                            textColor={'#000000' + colorTransparency[50]}
+                            textColor={colorCode.BLACKLOW(50)}
                             textStyle={{ marginTop: getHP(0.1) }}
                         />
                         {this.returnErrorText('serverError')}
@@ -294,8 +295,8 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                                 </>
                             )}
                         </View>
-                    </View>
-                </View>
+                    </>
+                </ShadowWrapperHOC>
             </View>
         );
     }

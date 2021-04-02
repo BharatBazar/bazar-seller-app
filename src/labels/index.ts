@@ -4,4 +4,5 @@ export const NavigationKey = {
     SHOPDETAILS: 'ShopDetails',
     OPENDUKAN: 'OpenDukan',
     ADDDUKANMEMBERS: 'AddDukanMembers',
+    AUTHNAVIGATOR: 'AuthNavigator',
 };

@@ -42,6 +42,14 @@ export const BGCOLOR = (color?: string): ViewStyle => {
     return { backgroundColor: color || '#ffffff' };
 };
 
+export const FLEX = (FLEX: number) => {
+    return { flex: FLEX };
+};
+
+export const MT = (percentage: number): ViewStyle => {
+    return { marginTop: getHP(percentage || 0.2) };
+};
+
 export const commonStyles = StyleSheet.create({
     cntr: {
         alignItems: 'center',

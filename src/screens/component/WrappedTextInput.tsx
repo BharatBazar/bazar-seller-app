@@ -97,7 +97,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                             height={containerStyle.height}
                         >
                             <Icon
-                                name={secureTextEntry ? 'eye' : 'eye-off'}
+                                name={secureTextEntry ? 'eye-off' : 'eye'}
                                 style={styles.eye}
                                 size={getHP(0.2)}
                                 color={'#1A202C4D'}

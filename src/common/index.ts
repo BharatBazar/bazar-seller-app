@@ -43,3 +43,35 @@ export interface NavigationProps {
 
 export const emailValidation = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
 export const mobileValidation = /^[1-9]{1}[0-9]{9}$/;
+export const passwordValidation = [
+    {
+        regex: /^(?=.*[a-z])/,
+        error: 'Atleast one lowercase character',
+
+        matched: false,
+    },
+    {
+        regex: /^(?=.*[A-Z])/,
+        error: 'Atleast one uppercase character',
+
+        matched: false,
+    },
+    {
+        regex: /^(?=.*[0-9])/,
+        error: 'Atleast one numeric character',
+
+        matched: false,
+    },
+    {
+        regex: /^(?=.*[!@#$%^&*])/,
+        error: 'Atleast one special character(!,@,#,$,%,^,&,*)',
+
+        matched: false,
+    },
+    {
+        regex: /(?=.{8,})/,
+        error: 'Minimum 8 characters',
+
+        matched: false,
+    },
+];
