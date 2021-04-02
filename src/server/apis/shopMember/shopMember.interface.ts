@@ -32,6 +32,9 @@ export interface IRCheckPhoneNumber extends CommonApiResponse {
     payload: string;
 }
 
+export interface IRSetPassword extends CommonApiResponse {
+    payload: string;
+}
 export type ICreateShopMember =
     | {
           phoneNumber: string;

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { fs12, fs13, fs15, passwordValidation } from '../../common';
+import { fs12, fs13, fs15, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, messageColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
 import { commonStyles, FLEX, PV, PH, MT } from '../../common/styles';
@@ -11,20 +11,40 @@ import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import WrappedText from '../component/WrappedText';
+import { DataHandling } from '../../server/DataHandlingHOC';
+import { IRSetPassword } from '../../server/apis/shopMember/shopMember.interface';
+import API from '../../server/apis';
+import { NavigationKey } from '../../labels';
+import ServerErrorText from './component/errorText';
 
-export interface OpenDukanProps {}
+export interface OpenDukanProps extends NavigationProps {
+    route: {
+        params: {
+            phoneNumber?: string;
+        };
+    };
+}
 
 type form = {
-    password?: string;
-    confirmPassword?: string;
+    password: string;
+    confirmPassword: string;
 };
 
 type error = {
+    password?: string;
+    confirmPassword?: string;
     serverError?: string;
 };
 
-const SetPassword: React.FC<OpenDukanProps> = () => {
-    const [error, setError] = React.useState<form & error>({});
+const dataHandling = new DataHandling('', {});
+
+const SetPassword: React.FC<OpenDukanProps> = ({
+    route: {
+        params: { phoneNumber },
+    },
+    navigation,
+}) => {
+    const [error, setError] = React.useState<error>({});
     const [formData, setFormData] = React.useState<form>({ password: '', confirmPassword: '' });
     const [password, SetPasswordValidation] = React.useState([...passwordValidation]);
     const [setPasswordButton, setSetPasswordButton] = React.useState(0);
@@ -38,6 +58,21 @@ const SetPassword: React.FC<OpenDukanProps> = () => {
             textInputStyle: { fontSize: fs13 },
             paddingLeft: getWP(0.2),
         },
+    };
+
+    const setPassword = async () => {
+        setSetPasswordButton(2);
+        const response: IRSetPassword = await dataHandling.fetchData(API.setPassword, {
+            phoneNumber: 9876004503,
+            password: formData.password,
+        });
+        console.log(response);
+        setSetPasswordButton(0);
+        if (response.status == 1) {
+            navigation.navigate(NavigationKey.SHOPDETAILS);
+        } else {
+            setError({ serverError: response.message });
+        }
     };
 
     const setField = (field: keyof form, value: string) => {
@@ -69,6 +104,7 @@ const SetPassword: React.FC<OpenDukanProps> = () => {
 
         if (Object.keys(error).length == 0) {
             setError({});
+            setPassword();
         } else {
             setError(error);
         }
@@ -83,6 +119,8 @@ const SetPassword: React.FC<OpenDukanProps> = () => {
                         heading={'Protect your account with password'}
                         subHeading={"Setting password helps to protect your account from attacker's."}
                     />
+
+                    {error['serverError'] && <ServerErrorText errorText={error['serverError']} />}
                     <View style={{ marginTop: getHP(0.2) }}>
                         <WrappedTextInput
                             placeholder={'Set Password'}

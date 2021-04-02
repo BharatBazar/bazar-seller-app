@@ -138,7 +138,9 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
     async componentDidMount() {
         await setUpAxios();
-        this.props.navigation.navigate(NavigationKey.OPENDUKAN);
+        this.props.navigation.navigate(NavigationKey.OPENDUKAN, {
+            phoneNumber: '9893137876',
+        });
     }
 
     componentDidUpdate() {

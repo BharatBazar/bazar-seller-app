@@ -1,8 +1,9 @@
-import { triggerOtp, createShopMember } from './shopMember.api';
+import { triggerOtp, createShopMember, setPassword } from './shopMember.api';
 
 const ShopMemberAPI = {
     triggerOtp,
     createShopMember,
+    setPassword,
 };
 
 export default ShopMemberAPI;

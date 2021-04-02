@@ -29,10 +29,11 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({ navigation }) => {
         <View style={[{ flex: 1 }, PH(0.3), PV(0.4)]}>
             <ShadowWrapperHOC>
                 <>
-                    <HeaderText step={'Step 2'} heading={'Dukan Details'} subHeading={ShopDetailsText.MESSAGE} />
+                    <HeaderText step={'Step 3'} heading={'Dukan Details'} subHeading={ShopDetailsText.MESSAGE} />
 
                     <View style={{ marginTop: getHP(0.2) }}>
                         <WrappedTextInput value={''} placeholder={'Dukan ka nam'} {...componentProps.textInputProps} />
+
                         <WrappedTextInput placeholder={'Dukan ka pata'} value={''} {...componentProps.textInputProps} />
 
                         <TextButton

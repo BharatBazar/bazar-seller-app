@@ -5,6 +5,7 @@ import {
     IRCreateShopMember,
     ICreateShopMember,
     IRCheckPhoneNumber,
+    IRSetPassword,
 } from './shopMember.interface';
 
 export function createShopMember(data: ICreateShopMember): Promise<IRCreateShopMember> {
@@ -23,4 +24,12 @@ export function triggerOtp(data: { phoneNumber: string }): Promise<IRCheckPhoneN
     return makeRequest(options);
 }
 
+export function setPassword(data: { phoneNumber: string; password: string }): Promise<IRSetPassword> {
+    const options = {
+        ...apiEndPointShopMember.ShopMemberCreatePassword,
+        data,
+    };
+
+    return makeRequest(options);
+}
 //createShopMember({ phoneNumber: '9893137876', email: 'bothra.rajat08@gmail.com',name:"Rajat",role:'worker' });
