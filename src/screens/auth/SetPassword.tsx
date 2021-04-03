@@ -12,7 +12,7 @@ import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import WrappedText from '../component/WrappedText';
 import { DataHandling } from '../../server/DataHandlingHOC';
-import { IRSetPassword } from '../../server/apis/shopMember/shopMember.interface';
+import { ICreateShopMember, IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import API from '../../server/apis';
 import { NavigationKey } from '../../labels';
 import ServerErrorText from './component/errorText';
@@ -20,7 +20,7 @@ import ServerErrorText from './component/errorText';
 export interface OpenDukanProps extends NavigationProps {
     route: {
         params: {
-            phoneNumber?: string;
+            ownerDetails: IshopMember;
         };
     };
 }
@@ -40,7 +40,7 @@ const dataHandling = new DataHandling('', {});
 
 const SetPassword: React.FC<OpenDukanProps> = ({
     route: {
-        params: { phoneNumber },
+        params: { ownerDetails },
     },
     navigation,
 }) => {
@@ -63,18 +63,21 @@ const SetPassword: React.FC<OpenDukanProps> = ({
     const setPassword = async () => {
         setSetPasswordButton(2);
         const response: IRSetPassword = await dataHandling.fetchData(API.setPassword, {
-            phoneNumber: 9876004503,
+            phoneNumber: ownerDetails.phoneNumber,
             password: formData.password,
         });
-        console.log(response);
         setSetPasswordButton(0);
         if (response.status == 1) {
-            navigation.navigate(NavigationKey.SHOPDETAILS);
+            navigation.navigate(NavigationKey.SHOPDETAILS, { ownerDetails: ownerDetails });
         } else {
             setError({ serverError: response.message });
         }
     };
 
+    React.useEffect(() => {
+        //navigation.navigate(NavigationKey.SHOPDETAILS);
+        return () => {};
+    }, []);
     const setField = (field: keyof form, value: string) => {
         const data = { ...formData };
         data[field] = value;
@@ -93,7 +96,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
     };
 
     const validateFields = () => {
-        const error: form = {};
+        const error: error = {};
         if (!password.every((item) => item.matched)) {
             error['password'] = 'Password does not match all condition please check.';
         }

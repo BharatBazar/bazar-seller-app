@@ -85,7 +85,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
         });
         if (response.status == 1) {
             this.setState({ signInButtonState: 0 });
-            this.props.navigation.navigate(NavigationKey.SHOPDETAILS);
+            this.props.navigation.navigate(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
         } else {
             this.setState({ error: { ...this.state.error, serverError: response.message }, signInButtonState: 0 });
         }
@@ -138,9 +138,9 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
     async componentDidMount() {
         await setUpAxios();
-        this.props.navigation.navigate(NavigationKey.OPENDUKAN, {
-            phoneNumber: '9893137876',
-        });
+        // this.props.navigation.navigate(NavigationKey.OPENDUKAN, {
+        //     phoneNumber: '9893137876',
+        // });
     }
 
     componentDidUpdate() {

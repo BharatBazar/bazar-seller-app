@@ -72,6 +72,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             eyeButtonHeight,
             paddingLeft,
             onChangeText,
+            autoCapitalize,
         } = this.props;
         const { secureTextEntry } = this.state;
         return (
@@ -79,6 +80,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                 <View style={[styles.mainContainer, containerStyle]}>
                     <TextInput
                         value={value}
+                        autoCapitalize={autoCapitalize || 'none'}
                         onChangeText={onChangeText}
                         autoCorrect={false}
                         placeholder={placeholder}

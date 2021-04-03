@@ -1,7 +1,7 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import CreateDukan from './CreateDukan';
 import ShopDetails from './ShopDetails';
-import OpenDukan from './SetPassword';
+import SetPassword from './SetPassword';
 import AddDukanMembers from './AddDukanMembers';
 import { NavigationKey } from '../../labels';
 import React from 'react';
@@ -19,7 +19,7 @@ class AuthNavigation extends React.Component {
                 <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={NavigationKey.CREATEDUKAN}>
                     <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
                     <Stack.Screen name={NavigationKey.SHOPDETAILS} component={ShopDetails} />
-                    <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
+                    <Stack.Screen name={NavigationKey.SETPASSWORD} component={SetPassword} />
                     <Stack.Screen name={NavigationKey.ADDDUKANMEMBERS} component={AddDukanMembers} />
                 </Stack.Navigator>
             </View>

@@ -13,19 +13,21 @@ export const apiEndPointShopMember: IapiEndPOint = {
         method: 'post',
     },
 };
+
+export interface IshopMember {
+    name: string;
+    //photo: [{_id:ObjectId}];
+    permissions: string;
+    phoneNumber: string;
+    shop: string;
+    role: string;
+    _id: string;
+    password: string;
+    isTerminated: boolean;
+    isDeleted: boolean;
+}
 export interface IRCreateShopMember extends CommonApiResponse {
-    payload: {
-        name: string;
-        //photo: [{_id:ObjectId}];
-        permissions: string;
-        phoneNumber: string;
-        shop: string;
-        role: string;
-        _id: string;
-        password: string;
-        isTerminated: boolean;
-        isDeleted: boolean;
-    };
+    payload: IshopMember;
 }
 
 export interface IRCheckPhoneNumber extends CommonApiResponse {

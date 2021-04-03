@@ -2,7 +2,7 @@ export const NavigationKey = {
     WELCOME: 'Welcome',
     CREATEDUKAN: 'CreateDukan',
     SHOPDETAILS: 'ShopDetails',
-    OPENDUKAN: 'OpenDukan',
+    SETPASSWORD: 'SetPassword',
     ADDDUKANMEMBERS: 'AddDukanMembers',
     AUTHNAVIGATOR: 'AuthNavigator',
 };
