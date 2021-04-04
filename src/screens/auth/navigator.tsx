@@ -23,6 +23,7 @@ interface Props extends NavigationProps {
 class AuthNavigation extends React.Component<Props, {}> {
     render() {
         if (this.props.route.params) {
+            console.log(this.props.route.params);
             var { ownerDetails, screen } = this.props.route.params;
         } else {
             var ownerDetails = undefined;

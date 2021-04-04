@@ -14,6 +14,10 @@ export const apiEndPointShopMember: IapiEndPOint = {
         url: '/shopMember/createPassword',
         method: 'post',
     },
+    ShopMemberDelete: {
+        url: '/shopmember/delete',
+        method: 'delete',
+    },
 };
 
 export interface IshopMember {
@@ -53,10 +57,14 @@ export interface IRSetPassword extends CommonApiResponse {
     payload: string;
 }
 
+export interface IRShopMemberDelete extends CommonApiResponse {
+    payload: string;
+}
+
 export interface IRShopMemberLogin extends CommonApiResponse {
     payload: {
         data: IshopMemberPopulated;
-        shopNameAvailvable?: boolean;
+        shopNameAvailable?: boolean;
         memberDetails?: boolean;
         shopVerification?: boolean;
         passwordAvailable?: boolean;

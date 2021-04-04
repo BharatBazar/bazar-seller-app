@@ -1,20 +1,18 @@
 import * as React from 'react';
-import { Component } from 'react';
 import { View } from 'react-native';
-import { fs12, fs13, fs21, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
+import { fs12, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
 import { colorCode } from '../../common/color';
 import { GlobalText } from '../../common/customScreenText';
 import { getHP, getWP } from '../../common/dimension';
 import { BGCOLOR, commonStyles, MT, PH, PV } from '../../common/styles';
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
-import { IRShopMemberLogin } from '../../server/apis/shopMember/shopMember.interface';
+import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import LineHeading from '../component/LineHeading';
 import TextButton from '../component/TextButton';
 import WrappedText from '../component/WrappedText';
 import WrappedTextInput from '../component/WrappedTextInput';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import ServerErrorText from './component/errorText';
 
 export interface OpenDukanProps extends NavigationProps {}
@@ -51,10 +49,21 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
         setFormData({ ...formData, ...data });
     };
 
-    const navigateTo = (screen: string, params: Object) => {
+    const navigateTo = (screen: string, params: IshopMemberPopulated) => {
         navigation.replace(NavigationKey.AUTHNAVIGATOR, {
-            ownerDetails: params,
+            ownerDetails: { ...params, shop: params.shop._id },
             screen: screen,
+        });
+    };
+
+    const resetTo = (screen: string) => {
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: screen,
+                },
+            ],
         });
     };
 
@@ -70,16 +79,9 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             } else if (state.memberDetails) {
                 navigateTo(NavigationKey.ADDDUKANMEMBERS, state.data);
             } else if (state.shopVerification) {
-                navigateTo(NavigationKey.VERIFICATION, {});
+                resetTo(NavigationKey.VERIFICATION);
             } else {
-                navigation.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: NavigationKey.HOME,
-                        },
-                    ],
-                });
+                resetTo(NavigationKey.HOME);
             }
         } else {
             setError({ error: response.message });

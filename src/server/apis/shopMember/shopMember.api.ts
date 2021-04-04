@@ -6,6 +6,8 @@ import {
     ICreateShopMember,
     IRCheckPhoneNumber,
     IRSetPassword,
+    IRShopMemberDelete,
+    IRShopMemberLogin,
 } from './shopMember.interface';
 
 export function createShopMember(data: ICreateShopMember): Promise<IRCreateShopMember> {
@@ -36,6 +38,14 @@ export function setPassword(data: { phoneNumber: string; password: string }): Pr
 export function shopMemberLogin(data: { phoneNumber: string; password: string }): Promise<IRShopMemberLogin> {
     const options = {
         ...apiEndPointShopMember.ShopMemberLogin,
+        data,
+    };
+    return makeRequest(options);
+}
+
+export function deleteShopMember(data: { _id: string }): Promise<IRShopMemberDelete> {
+    const options = {
+        ...apiEndPointShopMember.ShopMemberDelete,
         data,
     };
     return makeRequest(options);

@@ -12,9 +12,14 @@ import TextButton from '../component/TextButton';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import ServerErrorText from './component/errorText';
-import { ICreateShopMember, IRCreateShopMember, IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import {
+    ICreateShopMember,
+    IRCreateShopMember,
+    IRShopMemberDelete,
+    IshopMember,
+} from '../../server/apis/shopMember/shopMember.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
-import { createShopMember } from '../../server/apis/shopMember/shopMember.api';
+import { createShopMember, deleteShopMember } from '../../server/apis/shopMember/shopMember.api';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { NavigationKey } from '../../labels';
@@ -68,6 +73,16 @@ const AddMember = ({
         }
     }
 
+    const deleteMember = async (id: string, index: number) => {
+        const response: IRShopMemberDelete = await dataHandling.fetchData(deleteShopMember, { _id: id });
+        if (response.status == 1) {
+            Alert.alert(response.message);
+            onPressCross(role, index, true);
+        } else {
+            setField(response.message, role, index, 'error');
+        }
+    };
+
     return (
         <View style={[]}>
             <View style={[commonStyles.fdr, MV(0.2)]}>
@@ -93,7 +108,7 @@ const AddMember = ({
                             PV(0.2),
                             { marginVertical: '2%', borderRadius: getWP(0.2) },
                         ]}
-                        key={item._id}
+                        key={item.key}
                     >
                         {item.error['error'] && <ServerErrorText errorText={item.error['error']} />}
                         <WrappedTextInput
@@ -125,7 +140,11 @@ const AddMember = ({
                             />
                             <TextButton
                                 onPress={() => {
-                                    onPressCross(role, index);
+                                    if (item.added) {
+                                        deleteMember(item._id, index);
+                                    } else {
+                                        onPressCross(role, index);
+                                    }
                                 }}
                                 textProps={componentProps.buttonTextProps}
                                 text={'Delete'}
@@ -160,17 +179,18 @@ type member = {
     name: string;
     phoneNumber: string;
     role: 'owner' | 'Co-owner' | 'worker';
-    _id: string;
+    key: string;
     error: error;
     added: boolean;
+    _id: string;
 };
 
 const getDefaultValue = (role: 'Co-owner' | 'worker') => {
     return {
         name: '',
-
+        _id: '',
         phoneNumber: '',
-        _id: getId(),
+        key: getId(),
         error: {},
         role: role,
         added: false,
@@ -208,11 +228,13 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         }
     };
 
-    const deleteMember = (role: 'Co-owner' | 'worker', index: number) => {
+    const deleteMember = (role: 'Co-owner' | 'worker', index: number, deleted?: boolean) => {
         let data = role == 'Co-owner' ? [...coOwner] : [...worker];
         console.log(index);
         data.splice(index, 1);
-
+        if (deleted) {
+            setSubmittedCount(submittedCount - 1);
+        }
         if (role == 'Co-owner') {
             setcoOwner([...data]);
         } else {
@@ -237,10 +259,16 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
 
         if (response.status == 1) {
             Alert.alert('Member added!!');
-            setField(true, role, index, 'added');
+            if (role == 'Co-owner') {
+                coOwner[index] = { ...coOwner[index], added: true, _id: response.payload._id };
+                setcoOwner(coOwner);
+            } else {
+                worker[index] = { ...worker[index], added: true, _id: response.payload._id };
+                setWorker(worker);
+            }
             setSubmittedCount(submittedCount + 1);
         } else {
-            //setField({ error: response.message }, role, index, 'error');
+            setField({ error: response.message }, role, index, 'error');
         }
     };
 
