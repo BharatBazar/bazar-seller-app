@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { BGCOLOR, BR, colorTransparency, commonStyles, MH, MV, PH, PV } from '../../common/styles';
+import { commonStyles, PH, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText } from '../../common/customScreenText';
-import { fs12, fs13, fs15, fs21, fs28, NavigationProps } from '../../common';
+import { fs12, fs13, fs21, fs28, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
-import HeaderBar from '../component/HeaderBar';
 import { createShopMember, triggerOtp } from '../../server/apis/shopMember/shopMember.api';
 import { IRCheckPhoneNumber, IRCreateShopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { setUpAxios } from '../../server';

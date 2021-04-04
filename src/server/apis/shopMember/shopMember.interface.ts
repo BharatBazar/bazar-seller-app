@@ -1,3 +1,5 @@
+import { Shop } from './../shop/shop.interface';
+import { Ipermission } from './../permissions/permission.interface';
 import { Method } from 'axios';
 import { CommonApiResponse, IapiEndPOint } from './../common.interface';
 
@@ -6,7 +8,7 @@ export const apiEndPointShopMember: IapiEndPOint = {
     CheckPhoneNumber: { url: '/shopMember/checkPhoneNumber', method: 'post' },
     ShopMemberLogin: {
         url: '/shopMember/login',
-        method: 'get',
+        method: 'post',
     },
     ShopMemberCreatePassword: {
         url: '/shopMember/createPassword',
@@ -26,6 +28,19 @@ export interface IshopMember {
     isTerminated: boolean;
     isDeleted: boolean;
 }
+
+export interface IshopMemberPopulated {
+    name: string;
+    //photo: [{_id:ObjectId}];
+    permissions: Ipermission;
+    phoneNumber: string;
+    shop: Shop;
+    role: string;
+    _id: string;
+    password: string;
+    isTerminated: boolean;
+    isDeleted: boolean;
+}
 export interface IRCreateShopMember extends CommonApiResponse {
     payload: IshopMember;
 }
@@ -37,6 +52,17 @@ export interface IRCheckPhoneNumber extends CommonApiResponse {
 export interface IRSetPassword extends CommonApiResponse {
     payload: string;
 }
+
+export interface IRShopMemberLogin extends CommonApiResponse {
+    payload: {
+        data: IshopMemberPopulated;
+        shopNameAvailvable?: boolean;
+        memberDetails?: boolean;
+        shopVerification?: boolean;
+        passwordAvailable?: boolean;
+    };
+}
+
 export type ICreateShopMember =
     | {
           phoneNumber: string;
@@ -47,9 +73,9 @@ export type ICreateShopMember =
       }
     | {
           phoneNumber: string;
-          email: string;
           name: string;
           role: 'worker' | 'Co-owner';
+          email?: string;
           shop: string;
       };
 

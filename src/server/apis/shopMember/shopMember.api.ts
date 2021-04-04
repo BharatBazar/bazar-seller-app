@@ -32,4 +32,12 @@ export function setPassword(data: { phoneNumber: string; password: string }): Pr
 
     return makeRequest(options);
 }
+
+export function shopMemberLogin(data: { phoneNumber: string; password: string }): Promise<IRShopMemberLogin> {
+    const options = {
+        ...apiEndPointShopMember.ShopMemberLogin,
+        data,
+    };
+    return makeRequest(options);
+}
 //createShopMember({ phoneNumber: '9893137876', email: 'bothra.rajat08@gmail.com',name:"Rajat",role:'worker' });

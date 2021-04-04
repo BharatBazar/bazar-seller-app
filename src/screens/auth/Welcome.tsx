@@ -6,14 +6,18 @@ import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
 import { GlobalText, WelcomeText } from '../../common/customScreenText';
-import { fs12, fs18, fs28 } from '../../common';
+import { fs12, fs18, fs28, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
+import { setUpAxios } from '../../server';
 
-export interface WelcomeProps {}
+export interface WelcomeProps extends NavigationProps {}
 
 export interface WelcomeState {}
 
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
+    componentDidMount() {
+        setUpAxios();
+    }
     render() {
         const componentProps = {
             buttonProps: {
@@ -25,30 +29,28 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
         };
 
         return (
-            <ScreenHOC>
-                <View style={[{ flex: 1 }, PH(0.3), BGCOLOR(colorCode.WHITE)]}>
-                    <WrappedText text={GlobalText.companyName} fontSize={fs28} />
-                    <WrappedText text={GlobalText.companyMessage} fontSize={fs12} />
-                    <View style={styles.buttonsWrapper}>
-                        <WrappedRectangleButton
-                            {...componentProps.buttonProps}
-                            onPress={() => {
-                                this.props.navigation.navigate(NavigationKey.OPENDUKAN);
-                            }}
-                        >
-                            <WrappedText text={WelcomeText.SHOP_EXIST} {...componentProps.buttonTextProps} />
-                        </WrappedRectangleButton>
-                        <WrappedRectangleButton
-                            {...componentProps.buttonProps}
-                            onPress={() => {
-                                this.props.navigation.navigate(NavigationKey.AUTHNAVIGATOR);
-                            }}
-                        >
-                            <WrappedText text={WelcomeText.SHOP_NOT_EXIST} {...componentProps.buttonTextProps} />
-                        </WrappedRectangleButton>
-                    </View>
+            <View style={[commonStyles.containerPadidng, { flex: 1 }, PH(0.3), BGCOLOR(colorCode.WHITE)]}>
+                <WrappedText text={GlobalText.companyName} fontSize={fs28} />
+                <WrappedText text={GlobalText.companyMessage} fontSize={fs12} />
+                <View style={styles.buttonsWrapper}>
+                    <WrappedRectangleButton
+                        {...componentProps.buttonProps}
+                        onPress={() => {
+                            this.props.navigation.navigate(NavigationKey.OPENDUKAN);
+                        }}
+                    >
+                        <WrappedText text={WelcomeText.SHOP_EXIST} {...componentProps.buttonTextProps} />
+                    </WrappedRectangleButton>
+                    <WrappedRectangleButton
+                        {...componentProps.buttonProps}
+                        onPress={() => {
+                            this.props.navigation.navigate(NavigationKey.AUTHNAVIGATOR);
+                        }}
+                    >
+                        <WrappedText text={WelcomeText.SHOP_NOT_EXIST} {...componentProps.buttonTextProps} />
+                    </WrappedRectangleButton>
                 </View>
-            </ScreenHOC>
+            </View>
         );
     }
 }

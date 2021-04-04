@@ -5,4 +5,7 @@ export const NavigationKey = {
     SETPASSWORD: 'SetPassword',
     ADDDUKANMEMBERS: 'AddDukanMembers',
     AUTHNAVIGATOR: 'AuthNavigator',
+    VERIFICATION: 'Verification',
+    OPENDUKAN: 'OpenDukan',
+    HOME: 'Home',
 };

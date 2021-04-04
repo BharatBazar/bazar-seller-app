@@ -13,14 +13,26 @@ export interface TextButtonProps {
     textProps?: any;
     isLoading?: boolean;
     disabled?: boolean;
+    fade?: boolean;
 }
 
-const TextButton: React.FC<TextButtonProps> = ({ onPress, text, containerStyle, textProps, isLoading, disabled }) => {
+const TextButton: React.FC<TextButtonProps> = ({
+    onPress,
+    text,
+    containerStyle,
+    textProps,
+    isLoading,
+    disabled,
+    fade,
+}) => {
     return (
         <WrappedRectangleButton
             containerStyle={[
                 containerStyle,
-                { flexDirection: 'row', backgroundColor: disabled ? colorCode.CHAKRALOW(50) : colorCode.CHAKRALOW(70) },
+                {
+                    flexDirection: 'row',
+                    backgroundColor: disabled ? colorCode.CHAKRALOW(50) : colorCode.CHAKRALOW(70),
+                },
             ]}
             onPress={() => {
                 if (disabled) {

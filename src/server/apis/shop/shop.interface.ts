@@ -8,7 +8,7 @@ export const ShopApis: IapiEndPOint = {
     },
 };
 
-interface Shop {
+export interface Shop {
     _id: string;
     shopName: string;
     addressOfShop: string;
@@ -26,6 +26,7 @@ export interface updateShopData {
     _id: string;
     shopName?: string;
     addressOfShop?: string;
+    membersDetailSkipped?: boolean;
     isTerminated?: boolean;
 }
 
