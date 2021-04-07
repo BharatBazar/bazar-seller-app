@@ -12,7 +12,7 @@ export interface product {
     image: string;
     categoryType: categoryType;
     subCategoryExist: boolean;
-    subCategoryParentRef: String;
+    subCategoryRef: String;
     _id: string;
 }
 

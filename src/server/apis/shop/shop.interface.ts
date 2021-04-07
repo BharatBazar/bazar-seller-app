@@ -1,11 +1,16 @@
+import { product } from './../productCatalogue/productCatalogue.interface';
+import { commonApiHandler } from './../../index';
 import { CommonApiResponse, IapiEndPOint } from './../common.interface';
 import { IshopMember } from '../shopMember/shopMember.interface';
-import { IRGetProductCatalogue } from '../productCatalogue/productCatalogue.interface';
 
 export const ShopApis: IapiEndPOint = {
     UpdateShop: {
         url: '/shop/update',
         method: 'patch',
+    },
+    GetShop: {
+        url: '/shop/get',
+        method: 'post',
     },
 };
 
@@ -21,9 +26,13 @@ export interface Shop {
     worker: IshopMember[];
     isVerified: boolean;
     isTerminated: boolean;
-    category: [IRGetProductCatalogue];
-    subCategory: [[IRGetProductCatalogue]];
-    subCategory2: [[IRGetProductCatalogue]];
+    category: [product];
+    subCategory: [[product]];
+    subCategory1: [[product]];
+}
+
+export interface IRGetShop extends CommonApiResponse {
+    payload: Shop;
 }
 
 export interface updateShopData {
