@@ -3,19 +3,19 @@ import { View, StyleSheet } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
 import { commonStyles, PH, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
-import { CreateDukanText } from '../../common/customScreenText';
-import { fs12, fs13, fs21, fs28, NavigationProps } from '../../common';
+import { CreateDukanText, ErrorText } from '../../common/customScreenText';
+import { fs13, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
 import { createShopMember, triggerOtp } from '../../server/apis/shopMember/shopMember.api';
 import { IRCheckPhoneNumber, IRCreateShopMember } from '../../server/apis/shopMember/shopMember.interface';
-import { setUpAxios } from '../../server';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
+import HeaderText from './component/HeaderText';
 
 export interface CreateDukanProps extends NavigationProps {}
 
@@ -95,16 +95,16 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
         const { phoneNumber, otp, email, name } = formState;
         let error: formError = {};
         if (otp.length < 6) {
-            error['otpError'] = 'Please enter correct OTP.';
+            error['otpError'] = ErrorText.otpError;
         }
         if (!mobileValidation.test(phoneNumber)) {
-            error['phoneNumber'] = 'Please enter correct mobile number';
+            error['phoneNumber'] = ErrorText.phoneNumberError;
         }
         if (!emailValidation.test(email)) {
-            error['emailError'] = 'Please enter correct email';
+            error['emailError'] = ErrorText.emailError;
         }
         if (name.length < 3) {
-            error['nameError'] = 'Please enter correct name';
+            error['nameError'] = ErrorText.nameError;
         }
 
         if (Object.keys(error).length == 0) {
@@ -136,7 +136,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
     }
 
     async componentDidMount() {
-        await setUpAxios();
+        // await setUpAxios();
         // this.props.navigation.navigate(NavigationKey.OPENDUKAN, {
         //     phoneNumber: '9893137876',
         // });
@@ -157,7 +157,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
             this.setField('otp', '');
             this.sendOtp();
         } else {
-            this.setState({ error: { ...this.state.error, phoneNumber: 'Please enter correct mobile number.' } });
+            this.setState({ error: { ...this.state.error, phoneNumber: ErrorText.phoneNumberError } });
         }
     };
 
@@ -195,25 +195,17 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
             <View style={[{ flex: 1 }, PH(0.3), PV(0.3)]}>
                 <ShadowWrapperHOC>
                     <>
-                        <WrappedText text={'Step 1'} fontSize={fs28} textColor={colorCode.SAFFRON} />
-                        <WrappedText
-                            text={'Provide shop owner details'}
-                            fontSize={fs21}
-                            textColor={'#000'}
-                            textStyle={{ marginTop: getHP(0.1) }}
-                        />
-                        <WrappedText
-                            text={CreateDukanText.MESSAGE}
-                            fontSize={fs12}
-                            textColor={colorCode.BLACKLOW(50)}
-                            textStyle={{ marginTop: getHP(0.1) }}
+                        <HeaderText
+                            step={'Step 1'}
+                            heading={CreateDukanText.HEADING}
+                            subHeading={CreateDukanText.MESSAGE}
                         />
                         {this.returnErrorText('serverError')}
                         <View style={{ marginTop: getHP(0.2) }}>
                             <View style={[commonStyles.fdr, commonStyles.aic]}>
                                 <View style={{ flex: 1 }}>
                                     <WrappedTextInput
-                                        placeholder={'Owner mobile number'}
+                                        placeholder={CreateDukanText.ownerMobileNumber}
                                         value={phoneNumber}
                                         onChangeText={(phoneNumber) => this.setField('phoneNumber', phoneNumber)}
                                         {...componentProps.textInputProps}
@@ -223,7 +215,11 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                             </View>
 
                             <TextButton
-                                text={otpSent ? 'Resend OTP' + (timer > 0 ? 'in ' + timer + 's' : '') : 'Send OTP'}
+                                text={
+                                    otpSent
+                                        ? CreateDukanText.resendOTp + (timer > 0 ? 'in ' + timer + 's' : '')
+                                        : CreateDukanText.sendOtp
+                                }
                                 textProps={componentProps.buttonTextProps}
                                 containerStyle={[
                                     commonStyles.buttonContainerStyle,
@@ -239,7 +235,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                             {otpSent && (
                                 <>
                                     <WrappedTextInput
-                                        placeholder={'Verification Code'}
+                                        placeholder={CreateDukanText.verificationOtp}
                                         value={otp}
                                         {...componentProps.textInputProps}
                                         onChangeText={(otp) => this.setField('otp', otp)}
@@ -247,9 +243,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                                     />
                                     {otpSent && (
                                         <WrappedText
-                                            text={
-                                                'We have sent an One Time Password(OTP) in a SMS to provided mobile number.'
-                                            }
+                                            text={CreateDukanText.otpMessage}
                                             fontSize={10}
                                             textColor={messageColor}
                                         />
@@ -257,34 +251,30 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
                                     <WrappedTextInput
                                         value={name}
-                                        placeholder={'Owner name'}
+                                        placeholder={CreateDukanText.ownerName}
                                         onChangeText={(name) => this.setField('name', name)}
                                         errorText={error['nameError']}
                                         {...componentProps.textInputProps}
                                     />
                                     <WrappedText
-                                        text={
-                                            'Owner name is an important field it will appear on your public facing digital dukan.'
-                                        }
+                                        text={CreateDukanText.ownerNameMessage}
                                         fontSize={10}
                                         textColor={messageColor}
                                     />
                                     <WrappedTextInput
-                                        placeholder={'Owner email or other active email'}
+                                        placeholder={CreateDukanText.ownerEmail}
                                         value={email}
                                         onChangeText={(email) => this.setField('email', email)}
                                         errorText={error['emailError']}
                                         {...componentProps.textInputProps}
                                     />
                                     <WrappedText
-                                        text={
-                                            'If you have problem maintaining an email then you can provide email of anyother member from your family like you son, daughter etc who can inform you about important update.'
-                                        }
+                                        text={CreateDukanText.ownerEmailMessage}
                                         fontSize={10}
                                         textColor={messageColor}
                                     />
                                     <TextButton
-                                        text={'Sign-In'}
+                                        text={CreateDukanText.SignIn}
                                         textProps={componentProps.buttonTextProps}
                                         containerStyle={commonStyles.buttonContainerStyle}
                                         onPress={() => {

@@ -1,3 +1,4 @@
+import { fs13 } from './index';
 import { STATUS_BAR_HEIGHT } from './../screens/component/StatusBar';
 import { colorCode } from './color';
 import { getHP, getWP } from './dimension';
@@ -134,3 +135,14 @@ export const commonStyles = StyleSheet.create({
         paddingTop: STATUS_BAR_HEIGHT,
     },
 });
+
+export const componentProps = {
+    buttonTextProps: {
+        textColor: colorCode.WHITE,
+    },
+    textInputProps: {
+        containerStyle: commonStyles.textInputContainerStyle,
+        textInputStyle: { fontSize: fs13, color: '#000000' + colorTransparency[50] },
+        paddingLeft: getWP(0.2),
+    },
+};

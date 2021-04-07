@@ -7,13 +7,14 @@ import AuthNavigation from '../screens/auth/navigator';
 import Verification from '../screens/auth/Verification';
 import OpenDukan from '../screens/auth/OpenDukan';
 import Home from '../screens/app/Home';
+import ProductDetails from '../screens/auth/ProductDetails';
 const Stack = createStackNavigator();
 
 class AppNavigation extends React.Component {
     render() {
         return (
             <NavigationContainer>
-                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={NavigationKey.WELCOME}>
+                <Stack.Navigator screenOptions={{ headerShown: false }} initialRouteName={NavigationKey.AUTHNAVIGATOR}>
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.AUTHNAVIGATOR} component={AuthNavigation} />
                     <Stack.Screen name={NavigationKey.VERIFICATION} component={Verification} />

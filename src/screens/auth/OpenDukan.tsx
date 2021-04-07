@@ -74,7 +74,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             const state = response.payload;
             if (state.passwordAvailable) {
                 navigateTo(NavigationKey.SETPASSWORD, state.data);
-            } else if (state.shopNameAvailvable) {
+            } else if (state.shopNameAvailable) {
                 navigateTo(NavigationKey.SHOPDETAILS, state.data);
             } else if (state.memberDetails) {
                 navigateTo(NavigationKey.ADDDUKANMEMBERS, state.data);

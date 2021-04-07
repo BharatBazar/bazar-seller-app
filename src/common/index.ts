@@ -8,6 +8,8 @@ export function provideFontSize(fontSize: number) {
     return ratio * fontSize * scaleRatio;
 }
 
+export const fs10 = provideFontSize(10);
+export const fs11 = provideFontSize(12);
 export const fs12 = provideFontSize(12);
 export const fs13 = provideFontSize(13);
 export const fs14 = provideFontSize(14);

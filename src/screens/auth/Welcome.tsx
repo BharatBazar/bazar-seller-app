@@ -17,6 +17,7 @@ export interface WelcomeState {}
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
     componentDidMount() {
         setUpAxios();
+        this.props.navigation.navigate(NavigationKey.PRODUCTDETAILS);
     }
     render() {
         const componentProps = {

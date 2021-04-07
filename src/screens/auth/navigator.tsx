@@ -9,6 +9,7 @@ import { View } from 'react-native';
 import HeaderBar from '../component/HeaderBar';
 import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import ProductDetails from './ProductDetails';
 
 const Stack = createStackNavigator();
 
@@ -35,7 +36,7 @@ class AuthNavigation extends React.Component<Props, {}> {
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName={screen || NavigationKey.CREATEDUKAN}
+                    initialRouteName={screen || NavigationKey.PRODUCTDETAILS}
                 >
                     <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
                     <Stack.Screen
@@ -51,6 +52,11 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.ADDDUKANMEMBERS}
                         component={AddDukanMembers}
+                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                    />
+                    <Stack.Screen
+                        name={NavigationKey.PRODUCTDETAILS}
+                        component={ProductDetails}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
                     />
                 </Stack.Navigator>

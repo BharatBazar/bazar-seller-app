@@ -8,4 +8,5 @@ export const NavigationKey = {
     VERIFICATION: 'Verification',
     OPENDUKAN: 'OpenDukan',
     HOME: 'Home',
+    PRODUCTDETAILS: 'ProductDetails',
 };
