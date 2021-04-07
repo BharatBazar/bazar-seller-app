@@ -1,27 +1,20 @@
 import * as React from 'react';
-import { Component, useEffect } from 'react';
-import { Picker, View } from 'react-native';
-import { BR, commonStyles, componentProps, MT, PH, PV } from '../../common/styles';
-import {
-    categoryType,
-    IRGetProductCatalogue,
-    product,
-} from '../../server/apis/productCatalogue/productCatalogue.interface';
+import { useEffect } from 'react';
+import { View } from 'react-native';
+import { commonStyles, componentProps, PH, PV } from '../../common/styles';
+import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
 import { setUpAxios } from '../../server';
 import HeaderText from './component/HeaderText';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
-import Icon from 'react-native-vector-icons/Feather';
-import { getHP, getWP } from '../../common/dimension';
-import { colorCode } from '../../common/color';
-import WrappedText from '../component/WrappedText';
-import WrappedRoundButton from '../component/WrappedRoundButton';
+import { getHP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
-import { FastImageWrapper } from '../component/FastImage';
-import { fs10, fs11, fs12, fs13, fs15 } from '../../common';
-import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import TextButton from '../component/TextButton';
+import { updateShopData } from '../../server/apis/shop/shop.interface';
+import { updateShop } from '../../server/apis/shop/shop.api';
+import ProductCategory from './component/DukanProductCategory';
+import ServerErrorText from './component/errorText';
 
 export interface ProductDetail {}
 
@@ -31,15 +24,24 @@ interface selected {
     selected: boolean;
 }
 
-interface productData extends product, selected {}
+export interface productData extends product, selected {}
 
 const ProductDetails: React.SFC<ProductDetail> = () => {
     const [data, setData] = React.useState<productData[]>([]);
-    const [selectedItems, setSelectedItems] = React.useState([]);
-    const [selectedValue, setSelectedValue] = React.useState([]);
+    const [error, setError] = React.useState<string>('');
+    const submitDetails = async (data: updateShopData) => {
+        const response = await dataHandling.fetchData(updateShop, { category: data, _id: '60694f8582ea63ad28a2ec1f' });
+        console.log(response);
+        if (response.status == 1) {
+            console.log(response);
+        } else {
+        }
+    };
 
     const fetchProductDetails = async (data: { categoryType: String }) => {
-        const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, data);
+        const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, {
+            ...data,
+        });
         console.log(response);
         if (response.status == 1) {
             const data: productData = response.payload.map((item) => {
@@ -47,6 +49,7 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
             });
             setData(data);
         } else {
+            setError(response.message);
         }
     };
 
@@ -63,11 +66,10 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                 <>
                     <HeaderText
                         step={'Step 3'}
-                        heading={'Dukan Details'}
+                        heading={'Product category'}
                         subHeading={'Select what services you provide by your dukan by clicking on the category'}
                     />
-                    {/* {error['error'] && <ServerErrorText errorText={error['error']} />}
-                     */}
+                    {error.length > 0 && <ServerErrorText errorText={error} />}
 
                     <FlatList
                         data={data}
@@ -77,63 +79,15 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                         keyExtractor={(item) => item.name}
                         renderItem={({ item, index }: { item: productData; index: number }) => {
                             return (
-                                <WrappedRectangleButton
-                                    containerStyle={[
-                                        BR(0.05),
-                                        commonStyles.aic,
-                                        item.selected ? commonStyles.shadow : {},
-                                        {
-                                            backgroundColor: colorCode.WHITE,
-                                            borderColor: colorCode.GREENLOW(50),
-                                            borderWidth: item.selected ? 0.5 : 0,
-                                            flex: 1,
-                                            paddingVertical: '2%',
-                                            marginHorizontal: '5%',
-                                            marginVertical: '3%',
-                                        },
-                                    ]}
-                                    onPress={() => {
+                                <ProductCategory
+                                    item={item}
+                                    onPressCategory={() => {
                                         const prodcutCategory = [...data];
                                         prodcutCategory[index].selected = !prodcutCategory[index].selected;
                                         prodcutCategory.sort((item) => !item.selected);
                                         setData(prodcutCategory);
                                     }}
-                                >
-                                    <>
-                                        {item.selected ? (
-                                            <Icon
-                                                name={'check-circle'}
-                                                color={colorCode.GREEN}
-                                                style={{ position: 'absolute', top: '4%', right: '4%', zIndex: 100 }}
-                                            />
-                                        ) : (
-                                            <View style={{ height: getHP(0.1) }} />
-                                        )}
-                                        <FastImageWrapper
-                                            source={{ uri: item.image }}
-                                            imageStyle={{
-                                                height: getHP(0.6),
-                                                width: getHP(0.6),
-                                            }}
-                                        />
-                                        <View style={[PV(0.1), PH(0.1), commonStyles.aic]}>
-                                            <WrappedText
-                                                text={item.name}
-                                                textColor={
-                                                    item.selected ? colorCode.GREENLOW(50) : colorCode.CHAKRALOW(70)
-                                                }
-                                                fontSize={fs11}
-                                                textStyle={{ textAlign: 'center' }}
-                                            />
-                                            <WrappedText
-                                                text={item.description}
-                                                textColor={colorCode.BLACKLOW(40)}
-                                                fontSize={fs10}
-                                                textStyle={{ textAlign: 'center', marginTop: getHP(0.05) }}
-                                            />
-                                        </View>
-                                    </>
-                                </WrappedRectangleButton>
+                                />
                             );
                         }}
                     />
@@ -142,7 +96,12 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                         textProps={componentProps.buttonTextProps}
                         containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.4) }}
                         onPress={() => {
-                            //validateFields();
+                            const selectedCategory: { categoryType: string } = data
+                                .filter((item) => item.selected)
+                                .map((item) => item._id);
+                            if (selectedCategory.length == 0) {
+                                setError('Please select atleast one category');
+                            } else submitDetails(selectedCategory);
                         }}
                     />
                 </>

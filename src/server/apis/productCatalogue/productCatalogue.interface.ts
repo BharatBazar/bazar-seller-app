@@ -13,6 +13,7 @@ export interface product {
     categoryType: categoryType;
     subCategoryExist: boolean;
     subCategoryParentRef: String;
+    _id: string;
 }
 
 export interface IRGetProductCatalogue extends CommonApiResponse {
