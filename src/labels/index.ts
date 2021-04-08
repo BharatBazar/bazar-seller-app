@@ -7,6 +7,8 @@ export const NavigationKey = {
     AUTHNAVIGATOR: 'AuthNavigator',
     VERIFICATION: 'Verification',
     OPENDUKAN: 'OpenDukan',
+    BHARATBAZARHOME: 'BharatBazarHome',
     HOME: 'Home',
     PRODUCTDETAILS: 'ProductDetails',
+    PRODUCTSEARCH: 'ProductSearch',
 };

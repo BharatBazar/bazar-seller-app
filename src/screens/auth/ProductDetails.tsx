@@ -7,11 +7,10 @@ import { DataHandling } from '../../server/DataHandlingHOC';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
 import { setUpAxios } from '../../server';
 import HeaderText from './component/HeaderText';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import { getHP, getWP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
 import TextButton from '../component/TextButton';
-import { IRGetShop, Shop, updateShopData } from '../../server/apis/shop/shop.interface';
+import { IRGetShop, IRShopUpdate, Shop, updateShopData } from '../../server/apis/shop/shop.interface';
 import { getShop, updateShop } from '../../server/apis/shop/shop.api';
 import ProductCategory from './component/DukanProductCategory';
 import ServerErrorText from './component/errorText';
@@ -32,22 +31,31 @@ export interface productData extends product, selected {}
 const ProductDetails: React.SFC<ProductDetail> = () => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
-    const [shop, setShop] = React.useState<Shop>({});
+    const [shop, setShop] = React.useState<Partial<Shop>>({});
+    const [categoryScreen, setCategoryScreen] = React.useState<Boolean>(true);
     const [category, setCategory] = React.useState<[productData[]]>([[]]);
+    const [subCategory, setSubCategory] = React.useState<{ [key: string]: productData[] }>({});
+
     const submitDetails = async (data: updateShopData) => {
-        const response = await dataHandling.fetchData(updateShop, { category: data, _id: '60694f8582ea63ad28a2ec1f' });
-        console.log(response);
+        const response: IRShopUpdate = await dataHandling.fetchData(updateShop, {
+            ...data,
+            _id: '60694f8582ea63ad28a2ec1f',
+        });
         if (response.status == 1) {
-            console.log(response);
+            setCategoryScreen(false);
         } else {
+            setError(response.message);
         }
     };
 
+    React.useEffect(() => {
+        getShopDetails();
+    }, [categoryScreen]);
+
     const fetchProductDetails = async (data: Object) => {
         const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, data);
-        console.log(response);
         if (response.status == 1) {
-            const data: productData = response.payload.map((item) => {
+            const data: productData[] = response.payload.map((item) => {
                 return { ...item, selected: false };
             });
             setData(data);
@@ -65,16 +73,15 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
             const response1: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, {
                 subCategoryRef: { $in: response.payload.category.map((item) => item._id) },
             });
-            console.log(response1);
-            let data = [];
+
+            let data: [productData[]] = [];
             response.payload.category.forEach((item, index) => {
-                data.push(
-                    response1.payload
-                        .filter((subCateogry) => subCateogry.subCategoryRef == item._id)
-                        .map((item) => {
-                            return { ...item, selected: false };
-                        }),
-                );
+                let data1: productData[] = response1.payload
+                    .filter((subCateogry) => subCateogry.subCategoryRef == item._id)
+                    .map((item) => {
+                        return { ...item, selected: false };
+                    });
+                data.push(data1);
                 if (index == response.payload.category.length - 1) {
                     setCategory(data);
                 }
@@ -92,21 +99,53 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
         return () => {};
     }, []);
 
+    const updateSubCategory = (data: productData[], id: string) => {
+        const newCategory = { ...subCategory };
+        newCategory[id] = data;
+        setSubCategory(newCategory);
+    };
+    const deleteSubCategory = (id: string) => {
+        const newCategory = { ...subCategory };
+        console.log(newCategory);
+        delete newCategory[id];
+        console.log(newCategory);
+        setSubCategory(newCategory);
+    };
+
+    const submitSubCategoryDetails = async () => {
+        const category1: [[string]] = category
+            .filter((item: productData[]) => item.some((item) => item.selected))
+            .map((item) => item.filter((item) => item.selected).map((item) => item._id));
+
+        console.log(category1);
+        let category2: [[string]] = [];
+        category1.forEach((item, index1) => {
+            item.forEach((item, index2) => {
+                category2.push(subCategory[item].filter((item) => item.selected).map((item) => item._id));
+                if (index2 == item.length - 1 && index1 == category1.length - 1) {
+                    submitDetails({ subCategory: category1, subCategory1: category2 });
+                }
+            });
+        });
+    };
+
     return (
-        <ScrollView style={[{ flex: 1 }, PH(0.6), PV(0.2), BGCOLOR(colorCode.WHITE)]}>
-            {/* <ShadowWrapperHOC containerStyle={{ flex: 1 }}>
-                <> */}
+        <ScrollView
+            style={[{ flex: 1 }, PH(0.6), BGCOLOR(colorCode.WHITE)]}
+            contentContainerStyle={{ paddingBottom: '2%' }}
+        >
             <HeaderText
-                step={'Step 3'}
+                step={'Step 5'}
                 heading={'What you sell'}
                 subHeading={'Select what services you provide by your dukan by clicking on the category'}
             />
             {error.length > 0 && <ServerErrorText errorText={error} />}
 
-            {/* {shop['category'] &&
+            {!categoryScreen ? (
+                shop['category'] &&
                 shop.category.map((item, index1) => {
                     return (
-                        <View style={[MT(0.3)]}>
+                        <View style={[MT(0.3)]} key={item._id}>
                             <WrappedText
                                 text={
                                     item.subCategoryExist
@@ -128,12 +167,19 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                                             item={item}
                                             onPressCategory={() => {
                                                 const prodcutCategory = [...category];
-                                                prodcutCategory[index1][index].selected = !prodcutCategory[index1][
-                                                    index
-                                                ].selected;
+                                                const currentSelected = prodcutCategory[index1][index].selected;
+                                                prodcutCategory[index1][index].selected = !currentSelected;
+
                                                 //prodcutCategory[index1].sort((item) => !item.selected);
 
                                                 setCategory(prodcutCategory);
+                                                if (item.subCategoryExist) {
+                                                    if (!currentSelected) {
+                                                        updateSubCategory([], item._id);
+                                                    } else {
+                                                        deleteSubCategory(item._id);
+                                                    }
+                                                }
                                             }}
                                         />
                                     );
@@ -143,60 +189,72 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                                 category[index1] &&
                                 category[index1]
                                     .filter((item) => item.selected)
-                                    .map((subCategory, index) => {
+                                    .map((newSubCategory, index) => {
+                                        console.log(item.name);
                                         return (
-                                            <View>
+                                            <View key={item._id + index.toString()}>
                                                 <WrappedText
                                                     text={
                                                         'Choose product you sell under ' +
-                                                        subCategory.name +
+                                                        newSubCategory.name +
                                                         ' ' +
                                                         item.name
                                                     }
                                                 />
-                                                <LoadProductDetails query={{ subCategoryRef: subCategory._id }} />
+                                                <LoadProductDetails
+                                                    query={{ subCategoryRef: newSubCategory._id }}
+                                                    data={subCategory[newSubCategory._id]}
+                                                    setData={(data: productData[]) => {
+                                                        console.log('Data  sub category => ', item.name, data);
+                                                        updateSubCategory(data, newSubCategory._id);
+                                                    }}
+                                                />
                                             </View>
                                         );
                                     })}
                         </View>
                     );
-                })} */}
-            <FlatList
-                data={data}
-                numColumns={2}
-                style={{ height: getHP(2), marginTop: getHP(0.2) }}
-                columnWrapperStyle={{ justifyContent: 'space-evenly' }}
-                keyExtractor={(item) => item.name}
-                renderItem={({ item, index }: { item: productData; index: number }) => {
-                    return (
-                        <ProductCategory
-                            item={item}
-                            containerStyle={styles.productCategory}
-                            onPressCategory={() => {
-                                const prodcutCategory = [...data];
-                                prodcutCategory[index].selected = !prodcutCategory[index].selected;
-                                prodcutCategory.sort((item) => !item.selected);
-                                setData(prodcutCategory);
-                            }}
-                        />
-                    );
-                }}
-            />
+                })
+            ) : (
+                <FlatList
+                    data={data}
+                    numColumns={2}
+                    style={{ height: getHP(6), marginTop: getHP(0.2) }}
+                    columnWrapperStyle={{ justifyContent: 'space-evenly' }}
+                    keyExtractor={(item) => item.name}
+                    renderItem={({ item, index }: { item: productData; index: number }) => {
+                        return (
+                            <ProductCategory
+                                item={item}
+                                containerStyle={styles.productCategory}
+                                onPressCategory={() => {
+                                    const prodcutCategory = [...data];
+                                    prodcutCategory[index].selected = !prodcutCategory[index].selected;
+                                    prodcutCategory.sort((item) => !item.selected);
+                                    setData(prodcutCategory);
+                                }}
+                            />
+                        );
+                    }}
+                />
+            )}
             <TextButton
                 text={'Submit'}
                 textProps={componentProps.buttonTextProps}
-                containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.4) }}
+                containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.2) }}
                 onPress={() => {
-                    const selectedCategory: { categoryType: string } = data
-                        .filter((item) => item.selected)
-                        .map((item) => item._id);
-                    if (selectedCategory.length == 0) {
-                        setError('Please select atleast one category');
-                    } else submitDetails(selectedCategory);
+                    if (categoryScreen) {
+                        const selectedCategory: { categoryType: string } = data
+                            .filter((item) => item.selected)
+                            .map((item) => item._id);
+                        if (selectedCategory.length == 0) {
+                            setError('Please select atleast one category');
+                        } else submitDetails(selectedCategory);
+                    } else {
+                        submitSubCategoryDetails();
+                    }
                 }}
             />
-            {/* </>
-            </ShadowWrapperHOC> */}
         </ScrollView>
     );
 };
@@ -204,7 +262,7 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
 const styles = StyleSheet.create({
     productCategory: {
         ...BR(0.05),
-        ...commonStyles.aic,
+        ...commonStyles.alcjcc,
 
         backgroundColor: colorCode.WHITE,
         borderColor: colorCode.GREENLOW(50),

@@ -13,13 +13,16 @@ import ServerErrorText from './errorText';
 
 export interface LoadProductDetailsProps {
     query: Object;
+    data: productData[];
+    setData: Function;
 }
 
 const dataHandling = new DataHandling('');
 
-const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query }) => {
+const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, setData }) => {
+    console.log('Load details data =>', data);
     const [loader, setLoader] = React.useState<Boolean>(false);
-    const [data, setData] = React.useState<productData[]>([]);
+
     const [error, setError] = React.useState<string>('');
 
     const addFilter = (data: Partial<productData>[]): productData[] => {
@@ -32,7 +35,7 @@ const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query }) => {
     const fetchProductDetails = async (data: any) => {
         setLoader(true);
         const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, data);
-        console.log(response);
+
         if (response.status == 1) {
             setLoader(false);
             if (response.payload.length == 0) {
