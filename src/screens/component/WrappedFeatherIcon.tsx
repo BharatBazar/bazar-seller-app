@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ActivityIndicator, ViewStyle } from 'react-native';
-import { colorCode } from '../../common/color';
+import { colorCode, mainColor } from '../../common/color';
 import WrappedRectangleButton from './WrappedRectangleButton';
 import Icon from 'react-native-vector-icons/Feather';
 import WrappedRoundButton from './WrappedRoundButton';
@@ -12,7 +12,7 @@ export interface WrappedFeatherIconProps {
     iconName: string;
     iconSize?: number;
     containerHeight?: number;
-    iconColor: string;
+    iconColor?: string;
     containerStyle?: ViewStyle | ViewStyle[];
 }
 
@@ -32,7 +32,7 @@ const WrappedFeatherIcon: React.FC<WrappedFeatherIconProps> = ({
             }}
             height={containerHeight || getHP(0.4)}
         >
-            <Icon name={iconName} color={iconColor} size={iconSize || fs20} />
+            <Icon name={iconName} color={iconColor || mainColor} size={iconSize || fs20} />
         </WrappedRoundButton>
     );
 };

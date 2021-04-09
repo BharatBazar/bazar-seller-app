@@ -11,7 +11,7 @@ export interface ModalProps {
 
 const ModalHOC: React.FC<ModalProps> = ({ isVisible, setPopup, children }) => {
     return (
-        <Modal isVisible={isVisible} useNativeDriver style={styles.view} swipeDirection={['up', 'down']}>
+        <Modal isVisible={isVisible} useNativeDriver style={styles.view}>
             {children}
         </Modal>
     );

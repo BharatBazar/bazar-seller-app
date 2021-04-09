@@ -130,9 +130,19 @@ export const commonStyles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 10,
     },
+    shadowLight: {
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+    },
     containerPadidng: {
         flex: 1,
         paddingTop: STATUS_BAR_HEIGHT,
+    },
+    borderStyle: {
+        borderColor: colorCode.BLACKLOW(50),
+        borderWidth: 1,
     },
 });
 

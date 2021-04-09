@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import { colorCode } from '../common/color';
 import ProdcutSearch from '../screens/app/ProductSearch';
 import Product from '../screens/app/Product';
-import CreateProduct from '../screens/app/CreateProduct';
+import CreateProduct from '../screens/app/createProduct/CreateProduct';
 class AppNavigation extends React.Component {
     render() {
         return (
