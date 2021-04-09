@@ -11,4 +11,6 @@ export const NavigationKey = {
     HOME: 'Home',
     PRODUCTDETAILS: 'ProductDetails',
     PRODUCTSEARCH: 'ProductSearch',
+    PRODUCT: 'Product',
+    CREATEPRODUCT: 'CreateProduct',
 };

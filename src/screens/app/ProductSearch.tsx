@@ -6,10 +6,23 @@ import { getHP } from '../../common/dimension';
 import { commonStyles } from '../../common/styles';
 import StatusBar, { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import Icon from 'react-native-vector-icons/Feather';
-import { fs20 } from '../../common';
+import { fs20, NavigationProps } from '../../common';
 
-export default class ProdcutSearch extends Component {
+interface ProductSearchProps extends NavigationProps {}
+
+interface ProductSearchState {
+    searchedText: string;
+}
+export default class ProdcutSearch extends Component<ProductSearchProps, ProductSearchState> {
+    constructor(props: ProductSearchProps) {
+        super(props);
+        this.state = {
+            searchedText: '',
+        };
+    }
+
     render() {
+        const { searchedText } = this.state;
         return (
             <View>
                 <StatusBar statusBarColor={colorCode.CHAKRALOW(70)} />
@@ -21,7 +34,7 @@ export default class ProdcutSearch extends Component {
                             backgroundColor: colorCode.WHITE,
                             borderBottomWidth: 0.5,
                             borderColor: colorCode.BLACKLOW(20),
-                            paddingLeft: '3%',
+                            paddingHorizontal: '3%',
                         },
                     ]}
                 >
@@ -36,11 +49,24 @@ export default class ProdcutSearch extends Component {
                             {
                                 height: getHP(0.6),
                                 paddingLeft: '3%',
+
                                 flex: 1,
                             },
                         ]}
+                        value={searchedText}
+                        onChangeText={(searchedText: string) => this.setState({ searchedText })}
                         placeholder={'Search for any item by their product number'}
                     />
+                    {searchedText.length > 0 && (
+                        <Icon
+                            name={'x'}
+                            size={fs20}
+                            color={colorCode.BLACKLOW(50)}
+                            onPress={() => {
+                                this.setState({ searchedText: '' });
+                            }}
+                        />
+                    )}
                 </View>
             </View>
         );

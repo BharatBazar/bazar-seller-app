@@ -4,7 +4,7 @@ import { View, ViewProps, ViewStyle } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 export interface WrappedRectangleButtonProps {
-    containerStyle: ViewStyle[] | ViewStyle;
+    containerStyle?: ViewStyle[] | ViewStyle;
     children: React.ReactChild;
     onPress: Function;
 }

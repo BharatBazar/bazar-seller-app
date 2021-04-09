@@ -13,6 +13,8 @@ const Drawer = createDrawerNavigator();
 import Icon from 'react-native-vector-icons/Feather';
 import { colorCode } from '../common/color';
 import ProdcutSearch from '../screens/app/ProductSearch';
+import Product from '../screens/app/Product';
+import CreateProduct from '../screens/app/CreateProduct';
 class AppNavigation extends React.Component {
     render() {
         return (
@@ -27,6 +29,8 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
                     <Stack.Screen name={NavigationKey.BHARATBAZARHOME} component={BharatBazarHome} />
                     <Stack.Screen name={NavigationKey.PRODUCTSEARCH} component={ProdcutSearch} />
+                    <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />
+                    <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
                 </Stack.Navigator>
             </NavigationContainer>
         );

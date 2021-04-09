@@ -5,6 +5,7 @@ import HeaderBar from './HeaderBar';
 import LineHeading from './LineHeading';
 import WrappedText from './WrappedText';
 import WrappedTextInput from './WrappedTextInput';
+import WrappedFeatherIcon from './WrappedFeatherIcon';
 
 export default {
     WrappedRectangleButton,
@@ -14,4 +15,5 @@ export default {
     WrappedText,
     WrappedTextInput,
     FastImageWrapper,
+    WrappedFeatherIcon,
 };
