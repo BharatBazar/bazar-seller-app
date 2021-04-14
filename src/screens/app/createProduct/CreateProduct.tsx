@@ -30,11 +30,11 @@ export interface Isize {
 }
 
 const size: Isize[] = [
-    { value: 20, selected: true },
+    { value: 20, selected: false },
     { value: 21, selected: false },
-    { value: 22, selected: true },
+    { value: 22, selected: false },
     { value: 23, selected: false },
-    { value: 24, selected: true },
+    { value: 24, selected: false },
     { value: 25, selected: false },
 ];
 

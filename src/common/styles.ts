@@ -2,7 +2,7 @@ import { fs13 } from './index';
 import { STATUS_BAR_HEIGHT } from './../screens/component/StatusBar';
 import { colorCode } from './color';
 import { getHP, getWP } from './dimension';
-import { ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { FlexAlignType, ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
 
 export const colorTransparency = {
     10: '1A',
@@ -49,6 +49,20 @@ export const FLEX = (FLEX: number) => {
 
 export const MT = (percentage: number): ViewStyle => {
     return { marginTop: getHP(percentage || 0.2) };
+};
+
+export const FDR = (value?: 'row' | 'column' | 'row-reverse' | 'column-reverse' | undefined): ViewStyle => {
+    return { flexDirection: value || 'row' };
+};
+
+export const AIC = (value?: FlexAlignType): ViewStyle => {
+    return { alignItems: value || 'center' };
+};
+
+export const JCC = (
+    value?: 'center' | 'flex-start' | 'flex-end' | 'space-evenly' | 'space-between' | 'space-around' | undefined,
+): ViewStyle => {
+    return { justifyContent: value || 'center' };
 };
 
 export const commonStyles = StyleSheet.create({

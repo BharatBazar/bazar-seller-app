@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
 import { fs16, fs20 } from '../../../../common';
-import { mainColor } from '../../../../common/color';
+import { colorCode, mainColor } from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import TextButton from '../../../component/TextButton';
 import WrappedText from '../../../component/WrappedText';
+import WrappedTextInput from '../../../component/WrappedTextInput';
 
 interface Props {
     containerStyle?: ViewStyle | ViewStyle[];
@@ -39,19 +40,24 @@ class CounterComponent extends Component<Props, State> {
         return (
             <View style={[styles.container, containerStyle]}>
                 <TextButton
-                    text={'-'}
-                    textProps={{ textColor: mainColor }}
-                    onPress={() => this.setCounter('Decrement')}
+                    text={'+'}
+                    textProps={{ textColor: colorCode.WHITE }}
+                    onPress={() => this.setCounter('Increment')}
                     containerStyle={styles.containerStyle}
                 />
-                <WrappedText
-                    text={counter.toString()}
-                    fontSize={fs16}
-                    containerStyle={{ flex: 4, alignItems: 'center' }}
+                <WrappedTextInput
+                    value={counter.toString()}
+                    containerStyle={{
+                        height: getHP(0.4),
+                        borderWidth: 1,
+                        width: getWP(1),
+                        marginHorizontal: getWP(0.1),
+                    }}
                 />
+
                 <TextButton
-                    text={'+'}
-                    textProps={{ textColor: mainColor }}
+                    text={'-'}
+                    textProps={{ textColor: colorCode.WHITE }}
                     onPress={() => this.setCounter('Decrement')}
                     containerStyle={styles.containerStyle}
                 />
@@ -65,12 +71,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     containerStyle: {
-        flex: 3,
         alignItems: 'center',
         justifyContent: 'center',
-        height: getHP(0.12),
-        width: getHP(0.12),
-        borderRadius: getHP(0.06),
+        height: getHP(0.3),
+        width: getHP(0.3),
+        borderRadius: getHP(0.08),
     },
 });
 
