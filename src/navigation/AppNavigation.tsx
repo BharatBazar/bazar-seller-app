@@ -11,16 +11,35 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 import Icon from 'react-native-vector-icons/Feather';
-import { colorCode } from '../common/color';
+import { colorCode, mainColor } from '../common/color';
 import ProdcutSearch from '../screens/app/ProductSearch';
 import Product from '../screens/app/Product';
 import CreateProduct from '../screens/app/createProduct/CreateProduct';
+import StatusBar from '../screens/component/StatusBar';
+import { View } from 'react-native';
+import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
+import { Easing } from 'react-native-reanimated';
+import { NavigationProps } from '../common';
+
+const config: TransitionSpec = {
+    animation: 'timing',
+    config: {
+        duration: 150,
+        easing: Easing.linear,
+    },
+};
 class AppNavigation extends React.Component {
     render() {
         return (
             <NavigationContainer>
                 <Stack.Navigator
-                    screenOptions={{ headerShown: false }}
+                    screenOptions={{
+                        headerShown: false,
+                        transitionSpec: {
+                            open: config,
+                            close: config,
+                        },
+                    }}
                     initialRouteName={NavigationKey.BHARATBAZARHOME}
                 >
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
@@ -37,11 +56,15 @@ class AppNavigation extends React.Component {
     }
 }
 
-class BharatBazarHome extends React.Component {
+interface BharatBazarHomeProps extends NavigationProps {}
+
+class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
     render() {
         return (
             <Drawer.Navigator
-                drawerContent={() => {}}
+                drawerContent={() => {
+                    <View />;
+                }}
                 screenOptions={{
                     headerShown: true,
                     headerStyle: { paddingHorizontal: '5%', backgroundColor: colorCode.CHAKRALOW(70) },

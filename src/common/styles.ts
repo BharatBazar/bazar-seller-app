@@ -129,6 +129,7 @@ export const commonStyles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
         shadowRadius: 10,
+        elevation: 2,
     },
     shadowLight: {
         shadowColor: 'black',

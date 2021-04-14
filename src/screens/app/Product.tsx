@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, TextInput } from 'react-native';
 import { fs18, fs20, NavigationProps } from '../../common';
-import { colorCode } from '../../common/color';
+import { colorCode, mainColor } from '../../common/color';
 import { getHP } from '../../common/dimension';
 import { BGCOLOR, commonStyles, PH, PV } from '../../common/styles';
 import { NavigationKey } from '../../labels';
@@ -15,9 +15,9 @@ export interface ProductProps extends NavigationProps {}
 const Product: React.FC<ProductProps> = ({ navigation }) => {
     const [searchedText, setSearchedText] = React.useState('');
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: mainColor }}>
             <StatusBar statusBarColor={colorCode.CHAKRALOW(70)} />
-            <View style={[PH(0.3), PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70)), commonStyles.shadow]}>
+            <View style={[PH(0.3), PV(0.1)]}>
                 <View style={[commonStyles.fdr, commonStyles.aic, commonStyles.spbtw]}>
                     <View style={[commonStyles.fdr]}>
                         <WrappedFeatherIcon
@@ -43,14 +43,14 @@ const Product: React.FC<ProductProps> = ({ navigation }) => {
                         />
                     </View>
                 </View>
-                <View style={[{ height: getHP(0.5), justifyContent: 'center', paddingTop: getHP(0.1) }]}>
+                <View style={[{ height: getHP(0.7), justifyContent: 'center', paddingTop: getHP(0.1) }]}>
                     <TextInput
                         style={[
                             {
                                 paddingLeft: '3%',
                                 backgroundColor: colorCode.WHITE,
                                 flex: 1,
-                                height: getHP(0.4),
+                                height: getHP(0.7),
                                 borderRadius: getHP(0.05),
                             },
                         ]}

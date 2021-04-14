@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { BGCOLOR, commonStyles } from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
 import { getHP, getWP } from '../../../../common/dimension';
@@ -14,29 +14,36 @@ export interface ColorProps {
     item: Icolor;
     onPress: Function;
     showCancel?: boolean;
+    colorStyle?: ViewStyle;
 }
 
-const Color: React.FC<ColorProps> = ({ item, onPress, showCancel }) => {
+const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) => {
     return (
         <WrappedRectangleButton
-            containerStyle={[{ flex: 1 }, item.selected ? { ...commonStyles.shadow } : {}]}
+            containerStyle={[
+                { flex: colorStyle ? 0 : 1 },
+                item.selected ? (colorStyle ? {} : { ...commonStyles.shadow }) : {},
+            ]}
             onPress={() => {
                 if (!showCancel) {
                     onPress();
                 }
             }}
         >
-            <View style={[commonStyles.fdr, BGCOLOR(colorCode.WHITE)]}>
+            <View style={[commonStyles.fdr, BGCOLOR(colorCode.WHITE), commonStyles.aic]}>
                 <View
-                    style={{
-                        backgroundColor: item.colorCode,
-                        height: getHP(0.7),
-                        width: getHP(0.7),
-                    }}
+                    style={[
+                        {
+                            backgroundColor: item.colorCode,
+                            height: getHP(0.7),
+                            width: getHP(0.7),
+                        },
+                        colorStyle,
+                    ]}
                 />
                 <WrappedText
                     text={item.name.trim()}
-                    containerStyle={{ marginLeft: getWP(0.5) }}
+                    containerStyle={{ marginLeft: colorStyle ? getWP(0.1) : getWP(0.5) }}
                     textColor={item.selected ? mainColor : null}
                 />
                 {showCancel && (

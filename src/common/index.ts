@@ -5,7 +5,8 @@ const ratio = getHP(1) / getWP(1);
 const scaleRatio = ratio > 2 ? 0.45 : 0.5;
 
 export function provideFontSize(fontSize: number) {
-    return ratio * fontSize * scaleRatio;
+    //return ratio * fontSize * scaleRatio;
+    return fontSize;
 }
 
 export const fs10 = provideFontSize(10);

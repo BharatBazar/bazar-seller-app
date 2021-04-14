@@ -5,7 +5,7 @@ import { BGCOLOR, commonStyles, BR, PV, PH } from '../../common/styles';
 
 export interface ScreenHOCProps {
     children: React.ReactChild;
-    containerStyle?: ViewStyle;
+    containerStyle?: ViewStyle | ViewStyle[];
 }
 
 const ShadowWrapperHOC: React.FC<ScreenHOCProps> = ({ children, containerStyle }) => {

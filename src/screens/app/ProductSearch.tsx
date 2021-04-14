@@ -47,7 +47,7 @@ export default class ProdcutSearch extends Component<ProductSearchProps, Product
                     <TextInput
                         style={[
                             {
-                                height: getHP(0.6),
+                                height: getHP(0.7),
                                 paddingLeft: '3%',
 
                                 flex: 1,

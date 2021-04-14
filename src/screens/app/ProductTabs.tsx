@@ -73,7 +73,7 @@ export default function ProductTab() {
                     //         <WrappedText text={route.title} />
                     //     </View>
                     // )}
-                    tabStyle={{ width: 150, height: getHP(0.5) }}
+                    tabStyle={{ width: 150, height: getHP(0.7) }}
                     style={{ backgroundColor: colorCode.WHITE }}
                     labelStyle={{ color: mainColor }}
                     activeColor={mainColor}

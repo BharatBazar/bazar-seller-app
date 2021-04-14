@@ -11,11 +11,13 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.12.1",
+    "@react-native-community/checkbox": "^0.5.7",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/slider": "^3.0.3",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.3",
     "@react-navigation/stack": "^5.14.3",
+    "all": "^0.0.0",
     "axios": "^0.21.1",
     "react": "17.0.1",
     "react-native": "0.64.0",
