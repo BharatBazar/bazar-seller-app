@@ -7,10 +7,10 @@ import WrappedCheckBox from '../../../component/WrappedCheckBox';
 import { HeaderType1 } from '../../component';
 import WrappedText from '../../../component/WrappedText';
 import Color from './Color';
-import { AIC, BGCOLOR, commonStyles, componentProps, FDR, MH, MT, MV, PH, PV } from '../../../../common/styles';
-import { getHP } from '../../../../common/dimension';
+import { AIC, BGCOLOR, commonStyles, componentProps, FDR, JCC, MH, MT, MV, PH, PV } from '../../../../common/styles';
+import { getHP, getWP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
-import { fs12, fs13, fs16, fs19, fs28 } from '../../../../common';
+import { fs12, fs13, fs16, fs19, fs20, fs28, fs40 } from '../../../../common';
 import { colorCode, mainColor } from '../../../../common/color';
 import ProductPrice from './ProductPriceQuantity';
 import TableHeader from './TableHeader';
@@ -73,8 +73,29 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
     return (
         <ShadowWrapperHOC containerStyle={[MV(0.2)]}>
             <View>
-                <Color item={color} onPress={() => {}} colorStyle={{}} />
-
+                <View style={[FDR(), JCC('space-between')]}>
+                    <WrappedText text={'Provide details for '} />
+                    <WrappedFeatherIcon
+                        iconSize={fs20}
+                        iconName={'x'}
+                        containerHeight={fs40}
+                        onPress={() => {}}
+                        containerStyle={[commonStyles.shadowLight, BGCOLOR(colorCode.WHITE)]}
+                    />
+                </View>
+                <View style={[FDR(), AIC()]}>
+                    <View
+                        style={[
+                            { height: getHP(0.4), width: getHP(0.4), alignSelf: 'center' },
+                            BGCOLOR(color.colorCode),
+                        ]}
+                    />
+                    <WrappedText
+                        text={'   ' + color.name.toUpperCase() + ' COLOR' + ' Shoes'}
+                        textColor={color.colorCode}
+                        fontSize={fs20}
+                    />
+                </View>
                 <View>
                     {Heading('Upload product image', color.colorCode)}
                     <View style={[styles.photoContainer, MT(0.1)]}>

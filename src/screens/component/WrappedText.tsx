@@ -71,7 +71,6 @@ const styles = StyleSheet.create({
         height: getHP(0.15),
         width: getHP(0.15),
         resizeMode: 'contain',
-        marginLeft: 5,
     },
     container: {
         flexDirection: 'row',
