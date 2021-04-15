@@ -14,6 +14,7 @@ import { fs12, fs13, fs16, fs19, fs20, fs28, fs40 } from '../../../../common';
 import { colorCode, mainColor } from '../../../../common/color';
 import ProductPrice from './ProductPriceQuantity';
 import TableHeader from './TableHeader';
+import WrappedTextInput from '../../../component/WrappedTextInput';
 
 export interface ProductDetailsProps {
     color: Icolor;
@@ -33,6 +34,10 @@ const Heading = (headingText: string, color: string) => {
             />
         </View>
     );
+};
+
+const ProductTextInput = ({ placeholder }: { placeholder: string }) => {
+    return <WrappedTextInput placeholder={placeholder} />;
 };
 
 export interface headerTitleI {
@@ -92,7 +97,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                     />
                     <WrappedText
                         text={'   ' + color.name.toUpperCase() + ' COLOR' + ' Shoes'}
-                        textColor={color.colorCode}
+                        //textColor={color.colorCode}
                         fontSize={fs20}
                     />
                 </View>

@@ -65,6 +65,21 @@ export const JCC = (
     return { justifyContent: value || 'center' };
 };
 
+export const WP = (widthPercentage: number): ViewStyle => {
+    return { width: getWP(widthPercentage) };
+};
+
+export const W = (value: number): ViewStyle => {
+    return { width: value };
+};
+
+export const HP = (heightPercentage: number): ViewStyle => {
+    return { height: getHP(heightPercentage) };
+};
+
+export const H = (value: number): ViewStyle => {
+    return { height: value };
+};
 export const commonStyles = StyleSheet.create({
     cntr: {
         alignItems: 'center',

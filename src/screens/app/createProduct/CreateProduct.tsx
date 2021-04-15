@@ -5,7 +5,7 @@ import { BGCOLOR, commonStyles, componentProps, MT, MV, PH, PV } from '../../../
 import StatusBar from '../../component/StatusBar';
 import WrappedText from '../../component/WrappedText';
 import { getHP, getWP } from '../../../common/dimension';
-import { mainColor, productColor } from '../../../common/color';
+import { colorCode, mainColor, productColor } from '../../../common/color';
 import ColorModal from './component/ColorModal';
 import TextButton from '../../component/TextButton';
 import Color from './component/Color';
@@ -14,6 +14,7 @@ import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import Header from './component/Header';
 import { ProductColor } from '../../../server/apis/product/product.interface';
 import ProductDetails from './component/ProductDetails';
+import WrappedTextInput from '../../component/WrappedTextInput';
 
 export interface CreateProductProps {}
 
@@ -40,6 +41,15 @@ const size: Isize[] = [
 
 const productStructure: ProductColor = {
     productSize: size,
+};
+
+const ProductTextInput = ({ placeholder }: { placeholder: string }) => {
+    return (
+        <WrappedTextInput
+            placeholder={placeholder}
+            containerStyle={{ width: getWP(9), borderColor: colorCode.BLACKLOW(30) }}
+        />
+    );
 };
 
 const CreateProduct: React.FC<CreateProductProps> = () => {
@@ -69,14 +79,8 @@ const CreateProduct: React.FC<CreateProductProps> = () => {
             <StatusBar />
             <Header headerTitle={'Create Product'} />
             <ScrollView style={[PV(0.2), PH(0.4)]}>
-                {/* <WrappedText text={'Create Product'} fontSize={fs28} /> */}
                 <WrappedText text={'Select colors in which product is available??'} fontSize={fs18} />
-                {/* <FlatList
-                    data={chosenColor}
-                    numColumns={2}
-                    renderItem={({ item, index }) => <Color item={item} onPress={() => {}} showCancel={true} />}
-                    keyExtractor={(item) => item.colorCode}
-                /> */}
+
                 <TextButton
                     text={'Edit chosen color'}
                     textProps={componentProps.buttonTextProps}
@@ -89,6 +93,8 @@ const CreateProduct: React.FC<CreateProductProps> = () => {
                     }}
                 />
 
+                <ProductTextInput placeholder={'Product Title'} />
+                <ProductTextInput placeholder={'Product Subtitle'} />
                 {chosenColor.map((color, index) => (
                     <ProductDetails size={[...size]} index={index} color={color} />
                 ))}
