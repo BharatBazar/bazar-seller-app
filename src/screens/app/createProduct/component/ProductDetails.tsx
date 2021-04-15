@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import ShadowWrapperHOC from '../../../hoc/ShadowWrapperHOC';
 import { Icolor, Isize } from '../CreateProduct';
 import WrappedSize from '../component/WrappedSize';
@@ -71,7 +71,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
     const generateSize = () => {};
 
     return (
-        <ShadowWrapperHOC containerStyle={[MV(0.2)]}>
+        <ShadowWrapperHOC containerStyle={[MV(0.2), PV(0.2)]}>
             <View>
                 <View style={[FDR(), JCC('space-between')]}>
                     <WrappedText text={'Provide details for '} />
@@ -116,7 +116,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                     </View>
                 </View>
                 {Heading('Provide size for product', color.colorCode)}
-                <View style={[commonStyles.fdr, MV(0.1)]}>
+                <ScrollView horizontal={true} contentContainerStyle={[MV(0.2)]}>
                     {size.map((size, index) => (
                         <WrappedSize
                             size={size}
@@ -125,7 +125,14 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                             }}
                         />
                     ))}
-                </View>
+                </ScrollView>
+                {index == 0 && (
+                    <WrappedCheckBox
+                        placeholder={'Auto fill for other color and update manually.'}
+                        value={true}
+                        setValue={() => {}}
+                    />
+                )}
                 {Heading(
                     'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
                     color.colorCode,
@@ -138,13 +145,6 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                             <ProductPrice size={size.value} flex={columnFlex} />
                         </View>
                     ))}
-                {index == 0 && (
-                    <WrappedCheckBox
-                        placeholder={'Auto fill for other color and update manually.'}
-                        value={true}
-                        setValue={() => {}}
-                    />
-                )}
             </View>
         </ShadowWrapperHOC>
     );
