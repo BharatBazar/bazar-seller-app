@@ -123,8 +123,7 @@ export default class WrappedTextInput extends Component<Props, State> {
 
 const styles = StyleSheet.create({
     mainContainer: {
-        height: getHP(0.6),
-        alignItems: 'center',
+        //height: getHP(0.6),
     },
     textInputContainer: {
         flexDirection: 'row',
@@ -138,9 +137,10 @@ const styles = StyleSheet.create({
     },
     textInput: {
         flex: 9,
-        color: '#1A202C4D',
+        color: '#1A202C',
         fontSize: fs17,
         height: '100%',
+        width: '100%',
     },
     errorContainer: {
         //paddingLeft: 20,

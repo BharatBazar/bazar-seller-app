@@ -13,7 +13,7 @@ function WrappedText(props: {
     fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | undefined;
     icon?: any;
     iconBefore?: any;
-    text?: string;
+    text: string;
     iconStyle?: any;
     containerStyle?: any;
 }) {
@@ -45,7 +45,7 @@ function WrappedText(props: {
                     {
                         fontFamily: fontFamily,
                         fontSize: fontSize,
-                        fontWeight: fontWeight || '600',
+                        fontWeight: fontWeight || 'normal',
                         color: textColor || '#000000',
                     },
                     textStyle,

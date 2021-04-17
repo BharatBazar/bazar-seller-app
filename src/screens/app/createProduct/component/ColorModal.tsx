@@ -10,6 +10,7 @@ import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { Icolor } from '../CreateProduct';
 import ModalHOC from '../../../hoc/ModalHOC';
 import Color from './Color';
+import ModalHeader from '../../../component/ModalHeader';
 
 export interface ColorModalProps {
     setPopup: Function;
@@ -30,21 +31,11 @@ const ColorModal: React.FC<ColorModalProps> = ({ setPopup, isVisible, colors, up
                     borderTopRightRadius: getHP(0.2),
                 }}
             >
-                <View style={[commonStyles.fdr, commonStyles.spbtw]}>
-                    <View>
-                        <WrappedText text={'Choose Color'} fontSize={fs28} />
-                        <WrappedText text={'Click on the closest match of the color\navailable of the product.'} />
-                    </View>
-                    <WrappedFeatherIcon
-                        iconSize={fs20}
-                        iconName={'x'}
-                        containerHeight={fs40}
-                        onPress={() => {
-                            setPopup(false);
-                        }}
-                        containerStyle={[commonStyles.shadow, BGCOLOR(colorCode.WHITE)]}
-                    />
-                </View>
+                <ModalHeader
+                    heading={'Choose Color'}
+                    subHeading={'Click on the closest match of the color\navailable of the product.'}
+                    setPopup={() => setPopup(false)}
+                />
                 <FlatList
                     data={colors}
                     style={{ height: getHP(7), marginTop: getHP(0.2) }}

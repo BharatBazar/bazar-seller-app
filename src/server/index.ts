@@ -9,8 +9,8 @@ export async function setUpAxios() {
     // axios.defaults.headers.common['Streak-Auth-Token'] = token;
 }
 
-export const handleError = (error) => {
-    function isNetworkError(err) {
+export const handleError = (error: any) => {
+    function isNetworkError(err: any) {
         return err.isAxiosError && !err.response;
     }
 
@@ -26,7 +26,7 @@ export const handleError = (error) => {
     }
 };
 
-export const commonApiHandler = async (options) => {
+export const commonApiHandler = async (options: any) => {
     try {
         console.log(options);
         const result = await axios(options);

@@ -2,12 +2,27 @@ import React, { useState } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import ShadowWrapperHOC from '../../../hoc/ShadowWrapperHOC';
 import { Icolor, Isize } from '../CreateProduct';
-import WrappedSize from '../component/WrappedSize';
+import WrappedSize from './WrappedSize';
 import WrappedCheckBox from '../../../component/WrappedCheckBox';
 import { HeaderType1 } from '../../component';
 import WrappedText from '../../../component/WrappedText';
-import Color from './Color';
-import { AIC, BGCOLOR, commonStyles, componentProps, FDR, JCC, MH, MT, MV, PH, PV } from '../../../../common/styles';
+import Color from '../component/Color';
+import {
+    AIC,
+    BGCOLOR,
+    commonStyles,
+    componentProps,
+    FDR,
+    HP,
+    JCC,
+    MH,
+    MLS,
+    MT,
+    MV,
+    PH,
+    PV,
+    W,
+} from '../../../../common/styles';
 import { getHP, getWP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs12, fs13, fs16, fs19, fs20, fs28, fs40 } from '../../../../common';
@@ -15,6 +30,9 @@ import { colorCode, mainColor } from '../../../../common/color';
 import ProductPrice from './ProductPriceQuantity';
 import TableHeader from './TableHeader';
 import WrappedTextInput from '../../../component/WrappedTextInput';
+import TextButton from '../../../component/TextButton';
+import ProductContainer from '../product/component/productContainerHOC';
+import ProductButton from '../product/component/ProductButton';
 
 export interface ProductDetailsProps {
     color: Icolor;
@@ -25,7 +43,7 @@ export interface ProductDetailsProps {
 const Heading = (headingText: string, color: string) => {
     return (
         <View style={[FDR(), AIC(), MT(0.2)]}>
-            <View style={[BGCOLOR(color), { height: getHP(0.1), width: getHP(0.1) }]} />
+            <View style={[BGCOLOR(color), HP(0.1), W(getHP(0.1))]} />
             <WrappedText
                 text={headingText}
                 fontSize={fs13}
@@ -34,10 +52,6 @@ const Heading = (headingText: string, color: string) => {
             />
         </View>
     );
-};
-
-const ProductTextInput = ({ placeholder }: { placeholder: string }) => {
-    return <WrappedTextInput placeholder={placeholder} />;
 };
 
 export interface headerTitleI {
@@ -76,7 +90,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
     const generateSize = () => {};
 
     return (
-        <ShadowWrapperHOC containerStyle={[MV(0.2), PV(0.2)]}>
+        <ProductContainer>
             <View>
                 <View style={[FDR(), JCC('space-between')]}>
                     <WrappedText text={'Provide details for '} />
@@ -101,6 +115,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                         fontSize={fs20}
                     />
                 </View>
+
                 <View>
                     {Heading('Upload product image', color.colorCode)}
                     <View style={[styles.photoContainer, MT(0.1)]}>
@@ -142,6 +157,13 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                     'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
                     color.colorCode,
                 )}
+                {index == 0 && (
+                    <WrappedCheckBox
+                        placeholder={'Auto fill MRP, SP for each size and update manually.'}
+                        value={true}
+                        setValue={() => {}}
+                    />
+                )}
                 {<TableHeader headerTitle={headerTitle} flex={columnFlex} />}
                 {size
                     .filter((size) => size.selected)
@@ -150,8 +172,23 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                             <ProductPrice size={size.value} flex={columnFlex} />
                         </View>
                     ))}
+                <View style={[FDR(), JCC('flex-end'), MT(0.2)]}>
+                    <ProductButton buttonText={'Save'} onPress={() => {}} />
+                    {/* <TextButton
+                        text={'Create'}
+                        onPress={() => {}}
+                        textProps={componentProps.buttonTextProps}
+                        containerStyle={[commonStyles.buttonContainerStyle]}
+                    />
+                    <TextButton
+                        text={'Save'}
+                        onPress={() => {}}
+                        textProps={componentProps.buttonTextProps}
+                        containerStyle={[commonStyles.buttonContainerStyle, MLS(0.1)]}
+                    /> */}
+                </View>
             </View>
-        </ShadowWrapperHOC>
+        </ProductContainer>
     );
 };
 const styles = StyleSheet.create({

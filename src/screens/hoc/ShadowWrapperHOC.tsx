@@ -4,7 +4,7 @@ import { colorCode } from '../../common/color';
 import { BGCOLOR, commonStyles, BR, PV, PH } from '../../common/styles';
 
 export interface ScreenHOCProps {
-    children: React.ReactChild;
+    children: React.ReactNode;
     containerStyle?: ViewStyle | ViewStyle[];
 }
 

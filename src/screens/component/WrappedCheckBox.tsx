@@ -4,6 +4,7 @@ import CheckBox from '@react-native-community/checkbox';
 import { mainColor } from '../../common/color';
 import { getHP } from '../../common/dimension';
 import { fs12, fs13, fs16 } from '../../common';
+import WrappedText from './WrappedText';
 
 export interface WrappedCheckBoxProps {
     value: boolean;
@@ -28,7 +29,7 @@ class WrappedCheckBox extends React.Component<WrappedCheckBoxProps, WrappedCheck
                     onTintColor={mainColor}
                     style={{ height: fs16 }}
                 />
-                {placeholder && <Text style={styles.placeholderStyle}>{placeholder}</Text>}
+                {placeholder && <WrappedText textStyle={styles.placeholderStyle} text={placeholder} />}
             </View>
         );
     }

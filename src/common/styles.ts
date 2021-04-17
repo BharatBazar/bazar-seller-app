@@ -2,7 +2,7 @@ import { fs13 } from './index';
 import { STATUS_BAR_HEIGHT } from './../screens/component/StatusBar';
 import { colorCode } from './color';
 import { getHP, getWP } from './dimension';
-import { FlexAlignType, ImageStyle, StyleSheet, TextStyle, ViewStyle } from 'react-native';
+import { FlexAlignType, ImageStyle, StyleSheet, TextStyle, ViewStyle, Platform } from 'react-native';
 
 export const colorTransparency = {
     10: '1A',
@@ -80,6 +80,60 @@ export const HP = (heightPercentage: number): ViewStyle => {
 export const H = (value: number): ViewStyle => {
     return { height: value };
 };
+
+export const BW = (value: number): ViewStyle => {
+    return { borderWidth: value };
+};
+
+export const BC = (color: string): ViewStyle => {
+    return { borderColor: color };
+};
+
+export const FC = (color: string): TextStyle => {
+    return { color };
+};
+
+export const FS = (fontSize: number): TextStyle => {
+    return { fontSize };
+};
+
+export const MLS = (percentage: number): ViewStyle => {
+    return { marginLeft: getHP(percentage || 0.2) };
+};
+export const MRS = (percentage: number): ViewStyle => {
+    return { marginRight: getHP(percentage || 0.2) };
+};
+
+export const PLS = (percentage: number): ViewStyle => {
+    return { paddingLeft: getHP(percentage || 0.2) };
+};
+
+export const PRS = (percentage: number): ViewStyle => {
+    return { paddingRight: getHP(percentage || 0.2) };
+};
+
+export const provideShadow =
+    Platform.OS == 'android'
+        ? (elevation?: number): ViewStyle => {
+              return { elevation: elevation || 1 };
+          }
+        : (
+              shadowColor?: string,
+              shadowOffSet?: {
+                  width: number;
+                  height: number;
+              },
+              shadowOpacity?: number,
+              shadowRadius?: number,
+          ): ViewStyle => {
+              return {
+                  shadowColor: shadowColor || 'black',
+                  shadowOffset: shadowOffSet || { width: 0, height: 0 },
+                  shadowOpacity: shadowOpacity,
+                  shadowRadius: shadowRadius,
+              };
+          };
+
 export const commonStyles = StyleSheet.create({
     cntr: {
         alignItems: 'center',

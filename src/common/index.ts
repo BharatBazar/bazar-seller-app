@@ -9,6 +9,13 @@ export function provideFontSize(fontSize: number) {
     return fontSize;
 }
 
+export const fs3 = provideFontSize(3);
+export const fs4 = provideFontSize(4);
+export const fs5 = provideFontSize(5);
+export const fs6 = provideFontSize(6);
+export const fs7 = provideFontSize(7);
+export const fs8 = provideFontSize(8);
+export const fs9 = provideFontSize(9);
 export const fs10 = provideFontSize(10);
 export const fs11 = provideFontSize(12);
 export const fs12 = provideFontSize(12);
@@ -34,7 +41,6 @@ export const fs52 = provideFontSize(52);
 export const fs51 = provideFontSize(51);
 export const fs40 = provideFontSize(40);
 export const fs48 = provideFontSize(48);
-export const fs9 = provideFontSize(9);
 export const fs42 = provideFontSize(42);
 export const fs80 = provideFontSize(80);
 export const fs90 = provideFontSize(90);

@@ -14,6 +14,7 @@ export interface TextButtonProps {
     isLoading?: boolean;
     disabled?: boolean;
     fade?: boolean;
+    loaderColor?: string;
 }
 
 const TextButton: React.FC<TextButtonProps> = ({
@@ -22,17 +23,18 @@ const TextButton: React.FC<TextButtonProps> = ({
     containerStyle,
     textProps,
     isLoading,
+    loaderColor,
     disabled,
     fade,
 }) => {
     return (
         <WrappedRectangleButton
             containerStyle={[
-                containerStyle,
                 {
                     flexDirection: 'row',
                     backgroundColor: disabled ? colorCode.CHAKRALOW(50) : colorCode.CHAKRALOW(70),
                 },
+                containerStyle,
             ]}
             onPress={() => {
                 if (disabled) {
@@ -40,7 +42,9 @@ const TextButton: React.FC<TextButtonProps> = ({
             }}
         >
             <WrappedText text={text} {...textProps} />
-            {isLoading && <ActivityIndicator size={'small'} style={{ marginLeft: getWP(0.3) }} />}
+            {isLoading && (
+                <ActivityIndicator size={'small'} color={loaderColor || '#ffffff'} style={{ marginLeft: getWP(0.3) }} />
+            )}
         </WrappedRectangleButton>
     );
 };

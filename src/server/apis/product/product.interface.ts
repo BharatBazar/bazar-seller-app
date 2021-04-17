@@ -26,7 +26,7 @@ export interface Product {
     productDiscountDeadline: [Date];
 }
 
-export interface ProductColor {
+export interface IProductColor {
     //One more thing productcolor id should be user generated id or a barcode id something like that so that
     //shopkeeper can easily identify product by barcode scan or manually typing and update it need to think about it.
     productParent: string; // Will refer to above product schema

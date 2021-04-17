@@ -14,7 +14,6 @@ const WrappedRectangleButton: React.SFC<WrappedRectangleButtonProps> = ({ contai
         <Ripple
             android_ripple={{ color: '#00000033', radius: 200 }}
             onPress={() => {
-                console.log('Fixes');
                 onPress();
             }}
             style={containerStyle}
