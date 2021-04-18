@@ -3,15 +3,19 @@ import { View } from 'react-native';
 import ProductTextInput from '../component/ProductTextInput';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
 import ShadowWrapperHOC from '../../../../hoc/ShadowWrapperHOC';
-import { marTop, padHor } from '../component/styles';
+import { marTop, padHor } from '../component/generalConfig';
 import ProductContainer from '../component/productContainerHOC';
 import ProductButton from '../component/ProductButton';
 
-export interface ProductTitleProps {}
+export interface ProductTitleProps {
+    title?: string;
+    subTitle?: string;
+    update: boolean;
+}
 
-const ProductTitle: React.SFC<ProductTitleProps> = () => {
-    const [productTitle, setProductTitle] = React.useState('');
-    const [productSubTitle, setProductSubTitle] = React.useState('');
+const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update }) => {
+    const [productTitle, setProductTitle] = React.useState(title || '');
+    const [productSubTitle, setProductSubTitle] = React.useState(subTitle || '');
 
     return (
         <ProductContainer>

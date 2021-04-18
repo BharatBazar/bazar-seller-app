@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { View } from 'react-native';
 import { colorCode } from '../../../../../common/color';
 import { BGCOLOR } from '../../../../../common/styles';
-import { padHor, padVer, marTop, borRad, border, marHor } from './styles';
+import { padHor, padVer, marTop, borRad, border, marHor } from './generalConfig';
 
 export interface ProductContainerProps {
     children: React.ReactNode;

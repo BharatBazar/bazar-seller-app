@@ -11,7 +11,7 @@ import ProductContainer from '../component/productContainerHOC';
 import WrappedRectangleButton from '../../../../component/WrappedRectangleButton';
 import ProductButton from '../component/ProductButton';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import { marTop, padVer } from '../component/styles';
+import { marTop, padVer } from '../component/generalConfig';
 export interface NewProductProps {}
 
 const NewProduct: React.FC<NewProductProps> = () => {

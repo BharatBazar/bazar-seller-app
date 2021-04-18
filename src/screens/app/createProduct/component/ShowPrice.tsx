@@ -7,7 +7,7 @@ import WrappedTextInput from '../../../component/WrappedTextInput';
 import ProductButton from '../product/component/ProductButton';
 import ProductContainer from '../product/component/productContainerHOC';
 import ProductDetailsHeading from '../product/component/ProductDetailsHeading';
-import { padVer } from '../product/component/styles';
+import { padVer } from '../product/component/generalConfig';
 
 export interface ShowPriceProps {}
 

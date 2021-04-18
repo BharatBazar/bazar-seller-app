@@ -10,7 +10,7 @@ import ProductContainer from '../component/productContainerHOC';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
 import { fs18 } from '../../../../../common';
 import ProductDetails from '../../product-color/ProductDetails';
-import { generalSpacing, marHor, marTop } from '../component/styles';
+import { generalSpacing, marHor, marTop } from '../component/generalConfig';
 
 export interface ProductColorProps {}
 

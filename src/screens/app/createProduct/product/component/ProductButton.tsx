@@ -3,7 +3,7 @@ import TextButton from '../../../../component/TextButton';
 import { BR, commonStyles, componentProps } from '../../../../../common/styles';
 import { getHP } from '../../../../../common/dimension';
 import { fs10, fs11, fs12, fs9 } from '../../../../../common';
-import { borRad, marTop, padHor } from './styles';
+import { borRad, marTop, padHor } from './generalConfig';
 import { colorCode } from '../../../../../common/color';
 
 export interface ProductButtonProps {

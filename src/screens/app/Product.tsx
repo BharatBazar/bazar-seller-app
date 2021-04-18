@@ -33,7 +33,7 @@ const Product: React.FC<ProductProps> = ({ navigation }) => {
                     <View style={[commonStyles.fdr]}>
                         <WrappedFeatherIcon
                             onPress={() => {
-                                navigation.navigate(NavigationKey.CREATEPRODUCT);
+                                navigation.navigate(NavigationKey.CREATEPRODUCT, { update: false });
                             }}
                             containerStyle={{ backgroundColor: colorCode.WHITE }}
                             iconName={'plus'}

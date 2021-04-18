@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { fs12, fs15, fs16, fs18 } from '../../../../../common';
 import { colorCode } from '../../../../../common/color';
 import WrappedText from '../../../../component/WrappedText';
-import { generalSpacing, marTop } from './styles';
+import { generalSpacing, marTop } from './generalConfig';
 
 export interface ProductDetailsHeadingProps {
     heading: string;

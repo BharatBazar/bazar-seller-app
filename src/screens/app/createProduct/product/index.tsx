@@ -5,14 +5,21 @@ import ShowPrice from '../component/ShowPrice';
 import ProductTitle from './productTitle';
 import ProductDescription from './productDescription/index';
 import ProductColor from './productColor';
+import { Product } from '../../../../server/apis/product/product.interface';
 
-export interface ProductCommonDetailsProps {}
+export interface ProductCommonDetailsProps {
+    productDetails: Product;
+    update: boolean;
+}
 
-const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = () => {
-    const [showProductPrice, setShowProductPrice] = React.useState<boolean>(false);
+const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDetails }) => {
     return (
         <View>
-            <ProductTitle />
+            <ProductTitle
+                title={productDetails.productTitle}
+                subTitle={productDetails.productSubtitle}
+                update={update}
+            />
 
             <ProductDescription />
 

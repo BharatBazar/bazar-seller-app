@@ -5,7 +5,7 @@ import ProductDetailsHeading from '../component/ProductDetailsHeading';
 
 import ProductContainer from '../component/productContainerHOC';
 import ProductButton from '../component/ProductButton';
-import { marTop } from '../component/styles';
+import { marTop } from '../component/generalConfig';
 
 export interface ProductTitleProps {}
 

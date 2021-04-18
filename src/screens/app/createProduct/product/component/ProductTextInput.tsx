@@ -6,7 +6,7 @@ import WrappedTextInput from '../../../../component/WrappedTextInput';
 import { BC, BR, BW, HP, MT, AIC, FS, BGCOLOR } from '../../../../../common/styles';
 import { borderColor } from '../../../../../common/color';
 import { getHP } from '../../../../../common/dimension';
-import { border, borRad } from './styles';
+import { border, borRad } from './generalConfig';
 
 export interface ProductTitleProps {
     placeholder: string;

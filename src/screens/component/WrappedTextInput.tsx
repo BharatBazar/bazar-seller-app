@@ -122,14 +122,8 @@ export default class WrappedTextInput extends Component<Props, State> {
 }
 
 const styles = StyleSheet.create({
-    mainContainer: {
-        //height: getHP(0.6),
-    },
-    textInputContainer: {
-        flexDirection: 'row',
-        flex: 1,
-        alignItems: 'center',
-    },
+    mainContainer: {},
+
     iconContainer: {
         flex: 1,
         alignItems: 'center',

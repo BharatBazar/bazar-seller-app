@@ -18,12 +18,12 @@ export interface Product {
     productColor: [string];
     showPrice: boolean; //Whether dukandar wants to show price to customer or not
     productStatus: productStatus;
-    productRating: number;
+    productRating?: number;
     productNew: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    productNewDeadline: Date;
+    productNewDeadline?: Date;
     productDescription: string; // Will be a audio as audio is better to understand in common language
-    productDiscount: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
-    productDiscountDeadline: [Date];
+    productDiscount?: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
+    productDiscountDeadline?: [Date];
 }
 
 export interface IProductColor {
