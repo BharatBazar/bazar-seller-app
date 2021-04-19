@@ -7,10 +7,13 @@ import ProductContainer from '../component/productContainerHOC';
 import ProductButton from '../component/ProductButton';
 import { marTop } from '../component/generalConfig';
 
-export interface ProductTitleProps {}
+export interface ProductTitleProps {
+    description: string;
+    update: boolean;
+}
 
-const ProductDescription: React.SFC<ProductTitleProps> = () => {
-    const [productDescription, setProductDescription] = React.useState('');
+const ProductDescription: React.SFC<ProductTitleProps> = ({ description, update }) => {
+    const [productDescription, setProductDescription] = React.useState(description);
 
     return (
         <ProductContainer>
@@ -27,7 +30,7 @@ const ProductDescription: React.SFC<ProductTitleProps> = () => {
                     onChangeText={setProductDescription}
                 />
 
-                <ProductButton buttonText={'Save'} onPress={() => {}} />
+                <ProductButton buttonText={update ? 'Update' : 'Save'} onPress={() => {}} />
             </View>
         </ProductContainer>
     );

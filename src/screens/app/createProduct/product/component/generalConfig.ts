@@ -1,7 +1,9 @@
-import { Product, productStatus } from './../../../../../server/apis/product/product.interface';
+import { DataHandling } from './../../../../../server/DataHandlingHOC';
+import { IRProduct, Product, productStatus } from './../../../../../server/apis/product/product.interface';
+import { APIcreateProduct, APIupdateProduct } from './../../../../../server/apis/product/produt.api';
+
 import { getHP } from '../../../../../common/dimension';
 import { PH, PV, BR } from '../../../../../common/styles';
-import { StyleSheet } from 'react-native';
 
 export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
 
@@ -25,7 +27,7 @@ export const generalProductSchema: Product = {
     productSubtitle: '',
     productColor: [''],
     showPrice: false, //Whether dukandar wants to show price to customer or not
-    productStatus: productStatus.CREATED,
+    productStatus: productStatus.NOTCOMPLETED,
     productRating: undefined,
     productNew: false, // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
     productNewDeadline: undefined,
@@ -33,3 +35,13 @@ export const generalProductSchema: Product = {
     productDiscount: undefined, // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
     productDiscountDeadline: undefined,
 };
+
+const dataHandling = new DataHandling('');
+
+export async function updateProduct(data: IRProduct) {
+    return await dataHandling.fetchData(APIupdateProduct, data);
+}
+
+export async function createProduct(data: IRProduct) {
+    return await dataHandling.fetchData(APIcreateProduct, data);
+}

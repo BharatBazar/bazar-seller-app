@@ -2,20 +2,37 @@ import * as React from 'react';
 import { View } from 'react-native';
 import ProductTextInput from '../component/ProductTextInput';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import ShadowWrapperHOC from '../../../../hoc/ShadowWrapperHOC';
-import { marTop, padHor } from '../component/generalConfig';
+import { marTop } from '../component/generalConfig';
 import ProductContainer from '../component/productContainerHOC';
 import ProductButton from '../component/ProductButton';
+import { IRProduct } from '../../../../../server/apis/product/product.interface';
 
 export interface ProductTitleProps {
     title?: string;
     subTitle?: string;
     update: boolean;
+    postDataToServer: (a: IRProduct, b: () => void, c: (error: string) => void) => void;
 }
 
-const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update }) => {
+const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, postDataToServer }) => {
     const [productTitle, setProductTitle] = React.useState(title || '');
     const [productSubTitle, setProductSubTitle] = React.useState(subTitle || '');
+    const [loading, setLoader] = React.useState(false);
+    const [error, setError] = React.useState('');
+
+    const submitData = () => {
+        setLoader(true);
+        postDataToServer(
+            { productTitle, productSubtitle: productSubTitle },
+            () => {
+                setLoader(false);
+            },
+            (error) => {
+                setLoader(false);
+                setError(error);
+            },
+        );
+    };
 
     return (
         <ProductContainer>
@@ -24,7 +41,9 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update })
                 subHeading={
                     "Product heading details are important it show's the initial product description and attract's grahak to your shop."
                 }
+                error={error}
             />
+
             <View style={[marTop]}>
                 <ProductTextInput placeholder={'Product Title'} value={productTitle} onChangeText={setProductTitle} />
                 <ProductTextInput
@@ -33,7 +52,14 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update })
                     onChangeText={setProductSubTitle}
                 />
             </View>
-            <ProductButton buttonText={'Save'} onPress={() => {}} />
+            <ProductButton
+                buttonText={update ? 'Update' : 'Save'}
+                onPress={() => {
+                    submitData();
+                }}
+                isLoading={loading}
+                disabled={loading}
+            />
         </ProductContainer>
     );
 };

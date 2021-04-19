@@ -13,13 +13,14 @@ const Drawer = createDrawerNavigator();
 import Icon from 'react-native-vector-icons/Feather';
 import { colorCode, mainColor } from '../common/color';
 import ProdcutSearch from '../screens/app/ProductSearch';
-import Product from '../screens/app/Product';
+import Product from '../screens/app/productListing/Product';
 import CreateProduct from '../screens/app/createProduct/CreateProduct';
 import StatusBar from '../screens/component/StatusBar';
 import { View } from 'react-native';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import { Easing } from 'react-native-reanimated';
 import { NavigationProps } from '../common';
+import { setUpAxios } from '../server';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -29,6 +30,10 @@ const config: TransitionSpec = {
     },
 };
 class AppNavigation extends React.Component {
+    constructor(props) {
+        super(props);
+        setUpAxios();
+    }
     render() {
         return (
             <NavigationContainer>

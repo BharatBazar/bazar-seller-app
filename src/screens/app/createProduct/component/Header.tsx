@@ -7,6 +7,7 @@ import { BGCOLOR, commonStyles, componentProps, PH, PV } from '../../../../commo
 import TextButton from '../../../component/TextButton';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import WrappedText from '../../../component/WrappedText';
+import { padHor } from '../product/component/generalConfig';
 
 export interface HeaderProps {
     headerTitle: string;
@@ -17,7 +18,7 @@ export interface HeaderProps {
 
 const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressRightIcon, rightFeatherIcon }) => {
     return (
-        <View style={[PH(0.3), PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70))]}>
+        <View style={[padHor, PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70))]}>
             <View style={[commonStyles.fdr, commonStyles.aic, commonStyles.spbtw]}>
                 <View style={[commonStyles.fdr]}>
                     <WrappedFeatherIcon
@@ -31,7 +32,22 @@ const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressRight
                     <WrappedText text={headerTitle} textColor={colorCode.WHITE} fontSize={fs18} />
                 </View>
 
-                <View style={[commonStyles.fdr]}></View>
+                <View style={[commonStyles.fdr]}>
+                    <WrappedFeatherIcon
+                        onPress={() => {
+                            // navigation.goBack();
+                        }}
+                        iconName={'check'}
+                        iconColor={colorCode.WHITE}
+                    />
+                    <WrappedFeatherIcon
+                        onPress={() => {
+                            // navigation.goBack();
+                        }}
+                        iconName={'trash-2'}
+                        iconColor={colorCode.WHITE}
+                    />
+                </View>
             </View>
         </View>
     );

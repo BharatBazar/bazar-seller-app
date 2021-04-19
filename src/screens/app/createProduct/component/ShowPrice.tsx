@@ -1,18 +1,17 @@
 import * as React from 'react';
-import { View } from 'react-native';
-import { MT } from '../../../../common/styles';
 import WrappedCheckBox from '../../../component/WrappedCheckBox';
 import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
-import WrappedTextInput from '../../../component/WrappedTextInput';
 import ProductButton from '../product/component/ProductButton';
 import ProductContainer from '../product/component/productContainerHOC';
 import ProductDetailsHeading from '../product/component/ProductDetailsHeading';
 import { padVer } from '../product/component/generalConfig';
 
-export interface ShowPriceProps {}
+export interface ShowPriceProps {
+    showPrice: boolean;
+}
 
-const ShowPrice: React.FC<ShowPriceProps> = () => {
-    const [showProductPrice, setShowProductPrice] = React.useState<boolean>(false);
+const ShowPrice: React.FC<ShowPriceProps> = ({ showPrice }) => {
+    const [showProductPrice, setShowProductPrice] = React.useState<boolean>(showPrice || false);
     return (
         <ProductContainer>
             <ProductDetailsHeading

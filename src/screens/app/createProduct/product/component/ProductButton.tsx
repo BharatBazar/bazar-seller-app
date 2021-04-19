@@ -9,15 +9,19 @@ import { colorCode } from '../../../../../common/color';
 export interface ProductButtonProps {
     buttonText: string;
     onPress: Function;
+    isLoading?: boolean;
+    disabled?: boolean;
 }
 
-const ProductButton: React.SFC<ProductButtonProps> = ({ buttonText, onPress }) => {
+const ProductButton: React.SFC<ProductButtonProps> = ({ buttonText, onPress, isLoading, disabled }) => {
     return (
         <TextButton
             text={buttonText}
             onPress={() => {
                 onPress();
             }}
+            isLoading={isLoading}
+            disabled={disabled}
             textProps={{ fontSize: fs11, textColor: colorCode.WHITE }}
             containerStyle={[
                 {

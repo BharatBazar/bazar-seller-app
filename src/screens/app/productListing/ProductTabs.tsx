@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
-import { colorCode, mainColor } from '../../common/color';
-import { getHP } from '../../common/dimension';
-import WrappedText from '../component/WrappedText';
+import { colorCode, mainColor } from '../../../common/color';
+import { getHP } from '../../../common/dimension';
+import WrappedText from '../../component/WrappedText';
 
 const FirstRoute = () => <View style={{ flex: 1 }} />;
 

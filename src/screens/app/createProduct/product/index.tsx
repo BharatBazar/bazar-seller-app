@@ -5,25 +5,30 @@ import ShowPrice from '../component/ShowPrice';
 import ProductTitle from './productTitle';
 import ProductDescription from './productDescription/index';
 import ProductColor from './productColor';
-import { Product } from '../../../../server/apis/product/product.interface';
+import { IRProduct, Product } from '../../../../server/apis/product/product.interface';
 
 export interface ProductCommonDetailsProps {
     productDetails: Product;
     update: boolean;
+    postDataToServer: (a: IRProduct, b: () => void, c: (error: string) => void) => void;
 }
 
-const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDetails }) => {
+const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDetails, update, postDataToServer }) => {
     return (
         <View>
             <ProductTitle
-                title={productDetails.productTitle}
-                subTitle={productDetails.productSubtitle}
+                title={productDetails['productTitle']}
+                subTitle={productDetails['productSubtitle']}
                 update={update}
+                postDataToServer={postDataToServer}
             />
 
-            <ProductDescription />
+            <ProductDescription
+                description={productDetails['productDescription']}
+                update={productDetails['productDescription'] ? true : false}
+            />
 
-            <ShowPrice />
+            <ShowPrice showPrice={productDetails['showPrice']} />
             <NewProduct />
             <ProductColor />
         </View>

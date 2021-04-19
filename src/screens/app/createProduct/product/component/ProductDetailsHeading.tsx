@@ -8,9 +8,10 @@ import { generalSpacing, marTop } from './generalConfig';
 export interface ProductDetailsHeadingProps {
     heading: string;
     subHeading: string;
+    error: string;
 }
 
-const ProductDetailsHeading: React.SFC<ProductDetailsHeadingProps> = ({ heading, subHeading }) => {
+const ProductDetailsHeading: React.SFC<ProductDetailsHeadingProps> = ({ heading, subHeading, error }) => {
     return (
         <View>
             {heading.length > 0 && <WrappedText text={heading} fontSize={fs16} />}
@@ -22,6 +23,7 @@ const ProductDetailsHeading: React.SFC<ProductDetailsHeadingProps> = ({ heading,
                     containerStyle={[{ marginTop: generalSpacing / 2 }]}
                 />
             )}
+            {error ? <WrappedText text={error} fontSize={fs12} textColor={colorCode.RED} /> : <View />}
         </View>
     );
 };
