@@ -1,14 +1,15 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, ScrollView, ActivityIndicator, ToastAndroid } from 'react-native';
+import { View, ScrollView, ActivityIndicator, ToastAndroid, Alert } from 'react-native';
 import { NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
 import ProductCommonDetails from './product';
 import { createProduct, generalProductSchema, updateProduct } from './product/component/generalConfig';
 import { AIC, FLEX, JCC } from '../../../common/styles';
-import { IRProduct, Product } from '../../../server/apis/product/product.interface';
+import { IProduct, IRProduct, productStatus } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
+import { APIgetProduct } from '../../../server/apis/product/produt.api';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -26,22 +27,37 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     },
 }) => {
     const [productId, setProductId] = useState(_id);
-    const [productDetails, setProductDetails] = useState<Product>(generalProductSchema);
+    const [productDetails, setProductDetails] = useState<IProduct>(generalProductSchema);
     const [loading, setLoading] = useState(true);
 
     React.useEffect(() => {
         if (update) {
             //Make api call
-            setTimeout(() => {
-                setProductDetails(generalProductSchema);
-                setLoading(false);
-            }, 1000);
+            fetchProduct();
         } else {
             setLoading(false);
         }
     }, []);
 
-    const postProductDataToServer = async (data: IRProduct, successCallBack: Function, errroCallBack: Function) => {
+    const fetchProduct = async () => {
+        try {
+            setLoading(true);
+            const response: IRProduct = await APIgetProduct({
+                _id: productId,
+            });
+            if (response.status == 1) {
+                setProductDetails(response.payload);
+                setLoading(false);
+            } else {
+                Alert.alert(response.message);
+                setLoading(false);
+            }
+        } catch (error) {
+            Alert.alert(error.message);
+        }
+    };
+
+    const postProductDataToServer = async (data: IProduct, successCallBack: Function, errroCallBack: Function) => {
         try {
             if (productId) {
                 //Call update product function

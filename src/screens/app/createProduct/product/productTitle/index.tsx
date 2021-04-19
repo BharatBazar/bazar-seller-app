@@ -5,13 +5,13 @@ import ProductDetailsHeading from '../component/ProductDetailsHeading';
 import { marTop } from '../component/generalConfig';
 import ProductContainer from '../component/productContainerHOC';
 import ProductButton from '../component/ProductButton';
-import { IRProduct } from '../../../../../server/apis/product/product.interface';
+import { IProduct } from '../../../../../server/apis/product/product.interface';
 
 export interface ProductTitleProps {
     title?: string;
     subTitle?: string;
     update: boolean;
-    postDataToServer: (a: IRProduct, b: () => void, c: (error: string) => void) => void;
+    postDataToServer: (a: IProduct, b: () => void, c: (error: string) => void) => void;
 }
 
 const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, postDataToServer }) => {

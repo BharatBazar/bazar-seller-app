@@ -61,7 +61,7 @@ const Product: React.FC<ProductProps> = ({ navigation }) => {
                 </View>
             </View>
             <View style={{ flex: 1 }}>
-                <ProductTab />
+                <ProductTab navigation={navigation} />
             </View>
         </View>
     );

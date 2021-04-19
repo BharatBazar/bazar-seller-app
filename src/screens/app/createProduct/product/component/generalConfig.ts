@@ -1,5 +1,5 @@
 import { DataHandling } from './../../../../../server/DataHandlingHOC';
-import { IRProduct, Product, productStatus } from './../../../../../server/apis/product/product.interface';
+import { IProduct, Product, productStatus } from './../../../../../server/apis/product/product.interface';
 import { APIcreateProduct, APIupdateProduct } from './../../../../../server/apis/product/produt.api';
 
 import { getHP } from '../../../../../common/dimension';
@@ -38,10 +38,10 @@ export const generalProductSchema: Product = {
 
 const dataHandling = new DataHandling('');
 
-export async function updateProduct(data: IRProduct) {
+export async function updateProduct(data: IProduct) {
     return await dataHandling.fetchData(APIupdateProduct, data);
 }
 
-export async function createProduct(data: IRProduct) {
+export async function createProduct(data: IProduct) {
     return await dataHandling.fetchData(APIcreateProduct, data);
 }
