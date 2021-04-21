@@ -16,7 +16,7 @@ const WrappedRectangleButton: React.SFC<WrappedRectangleButtonProps> = ({ contai
             onPress={() => {
                 onPress();
             }}
-            style={containerStyle}
+            style={[containerStyle]}
         >
             {children && children}
         </Ripple>

@@ -12,16 +12,26 @@ export interface ProductTitleProps {
     placeholder: string;
     value: string;
     onChangeText: (a: string) => void;
+    height?: number;
+    multiline?: boolean;
 }
 
-const ProductTextInput: React.FC<ProductTitleProps> = ({ placeholder, value, onChangeText }) => {
+const ProductTextInput: React.FC<ProductTitleProps> = ({ placeholder, value, onChangeText, height, multiline }) => {
     return (
         <WrappedTextInput
             value={value}
+            multiline={multiline}
             onChangeText={onChangeText}
             placeholder={placeholder}
-            containerStyle={[border, MT(0.15), HP(0.4), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
-            textInputStyle={[FS(fs12), HP(0.4)]}
+            containerStyle={[
+                border,
+                MT(0.15),
+                HP(height || 0.4),
+                borRad,
+                AIC('flex-start'),
+                { paddingLeft: getHP(0.1) },
+            ]}
+            textInputStyle={[FS(fs12), HP(height || 0.4)]}
         />
     );
 };

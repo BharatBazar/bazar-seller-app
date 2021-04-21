@@ -66,14 +66,14 @@ const headerTitle: headerTitleI[] = [
         title: 'Quantity',
     },
     {
-        title: 'MRP',
+        title: 'MRP (RS)',
     },
     {
-        title: 'SP',
+        title: 'SP (RS)',
     },
 ];
 
-const columnFlex = [2, 4, 2, 2];
+const columnFlex = [1, 4, 3, 3];
 
 const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) => {
     const [product, setProduct] = useState({ color, size });
@@ -173,7 +173,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index }) 
                         </View>
                     ))}
                 <View style={[FDR(), JCC('flex-end'), MT(0.2)]}>
-                    <ProductButton buttonText={'Save'} onPress={() => {}} />
+                    {/* <ProductButton buttonText={'Save'} onPress={() => {}} /> */}
                     {/* <TextButton
                         text={'Create'}
                         onPress={() => {}}

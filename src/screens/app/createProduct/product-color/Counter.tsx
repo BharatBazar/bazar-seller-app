@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { fs16, fs20 } from '../../../../common';
+import { fs15, fs16, fs20 } from '../../../../common';
 import { colorCode, mainColor } from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import TextButton from '../../../component/TextButton';
@@ -48,11 +48,13 @@ class CounterComponent extends Component<Props, State> {
                 <WrappedTextInput
                     value={counter.toString()}
                     containerStyle={{
-                        height: getHP(0.4),
-                        borderWidth: 1,
-                        width: getWP(1),
+                        height: getHP(0.35),
+                        borderWidth: 0.5,
+                        paddingHorizontal: getWP(0.1),
+                        //width: getWP(1),
                         marginHorizontal: getWP(0.1),
                     }}
+                    textInputStyle={{ textAlign: 'center', fontSize: fs15 }}
                 />
 
                 <TextButton
@@ -73,9 +75,9 @@ const styles = StyleSheet.create({
     containerStyle: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: getHP(0.3),
-        width: getHP(0.3),
-        borderRadius: getHP(0.08),
+        height: getHP(0.25),
+        width: getHP(0.25),
+        borderRadius: getHP(0.04),
     },
 });
 

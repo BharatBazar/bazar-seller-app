@@ -6,11 +6,12 @@ import ProductTitle from './productTitle';
 import ProductDescription from './productDescription/index';
 import ProductColor from './productColor';
 import { IProduct, Product } from '../../../../server/apis/product/product.interface';
+import { IPostDataToServer } from './component/generalConfig';
 
 export interface ProductCommonDetailsProps {
     productDetails: Product;
     update: boolean;
-    postDataToServer: (a: IProduct, b: () => void, c: (error: string) => void) => void;
+    postDataToServer: IPostDataToServer;
 }
 
 const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDetails, update, postDataToServer }) => {
@@ -26,6 +27,7 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDeta
             <ProductDescription
                 description={productDetails['productDescription']}
                 update={productDetails['productDescription'] ? true : false}
+                postDataToServer={postDataToServer}
             />
 
             <ShowPrice showPrice={productDetails['showPrice']} />

@@ -97,43 +97,59 @@ export const FS = (fontSize: number): TextStyle => {
     return { fontSize };
 };
 
-export const MLS = (percentage: number): ViewStyle => {
-    return { marginLeft: getHP(percentage || 0.2) };
+export const ML = (percentage: number): ViewStyle => {
+    return { marginLeft: getWP(percentage || 0.2) };
 };
-export const MRS = (percentage: number): ViewStyle => {
-    return { marginRight: getHP(percentage || 0.2) };
-};
-
-export const PLS = (percentage: number): ViewStyle => {
-    return { paddingLeft: getHP(percentage || 0.2) };
+export const MR = (percentage: number): ViewStyle => {
+    return { marginRight: getWP(percentage || 0.2) };
 };
 
-export const PRS = (percentage: number): ViewStyle => {
-    return { paddingRight: getHP(percentage || 0.2) };
+export const PL = (percentage: number): ViewStyle => {
+    return { paddingLeft: getWP(percentage || 0.2) };
 };
 
-export const provideShadow =
+export const PR = (percentage: number): ViewStyle => {
+    return { paddingRight: getWP(percentage || 0.2) };
+};
+
+export const provideShadowAndroid = (elevation?: number): ViewStyle => {
+    return { elevation: elevation || 1 };
+};
+
+export const BBR = (value: number): ViewStyle => {
+    return { borderBottomRightRadius: value, borderBottomLeftRadius: value };
+};
+
+export const provideShadowIos = (
+    shadowColor?: string,
+    shadowOffSet?: {
+        width: number;
+        height: number;
+    },
+    shadowOpacity?: number,
+    shadowRadius?: number,
+): ViewStyle => {
+    return {
+        shadowColor: shadowColor || 'black',
+        shadowOffset: shadowOffSet || { width: 0, height: 0 },
+        shadowOpacity: shadowOpacity,
+        shadowRadius: shadowRadius,
+    };
+};
+
+export const provideShadow = (height?: number) =>
     Platform.OS == 'android'
-        ? (elevation?: number): ViewStyle => {
-              return { elevation: elevation || 1 };
-          }
-        : (
-              shadowColor?: string,
-              shadowOffSet?: {
-                  width: number;
-                  height: number;
-              },
-              shadowOpacity?: number,
-              shadowRadius?: number,
-          ): ViewStyle => {
-              return {
-                  shadowColor: shadowColor || 'black',
-                  shadowOffset: shadowOffSet || { width: 0, height: 0 },
-                  shadowOpacity: shadowOpacity,
-                  shadowRadius: shadowRadius,
-              };
+        ? { elevation: 2 }
+        : {
+              shadowColor: 'black',
+              shadowOffset: { width: 0, height: height || 1 },
+              shadowOpacity: 0.2,
+              shadowRadius: 1,
           };
 
+export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
+
+export const generalSpacing = getHP(0.3);
 export const commonStyles = StyleSheet.create({
     cntr: {
         alignItems: 'center',

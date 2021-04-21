@@ -45,3 +45,5 @@ export async function updateProduct(data: IProduct) {
 export async function createProduct(data: IProduct) {
     return await dataHandling.fetchData(APIcreateProduct, data);
 }
+
+export type IPostDataToServer = (a: IProduct, b: () => void, c: (error: string) => void) => void;

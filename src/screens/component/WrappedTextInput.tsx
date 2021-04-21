@@ -40,6 +40,7 @@ interface Props {
     rest?: any;
     eyeButtonHeight?: number;
     paddingLeft?: number;
+    multiline?: boolean;
 }
 
 interface State {
@@ -70,6 +71,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             placeholderTextColor,
             errorContainer,
             eyeButtonHeight,
+            multiline,
             paddingLeft,
             onChangeText,
             autoCapitalize,
@@ -82,6 +84,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                         value={value}
                         autoCapitalize={autoCapitalize || 'none'}
                         onChangeText={onChangeText}
+                        multiline={multiline || false}
                         autoCorrect={false}
                         placeholder={placeholder}
                         placeholderTextColor={placeholderTextColor || '#1A202C4D'}

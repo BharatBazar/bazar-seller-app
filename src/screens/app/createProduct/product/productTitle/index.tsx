@@ -49,6 +49,8 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, p
                 <ProductTextInput
                     placeholder={'Product Subtitle'}
                     value={productSubTitle}
+                    multiline={true}
+                    height={0.7}
                     onChangeText={setProductSubTitle}
                 />
             </View>

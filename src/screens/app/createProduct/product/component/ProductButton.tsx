@@ -11,9 +11,10 @@ export interface ProductButtonProps {
     onPress: Function;
     isLoading?: boolean;
     disabled?: boolean;
+    buttonWidth?: number;
 }
 
-const ProductButton: React.SFC<ProductButtonProps> = ({ buttonText, onPress, isLoading, disabled }) => {
+const ProductButton: React.SFC<ProductButtonProps> = ({ buttonText, onPress, isLoading, disabled, buttonWidth }) => {
     return (
         <TextButton
             text={buttonText}
@@ -28,7 +29,7 @@ const ProductButton: React.SFC<ProductButtonProps> = ({ buttonText, onPress, isL
                     alignSelf: 'flex-start',
 
                     height: getHP(0.3),
-                    width: '40%',
+                    width: buttonWidth || '40%',
                     justifyContent: 'center',
                 },
                 padHor,
