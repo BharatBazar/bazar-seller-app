@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { BGCOLOR, commonStyles, componentProps, provideShadow } from '../../../../../common/styles';
-import WrappedText from '../../../../component/WrappedText';
 import { getHP } from '../../../../../common/dimension';
 import { colorCode, productColor } from '../../../../../common/color';
 import ColorModal from '../../component/ColorModal';
 import TextButton from '../../../../component/TextButton';
-import ProductContainer from '../component/productContainerHOC';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import { fs18 } from '../../../../../common';
 import ProductDetails from '../../product-color/ProductDetails';
 import { generalSpacing, marHor, marTop } from '../component/generalConfig';
 
@@ -21,19 +18,9 @@ export interface Icolor {
     selected: boolean;
 }
 
-export interface Isize {
-    value: number;
-    selected: boolean;
-}
+export type Isize = number[];
 
-const size: Isize[] = [
-    { value: 20, selected: false },
-    { value: 21, selected: false },
-    { value: 22, selected: false },
-    { value: 23, selected: false },
-    { value: 24, selected: false },
-    { value: 25, selected: false },
-];
+const size: Isize = [20, 21, 22, 23, 24, 25, 26, 27];
 
 const productStructure: ProductColor = {
     productSize: size,
@@ -45,11 +32,20 @@ const ProductColor: React.FC<ProductColorProps> = () => {
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
     const [product, setProduct] = React.useState<ProductColor[]>([]);
 
-    const updateColorArray = (index: number) => {
+    const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let updatedColors: Icolor[] = [...colors];
         updatedColors[index].selected = !updatedColors[index].selected;
         setColors(updatedColors.sort((item) => !item.selected));
-        setChosenColor(updatedColors.filter((item) => item.selected));
+        if (!updateColorArray) {
+            setChosenColor(updatedColors.filter((item) => item.selected));
+        }
+    };
+
+    const deleteColor = (index: number) => {
+        let updatedColors: Icolor[] = [...chosenColor];
+        updateColorArray(index, true);
+        updatedColors.splice(index, 1);
+        setChosenColor(updatedColors);
     };
 
     React.useEffect(() => {
@@ -95,7 +91,15 @@ const ProductColor: React.FC<ProductColorProps> = () => {
                 colors={colors}
             />
             {chosenColor.map((color, index) => (
-                <ProductDetails size={[...size]} index={index} color={color} />
+                <ProductDetails
+                    key={color.colorCode}
+                    size={[...size]}
+                    index={index}
+                    color={color}
+                    onDelete={() => {
+                        deleteColor(index);
+                    }}
+                />
             ))}
         </View>
     );
