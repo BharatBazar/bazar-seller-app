@@ -49,18 +49,20 @@ export interface IProduct {
 }
 
 export interface IProductColor {
-    productParent: string;
+    parentId: string;
     productColor: string;
     productIncludedColor: [string];
     productPhotos: [string];
+    _id: string;
+    productSize: [string];
 }
 
 export interface IProductSize {
+    parentId: string;
     productMrp: string;
     productSp: string;
     productQuantity: string;
     productSize: string;
-    productParent: string;
 }
 
 export interface IRProduct extends CommonApiResponse {
@@ -71,4 +73,9 @@ export interface IProducts extends CommonApiResponse {
     payload: IProduct[];
 }
 
-export interface IProductColorModel extends Document {}
+export interface IRProductColor extends CommonApiResponse {
+    payload: IProductSize;
+}
+export interface IRProductSize extends CommonApiResponse {
+    payload: IProduct;
+}

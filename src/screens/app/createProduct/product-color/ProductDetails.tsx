@@ -14,6 +14,7 @@ import TableHeader from './component/TableHeader';
 import ProductContainer from '../product/component/productContainerHOC';
 import PhotoUplaod from './component/PhotoUpload';
 
+
 export interface ProductDetailsProps {
     color: Icolor;
     size: Isize;
@@ -124,23 +125,29 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({ color, size, index, on
                         setValue={() => {}}
                     />
                 )}
-                {Heading(
-                    'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
-                    color.colorCode,
+
+                {selectedSize.length != 0 && (
+                    <>
+                        {Heading(
+                            'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
+                            color.colorCode,
+                        )}
+                        {index == 0 && (
+                            <WrappedCheckBox
+                                placeholder={'Auto fill MRP, SP for each size and update manually.'}
+                                value={true}
+                                setValue={() => {}}
+                            />
+                        )}
+                        <TableHeader headerTitle={headerTitle} flex={columnFlex} />
+
+                        {selectedSize.map((size: number, index: number) => (
+                            <View key={color + index}>
+                                <ProductPrice size={size} flex={columnFlex} onDelete={() => deleteSize(index)} />
+                            </View>
+                        ))}
+                    </>
                 )}
-                {index == 0 && (
-                    <WrappedCheckBox
-                        placeholder={'Auto fill MRP, SP for each size and update manually.'}
-                        value={true}
-                        setValue={() => {}}
-                    />
-                )}
-                {<TableHeader headerTitle={headerTitle} flex={columnFlex} />}
-                {selectedSize.map((size: number, index: number) => (
-                    <View key={color + index}>
-                        <ProductPrice size={size} flex={columnFlex} onDelete={() => deleteSize(index)} />
-                    </View>
-                ))}
             </View>
         </ProductContainer>
     );

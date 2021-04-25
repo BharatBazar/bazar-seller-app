@@ -65,9 +65,10 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     ...data,
                     _id: productId,
                 };
-                const response = await updateProduct(product);
+                const response: IRProduct = await updateProduct(product);
                 if (response.status == 1) {
                     successCallBack();
+                    setProductDetails(response.payload);
                     SimpleToast.show('Saved', SimpleToast.SHORT);
                 } else {
                     errroCallBack(response.message);
@@ -86,6 +87,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     successCallBack();
 
                     setProductId(response.payload._id);
+                    setProductDetails(response.payload);
                 } else {
                     errroCallBack(response.message);
                 }

@@ -7,9 +7,13 @@ import ColorModal from '../../component/ColorModal';
 import TextButton from '../../../../component/TextButton';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
 import ProductDetails from '../../product-color/ProductDetails';
-import { generalSpacing, marHor, marTop } from '../component/generalConfig';
+import { generalSpacing, IPostDataToServer, marHor, marTop } from '../component/generalConfig';
 
-export interface ProductColorProps {}
+export interface ProductColorProps {
+    update: boolean;
+    postDataToServer: IPostDataToServer;
+    productId?: string;
+}
 
 export interface Icolor {
     name: string;

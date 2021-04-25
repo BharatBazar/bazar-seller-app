@@ -1,6 +1,7 @@
 import { IapiEndPOint } from './../common.interface';
 import { makeRequest } from '../common.interface';
-import { IProductColor, IProduct, IProducts, Product } from './product.interface';
+import { IProductColor, IProduct, IProducts, IProductSize, IRProductColor, IRProductSize } from './product.interface';
+import axios from 'axios';
 
 const apiEndPointProduct: IapiEndPOint = {
     createProduct: {
@@ -21,7 +22,9 @@ const apiEndPointProduct: IapiEndPOint = {
     },
 };
 
-export async function APIcreateProduct(data: Product): Promise<IProduct> {
+//Product apis
+
+export async function APIcreateProduct(data: IProduct): Promise<IProduct> {
     const options = {
         ...apiEndPointProduct.createProduct,
         data,
@@ -39,7 +42,7 @@ export async function APIupdateProduct(data: IProduct): Promise<IProduct> {
     return makeRequest(options);
 }
 
-export async function APIcreateProductColor(data: Product): Promise<IProduct> {
+export async function APIcreateProductColor(data: IProduct): Promise<IProduct> {
     const options = {
         ...apiEndPointProduct.createProduct,
         data,
@@ -48,7 +51,7 @@ export async function APIcreateProductColor(data: Product): Promise<IProduct> {
     return makeRequest(options);
 }
 
-export async function APIgetProduct(data: Product): Promise<IProduct> {
+export async function APIgetProduct(data: IProduct): Promise<IProduct> {
     const options = {
         ...apiEndPointProduct.getProduct,
         data,
@@ -57,11 +60,43 @@ export async function APIgetProduct(data: Product): Promise<IProduct> {
     return makeRequest(options);
 }
 
-export async function APIgetAllProduct(data: { query: Product }): Promise<IProducts> {
+export async function APIgetAllProduct(data: { query: IProduct }): Promise<IProducts> {
     const options = {
         ...apiEndPointProduct.getProducts,
         data,
     };
 
     return makeRequest(options);
+}
+
+//Product color api
+
+export async function APICreateProductColor(data: IProductColor): Promise<IRProductColor> {
+    return axios.post('/productColor/create', data).then((r) => r.data);
+}
+
+export async function APIDeleteProductColor(data: { _id: string; parentId?: string }): Promise<IRProductColor> {
+    return axios
+        .delete('/productColor/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''))
+        .then((r) => r.data);
+}
+
+export async function APIUpdateProductColor(data: IProductColor): Promise<IRProductColor> {
+    return axios.post('/productColor/update', data).then((r) => r.data);
+}
+
+//Product size api
+
+export async function APICreateProductSize(data: IProductSize): Promise<IRProductSize> {
+    return axios.post('/productSize/create', data).then((r) => r.data);
+}
+
+export async function APIDeleteProductSize(data: { _id: string; parentId?: string }): Promise<IRProductSize> {
+    return axios
+        .delete('/productSize/delete?' + '_id=' + (data.parentId ? '&parentId=' + data.parentId : ''))
+        .then((r) => r.data);
+}
+
+export async function APIUpdateProductSize(data: IProductSize): Promise<IRProductSize> {
+    return axios.post('/productSize/update', data).then((r) => r.data);
 }
