@@ -1,3 +1,4 @@
+import { IProductColor } from './product.interface';
 import { CommonApiResponse } from '../common.interface';
 
 export enum productStatus {
@@ -17,27 +18,7 @@ export interface IProduct {
     //Above field will have predifined information about the size, unit etc.
     productTitle?: string;
     productSubtitle?: string;
-    productColor?: [string];
-    showPrice?: boolean; //Whether dukandar wants to show price to customer or not
-    productStatus?: productStatus;
-    productRating?: number;
-    productNew?: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    productNewDeadline?: Date;
-    productDescription?: string; // Will be a audio as audio is better to understand in common language
-    productDiscount?: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
-    productDiscountDeadline?: [Date];
-}
-
-export interface IProduct {
-    //Also i need to think about how i will be dealing with language preferences how can i use multiple language.
-
-    productCategory?: string;
-    productSubCategory1?: string;
-    productSubCategory2?: string;
-    //Above field will have predifined information about the size, unit etc.
-    productTitle?: string;
-    productSubtitle?: string;
-    productColor?: [string];
+    productColor: [IProductColor] | [];
     showPrice?: boolean; //Whether dukandar wants to show price to customer or not
     productStatus?: productStatus;
     productRating?: number;
@@ -50,19 +31,21 @@ export interface IProduct {
 
 export interface IProductColor {
     parentId: string;
-    productColor: string;
-    productIncludedColor: [string];
-    productPhotos: [string];
+    productColorName: string;
+    productColorCode: string;
+    productIncludedColor: [string] | [];
+    productPhotos: [string] | [];
     _id: string;
-    productSize: [string];
+    productSize: [IProductSize] | [];
 }
 
 export interface IProductSize {
     parentId: string;
     productMrp: string;
     productSp: string;
-    productQuantity: string;
+    productQuantity: number;
     productSize: string;
+    _id: string;
 }
 
 export interface IRProduct extends CommonApiResponse {
@@ -74,8 +57,8 @@ export interface IProducts extends CommonApiResponse {
 }
 
 export interface IRProductColor extends CommonApiResponse {
-    payload: IProductSize;
+    payload: IProductColor;
 }
 export interface IRProductSize extends CommonApiResponse {
-    payload: IProduct;
+    payload: IProductSize;
 }

@@ -1,13 +1,13 @@
 import { FontFamilies } from '@app/constants';
 import React, { Component } from 'react';
 import { View, TouchableHighlight, Text } from 'react-native';
-import { mainColor } from '../../../../../common/color';
-import { getHP, getWP } from '../../../../../common/dimension';
-import { BGCOLOR, BR, commonStyles, MH } from '../../../../../common/styles';
-import WrappedRectangleButton from '../../../../component/WrappedRectangleButton';
+import { mainColor } from '../../../../../../../common/color';
+import { getHP, getWP } from '../../../../../../../common/dimension';
+import { BGCOLOR, BR, commonStyles, MH } from '../../../../../../../common/styles';
+import WrappedRectangleButton from '../../../../../../component/WrappedRectangleButton';
 
 interface Props {
-    size: number;
+    size: string;
     selected: boolean;
     onPress: Function;
 }

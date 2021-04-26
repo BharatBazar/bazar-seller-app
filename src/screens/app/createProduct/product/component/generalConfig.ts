@@ -1,6 +1,20 @@
 import { DataHandling } from './../../../../../server/DataHandlingHOC';
-import { IProduct, Product, productStatus } from './../../../../../server/apis/product/product.interface';
-import { APIcreateProduct, APIupdateProduct } from './../../../../../server/apis/product/produt.api';
+import {
+    IProduct,
+    productStatus,
+    IProductColor,
+    IProductSize,
+} from './../../../../../server/apis/product/product.interface';
+import {
+    APIcreateProduct,
+    APICreateProductColor,
+    APICreateProductSize,
+    APIDeleteProductColor,
+    APIDeleteProductSize,
+    APIupdateProduct,
+    APIUpdateProductColor,
+    APIUpdateProductSize,
+} from './../../../../../server/apis/product/produt.api';
 
 import { getHP } from '../../../../../common/dimension';
 import { PH, PV, BR } from '../../../../../common/styles';
@@ -19,13 +33,13 @@ export const border = {
     borderWidth: 0.5,
 };
 
-export const generalProductSchema: Product = {
+export const generalProductSchema: IProduct = {
     productCategory: '',
     productSubCategory1: '',
     productSubCategory2: '',
     productTitle: '',
     productSubtitle: '',
-    productColor: [''],
+    productColor: [],
     showPrice: false, //Whether dukandar wants to show price to customer or not
     productStatus: productStatus.NOTCOMPLETED,
     productRating: undefined,
@@ -36,14 +50,55 @@ export const generalProductSchema: Product = {
     productDiscountDeadline: undefined,
 };
 
+export const generalProductColorSchema: IProductColor = {
+    productPhotos: [],
+    productSize: [],
+    productIncludedColor: [],
+    productColorName: '',
+    productColorCode: '',
+    parentId: '',
+    _id: '',
+};
+
+export const generalProductSizeSchema: IProductSize = {
+    productMrp: '',
+    productSize: '',
+    productQuantity: 1,
+    productSp: '',
+    parentId: '',
+    _id: '',
+};
+
 const dataHandling = new DataHandling('');
+
+export async function createProduct(data: IProduct) {
+    return await dataHandling.fetchData(APIcreateProduct, data);
+}
+
+export async function createProductColor(data: IProductColor) {
+    return await dataHandling.fetchData(APICreateProductColor, data);
+}
+
+export async function createProductSize(data: IProductSize) {
+    return await dataHandling.fetchData(APICreateProductSize, data);
+}
 
 export async function updateProduct(data: IProduct) {
     return await dataHandling.fetchData(APIupdateProduct, data);
 }
+export async function updateProductColor(data: IProductColor) {
+    return await dataHandling.fetchData(APIUpdateProductColor, data);
+}
+export async function updateProductSize(data: IProductSize) {
+    return await dataHandling.fetchData(APIUpdateProductSize, data);
+}
 
-export async function createProduct(data: IProduct) {
-    return await dataHandling.fetchData(APIcreateProduct, data);
+export async function deleteProductColor(data: { _id: string; parentId?: string }) {
+    return await dataHandling.fetchData(APIDeleteProductColor, data);
+}
+
+export async function deleteProductSize(data: { _id: string; parentId?: string }) {
+    return await dataHandling.fetchData(APIDeleteProductSize, data);
 }
 
 export type IPostDataToServer = (a: IProduct, b: () => void, c: (error: string) => void) => void;

@@ -6,13 +6,15 @@ import { colorCode, productColor } from '../../../../../common/color';
 import ColorModal from '../../component/ColorModal';
 import TextButton from '../../../../component/TextButton';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import ProductDetails from '../../product-color/ProductDetails';
+import ProductDetails from './product-color/ProductDetails';
 import { generalSpacing, IPostDataToServer, marHor, marTop } from '../component/generalConfig';
+import { IProductColor } from '../../../../../server/apis/product/product.interface';
 
 export interface ProductColorProps {
     update: boolean;
     postDataToServer: IPostDataToServer;
     productId?: string;
+    setProductId: (productId: string) => void;
 }
 
 export interface Icolor {
@@ -20,21 +22,27 @@ export interface Icolor {
     colorCode: string;
     rgbaColorCode?: string;
     selected: boolean;
+    productColors: IProductColor[];
 }
 
-export type Isize = number[];
+export type Isize = string[];
 
-const size: Isize = [20, 21, 22, 23, 24, 25, 26, 27];
+const size: Isize = ['20', '21', '22', '23', '24', '25', '26', '27'];
 
 const productStructure: ProductColor = {
     productSize: size,
 };
 
-const ProductColor: React.FC<ProductColorProps> = () => {
+const ProductColor: React.FC<ProductColorProps> = ({
+    update,
+    postDataToServer,
+    productId,
+    setProductId,
+    productColors,
+}) => {
     const [colors, setColors] = React.useState<Icolor[]>([]);
-    const [chosenColor, setChosenColor] = React.useState<Icolor[]>([]);
+    const [chosenColor, setChosenColor] = React.useState<IProductColor[]>(productColors);
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
-    const [product, setProduct] = React.useState<ProductColor[]>([]);
 
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let updatedColors: Icolor[] = [...colors];
@@ -60,6 +68,7 @@ const ProductColor: React.FC<ProductColorProps> = () => {
         setColors(data);
         return () => {};
     }, []);
+
     return (
         <View
             style={[
@@ -96,10 +105,12 @@ const ProductColor: React.FC<ProductColorProps> = () => {
             />
             {chosenColor.map((color, index) => (
                 <ProductDetails
+                    setProductId={setProductId}
                     key={color.colorCode}
                     size={[...size]}
                     index={index}
                     color={color}
+                    productId={productId | undefined}
                     onDelete={() => {
                         deleteColor(index);
                     }}

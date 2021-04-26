@@ -12,9 +12,17 @@ export interface ProductCommonDetailsProps {
     productDetails: IProduct;
     update: boolean;
     postDataToServer: IPostDataToServer;
+    setProductId: (productId: string) => void;
+    productId?: string;
 }
 
-const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDetails, update, postDataToServer }) => {
+const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
+    productDetails,
+    update,
+    postDataToServer,
+    setProductId,
+    productId,
+}) => {
     return (
         <View>
             <ProductTitle
@@ -33,9 +41,10 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({ productDeta
             <ShowPrice showPrice={productDetails['showPrice'] || false} />
             <NewProduct />
             <ProductColor
+                setProductId={setProductId}
                 update={update}
                 postDataToServer={postDataToServer}
-                productId={productDetails['_id'] || undefined}
+                productId={productId || undefined}
             />
         </View>
     );

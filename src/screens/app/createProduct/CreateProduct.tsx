@@ -10,6 +10,7 @@ import { AIC, FLEX, JCC } from '../../../common/styles';
 import { IProduct, IRProduct, productStatus } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/produt.api';
+import { mainColor } from '../../../common/color';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -28,34 +29,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
 }) => {
     const [productId, setProductId] = useState(_id);
     const [productDetails, setProductDetails] = useState<IProduct>(generalProductSchema);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    React.useEffect(() => {
-        if (update) {
-            //Make api call
-            fetchProduct();
-        } else {
-            setLoading(false);
-        }
-    }, []);
-
-    const fetchProduct = async () => {
-        try {
-            setLoading(true);
-            const response: IRProduct = await APIgetProduct({
-                _id: productId,
-            });
-            if (response.status == 1) {
-                setProductDetails(response.payload);
-                setLoading(false);
-            } else {
-                Alert.alert(response.message);
-                setLoading(false);
-            }
-        } catch (error) {
-            Alert.alert(error.message);
-        }
-    };
+    React.useEffect(() => {}, []);
 
     const postProductDataToServer = async (data: IProduct, successCallBack: Function, errroCallBack: Function) => {
         try {
@@ -76,16 +52,11 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             } else {
                 //Call create product function with some data
                 const product = {
-                    productCategory: 'Footwear',
-                    productSubCategory1: 'Mens',
-                    productSubCategory2: 'Sports Shoes',
                     ...data,
                 };
                 const response = await createProduct(product);
-                console.log(response);
                 if (response.status == 1) {
                     successCallBack();
-
                     setProductId(response.payload._id);
                     setProductDetails(response.payload);
                 } else {
@@ -107,13 +78,15 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     }
     return (
         <View style={{ flex: 1 }}>
-            <StatusBar />
+            <StatusBar statusBarColor={mainColor} />
             <Header headerTitle={'Create Product'} onPressBack={navigation.goBack} />
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                 <ProductCommonDetails
                     productDetails={productDetails}
                     update={update}
                     postDataToServer={postProductDataToServer}
+                    setProductId={setProductId}
+                    productId={productId}
                 />
             </ScrollView>
         </View>

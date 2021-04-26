@@ -1,6 +1,14 @@
 import { IapiEndPOint } from './../common.interface';
 import { makeRequest } from '../common.interface';
-import { IProductColor, IProduct, IProducts, IProductSize, IRProductColor, IRProductSize } from './product.interface';
+import {
+    IProductColor,
+    IProduct,
+    IProducts,
+    IProductSize,
+    IRProductColor,
+    IRProductSize,
+    IRProduct,
+} from './product.interface';
 import axios from 'axios';
 
 const apiEndPointProduct: IapiEndPOint = {
@@ -20,11 +28,15 @@ const apiEndPointProduct: IapiEndPOint = {
         url: '/product/getAllProduct',
         method: 'post',
     },
+    deleteProduct: {
+        url: '/product/delete',
+        method: 'delete',
+    },
 };
 
 //Product apis
 
-export async function APIcreateProduct(data: IProduct): Promise<IProduct> {
+export async function APIcreateProduct(data: IProduct): Promise<IRProduct> {
     const options = {
         ...apiEndPointProduct.createProduct,
         data,
@@ -33,7 +45,7 @@ export async function APIcreateProduct(data: IProduct): Promise<IProduct> {
     return makeRequest(options);
 }
 
-export async function APIupdateProduct(data: IProduct): Promise<IProduct> {
+export async function APIupdateProduct(data: IProduct): Promise<IRProduct> {
     const options = {
         ...apiEndPointProduct.updateProduct,
         data,
@@ -42,13 +54,8 @@ export async function APIupdateProduct(data: IProduct): Promise<IProduct> {
     return makeRequest(options);
 }
 
-export async function APIcreateProductColor(data: IProduct): Promise<IProduct> {
-    const options = {
-        ...apiEndPointProduct.createProduct,
-        data,
-    };
-
-    return makeRequest(options);
+export async function APIdeleteProduct(data: { _id: string }): Promise<IRProduct> {
+    return makeRequest({ url: '/product/delete', method: 'delete', data });
 }
 
 export async function APIgetProduct(data: IProduct): Promise<IProduct> {

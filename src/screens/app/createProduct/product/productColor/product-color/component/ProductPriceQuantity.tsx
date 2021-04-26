@@ -1,31 +1,26 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { getHP, getWP } from '../../../../../common/dimension';
-import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV } from '../../../../../common/styles';
-import WrappedText from '../../../../component/WrappedText';
-import WrappedTextInput from '../../../../component/WrappedTextInput';
+import { getHP, getWP } from '../../../../../../../common/dimension';
+import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV } from '../../../../../../../common/styles';
+import WrappedText from '../../../../../../component/WrappedText';
+import WrappedTextInput from '../../../../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './Counter';
-import { fs12, fs15, fs20, fs29 } from '../../../../../common';
-import { colorCode, mainColor } from '../../../../../common/color';
-import ProductButton from '../../product/component/ProductButton';
-import TextButton from '../../../../component/TextButton';
+import { fs12, fs15, fs20, fs29 } from '../../../../../../../common';
+import { colorCode, mainColor } from '../../../../../../../common/color';
+import ProductButton from '../../../component/ProductButton';
+import TextButton from '../../../../../../component/TextButton';
+import { IProductSize } from '../../../../../../../server/apis/product/product.interface';
 
 export interface ProductPriceProps {
-    size: number;
     flex: number[];
-    productMrp: string;
-    productSp: string;
-    productQuantity: number;
+    productSize: IProductSize;
     onDelete: Function;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
-    size,
     flex,
-    productMrp,
-    productSp,
-    productQuantity,
+    productSize: { productSize, productMrp, productQuantity, productSp },
     onDelete,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productQuantity || 1);

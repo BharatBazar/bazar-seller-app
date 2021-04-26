@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import WrappedText from '../../../../component/WrappedText';
-import { MT } from '../../../../../common/styles';
-import WrappedFeatherIcon from '../../../../component/WrappedFeatherIcon';
-import { fs12, fs13, fs16, fs19, fs20, fs28, fs40 } from '../../../../../common';
-import { colorCode, mainColor } from '../../../../../common/color';
-import { Heading } from '../ProductDetails';
-import { getHP } from '../../../../../common/dimension';
+import WrappedText from '../../../../../../component/WrappedText';
+import { MT } from '../../../../../../../common/styles';
+import WrappedFeatherIcon from '../../../../../../component/WrappedFeatherIcon';
+import { fs13, fs28 } from '../../../../../../../common';
+import { mainColor } from '../../../../../../../common/color';
+
+import { getHP } from '../../../../../../../common/dimension';
 
 export interface PhotoUploadProps {}
 
@@ -32,11 +32,8 @@ export default PhotoUpload;
 
 const styles = StyleSheet.create({
     photoContainer: {
-        // height: getWP(2.4),
-        // width: getWP(2.4),
         alignItems: 'center',
         justifyContent: 'center',
-        borderWidth: 1,
         borderColor: mainColor,
         borderRadius: getHP(0.1),
         borderStyle: 'dashed',
@@ -44,7 +41,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         paddingHorizontal: '2%',
         paddingVertical: '4%',
-        backgroundColor: null,
+        backgroundColor: undefined,
     },
     colorStyle: {
         height: getHP(0.2),
