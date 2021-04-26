@@ -25,7 +25,7 @@ const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) 
                 item.selected ? (colorStyle ? {} : { ...commonStyles.shadow }) : {},
             ]}
             onPress={() => {
-                if (!showCancel) {
+                if (!showCancel && !item.selected) {
                     onPress();
                 }
             }}

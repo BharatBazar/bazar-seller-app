@@ -84,7 +84,15 @@ export const H = (value: number): ViewStyle => {
 export const BW = (value: number): ViewStyle => {
     return { borderWidth: value };
 };
-
+export const BSW = (value: number): ViewStyle => {
+    return { borderRightWidth: value, borderLeftWidth: value };
+};
+export const BBW = (value: number): ViewStyle => {
+    return { borderWidth: value };
+};
+export const BTW = (value: number): ViewStyle => {
+    return { borderBottomWidth: value };
+};
 export const BC = (color: string): ViewStyle => {
     return { borderColor: color };
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import WrappedSize from './component/WrappedSize';
 import WrappedCheckBox from '../../../../../component/WrappedCheckBox';
 import WrappedText from '../../../../../component/WrappedText';
@@ -17,6 +17,7 @@ import {
     createProductColor,
     generalProductColorSchema,
     generalProductSizeSchema,
+    IPostDataToServer,
     updateProductColor,
 } from '../../component/generalConfig';
 import { Icolor } from '..';
@@ -45,6 +46,7 @@ export interface ProductDetailsProps {
     setProductId: (productId: string) => void;
     update?: boolean;
     size: string[];
+    postDataToServer: IPostDataToServer;
 }
 export interface headerTitleI {
     title: string;
@@ -70,7 +72,7 @@ const headerTitle: headerTitleI[] = [
 
 const columnFlex = [1.5, 1.5, 3, 2.5, 2.5];
 
-const ProductDetails: React.SFC<ProductDetailsProps> = ({
+const ProductDetails: React.FC<ProductDetailsProps> = ({
     index,
     onDelete,
     productId,
@@ -79,6 +81,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
     update,
     setProductId,
     productColor,
+    postDataToServer,
     size,
 }) => {
     const [selectedSize, setSelectedSize] = useState<IProductSize[]>(productColor.productSize);
@@ -86,7 +89,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
     const [colorId, setcolorId] = useState<string>(productColorId);
     const [loading, setLoading] = useState(true);
 
-    React.useEffect(() => {}, []);
+    React.useEffect(() => {}, [colorId]);
 
     const postProductColorDataToServer = async (
         data: IProductColor,
@@ -103,7 +106,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
                 const response: IRProductColor = await updateProductColor(productColor);
                 if (response.status == 1) {
                     successCallBack();
-                    setProduct(response.payload);
+                    // setProduct(response.payload);
                 } else {
                     errroCallBack(response.message);
                 }
@@ -123,7 +126,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
                         setProductId(response.payload.parentId);
                     }
                     setcolorId(response.payload._id);
-                    setProduct(response.payload);
+                    // setProduct(response.payload);
                 } else {
                     errroCallBack(response.message);
                 }
@@ -134,10 +137,25 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
         }
     };
 
+    const setParentId = (parentId: string) => {
+        let data: string[] = [];
+        data.push(parentId);
+        postDataToServer(
+            { productColor: data },
+            () => {
+                setcolorId(parentId);
+            },
+            (error) => {
+                Alert.alert(error);
+            },
+        );
+    };
+
     const selectSize = (size: string) => {
         let selectedSizes = [...selectedSize];
         selectedSizes.push({ ...generalProductSizeSchema, productSize: size });
-        setSelectedSize(selectedSize);
+
+        setSelectedSize(selectedSizes);
     };
 
     const deleteSize = (index: number) => {
@@ -153,7 +171,7 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
                     <WrappedText text={'Provide details for '} />
                     <WrappedFeatherIcon
                         iconSize={fs20}
-                        iconName={'x'}
+                        iconName={update ? 'trash-2' : 'x'}
                         containerHeight={fs40}
                         onPress={() => {
                             onDelete();
@@ -213,7 +231,13 @@ const ProductDetails: React.SFC<ProductDetailsProps> = ({
 
                         {selectedSize.map((size: IProductSize, index: number) => (
                             <View key={color.colorCode + index}>
-                                <ProductPrice productSize={size} flex={columnFlex} onDelete={() => deleteSize(index)} />
+                                <ProductPrice
+                                    productSize={size}
+                                    parentId={colorId}
+                                    flex={columnFlex}
+                                    onDelete={() => deleteSize(index)}
+                                    setParentId={setParentId}
+                                />
                             </View>
                         ))}
                     </>

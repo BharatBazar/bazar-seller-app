@@ -10,22 +10,54 @@ import { fs12, fs15, fs20, fs29 } from '../../../../../../../common';
 import { colorCode, mainColor } from '../../../../../../../common/color';
 import ProductButton from '../../../component/ProductButton';
 import TextButton from '../../../../../../component/TextButton';
-import { IProductSize } from '../../../../../../../server/apis/product/product.interface';
+import { IProductSize, IRProductSize } from '../../../../../../../server/apis/product/product.interface';
+import { createProductSize, updateProductSize } from '../../../component/generalConfig';
 
 export interface ProductPriceProps {
     flex: number[];
     productSize: IProductSize;
     onDelete: Function;
+    setParentId: Function;
+    parentId: string;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
     flex,
-    productSize: { productSize, productMrp, productQuantity, productSp },
+    productSize: { productSize, productMrp, productQuantity, productSp, _id },
     onDelete,
+    setParentId,
+    parentId,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productQuantity || 1);
     const [mrp, setMrp] = React.useState<string>(productMrp);
     const [sp, setSp] = React.useState<string>(productSp);
+
+    let sizeId = _id;
+
+    const postDataToServer = async () => {
+        let data = { productQuantity: quantity, productSp: sp, productMrp: mrp };
+        try {
+            if (sizeId.length == 0) {
+                const response: IRProductSize = await createProductSize({
+                    ...data,
+                    parentId: parentId || undefined,
+                });
+                if (response.status == 1) {
+                    if (!parentId) {
+                        setParentId(response.payload.parentId);
+                    } else {
+                        sizeId = response.payload._id;
+                    }
+                }
+            } else {
+                const response = await updateProductSize({ ...data, _id: sizeId });
+                if (response.status == 1) {
+                }
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <View>
@@ -33,7 +65,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 <View style={[FLEX(flex[0]), JCC(), AIC()]}>
                     <Icon name={'minus-circle'} color={colorCode.RED} size={fs15} onPress={() => onDelete()} />
                 </View>
-                <WrappedText text={size.toString()} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
+                <WrappedText text={productSize.toString()} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
                 <CounterComponent
                     counter={quantity}
                     setCounter={setQuantity}
@@ -62,7 +94,9 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 <View style={[FDR(), JCC('flex-end'), MV(0.1)]}>
                     <TextButton
                         text={'Save'}
-                        onPress={() => {}}
+                        onPress={() => {
+                            postDataToServer();
+                        }}
                         textProps={{ textColor: colorCode.WHITE, fontSize: fs12 }}
                         containerStyle={[PH(0.4), PV(0.03)]}
                     />

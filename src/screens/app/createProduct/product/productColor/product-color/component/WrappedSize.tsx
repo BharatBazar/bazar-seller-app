@@ -1,9 +1,20 @@
 import { FontFamilies } from '@app/constants';
 import React, { Component } from 'react';
 import { View, TouchableHighlight, Text } from 'react-native';
-import { mainColor } from '../../../../../../../common/color';
+import { colorCode, mainColor } from '../../../../../../../common/color';
 import { getHP, getWP } from '../../../../../../../common/dimension';
-import { BGCOLOR, BR, commonStyles, MH } from '../../../../../../../common/styles';
+import {
+    AIC,
+    BC,
+    BGCOLOR,
+    BR,
+    BSW,
+    BTW,
+    commonStyles,
+    JCC,
+    MH,
+    provideShadow,
+} from '../../../../../../../common/styles';
 import WrappedRectangleButton from '../../../../../../component/WrappedRectangleButton';
 
 interface Props {
@@ -22,11 +33,12 @@ class WrappedSize extends Component<Props, State> {
             <WrappedRectangleButton
                 containerStyle={[
                     BGCOLOR(selected ? mainColor : '#ffffff'),
-                    { height: getWP(0.8), width: getWP(0.8) },
+                    { height: getWP(0.8), width: getWP(0.8), overflow: 'hidden' },
                     BR(100),
                     MH(0.2),
-                    commonStyles.shadow,
-                    commonStyles.alcjcc,
+                    provideShadow(),
+                    AIC(),
+                    JCC(),
                 ]}
                 onPress={() => {
                     if (!selected) {

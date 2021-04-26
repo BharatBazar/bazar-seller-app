@@ -79,7 +79,7 @@ export async function createProductColor(data: IProductColor) {
     return await dataHandling.fetchData(APICreateProductColor, data);
 }
 
-export async function createProductSize(data: IProductSize) {
+export async function createProductSize(data: Partial<IProductSize>) {
     return await dataHandling.fetchData(APICreateProductSize, data);
 }
 
@@ -89,7 +89,7 @@ export async function updateProduct(data: IProduct) {
 export async function updateProductColor(data: IProductColor) {
     return await dataHandling.fetchData(APIUpdateProductColor, data);
 }
-export async function updateProductSize(data: IProductSize) {
+export async function updateProductSize(data: Partial<IProductSize>) {
     return await dataHandling.fetchData(APIUpdateProductSize, data);
 }
 

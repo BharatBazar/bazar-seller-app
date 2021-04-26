@@ -1,21 +1,18 @@
 import * as React from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
-import { fs18, fs20, fs28, fs40 } from '../../../../common';
-import { BGCOLOR, commonStyles } from '../../../../common/styles';
-import WrappedText from '../../../component/WrappedText';
-import { getHP, getWP } from '../../../../common/dimension';
-import { colorCode, mainColor, productColor } from '../../../../common/color';
-import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
-import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
+import { FlatList, View } from 'react-native';
+import { getHP } from '../../../../common/dimension';
+import { colorCode } from '../../../../common/color';
 import { Icolor } from '../CreateProduct';
 import ModalHOC from '../../../hoc/ModalHOC';
 import Color from './Color';
 import ModalHeader from '../../../component/ModalHeader';
+import { IProductColor } from '../../../../server/apis/product/product.interface';
 
 export interface ColorModalProps {
     setPopup: Function;
     isVisible: boolean;
     colors: Icolor[];
+
     updateColorArray: Function;
 }
 

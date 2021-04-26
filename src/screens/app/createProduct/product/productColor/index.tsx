@@ -65,12 +65,18 @@ const ProductColor: React.FC<ProductColorProps> = ({
     const deleteColor = (index: number) => {
         let updatedColors: IProductColor[] = [...chosenColor];
         updatedColors.splice(index, 1);
+        const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].productColorName);
+        updateColorArray(indexToUpdate, true);
         setChosenColor(updatedColors);
     };
 
     React.useEffect(() => {
         const data: Icolor[] = productColor.map((item) => {
-            item['selected'] = false;
+            if (chosenColor.findIndex((color) => color.productColorCode == item.colorCode) > -1) {
+                item['selected'] = true;
+            } else {
+                item['selected'] = false;
+            }
             return item;
         });
         setColors(data);
@@ -114,6 +120,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
             />
             {chosenColor.map((color, index) => (
                 <ProductDetails
+                    postDataToServer={postDataToServer}
+                    update={update}
                     setProductId={setProductId}
                     key={color.productColorName}
                     color={{ colorCode: color.productColorCode, name: color.productColorName }}
