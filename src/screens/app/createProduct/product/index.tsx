@@ -13,7 +13,7 @@ export interface ProductCommonDetailsProps {
     update: boolean;
     postDataToServer: IPostDataToServer;
     setProductId: (productId: string) => void;
-    productId?: string;
+    productId: string;
 }
 
 const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
@@ -44,7 +44,8 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
                 setProductId={setProductId}
                 update={update}
                 postDataToServer={postDataToServer}
-                productId={productId || undefined}
+                productId={productId}
+                productColors={productDetails.productColor}
             />
         </View>
     );

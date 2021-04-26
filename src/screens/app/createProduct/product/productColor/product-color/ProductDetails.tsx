@@ -21,18 +21,6 @@ import {
 } from '../../component/generalConfig';
 import { Icolor } from '..';
 
-export interface ProductDetailsProps {
-    productColor: IProductColor;
-    color: Icolor;
-    productColorId: string;
-    onDelete: Function;
-    index: number;
-    productId?: string;
-    setProductId: (productId: string) => void;
-    update?: boolean;
-    size: string[];
-}
-
 export const Heading = (headingText: string, color: string) => {
     return (
         <View style={[FDR(), AIC(), MT(0.2)]}>
@@ -47,6 +35,17 @@ export const Heading = (headingText: string, color: string) => {
     );
 };
 
+export interface ProductDetailsProps {
+    productColor: IProductColor;
+    color: { name: string; colorCode: string };
+    productColorId: string;
+    onDelete: Function;
+    index: number;
+    productId?: string;
+    setProductId: (productId: string) => void;
+    update?: boolean;
+    size: string[];
+}
 export interface headerTitleI {
     title: string;
 }

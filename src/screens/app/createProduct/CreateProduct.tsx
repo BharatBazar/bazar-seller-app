@@ -27,8 +27,8 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         params: { update, _id },
     },
 }) => {
-    const [productId, setProductId] = useState(_id);
-    const [productDetails, setProductDetails] = useState<IProduct>(generalProductSchema);
+    const [productId, setProductId] = useState<string | undefined>(_id);
+    const [productDetails, setProductDetails] = useState<IProduct>({ ...generalProductSchema });
     const [loading, setLoading] = useState(false);
 
     React.useEffect(() => {}, []);

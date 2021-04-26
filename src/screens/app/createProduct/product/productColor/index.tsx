@@ -7,14 +7,21 @@ import ColorModal from '../../component/ColorModal';
 import TextButton from '../../../../component/TextButton';
 import ProductDetailsHeading from '../component/ProductDetailsHeading';
 import ProductDetails from './product-color/ProductDetails';
-import { generalSpacing, IPostDataToServer, marHor, marTop } from '../component/generalConfig';
+import {
+    generalProductColorSchema,
+    generalSpacing,
+    IPostDataToServer,
+    marHor,
+    marTop,
+} from '../component/generalConfig';
 import { IProductColor } from '../../../../../server/apis/product/product.interface';
 
 export interface ProductColorProps {
     update: boolean;
     postDataToServer: IPostDataToServer;
-    productId?: string;
+    productId: string;
     setProductId: (productId: string) => void;
+    productColors: IProductColor[];
 }
 
 export interface Icolor {
@@ -22,16 +29,11 @@ export interface Icolor {
     colorCode: string;
     rgbaColorCode?: string;
     selected: boolean;
-    productColors: IProductColor[];
 }
 
 export type Isize = string[];
 
 const size: Isize = ['20', '21', '22', '23', '24', '25', '26', '27'];
-
-const productStructure: ProductColor = {
-    productSize: size,
-};
 
 const ProductColor: React.FC<ProductColorProps> = ({
     update,
@@ -49,13 +51,19 @@ const ProductColor: React.FC<ProductColorProps> = ({
         updatedColors[index].selected = !updatedColors[index].selected;
         setColors(updatedColors.sort((item) => !item.selected));
         if (!updateColorArray) {
-            setChosenColor(updatedColors.filter((item) => item.selected));
+            setChosenColor([
+                ...chosenColor,
+                {
+                    ...generalProductColorSchema,
+                    productColorCode: colors[index].colorCode,
+                    productColorName: colors[index].name,
+                },
+            ]);
         }
     };
 
     const deleteColor = (index: number) => {
-        let updatedColors: Icolor[] = [...chosenColor];
-        updateColorArray(index, true);
+        let updatedColors: IProductColor[] = [...chosenColor];
         updatedColors.splice(index, 1);
         setChosenColor(updatedColors);
     };
@@ -83,6 +91,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 <ProductDetailsHeading
                     heading={'Select Color'}
                     subHeading={'Select color variant for product by clicking on add color.'}
+                    error={''}
                 />
 
                 <TextButton
@@ -106,11 +115,12 @@ const ProductColor: React.FC<ProductColorProps> = ({
             {chosenColor.map((color, index) => (
                 <ProductDetails
                     setProductId={setProductId}
-                    key={color.colorCode}
+                    key={color.productColorName}
+                    color={{ colorCode: color.productColorCode, name: color.productColorName }}
                     size={[...size]}
                     index={index}
-                    color={color}
-                    productId={productId | undefined}
+                    productColor={color}
+                    productId={productId}
                     onDelete={() => {
                         deleteColor(index);
                     }}
