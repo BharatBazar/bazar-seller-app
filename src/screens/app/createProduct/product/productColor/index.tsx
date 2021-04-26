@@ -19,7 +19,7 @@ import { IProductColor } from '../../../../../server/apis/product/product.interf
 export interface ProductColorProps {
     update: boolean;
     postDataToServer: IPostDataToServer;
-    productId: string;
+    productId?: string;
     setProductId: (productId: string) => void;
     productColors: IProductColor[];
 }
@@ -83,6 +83,10 @@ const ProductColor: React.FC<ProductColorProps> = ({
         return () => {};
     }, []);
 
+    React.useEffect(() => {
+        setChosenColor(productColors);
+    }, [productColors]);
+
     return (
         <View
             style={[
@@ -120,15 +124,16 @@ const ProductColor: React.FC<ProductColorProps> = ({
             />
             {chosenColor.map((color, index) => (
                 <ProductDetails
+                    productColorId={color._id}
                     postDataToServer={postDataToServer}
                     update={update}
+                    productId={productId}
                     setProductId={setProductId}
                     key={color.productColorName}
                     color={{ colorCode: color.productColorCode, name: color.productColorName }}
                     size={[...size]}
                     index={index}
                     productColor={color}
-                    productId={productId}
                     onDelete={() => {
                         deleteColor(index);
                     }}

@@ -100,10 +100,10 @@ export async function APICreateProductSize(data: IProductSize): Promise<IRProduc
 
 export async function APIDeleteProductSize(data: { _id: string; parentId?: string }): Promise<IRProductSize> {
     return axios
-        .delete('/productSize/delete?' + '_id=' + (data.parentId ? '&parentId=' + data.parentId : ''))
+        .delete('/productSize/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''))
         .then((r) => r.data);
 }
 
 export async function APIUpdateProductSize(data: IProductSize): Promise<IRProductSize> {
-    return axios.post('/productSize/update', data).then((r) => r.data);
+    return axios.patch('/productSize/update', data).then((r) => r.data);
 }

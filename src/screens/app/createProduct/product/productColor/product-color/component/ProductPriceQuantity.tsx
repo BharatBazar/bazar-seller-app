@@ -1,17 +1,16 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { getHP, getWP } from '../../../../../../../common/dimension';
+import { getHP } from '../../../../../../../common/dimension';
 import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV } from '../../../../../../../common/styles';
 import WrappedText from '../../../../../../component/WrappedText';
 import WrappedTextInput from '../../../../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './Counter';
-import { fs12, fs15, fs20, fs29 } from '../../../../../../../common';
-import { colorCode, mainColor } from '../../../../../../../common/color';
-import ProductButton from '../../../component/ProductButton';
+import { fs12, fs15 } from '../../../../../../../common';
+import { colorCode } from '../../../../../../../common/color';
 import TextButton from '../../../../../../component/TextButton';
 import { IProductSize, IRProductSize } from '../../../../../../../server/apis/product/product.interface';
-import { createProductSize, updateProductSize } from '../../../component/generalConfig';
+import { createProductSize, updateProductSize, deleteProductSize } from '../../../component/generalConfig';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -19,6 +18,7 @@ export interface ProductPriceProps {
     onDelete: Function;
     setParentId: Function;
     parentId: string;
+    postDataToServer: Function;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -27,26 +27,26 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     onDelete,
     setParentId,
     parentId,
+    postDataToServer,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productQuantity || 1);
     const [mrp, setMrp] = React.useState<string>(productMrp);
     const [sp, setSp] = React.useState<string>(productSp);
-
-    let sizeId = _id;
-
-    const postDataToServer = async () => {
-        let data = { productQuantity: quantity, productSp: sp, productMrp: mrp };
+    const [sizeId, setSizeId] = React.useState<string>(_id);
+    console.log(productSize, productSp, productMrp, productQuantity);
+    const postProductSizeDataToServer = async () => {
+        let data = { productQuantity: quantity, productSp: sp, productMrp: mrp, productSize: productSize };
         try {
             if (sizeId.length == 0) {
                 const response: IRProductSize = await createProductSize({
                     ...data,
-                    parentId: parentId || undefined,
+                    parentId,
                 });
                 if (response.status == 1) {
-                    if (!parentId) {
+                    if (parentId.length == 0) {
                         setParentId(response.payload.parentId);
                     } else {
-                        sizeId = response.payload._id;
+                        setSizeId(response.payload._id);
                     }
                 }
             } else {
@@ -59,13 +59,30 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         }
     };
 
+    const deleteProductSizeFromServer = async () => {
+        console.log(sizeId);
+        if (sizeId.length > 0) {
+            const response: IRProductSize = await deleteProductSize({ _id: sizeId, parentId: parentId });
+            if (response.status == 1) {
+                onDelete();
+            }
+        } else {
+            onDelete();
+        }
+    };
+
     return (
         <View>
             <View style={[FDR(), MV(0.05)]}>
                 <View style={[FLEX(flex[0]), JCC(), AIC()]}>
-                    <Icon name={'minus-circle'} color={colorCode.RED} size={fs15} onPress={() => onDelete()} />
+                    <Icon
+                        name={'minus-circle'}
+                        color={colorCode.RED}
+                        size={fs15}
+                        onPress={() => deleteProductSizeFromServer()}
+                    />
                 </View>
-                <WrappedText text={productSize.toString()} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
+                <WrappedText text={productSize} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
                 <CounterComponent
                     counter={quantity}
                     setCounter={setQuantity}
@@ -95,7 +112,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     <TextButton
                         text={'Save'}
                         onPress={() => {
-                            postDataToServer();
+                            postProductSizeDataToServer();
                         }}
                         textProps={{ textColor: colorCode.WHITE, fontSize: fs12 }}
                         containerStyle={[PH(0.4), PV(0.03)]}

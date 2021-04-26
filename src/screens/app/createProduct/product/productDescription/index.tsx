@@ -18,6 +18,10 @@ const ProductDescription: React.SFC<ProductTitleProps> = ({ description, update,
     const [loading, setLoader] = React.useState(false);
     const [error, setError] = React.useState('');
 
+    React.useEffect(() => {
+        setProductDescription(description);
+    }, [description]);
+
     const submitData = () => {
         setLoader(true);
         postDataToServer(

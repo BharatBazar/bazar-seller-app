@@ -20,6 +20,11 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, p
     const [loading, setLoader] = React.useState(false);
     const [error, setError] = React.useState('');
 
+    React.useEffect(() => {
+        setProductTitle(title);
+        setProductSubTitle(subTitle);
+    }, [title, subTitle]);
+
     const submitData = () => {
         setLoader(true);
         postDataToServer(

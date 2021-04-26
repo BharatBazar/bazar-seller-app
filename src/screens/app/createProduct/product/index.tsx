@@ -13,7 +13,7 @@ export interface ProductCommonDetailsProps {
     update: boolean;
     postDataToServer: IPostDataToServer;
     setProductId: (productId: string) => void;
-    productId: string;
+    productId?: string;
 }
 
 const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
@@ -23,6 +23,7 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
     setProductId,
     productId,
 }) => {
+    console.log('product Details', productDetails);
     return (
         <View>
             <ProductTitle

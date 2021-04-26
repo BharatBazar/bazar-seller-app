@@ -28,10 +28,43 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     },
 }) => {
     const [productId, setProductId] = useState<string | undefined>(_id);
-    const [productDetails, setProductDetails] = useState<IProduct>({ ...generalProductSchema });
-    const [loading, setLoading] = useState(false);
+    const [productDetails, setProductDetails] = useState<IProduct>(generalProductSchema);
+    const [loading, setLoading] = useState(true);
 
-    React.useEffect(() => {}, []);
+    const fetchProduct = async () => {
+        const response: IRProduct = await APIgetProduct({ _id: productId });
+
+        setLoading(false);
+        if (response.status == 1) {
+            console.log(response);
+            setProductDetails(response.payload);
+        }
+    };
+
+    React.useEffect(() => {
+        if (update) {
+            fetchProduct();
+        } else {
+            createProductInServer({});
+        }
+    }, []);
+
+    const createProductInServer = async (data: Partial<IProduct>) => {
+        const product = {
+            ...data,
+            productCategory: 'Footwear',
+            productSubCategory1: 'Mens',
+            productSubCategory2: 'Sports Shoes',
+        };
+        const response: IRProduct = await createProduct(product);
+        console.log(response);
+        setLoading(false);
+        if (response.status == 1) {
+            setProductId(response.payload._id);
+            setProductDetails({ ...response.payload, ...productDetails });
+        } else {
+        }
+    };
 
     const postProductDataToServer = async (data: IProduct, successCallBack: Function, errroCallBack: Function) => {
         try {
@@ -51,17 +84,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                 }
             } else {
                 //Call create product function with some data
-                const product = {
-                    ...data,
-                };
-                const response = await createProduct(product);
-                if (response.status == 1) {
-                    successCallBack();
-                    setProductId(response.payload._id);
-                    setProductDetails(response.payload);
-                } else {
-                    errroCallBack(response.message);
-                }
+                createProduct(data);
             }
         } catch (error) {
             errroCallBack(error.message);
@@ -81,13 +104,15 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             <StatusBar statusBarColor={mainColor} />
             <Header headerTitle={'Create Product'} onPressBack={navigation.goBack} />
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                <ProductCommonDetails
-                    productDetails={productDetails}
-                    update={update}
-                    postDataToServer={postProductDataToServer}
-                    setProductId={setProductId}
-                    productId={productId}
-                />
+                {!loading && (
+                    <ProductCommonDetails
+                        productDetails={productDetails}
+                        update={update}
+                        postDataToServer={postProductDataToServer}
+                        setProductId={setProductId}
+                        productId={productId}
+                    />
+                )}
             </ScrollView>
         </View>
     );

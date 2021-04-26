@@ -91,13 +91,23 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     React.useEffect(() => {}, [colorId]);
 
+    console.log(productId);
+
+    React.useEffect(() => {
+        postProductColorDataToServer(
+            { productColorName: color.name, productColorCode: color.colorCode },
+            () => {},
+            () => {},
+        );
+    }, []);
+
     const postProductColorDataToServer = async (
-        data: IProductColor,
+        data: Partial<IProductColor>,
         successCallBack: Function,
         errroCallBack: Function,
     ) => {
         try {
-            if (colorId) {
+            if (colorId.length != 0) {
                 //Call update product function
                 const productColor = {
                     ...data,
@@ -118,14 +128,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 if (productId) {
                     color['parentId'] = productId;
                 }
+                console.log(color);
                 const response: IRProductColor = await createProductColor(color);
 
                 if (response.status == 1) {
-                    successCallBack();
+                    console.log('color created', response);
                     if (!productId) {
                         setProductId(response.payload.parentId);
                     }
                     setcolorId(response.payload._id);
+                    successCallBack();
                     // setProduct(response.payload);
                 } else {
                     errroCallBack(response.message);
@@ -230,10 +242,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         <TableHeader headerTitle={headerTitle} flex={columnFlex} />
 
                         {selectedSize.map((size: IProductSize, index: number) => (
-                            <View key={color.colorCode + index}>
+                            <View key={size.toString()}>
                                 <ProductPrice
                                     productSize={size}
                                     parentId={colorId}
+                                    postDataToServer={postProductColorDataToServer}
                                     flex={columnFlex}
                                     onDelete={() => deleteSize(index)}
                                     setParentId={setParentId}
