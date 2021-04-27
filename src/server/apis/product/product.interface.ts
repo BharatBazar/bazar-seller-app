@@ -18,7 +18,7 @@ export interface IProduct {
     //Above field will have predifined information about the size, unit etc.
     productTitle?: string;
     productSubtitle?: string;
-    productColor: [IProductColor] | [];
+    productColor: [Partial<IProductColor>] | [];
     showPrice?: boolean; //Whether dukandar wants to show price to customer or not
     productStatus?: productStatus;
     productRating?: number;

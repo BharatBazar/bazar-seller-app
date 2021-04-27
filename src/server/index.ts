@@ -5,6 +5,11 @@ export const apiEndPoint = 'http://localhost:2112';
 
 export async function setUpAxios() {
     axios.defaults.baseURL = apiEndPoint;
+    axios.interceptors.request.use((request) => {
+        console.log('Starting Request', JSON.stringify(request.url, null, 2));
+        return request;
+    });
+
     // const token = await Storage.getItem(StorageItemKeys.Token);
     // axios.defaults.headers.common['Streak-Auth-Token'] = token;
 }

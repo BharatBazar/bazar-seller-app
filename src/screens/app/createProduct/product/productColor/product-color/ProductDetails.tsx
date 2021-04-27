@@ -15,6 +15,7 @@ import PhotoUplaod from './component/PhotoUpload';
 import { IProductColor, IProductSize, IRProductColor } from '../../../../../../server/apis/product/product.interface';
 import {
     createProductColor,
+    deleteProductColor,
     generalProductColorSchema,
     generalProductSizeSchema,
     IPostDataToServer,
@@ -91,7 +92,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     React.useEffect(() => {}, [colorId]);
 
-    console.log(productId);
+    const deleteColorFromServer = async () => {
+        if (colorId.length > 0 && productId) {
+            const response: IRProductColor = await deleteProductColor({ _id: colorId, parentId: productId });
+            if (response.status == 1) {
+                onDelete();
+            } else {
+            }
+        } else {
+            onDelete();
+        }
+    };
 
     React.useEffect(() => {
         postProductColorDataToServer(
@@ -186,7 +197,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         iconName={update ? 'trash-2' : 'x'}
                         containerHeight={fs40}
                         onPress={() => {
-                            onDelete();
+                            deleteColorFromServer();
                         }}
                         containerStyle={[commonStyles.shadowLight, BGCOLOR(colorCode.WHITE)]}
                     />
@@ -242,7 +253,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         <TableHeader headerTitle={headerTitle} flex={columnFlex} />
 
                         {selectedSize.map((size: IProductSize, index: number) => (
-                            <View key={size.toString()}>
+                            <View key={size.toString() + colorId}>
                                 <ProductPrice
                                     productSize={size}
                                     parentId={colorId}

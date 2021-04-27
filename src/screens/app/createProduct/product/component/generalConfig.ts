@@ -5,6 +5,7 @@ import {
     IProductColor,
     IProductSize,
     IRProductSize,
+    IRProductColor,
 } from './../../../../../server/apis/product/product.interface';
 import {
     APIcreateProduct,
@@ -94,7 +95,7 @@ export async function updateProductSize(data: Partial<IProductSize>) {
     return await dataHandling.fetchData(APIUpdateProductSize, data);
 }
 
-export async function deleteProductColor(data: { _id: string; parentId: string }): Promise<IRProductSize> {
+export async function deleteProductColor(data: { _id: string; parentId: string }): Promise<IRProductColor> {
     return await dataHandling.fetchData(APIDeleteProductColor, data);
 }
 
