@@ -8,8 +8,9 @@ import ProductButton from '../component/ProductButton';
 import { IProduct } from '../../../../../server/apis/product/product.interface';
 
 export interface ProductTitleProps {
-    title?: string;
-    subTitle?: string;
+    title: string;
+    subTitle: string;
+
     update: boolean;
     postDataToServer: (a: IProduct, b: () => void, c: (error: string) => void) => void;
 }
@@ -17,12 +18,17 @@ export interface ProductTitleProps {
 const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, postDataToServer }) => {
     const [productTitle, setProductTitle] = React.useState(title || '');
     const [productSubTitle, setProductSubTitle] = React.useState(subTitle || '');
+    const [lastSubmittedState, setLastSubmittedState] = React.useState<{ lastTitle: string; lastSubtitle: string }>({
+        lastSubtitle: title,
+        lastTitle: subTitle,
+    });
     const [loading, setLoader] = React.useState(false);
     const [error, setError] = React.useState('');
 
     React.useEffect(() => {
         setProductTitle(title);
         setProductSubTitle(subTitle);
+        setLastSubmittedState({ lastSubtitle: subTitle, lastTitle: title });
     }, [title, subTitle]);
 
     const submitData = () => {
@@ -31,6 +37,7 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, p
             { productTitle, productSubtitle: productSubTitle },
             () => {
                 setLoader(false);
+                setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
             },
             (error) => {
                 setLoader(false);
@@ -38,6 +45,8 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, p
             },
         );
     };
+
+    const { lastTitle, lastSubtitle } = lastSubmittedState;
 
     return (
         <ProductContainer>
@@ -59,14 +68,16 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({ title, subTitle, update, p
                     onChangeText={setProductSubTitle}
                 />
             </View>
-            <ProductButton
-                buttonText={update ? 'Update' : 'Save'}
-                onPress={() => {
-                    submitData();
-                }}
-                isLoading={loading}
-                disabled={loading}
-            />
+            {(lastTitle !== productTitle || lastSubtitle !== productSubTitle) && (
+                <ProductButton
+                    buttonText={'Save'}
+                    onPress={() => {
+                        submitData();
+                    }}
+                    isLoading={loading}
+                    disabled={loading}
+                />
+            )}
         </ProductContainer>
     );
 };

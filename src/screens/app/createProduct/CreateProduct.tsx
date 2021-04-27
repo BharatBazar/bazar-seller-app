@@ -7,7 +7,7 @@ import Header from './component/Header';
 import ProductCommonDetails from './product';
 import { createProduct, generalProductSchema, updateProduct } from './product/component/generalConfig';
 import { AIC, FLEX, JCC } from '../../../common/styles';
-import { IProduct, IRProduct, productStatus } from '../../../server/apis/product/product.interface';
+import { IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/produt.api';
 import { mainColor } from '../../../common/color';
@@ -77,7 +77,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                 const response: IRProduct = await updateProduct(product);
                 if (response.status == 1) {
                     successCallBack();
-                    setProductDetails(response.payload);
+                    //setProductDetails(response.payload);
                     SimpleToast.show('Saved', SimpleToast.SHORT);
                 } else {
                     errroCallBack(response.message);

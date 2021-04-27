@@ -33,7 +33,12 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     const [mrp, setMrp] = React.useState<string>(productMrp);
     const [sp, setSp] = React.useState<string>(productSp);
     const [sizeId, setSizeId] = React.useState<string>(_id);
-    console.log(productSize, productSp, productMrp, productQuantity);
+    const [lastState, setLastState] = React.useState<{ lastQuantity: number; lastMrp: string; lastSp: string }>({
+        lastQuantity: productQuantity,
+        lastMrp: mrp,
+        lastSp: sp,
+    });
+
     const postProductSizeDataToServer = async () => {
         let data = { productQuantity: quantity, productSp: sp, productMrp: mrp, productSize: productSize };
         try {
@@ -43,6 +48,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     parentId,
                 });
                 if (response.status == 1) {
+                    setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
                     if (parentId.length == 0) {
                         setParentId(response.payload.parentId);
                     } else {
@@ -52,6 +58,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             } else {
                 const response = await updateProductSize({ ...data, _id: sizeId });
                 if (response.status == 1) {
+                    setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
                 }
             }
         } catch (error) {
@@ -60,7 +67,6 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     };
 
     const deleteProductSizeFromServer = async () => {
-        console.log(sizeId);
         if (sizeId.length > 0) {
             const response: IRProductSize = await deleteProductSize({ _id: sizeId, parentId: parentId });
             if (response.status == 1) {
@@ -70,6 +76,8 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             onDelete();
         }
     };
+
+    const { lastMrp, lastQuantity, lastSp } = lastState;
 
     return (
         <View>
@@ -107,7 +115,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 </View>
             </View>
 
-            {(productSp != sp || productMrp != mrp || productQuantity != quantity) && (
+            {(lastSp != sp || lastMrp != mrp || lastQuantity != quantity) && (
                 <View style={[FDR(), JCC('flex-end'), MV(0.1)]}>
                     <TextButton
                         text={'Save'}

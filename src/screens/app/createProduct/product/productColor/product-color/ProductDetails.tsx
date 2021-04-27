@@ -105,11 +105,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     React.useEffect(() => {
-        postProductColorDataToServer(
-            { productColorName: color.name, productColorCode: color.colorCode },
-            () => {},
-            () => {},
-        );
+        if (!update) {
+            postProductColorDataToServer(
+                { productColorName: color.name, productColorCode: color.colorCode },
+                () => {},
+                () => {},
+            );
+        }
     }, []);
 
     const postProductColorDataToServer = async (
@@ -221,6 +223,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <ScrollView horizontal={true} contentContainerStyle={[MV(0.2)]}>
                     {size.map((size: string, index: number) => (
                         <WrappedSize
+                            key={size}
                             size={size}
                             selected={selectedSize.findIndex((item) => item.productSize == size) > -1}
                             onPress={() => {
@@ -253,7 +256,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         <TableHeader headerTitle={headerTitle} flex={columnFlex} />
 
                         {selectedSize.map((size: IProductSize, index: number) => (
-                            <View key={size.toString() + colorId}>
+                            <View key={size.productSize.toString() + colorId}>
                                 <ProductPrice
                                     productSize={size}
                                     parentId={colorId}

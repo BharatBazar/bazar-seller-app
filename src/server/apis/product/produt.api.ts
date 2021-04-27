@@ -89,7 +89,7 @@ export async function APIDeleteProductColor(data: { _id: string; parentId?: stri
 }
 
 export async function APIUpdateProductColor(data: IProductColor): Promise<IRProductColor> {
-    return axios.post('/productColor/update', data).then((r) => r.data);
+    return axios.patch('/productColor/update', data).then((r) => r.data);
 }
 
 //Product size api

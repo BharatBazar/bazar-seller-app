@@ -15,11 +15,13 @@ export interface ProductTitleProps {
 
 const ProductDescription: React.SFC<ProductTitleProps> = ({ description, update, postDataToServer }) => {
     const [productDescription, setProductDescription] = React.useState(description);
+    const [lastDes, setLastDes] = React.useState<string>(description);
     const [loading, setLoader] = React.useState(false);
     const [error, setError] = React.useState('');
 
     React.useEffect(() => {
         setProductDescription(description);
+        setLastDes(description);
     }, [description]);
 
     const submitData = () => {
@@ -27,6 +29,7 @@ const ProductDescription: React.SFC<ProductTitleProps> = ({ description, update,
         postDataToServer(
             { productDescription },
             () => {
+                setLastDes(productDescription);
                 setLoader(false);
             },
             (error) => {
@@ -53,12 +56,14 @@ const ProductDescription: React.SFC<ProductTitleProps> = ({ description, update,
                     height={1}
                 />
 
-                <ProductButton
-                    buttonText={update ? 'Update' : 'Save'}
-                    onPress={() => {
-                        submitData();
-                    }}
-                />
+                {lastDes !== productDescription && (
+                    <ProductButton
+                        buttonText={update ? 'Update' : 'Save'}
+                        onPress={() => {
+                            submitData();
+                        }}
+                    />
+                )}
             </View>
         </ProductContainer>
     );
