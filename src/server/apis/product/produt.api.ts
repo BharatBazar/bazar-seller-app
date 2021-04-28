@@ -55,7 +55,7 @@ export async function APIupdateProduct(data: IProduct): Promise<IRProduct> {
 }
 
 export async function APIdeleteProduct(data: { _id: string }): Promise<IRProduct> {
-    return makeRequest({ url: '/product/delete', method: 'delete', data });
+    return makeRequest({ url: '/product/delete?' + '_id=' + data._id, method: 'delete' });
 }
 
 export async function APIgetProduct(data: IProduct): Promise<IProduct> {

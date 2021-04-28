@@ -5,7 +5,12 @@ import { NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
 import ProductCommonDetails from './product';
-import { createProduct, generalProductSchema, updateProduct } from './product/component/generalConfig';
+import {
+    createProduct,
+    deleteProductFromServer,
+    generalProductSchema,
+    updateProduct,
+} from './product/component/generalConfig';
 import { AIC, FLEX, JCC } from '../../../common/styles';
 import { IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
@@ -39,6 +44,27 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             console.log(response);
             setProductDetails(response.payload);
         }
+    };
+
+    const deleteProduct = async () => {
+        Alert.alert('Warning', 'Do you really want to delete this product it will delete all progress?', [
+            {
+                text: 'Yes',
+                onPress: async () => {
+                    if (productId) {
+                        const response: IRProduct = await deleteProductFromServer({ _id: productId });
+                        if (response.status == 1) {
+                            navigation.goBack();
+                        }
+                    } else {
+                        navigation.goBack();
+                    }
+                },
+            },
+            {
+                text: 'No',
+            },
+        ]);
     };
 
     React.useEffect(() => {
@@ -102,7 +128,14 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     return (
         <View style={{ flex: 1 }}>
             <StatusBar statusBarColor={mainColor} />
-            <Header headerTitle={'Create Product'} onPressBack={navigation.goBack} />
+            <Header
+                headerTitle={'Create Product'}
+                onPressBack={navigation.goBack}
+                onPressCorrect={() => {}}
+                onPressDelete={() => {
+                    deleteProduct();
+                }}
+            />
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                 {!loading && (
                     <ProductCommonDetails

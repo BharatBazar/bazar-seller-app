@@ -12,11 +12,11 @@ import { padHor } from '../product/component/generalConfig';
 export interface HeaderProps {
     headerTitle: string;
     onPressBack: Function;
-    rightFeatherIcon?: string;
-    onPressRightIcon?: Function;
+    onPressDelete: Function;
+    onPressCorrect: Function;
 }
 
-const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressRightIcon, rightFeatherIcon }) => {
+const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressCorrect, onPressDelete }) => {
     return (
         <View style={[padHor, PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70))]}>
             <View style={[commonStyles.fdr, commonStyles.aic, commonStyles.spbtw]}>
@@ -35,14 +35,14 @@ const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressRight
                 <View style={[commonStyles.fdr]}>
                     <WrappedFeatherIcon
                         onPress={() => {
-                            // navigation.goBack();
+                            onPressCorrect();
                         }}
                         iconName={'check'}
                         iconColor={colorCode.WHITE}
                     />
                     <WrappedFeatherIcon
                         onPress={() => {
-                            // navigation.goBack();
+                            onPressDelete();
                         }}
                         iconName={'trash-2'}
                         iconColor={colorCode.WHITE}

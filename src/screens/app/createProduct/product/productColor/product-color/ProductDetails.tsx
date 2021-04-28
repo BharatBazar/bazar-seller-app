@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, AlertButton } from 'react-native';
 import WrappedSize from './component/WrappedSize';
 import WrappedCheckBox from '../../../../../component/WrappedCheckBox';
 import WrappedText from '../../../../../component/WrappedText';
@@ -22,6 +22,7 @@ import {
     updateProductColor,
 } from '../../component/generalConfig';
 import { Icolor } from '..';
+import Loader from '../../../../../component/Loader';
 
 export const Heading = (headingText: string, color: string) => {
     return (
@@ -93,15 +94,27 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     React.useEffect(() => {}, [colorId]);
 
     const deleteColorFromServer = async () => {
-        if (colorId.length > 0 && productId) {
-            const response: IRProductColor = await deleteProductColor({ _id: colorId, parentId: productId });
-            if (response.status == 1) {
-                onDelete();
-            } else {
-            }
-        } else {
-            onDelete();
-        }
+        Alert.alert('Warning', 'Do you really want to delete color it will delete all your progress?', [
+            { text: 'Cancel', style: 'cancel' },
+            {
+                text: 'Yes',
+                onPress: async () => {
+                    if (colorId.length > 0 && productId) {
+                        const response: IRProductColor = await deleteProductColor({
+                            _id: colorId,
+                            parentId: productId,
+                        });
+                        if (response.status == 1) {
+                            onDelete();
+                        } else {
+                        }
+                    } else {
+                        onDelete();
+                    }
+                },
+                style: 'default',
+            },
+        ]);
     };
 
     React.useEffect(() => {

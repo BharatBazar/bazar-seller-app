@@ -11,6 +11,7 @@ import {
     APIcreateProduct,
     APICreateProductColor,
     APICreateProductSize,
+    APIdeleteProduct,
     APIDeleteProductColor,
     APIDeleteProductSize,
     APIupdateProduct,
@@ -101,6 +102,10 @@ export async function deleteProductColor(data: { _id: string; parentId: string }
 
 export async function deleteProductSize(data: { _id: string; parentId: string }): Promise<IRProductSize> {
     return await dataHandling.fetchData(APIDeleteProductSize, data);
+}
+
+export async function deleteProductFromServer(data: { _id: string }) {
+    return await dataHandling.fetchData(APIdeleteProduct, data);
 }
 
 export type IPostDataToServer = (a: IProduct, b: () => void, c: (error: string) => void) => void;

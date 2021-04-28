@@ -106,9 +106,9 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
     };
     const deleteSubCategory = (id: string) => {
         const newCategory = { ...subCategory };
-        console.log(newCategory);
+
         delete newCategory[id];
-        console.log(newCategory);
+
         setSubCategory(newCategory);
     };
 
@@ -190,7 +190,6 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                                 category[index1]
                                     .filter((item) => item.selected)
                                     .map((newSubCategory, index) => {
-                                        console.log(item.name);
                                         return (
                                             <View key={item._id + index.toString()}>
                                                 <WrappedText
@@ -205,7 +204,6 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                                                     query={{ subCategoryRef: newSubCategory._id }}
                                                     data={subCategory[newSubCategory._id]}
                                                     setData={(data: productData[]) => {
-                                                        console.log('Data  sub category => ', item.name, data);
                                                         updateSubCategory(data, newSubCategory._id);
                                                     }}
                                                 />
@@ -230,7 +228,7 @@ const ProductDetails: React.SFC<ProductDetail> = () => {
                                 onPressCategory={() => {
                                     const prodcutCategory = [...data];
                                     prodcutCategory[index].selected = !prodcutCategory[index].selected;
-                                    prodcutCategory.sort((item) => !item.selected);
+                                    // prodcutCategory.sort((item) => !item.selected);
                                     setData(prodcutCategory);
                                 }}
                             />

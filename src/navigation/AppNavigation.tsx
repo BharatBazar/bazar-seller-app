@@ -45,7 +45,7 @@ class AppNavigation extends React.Component {
                             close: config,
                         },
                     }}
-                    initialRouteName={NavigationKey.BHARATBAZARHOME}
+                    initialRouteName={NavigationKey.AUTHNAVIGATOR}
                 >
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.AUTHNAVIGATOR} component={AuthNavigation} />
