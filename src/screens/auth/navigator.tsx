@@ -10,6 +10,7 @@ import HeaderBar from '../component/HeaderBar';
 import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
+import ProductSubCategory from './ProductSubCategory';
 
 const Stack = createStackNavigator();
 
@@ -36,7 +37,7 @@ class AuthNavigation extends React.Component<Props, {}> {
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName={screen || NavigationKey.PRODUCTDETAILS}
+                    initialRouteName={screen || NavigationKey.PRODUCTSUBCATEGORY}
                 >
                     <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
                     <Stack.Screen
@@ -57,6 +58,11 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.PRODUCTDETAILS}
                         component={ProductDetails}
+                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                    />
+                    <Stack.Screen
+                        name={NavigationKey.PRODUCTSUBCATEGORY}
+                        component={ProductSubCategory}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
                     />
                 </Stack.Navigator>

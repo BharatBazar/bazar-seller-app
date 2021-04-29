@@ -10,6 +10,7 @@ export const NavigationKey = {
     BHARATBAZARHOME: 'BharatBazarHome',
     HOME: 'Home',
     PRODUCTDETAILS: 'ProductDetails',
+    PRODUCTSUBCATEGORY: 'ProductSubCategory',
     PRODUCTSEARCH: 'ProductSearch',
     PRODUCT: 'Product',
     CREATEPRODUCT: 'CreateProduct',
