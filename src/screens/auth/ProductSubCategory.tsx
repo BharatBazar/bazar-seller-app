@@ -1,7 +1,23 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
-import { BGCOLOR, BR, commonStyles, componentProps, MH, ML, MT, PH, PV } from '../../common/styles';
+import {
+    AIC,
+    BGCOLOR,
+    borderinsideeffect,
+    BR,
+    commonStyles,
+    FDR,
+    H,
+    HP,
+    MH,
+    ML,
+    MT,
+    PH,
+    provideShadow,
+    PV,
+    W,
+} from '../../common/styles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
@@ -9,7 +25,6 @@ import { setUpAxios } from '../../server';
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
-import TextButton from '../component/TextButton';
 import { IRGetShop, IRShopUpdate, Shop, updateShopData } from '../../server/apis/shop/shop.interface';
 import { getShop, updateShop } from '../../server/apis/shop/shop.api';
 import ProductCategory from './component/DukanProductCategory';
@@ -17,10 +32,14 @@ import ServerErrorText from './component/errorText';
 import WrappedText from '../component/WrappedText';
 import { colorCode, mainColor, messageColor } from '../../common/color';
 import LoadProductDetails from './component/LoadProductDetails';
-import { fs15, fs20, fs25 } from '../../common';
+import { fs12, fs16, fs20, fs25, NavigationProps } from '../../common';
 import ProductButton from '../app/createProduct/product/component/ProductButton';
+import HeadingHighlight from './component/HeadingHighlight';
+import { border, borRad, padHor, padVer } from '../app/createProduct/product/component/generalConfig';
+import { color } from 'react-native-reanimated';
+import { NavigationKey } from '../../labels';
 
-export interface ProductSubCategory {}
+export interface ProductSubCategory extends NavigationProps {}
 
 const dataHandling = new DataHandling('');
 
@@ -30,23 +49,20 @@ interface selected {
 
 export interface productData extends product, selected {}
 
-const ProductSubCategory: React.SFC<ProductSubCategory> = () => {
+const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
     const [shop, setShop] = React.useState<Partial<Shop>>({});
-    const [categoryScreen, setCategoryScreen] = React.useState<Boolean>(true);
     const [category, setCategory] = React.useState<[productData[]]>([[]]);
     const [subCategory, setSubCategory] = React.useState<{ [key: string]: productData[] }>({});
 
     const submitDetails = async (data: updateShopData) => {
-        console.log(data);
         const response: IRShopUpdate = await dataHandling.fetchData(updateShop, {
             ...data,
             _id: '60694f8582ea63ad28a2ec1f',
         });
         if (response.status == 1) {
-            setCategoryScreen(false);
-            getShopDetails();
+            navigation.navigate(NavigationKey.BHARATBAZARHOME);
         } else {
             setError(response.message);
         }
@@ -68,13 +84,12 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = () => {
         let response: IRGetShop = await dataHandling.fetchData(getShop, {
             _id: '60694f8582ea63ad28a2ec1f',
         });
+        console.log(response.payload.category, response.payload.subCategory, response.payload.subCategory1);
         if (response.status == 1) {
-            console.log(response.payload);
             setShop(response.payload);
             const response1: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, {
                 subCategoryRef: { $in: response.payload.category.map((item) => item._id) },
             });
-            console.log(response1);
 
             let data: [productData[]] = [];
             response.payload.category.forEach((item, index) => {
@@ -91,6 +106,27 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = () => {
         } else {
             setError(response.message);
         }
+    };
+
+    const extractSelectedDataAndSubmitIt: Function = () => {
+        const subC = category.map((item) => {
+            return item
+                .filter((sub) => sub.selected)
+                .map((subc) => {
+                    return subc._id;
+                });
+        });
+
+        const subC1 = subC.map((item) =>
+            item.map((id) => {
+                if (subCategory[id] && subCategory[id].length > 0) {
+                    return subCategory[id].filter((subc1) => subc1.selected).map((subc1) => subc1._id);
+                } else {
+                    return [];
+                }
+            }),
+        );
+        submitDetails({ subCategory: subC, subCategory1: subC1 });
     };
 
     useEffect(() => {
@@ -131,36 +167,58 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = () => {
     };
 
     return (
-        <ScrollView
-            style={[{ flex: 1 }, PH(0.6), BGCOLOR(colorCode.WHITE)]}
-            contentContainerStyle={{ paddingBottom: '2%' }}
-        >
-            <HeaderText
-                step={'Step 5'}
-                heading={'Aap kya bechte hai detail mai batae'}
-                subHeading={'Select what services you provide by your dukan by clicking on the category'}
-            />
-            {error.length > 0 && <ServerErrorText errorText={error} />}
-
+        <ScrollView style={[{ flex: 1 }, BGCOLOR(colorCode.WHITE)]} contentContainerStyle={{ paddingBottom: '2%' }}>
+            <View style={[padHor]}>
+                <HeaderText
+                    step={'Step 5'}
+                    heading={'Aap kya bechte hai detail mai batae'}
+                    subHeading={'Select what services you provide by your dukan by clicking on the category'}
+                />
+                {error.length > 0 && <ServerErrorText errorText={error} />}
+            </View>
+            <View style={[padHor]}>
+                <ProductButton
+                    buttonText={'Save all'}
+                    onPress={() => {
+                        extractSelectedDataAndSubmitIt();
+                    }}
+                />
+            </View>
             {shop['category'] &&
                 shop.category.map((item, index1) => {
                     return (
-                        <View style={[MT(0.3)]} key={item._id}>
-                            <WrappedText
-                                text={
-                                    item.subCategoryExist
-                                        ? 'Sell ' + item.name + ' for :-'
-                                        : 'Choose product you sell under ' + item.name + ' :-'
-                                }
-                                fontSize={fs25}
+                        <View
+                            style={[MT(0.3), padVer, BGCOLOR(colorCode.WHITELOW(10)), provideShadow(2)]}
+                            key={item._id}
+                        >
+                            <View style={[FDR(), AIC(), padHor]}>
+                                <View
+                                    style={[
+                                        HP(0.2),
+                                        W(getHP(0.2)),
+                                        BR(1),
+                                        {},
+                                        BGCOLOR(colorCode.CHAKRALOW(10)),
+                                        borderinsideeffect(1.5, colorCode.CHAKRALOW(30)),
+                                    ]}
+                                />
+                                <WrappedText
+                                    text={
+                                        item.subCategoryExist
+                                            ? 'Sell ' + item.name + ' for '
+                                            : 'Choose product category you sell under ' + item.name + ''
+                                    }
+                                    textColor={colorCode.CHAKRALOW(90)}
+                                    fontSize={fs20}
+                                    containerStyle={[ML(0.2)]}
+                                />
+                            </View>
 
-                                //textColor={colorCode.SAFFRONLOW(30)}
-                            />
                             <FlatList
                                 data={category[index1]}
                                 horizontal={true}
-                                style={{ width: getWP(10), marginTop: getHP(0.2), width: '100%' }}
-                                contentContainerStyle={{ marginVertical: getHP(0.2) }}
+                                style={{ width: getWP(10), marginTop: getHP(0.2) }}
+                                contentContainerStyle={[PV(0.2), PH(0.2)]}
                                 //columnWrapperStyle={{ justifyContent: 'space-evenly' }}
                                 keyExtractor={(item) => item._id}
                                 renderItem={({ item, index }: { item: productData; index: number }) => {
@@ -194,16 +252,30 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = () => {
                                     .filter((item) => item.selected)
                                     .map((newSubCategory, index) => {
                                         return (
-                                            <View key={item._id + index.toString()} style={[ML(0.2)]}>
-                                                <WrappedText
-                                                    text={
-                                                        'Choose product you sell under ' +
-                                                        newSubCategory.name +
-                                                        ' ' +
-                                                        item.name
-                                                    }
-                                                    textColor={messageColor}
-                                                />
+                                            <View key={item._id + index.toString()} style={[ML(0.2), MT(0.2)]}>
+                                                <View style={[FDR(), AIC(), padHor]}>
+                                                    <View
+                                                        style={[
+                                                            HP(0.15),
+                                                            W(getHP(0.15)),
+                                                            BR(1),
+                                                            BGCOLOR(colorCode.CHAKRALOW(30)),
+                                                            borderinsideeffect(1, colorCode.CHAKRALOW(30)),
+                                                        ]}
+                                                    />
+
+                                                    <WrappedText
+                                                        text={
+                                                            'Choose product category you sell under ' +
+                                                            newSubCategory.name +
+                                                            ' ' +
+                                                            item.name
+                                                        }
+                                                        fontSize={fs12}
+                                                        textColor={colorCode.CHAKRALOW(90)}
+                                                        containerStyle={[ML(0.1)]}
+                                                    />
+                                                </View>
                                                 <LoadProductDetails
                                                     query={{ subCategoryRef: newSubCategory._id }}
                                                     data={subCategory[newSubCategory._id]}
@@ -214,25 +286,9 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = () => {
                                             </View>
                                         );
                                     })}
-                            <ProductButton buttonText={'Save'} onPress={() => {}} />
                         </View>
                     );
                 })}
-            {/* <TextButton
-                text={'Submit'}
-                textProps={componentProps.buttonTextProps}
-                containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.2) }}
-                onPress={() => {
-                    if (categoryScreen) {
-                        const selectedCategory: [string] = data.filter((item) => item.selected).map((item) => item._id);
-                        if (selectedCategory.length == 0) {
-                            setError('Please select atleast one category');
-                        } else submitDetails({ category: selectedCategory });
-                    } else {
-                        submitSubCategoryDetails();
-                    }
-                }}
-            /> */}
         </ScrollView>
     );
 };

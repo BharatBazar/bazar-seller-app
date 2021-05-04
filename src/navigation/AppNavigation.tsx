@@ -6,7 +6,7 @@ import Welcome from '../screens/auth/Welcome';
 import AuthNavigation from '../screens/auth/navigator';
 import Verification from '../screens/auth/Verification';
 import OpenDukan from '../screens/auth/OpenDukan';
-import Home from '../screens/app/Home';
+import Home from '../screens/app/home/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -15,12 +15,12 @@ import { colorCode, mainColor } from '../common/color';
 import ProdcutSearch from '../screens/app/ProductSearch';
 import Product from '../screens/app/productListing/Product';
 import CreateProduct from '../screens/app/createProduct/CreateProduct';
-import StatusBar from '../screens/component/StatusBar';
 import { View } from 'react-native';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import { Easing } from 'react-native-reanimated';
 import { NavigationProps } from '../common';
 import { setUpAxios } from '../server';
+import ProductCategory from '../screens/app/home/ProductCategory';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -45,7 +45,7 @@ class AppNavigation extends React.Component {
                             close: config,
                         },
                     }}
-                    initialRouteName={NavigationKey.AUTHNAVIGATOR}
+                    initialRouteName={NavigationKey.BHARATBAZARHOME}
                 >
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.AUTHNAVIGATOR} component={AuthNavigation} />
@@ -55,6 +55,7 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.PRODUCTSEARCH} component={ProdcutSearch} />
                     <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />
                     <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
+                    <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
                 </Stack.Navigator>
             </NavigationContainer>
         );

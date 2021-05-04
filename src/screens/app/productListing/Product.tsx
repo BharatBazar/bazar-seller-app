@@ -10,9 +10,18 @@ import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
 import ProductTab from './ProductTabs';
 
-export interface ProductProps extends NavigationProps {}
+export interface ProductProps extends NavigationProps {
+    route: {
+        params: { itemType: string };
+    };
+}
 
-const Product: React.FC<ProductProps> = ({ navigation }) => {
+const Product: React.FC<ProductProps> = ({
+    navigation,
+    route: {
+        params: { itemType },
+    },
+}) => {
     const [searchedText, setSearchedText] = React.useState('');
     return (
         <View style={{ flex: 1 }}>
@@ -27,7 +36,7 @@ const Product: React.FC<ProductProps> = ({ navigation }) => {
                             iconName={'chevron-left'}
                             iconColor={colorCode.WHITE}
                         />
-                        <WrappedText text={'Shoes'} textColor={colorCode.WHITE} fontSize={fs18} />
+                        <WrappedText text={itemType} textColor={colorCode.WHITE} fontSize={fs18} />
                     </View>
 
                     <View style={[commonStyles.fdr]}>

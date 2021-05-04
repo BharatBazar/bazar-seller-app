@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { colorCode } from '../../../common/color';
 import { getHP, getWP } from '../../../common/dimension';
-import { commonStyles, MH } from '../../../common/styles';
+import { commonStyles, MH, ML } from '../../../common/styles';
 import { getProductCatalogueAPI } from '../../../server/apis/productCatalogue/productCatalogue.api';
 import { IRGetProductCatalogue, product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
 import { DataHandling } from '../../../server/DataHandlingHOC';
@@ -20,7 +20,6 @@ export interface LoadProductDetailsProps {
 const dataHandling = new DataHandling('');
 
 const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, setData }) => {
-    console.log('Load details data =>', data);
     const [loader, setLoader] = React.useState<Boolean>(false);
 
     const [error, setError] = React.useState<string>('');
@@ -58,8 +57,7 @@ const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, se
     }
     return (
         <View>
-            {error.length > 0 && <ServerErrorText errorText={error} />}
-
+            <View style={[ML(0.7)]}>{error.length > 0 && <ServerErrorText errorText={error} />}</View>
             <FlatList
                 data={data}
                 horizontal={true}

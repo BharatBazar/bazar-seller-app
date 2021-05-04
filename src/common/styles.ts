@@ -145,6 +145,15 @@ export const provideShadowIos = (
     };
 };
 
+export const borderinsideeffect = (borderWidth = 2, borderColor = colorCode.BLACKLOW(40)): ViewStyle => {
+    return {
+        borderTopWidth: borderWidth,
+        borderRightWidth: borderWidth / 2,
+        borderLeftWidth: borderWidth / 2,
+        borderColor: borderColor,
+    };
+};
+
 export const provideShadow = (height?: number) =>
     Platform.OS == 'android'
         ? { elevation: 2 }

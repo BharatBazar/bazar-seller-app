@@ -26,9 +26,9 @@ export interface Shop {
     worker: IshopMember[];
     isVerified: boolean;
     isTerminated: boolean;
-    category: [product];
-    subCategory: [[product]];
-    subCategory1: [[product]];
+    category: product[];
+    subCategory: product[][];
+    subCategory1: product[][];
 }
 
 export interface IRGetShop extends CommonApiResponse {
@@ -41,9 +41,9 @@ export interface updateShopData {
     addressOfShop?: string;
     membersDetailSkipped?: boolean;
     isTerminated?: boolean;
-    category: [string];
-    subCategory: [[string]];
-    subCategory1: [[string]];
+    category: string[];
+    subCategory: string[][];
+    subCategory1: string[][][];
 }
 
 export interface IRShopUpdate extends CommonApiResponse {

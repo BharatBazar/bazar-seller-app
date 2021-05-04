@@ -8,7 +8,7 @@ import { StyleProp, View, ViewStyle } from 'react-native';
 import { getHP, getWP } from '../../../common/dimension';
 import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
-import { fs10, fs11 } from '../../../common';
+import { fs10, fs11, fs9 } from '../../../common';
 
 export interface ProductCategoryProps {
     item: productData;
@@ -42,18 +42,19 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
                         height: getHP(0.6),
                         width: getHP(0.6),
                     }}
+                    resizeMode={'cover'}
                 />
                 <View style={[PV(0.1), PH(0.1), commonStyles.aic]}>
                     <WrappedText
                         text={item.name}
                         textColor={item.selected ? colorCode.GREENLOW(50) : colorCode.CHAKRALOW(70)}
-                        fontSize={fs11}
+                        fontSize={fs10}
                         textStyle={{ textAlign: 'center' }}
                     />
                     <WrappedText
                         text={item.description}
                         textColor={colorCode.BLACKLOW(40)}
-                        fontSize={fs10}
+                        fontSize={fs9}
                         textStyle={{ textAlign: 'center', marginTop: getHP(0.05) }}
                     />
                 </View>

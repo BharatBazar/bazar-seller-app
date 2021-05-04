@@ -14,4 +14,5 @@ export const NavigationKey = {
     PRODUCTSEARCH: 'ProductSearch',
     PRODUCT: 'Product',
     CREATEPRODUCT: 'CreateProduct',
+    PRODUCTCATEGORY: 'ProductCategory',
 };

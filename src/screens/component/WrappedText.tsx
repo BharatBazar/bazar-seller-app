@@ -22,24 +22,17 @@ function WrappedText(props: {
         fontFamily,
         fontSize,
         fontWeight,
-        icon,
+
         textColor,
         text,
-        iconStyle,
+
         containerStyle,
-        iconBefore,
+
         textStyle,
     } = props;
 
     return (
         <View style={[styles.container, containerStyle]}>
-            {iconBefore ? (
-                <View style={{ justifyContent: 'center' }}>
-                    <Image source={iconBefore} style={[styles.icons, iconStyle]} />
-                </View>
-            ) : (
-                <View />
-            )}
             <Text
                 style={[
                     {
@@ -47,19 +40,13 @@ function WrappedText(props: {
                         fontSize: fontSize,
                         fontWeight: fontWeight || 'normal',
                         color: textColor || '#000000',
+                        flexWrap: 'wrap-reverse',
                     },
                     textStyle,
                 ]}
             >
                 {text || headingText}
             </Text>
-            {icon ? (
-                <View style={{ justifyContent: 'center' }}>
-                    <Image source={icon} style={[styles.icons, iconStyle]} />
-                </View>
-            ) : (
-                <View />
-            )}
         </View>
     );
 }
@@ -73,7 +60,6 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
     },
     container: {
-        flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent: 'center',
     },
 });
