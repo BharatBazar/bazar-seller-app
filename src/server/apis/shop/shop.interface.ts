@@ -28,7 +28,7 @@ export interface Shop {
     isTerminated: boolean;
     category: product[];
     subCategory: product[][];
-    subCategory1: product[][];
+    subCategory1: product[][][];
 }
 
 export interface IRGetShop extends CommonApiResponse {

@@ -21,6 +21,7 @@ import { Easing } from 'react-native-reanimated';
 import { NavigationProps } from '../common';
 import { setUpAxios } from '../server';
 import ProductCategory from '../screens/app/home/ProductCategory';
+import { provideShadow } from '../common/styles';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -73,7 +74,11 @@ class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
                 }}
                 screenOptions={{
                     headerShown: true,
-                    headerStyle: { paddingHorizontal: '5%', backgroundColor: colorCode.CHAKRALOW(70) },
+                    headerStyle: {
+                        paddingHorizontal: '5%',
+                        backgroundColor: colorCode.CHAKRALOW(70),
+                        ...provideShadow(2),
+                    },
                     headerLeft: () => (
                         <Icon
                             name={'align-justify'}
