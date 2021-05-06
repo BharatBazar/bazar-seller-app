@@ -16,7 +16,6 @@ import { IProductColor, IProductSize, IRProductColor } from '../../../../../../s
 import {
     createProductColor,
     deleteProductColor,
-    generalProductColorSchema,
     generalProductSizeSchema,
     IPostDataToServer,
     updateProductColor,
@@ -118,7 +117,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     React.useEffect(() => {
-        if (!update) {
+        if (productColor.new) {
             postProductColorDataToServer(
                 { productColorName: color.name, productColorCode: color.colorCode },
                 () => {},
@@ -154,11 +153,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 if (productId) {
                     color['parentId'] = productId;
                 }
-                console.log(color);
+
                 const response: IRProductColor = await createProductColor(color);
 
                 if (response.status == 1) {
-                    console.log('color created', response);
                     if (!productId) {
                         setProductId(response.payload.parentId);
                     }
@@ -171,7 +169,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             }
         } catch (error) {
             errroCallBack(error.message);
-            console.log(error.message);
         }
     };
 

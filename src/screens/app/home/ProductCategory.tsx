@@ -1,13 +1,11 @@
 import React from 'react';
-import { ActivityIndicator, View } from 'react-native';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import { View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import { NavigationProps } from '../../../common';
 import { NavigationKey } from '../../../labels';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
-import { AIC, BGCOLOR, FLEX, JCC, MT } from '../../../common/styles';
-
-import Loader from '../../component/Loader';
+import { AIC, BGCOLOR, FLEX, JCC } from '../../../common/styles';
 import { DataHandling } from '../../../server/DataHandlingHOC';
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';

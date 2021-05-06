@@ -55,6 +55,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 ...chosenColor,
                 {
                     ...generalProductColorSchema,
+                    new: true,
                     productColorCode: colors[index].colorCode,
                     productColorName: colors[index].name,
                 },

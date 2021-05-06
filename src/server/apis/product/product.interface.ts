@@ -12,6 +12,7 @@ export enum productStatus {
 export interface IProduct {
     //Also i need to think about how i will be dealing with language preferences how can i use multiple language.
     _id?: string;
+    shopId: string;
     productCategory?: string;
     productSubCategory1?: string;
     productSubCategory2?: string | undefined;
@@ -53,7 +54,11 @@ export interface IRProduct extends CommonApiResponse {
 }
 
 export interface IProducts extends CommonApiResponse {
-    payload: IProduct[];
+    payload: {
+        payload: IProduct[];
+        lastTime: string;
+        searchCount: number;
+    };
 }
 
 export interface IRProductColor extends CommonApiResponse {

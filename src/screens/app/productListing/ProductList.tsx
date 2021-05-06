@@ -1,16 +1,28 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { ActivityIndicator, Alert, Touchable, View } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ActivityIndicator, Alert, ScrollView } from 'react-native';
 import { NavigationProps } from '../../../common';
 import { NavigationKey } from '../../../labels';
 import { IProduct, IProducts, productStatus } from '../../../server/apis/product/product.interface';
 import { APIgetAllProduct } from '../../../server/apis/product/produt.api';
-import WrappedText from '../../component/WrappedText';
+import ProductIdentifierView from './component/ProductIdentifierView';
 
-export interface ProductListProps extends NavigationProps {}
+export interface ProductListProps extends NavigationProps {
+    shopId: string;
+    category: string;
+    subCategory: string;
+    subCategory1: string;
+    productStatus: productStatus;
+}
 
-const ProductList: React.SFC<ProductListProps> = ({ navigation }) => {
+const ProductList: React.SFC<ProductListProps> = ({
+    shopId,
+    navigation,
+    category,
+    subCategory,
+    subCategory1,
+    productStatus,
+}) => {
     const [loading, setLoader] = useState(false);
     const [product, setProduct] = useState<IProduct[]>([]);
 
@@ -19,10 +31,11 @@ const ProductList: React.SFC<ProductListProps> = ({ navigation }) => {
             setLoader(true);
             const response: IProducts = await APIgetAllProduct({
                 query: {
-                    productCategory: 'Footwear',
-                    productSubCategory1: 'Mens',
-                    productSubCategory2: 'Sports Shoes',
-                    productStatus: productStatus.NOTCOMPLETED,
+                    productCategory: category,
+                    productSubCategory1: subCategory,
+                    productSubCategory2: subCategory1,
+                    productStatus: productStatus,
+                    shopId: shopId,
                 },
             });
             if (response.status == 1) {
@@ -41,18 +54,23 @@ const ProductList: React.SFC<ProductListProps> = ({ navigation }) => {
     }, []);
 
     return (
-        <View style={{ flex: 1 }}>
+        <ScrollView style={{ flex: 1 }}>
             {loading && <ActivityIndicator />}
             {product.map((item) => (
-                <TouchableOpacity
+                <ProductIdentifierView
+                    product={item}
                     onPress={() => {
-                        navigation.navigate(NavigationKey.CREATEPRODUCT, { update: true, _id: item._id });
+                        navigation.navigate(NavigationKey.CREATEPRODUCT, {
+                            update: true,
+                            _id: item._id,
+                            category,
+                            subCategory,
+                            subCategory1,
+                        });
                     }}
-                >
-                    <WrappedText text={item._id} />
-                </TouchableOpacity>
+                />
             ))}
-        </View>
+        </ScrollView>
     );
 };
 

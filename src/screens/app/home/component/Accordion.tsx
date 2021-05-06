@@ -1,17 +1,11 @@
-import React, { Component } from 'react';
-import { Switch, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
-import { fs14, fs16, fs20, fs22, NavigationProps } from '../../../../common';
-import { colorCode } from '../../../../common/color';
-import { BGCOLOR, commonStyles, ML, PH, PL } from '../../../../common/styles';
+import { fs14, fs16, fs22, NavigationProps } from '../../../../common';
 import { NavigationKey } from '../../../../labels';
-import { getShop } from '../../../../server/apis/shop/shop.api';
-import { IRGetShop, Shop } from '../../../../server/apis/shop/shop.interface';
 import { DataHandling } from '../../../../server/DataHandlingHOC';
-import WrappedText from '../../../component/WrappedText';
-import { ShowProductDetails, ShowSubCategory } from '../../component';
+import { ShowSubCategory } from '../../component';
 import { product } from '../../../../server/apis/productCatalogue/productCatalogue.interface';
 import { getHP, getWP } from '../../../../common/dimension';
 
@@ -23,6 +17,8 @@ interface ISection {
 
 interface Props extends NavigationProps {
     section: ISection[];
+    shopId: string;
+    category: string;
 }
 
 interface State {
@@ -52,7 +48,13 @@ export default class AccordionHOC extends DataHandling<Props, State> {
                     item={section.category}
                     touch={!section.category.subCategoryExist}
                     onPress={() => {
-                        this.props.navigation.navigate(NavigationKey.PRODUCT, { itemType: section.category.name });
+                        this.props.navigation.navigate(NavigationKey.PRODUCT, {
+                            itemType: section.category.name,
+                            shopId: this.props.shopId,
+                            category: this.props.category,
+                            subCategory: section.category.name,
+                            subCategory1: '',
+                        });
                     }}
                     active={isActive}
                     paddingVertical={'1%'}
@@ -81,8 +83,13 @@ export default class AccordionHOC extends DataHandling<Props, State> {
                                 onPress={() => {
                                     this.props.navigation.navigate(NavigationKey.PRODUCT, {
                                         itemType: section.category.name + ' ' + item.name + ' ',
+                                        shopId: this.props.shopId,
+                                        category: this.props.category,
+                                        subCategory: section.category.name,
+                                        subCategory1: item.name,
                                     });
                                 }}
+                                active={false}
                                 paddingVertical={'1%'}
                                 height={getHP(0.3)}
                             />

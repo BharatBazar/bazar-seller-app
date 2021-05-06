@@ -22,6 +22,10 @@ export interface CreateProductProps extends NavigationProps {
         params: {
             update: boolean;
             _id?: string;
+            shopId: string;
+            category: string;
+            subCategory: string;
+            subCategory1: string;
         };
     };
 }
@@ -29,7 +33,7 @@ export interface CreateProductProps extends NavigationProps {
 const CreateProduct: React.FC<CreateProductProps> = ({
     navigation,
     route: {
-        params: { update, _id },
+        params: { update, _id, shopId, category, subCategory, subCategory1 },
     },
 }) => {
     const [productId, setProductId] = useState<string | undefined>(_id);
@@ -37,7 +41,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const [loading, setLoading] = useState(true);
 
     const fetchProduct = async () => {
-        const response: IRProduct = await APIgetProduct({ _id: productId });
+        const response: IRProduct = await APIgetProduct({ _id: productId, shopId: shopId });
 
         setLoading(false);
         if (response.status == 1) {
@@ -78,9 +82,10 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const createProductInServer = async (data: Partial<IProduct>) => {
         const product = {
             ...data,
-            productCategory: 'Footwear',
-            productSubCategory1: 'Mens',
-            productSubCategory2: 'Sports Shoes',
+            productCategory: category,
+            productSubCategory1: subCategory,
+            productSubCategory2: subCategory1,
+            shopId: shopId,
         };
         const response: IRProduct = await createProduct(product);
         console.log(response);

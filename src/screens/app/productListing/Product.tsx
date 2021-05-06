@@ -12,14 +12,14 @@ import ProductTab from './ProductTabs';
 
 export interface ProductProps extends NavigationProps {
     route: {
-        params: { itemType: string };
+        params: { itemType: string; shopId: string; category: string; subCategory: string; subCategory1: string };
     };
 }
 
 const Product: React.FC<ProductProps> = ({
     navigation,
     route: {
-        params: { itemType },
+        params: { itemType, shopId, category, subCategory, subCategory1 },
     },
 }) => {
     const [searchedText, setSearchedText] = React.useState('');
@@ -42,7 +42,13 @@ const Product: React.FC<ProductProps> = ({
                     <View style={[commonStyles.fdr]}>
                         <WrappedFeatherIcon
                             onPress={() => {
-                                navigation.navigate(NavigationKey.CREATEPRODUCT, { update: false });
+                                navigation.navigate(NavigationKey.CREATEPRODUCT, {
+                                    update: false,
+                                    shopId: shopId,
+                                    category,
+                                    subCategory1,
+                                    subCategory,
+                                });
                             }}
                             containerStyle={{ backgroundColor: colorCode.WHITE }}
                             iconName={'plus'}
@@ -70,7 +76,13 @@ const Product: React.FC<ProductProps> = ({
                 </View>
             </View>
             <View style={{ flex: 1 }}>
-                <ProductTab navigation={navigation} />
+                <ProductTab
+                    navigation={navigation}
+                    shopId={shopId}
+                    category={category}
+                    subCategory={subCategory}
+                    subCategory1={subCategory1}
+                />
             </View>
         </View>
     );

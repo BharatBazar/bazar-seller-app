@@ -263,14 +263,20 @@ export default class Home extends DataHandling<Props, State> {
         return (
             <Animatable.View
                 duration={400}
-                style={[styles.header, isActive ? styles.active : styles.inactive]}
-                transition="backgroundColor"
+                // style={[styles.header, isActive ? styles.active : styles.inactive]}
+                // transition="backgroundColor"
             >
                 <ShowSubCategory
                     item={section.category}
                     touch={!section.category.subCategoryExist}
                     onPress={() => {
-                        this.props.navigation.navigate(NavigationKey.PRODUCT, { itemType: section.category.name });
+                        this.props.navigation.navigate(NavigationKey.PRODUCT, {
+                            itemType: section.category.name,
+                            shopId: '60694f8582ea63ad28a2ec1f',
+                            category: section.category.name,
+                            subCategory: '',
+                            subCategory1: '',
+                        });
                     }}
                     active={isActive}
                 />
@@ -287,6 +293,7 @@ export default class Home extends DataHandling<Props, State> {
             >
                 {section.category.subCategoryExist ? (
                     <AccordionHOC
+                        categor
                         section={section.subCategory.map((cat, index) => {
                             return {
                                 category: cat,

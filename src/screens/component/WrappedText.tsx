@@ -1,24 +1,23 @@
 import React from 'react';
-import { Image, Text, View, StyleSheet } from 'react-native';
+import { Image, Text, View, StyleSheet, SafeAreaView } from 'react-native';
 import { getHP } from '../../common/dimension';
 
 function WrappedText(props: {
-    heading?: any;
     fontFamily?: string;
-    headingText?: any;
+
     textStyle?: any;
     fontSize?: number;
-    opacity?: any;
+
     textColor?: string;
     fontWeight?: 'normal' | 'bold' | '100' | '200' | '300' | '400' | '500' | '600' | '700' | '800' | '900' | undefined;
-    icon?: any;
-    iconBefore?: any;
+
     text: string;
-    iconStyle?: any;
+
+    ellipsizeMode?: 'tail' | 'head' | 'middle' | 'clip' | undefined;
+    numberOfLines?: number;
     containerStyle?: any;
 }) {
     const {
-        headingText,
         fontFamily,
         fontSize,
         fontWeight,
@@ -27,12 +26,13 @@ function WrappedText(props: {
         text,
 
         containerStyle,
-
+        ellipsizeMode,
+        numberOfLines,
         textStyle,
     } = props;
 
     return (
-        <View style={[styles.container, containerStyle]}>
+        <SafeAreaView style={[styles.container, containerStyle]}>
             <Text
                 style={[
                     {
@@ -40,14 +40,17 @@ function WrappedText(props: {
                         fontSize: fontSize,
                         fontWeight: fontWeight || 'normal',
                         color: textColor || '#000000',
-                        flexWrap: 'wrap-reverse',
+                        flexWrap: 'wrap',
+                        flexShrink: 1,
                     },
                     textStyle,
                 ]}
+                ellipsizeMode={ellipsizeMode || 'tail'}
+                numberOfLines={numberOfLines || 4}
             >
-                {text || headingText}
+                {text}
             </Text>
-        </View>
+        </SafeAreaView>
     );
 }
 

@@ -23,7 +23,6 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
     setProductId,
     productId,
 }) => {
-    console.log('product Details', productDetails);
     return (
         <View>
             <ProductTitle
