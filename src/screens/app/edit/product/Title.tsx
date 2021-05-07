@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import ProductTextInput from '../component/ProductTextInput';
-import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import { marTop } from '../component/generalConfig';
-import ProductContainer from '../component/productContainerHOC';
-import ProductButton from '../component/ProductButton';
-import { IProduct } from '../../../../../server/apis/product/product.interface';
+import ProductTextInput from './component/ProductTextInput';
+import ProductDetailsHeading from './component/ProductDetailsHeading';
+import { marTop } from './component/generalConfig';
+import ProductContainer from './component/productContainerHOC';
+import ProductButton from './component/ProductButton';
+import { IProduct } from '../../../../server/apis/product/product.interface';
 
 export interface ProductTitleProps {
     title: string;

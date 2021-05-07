@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Alert, AlertButton } from 'react-native';
-import WrappedSize from './component/WrappedSize';
-import WrappedCheckBox from '../../../../../component/WrappedCheckBox';
-import WrappedText from '../../../../../component/WrappedText';
-import { AIC, BGCOLOR, commonStyles, FDR, HP, JCC, MH, MT, MV, W } from '../../../../../../common/styles';
-import { getHP } from '../../../../../../common/dimension';
-import WrappedFeatherIcon from '../../../../../component/WrappedFeatherIcon';
-import { fs13, fs20, fs40 } from '../../../../../../common';
-import { colorCode } from '../../../../../../common/color';
-import ProductPrice from './component/ProductPriceQuantity';
-import TableHeader from './component/TableHeader';
-import ProductContainer from '../../component/productContainerHOC';
-import PhotoUplaod from './component/PhotoUpload';
-import { IProductColor, IProductSize, IRProductColor } from '../../../../../../server/apis/product/product.interface';
+import WrappedSize from './component/component/WrappedSize';
+import WrappedCheckBox from '../../../component/WrappedCheckBox';
+import WrappedText from '../../../component/WrappedText';
+import { AIC, BGCOLOR, commonStyles, FDR, FLEX, HP, JCC, MH, ML, MT, MV, W } from '../../../../common/styles';
+import { getHP } from '../../../../common/dimension';
+import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
+import { fs13, fs20, fs40 } from '../../../../common';
+import { colorCode } from '../../../../common/color';
+import ProductPrice from './component/component/Size';
+import TableHeader from './component/component/TableHeader';
+import ProductContainer from './component/productContainerHOC';
+import PhotoUplaod from './component/component/PhotoUpload';
+import { IProductColor, IProductSize, IRProductColor } from '../../../../server/apis/product/product.interface';
 import {
     createProductColor,
     deleteProductColor,
     generalProductSizeSchema,
     IPostDataToServer,
     updateProductColor,
-} from '../../component/generalConfig';
-import { Icolor } from '..';
-import Loader from '../../../../../component/Loader';
+} from './component/generalConfig';
+import { Icolor } from './Colors';
+import Loader from '../../../component/Loader';
 
 export const Heading = (headingText: string, color: string) => {
     return (
@@ -48,6 +48,11 @@ export interface ProductDetailsProps {
     update?: boolean;
     size: string[];
     postDataToServer: IPostDataToServer;
+    productTypeDetails: {
+        category: string;
+        subCategory1: string;
+        subCategory: string;
+    };
 }
 export interface headerTitleI {
     title: string;
@@ -83,6 +88,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     setProductId,
     productColor,
     postDataToServer,
+    productTypeDetails: { category, subCategory1, subCategory },
     size,
 }) => {
     const [selectedSize, setSelectedSize] = useState<IProductSize[]>(productColor.productSize);
@@ -201,7 +207,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     return (
         <ProductContainer>
-            <View>
+            <View style={[FLEX(1)]}>
                 <View style={[FDR(), JCC('space-between')]}>
                     <WrappedText text={'Provide details for '} />
                     <WrappedFeatherIcon
@@ -214,7 +220,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         containerStyle={[commonStyles.shadowLight, BGCOLOR(colorCode.WHITE)]}
                     />
                 </View>
-                <View style={[FDR(), AIC()]}>
+                <View style={[FDR(), AIC(), FLEX(1)]}>
                     <View
                         style={[
                             { height: getHP(0.4), width: getHP(0.4), alignSelf: 'center' },
@@ -222,7 +228,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         ]}
                     />
                     <WrappedText
-                        text={'   ' + color.name.toUpperCase() + ' COLOR' + ' Shoes'}
+                        text={
+                            color.name.toUpperCase() +
+                            ' COLOR ' +
+                            (subCategory1.length > 0 ? subCategory1 : subCategory.length > 0 ? subCategory : category)
+                        }
+                        containerStyle={[FLEX(1), ML(0.2)]}
                         //textColor={color.colorCode}
                         fontSize={fs20}
                     />

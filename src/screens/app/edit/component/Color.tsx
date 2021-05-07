@@ -6,9 +6,10 @@ import WrappedText from '../../../component/WrappedText';
 import { getHP, getWP } from '../../../../common/dimension';
 import { colorCode, mainColor } from '../../../../common/color';
 import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
-import { Icolor } from '../CreateProduct';
+import { Icolor } from '../Edit';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs20 } from '../../../../common';
+import { ToastHOC } from '../../../hoc/ToastHOC';
 
 export interface ColorProps {
     item: Icolor;
@@ -27,6 +28,10 @@ const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) 
             onPress={() => {
                 if (!showCancel && !item.selected) {
                     onPress();
+                } else {
+                    ToastHOC.infoAlert(
+                        'You cannot delete a product color by clicking on delete button on product color area.',
+                    );
                 }
             }}
         >

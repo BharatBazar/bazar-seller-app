@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FlatList, View } from 'react-native';
 import { getHP } from '../../../../common/dimension';
 import { colorCode } from '../../../../common/color';
-import { Icolor } from '../CreateProduct';
+import { Icolor } from '../Edit';
 import ModalHOC from '../../../hoc/ModalHOC';
 import Color from './Color';
 import ModalHeader from '../../../component/ModalHeader';

@@ -1,12 +1,12 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import WrappedText from '../../../../../../component/WrappedText';
-import { MT } from '../../../../../../../common/styles';
-import WrappedFeatherIcon from '../../../../../../component/WrappedFeatherIcon';
-import { fs13, fs28 } from '../../../../../../../common';
-import { mainColor } from '../../../../../../../common/color';
+import WrappedText from '../../../../../component/WrappedText';
+import { MT } from '../../../../../../common/styles';
+import WrappedFeatherIcon from '../../../../../component/WrappedFeatherIcon';
+import { fs13, fs28 } from '../../../../../../common';
+import { mainColor } from '../../../../../../common/color';
 
-import { getHP } from '../../../../../../../common/dimension';
+import { getHP } from '../../../../../../common/dimension';
 
 export interface PhotoUploadProps {}
 

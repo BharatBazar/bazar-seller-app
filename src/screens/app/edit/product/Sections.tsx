@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import NewProduct from './productNew/NewProduct';
+import NewProduct from './NewProduct';
 import ShowPrice from '../component/ShowPrice';
-import ProductTitle from './productTitle';
-import ProductDescription from './productDescription/index';
-import ProductColor from './productColor';
+import ProductTitle from './Title';
+import ProductDescription from './Descrption';
+import ProductColor from './Colors';
 import { IProduct } from '../../../../server/apis/product/product.interface';
 import { IPostDataToServer } from './component/generalConfig';
 
@@ -14,6 +14,11 @@ export interface ProductCommonDetailsProps {
     postDataToServer: IPostDataToServer;
     setProductId: (productId: string) => void;
     productId?: string;
+    productTypeDetails: {
+        category: string;
+        subCategory1: string;
+        subCategory: string;
+    };
 }
 
 const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
@@ -22,6 +27,7 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
     postDataToServer,
     setProductId,
     productId,
+    productTypeDetails,
 }) => {
     return (
         <View>
@@ -46,6 +52,7 @@ const ProductCommonDetails: React.FC<ProductCommonDetailsProps> = ({
                 postDataToServer={postDataToServer}
                 productId={productId}
                 productColors={productDetails.productColor}
+                productTypeDetails={productTypeDetails}
             />
         </View>
     );

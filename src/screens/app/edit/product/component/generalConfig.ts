@@ -1,4 +1,4 @@
-import { DataHandling } from './../../../../../server/DataHandlingHOC';
+import { DataHandling } from '../../../../../server/DataHandlingHOC';
 import {
     IProduct,
     productStatus,
@@ -6,7 +6,7 @@ import {
     IProductSize,
     IRProductSize,
     IRProductColor,
-} from './../../../../../server/apis/product/product.interface';
+} from '../../../../../server/apis/product/product.interface';
 import {
     APIcreateProduct,
     APICreateProductColor,
@@ -17,7 +17,7 @@ import {
     APIupdateProduct,
     APIUpdateProductColor,
     APIUpdateProductSize,
-} from './../../../../../server/apis/product/produt.api';
+} from '../../../../../server/apis/product/produt.api';
 
 import { getHP } from '../../../../../common/dimension';
 import { PH, PV, BR } from '../../../../../common/styles';

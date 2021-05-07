@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { ActivityIndicator, Alert, ScrollView } from 'react-native';
+import { sub } from 'react-native-reanimated';
 import { NavigationProps } from '../../../common';
 import { NavigationKey } from '../../../labels';
 import { IProduct, IProducts, productStatus } from '../../../server/apis/product/product.interface';
@@ -53,6 +54,7 @@ const ProductList: React.SFC<ProductListProps> = ({
         fetchProducts();
     }, []);
 
+    console.log(category, subCategory, subCategory1);
     return (
         <ScrollView style={{ flex: 1 }}>
             {loading && <ActivityIndicator />}
@@ -63,9 +65,9 @@ const ProductList: React.SFC<ProductListProps> = ({
                         navigation.navigate(NavigationKey.CREATEPRODUCT, {
                             update: true,
                             _id: item._id,
-                            category,
-                            subCategory,
-                            subCategory1,
+                            category: category,
+                            subCategory: subCategory,
+                            subCategory1: subCategory1,
                         });
                     }}
                 />

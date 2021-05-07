@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { fs18 } from '../../../../common';
 import { colorCode } from '../../../../common/color';
 import { getHP } from '../../../../common/dimension';
-import { BGCOLOR, commonStyles, componentProps, PH, PV } from '../../../../common/styles';
+import { BGCOLOR, commonStyles, componentProps, PH, provideShadow, PV } from '../../../../common/styles';
 import TextButton from '../../../component/TextButton';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import WrappedText from '../../../component/WrappedText';
@@ -18,7 +18,7 @@ export interface HeaderProps {
 
 const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressCorrect, onPressDelete }) => {
     return (
-        <View style={[padHor, PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70))]}>
+        <View style={[padHor, PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70)), provideShadow()]}>
             <View style={[commonStyles.fdr, commonStyles.aic, commonStyles.spbtw]}>
                 <View style={[commonStyles.fdr]}>
                     <WrappedFeatherIcon

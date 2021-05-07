@@ -33,9 +33,9 @@ import WrappedText from '../component/WrappedText';
 import { colorCode, mainColor, messageColor } from '../../common/color';
 import LoadProductDetails from './component/LoadProductDetails';
 import { fs12, fs16, fs20, fs25, NavigationProps } from '../../common';
-import ProductButton from '../app/createProduct/product/component/ProductButton';
+import ProductButton from '../app/edit/product/component/ProductButton';
 import HeadingHighlight from './component/HeadingHighlight';
-import { border, borRad, padHor, padVer } from '../app/createProduct/product/component/generalConfig';
+import { border, borRad, padHor, padVer } from '../app/edit/product/component/generalConfig';
 import { color } from 'react-native-reanimated';
 import { NavigationKey } from '../../labels';
 

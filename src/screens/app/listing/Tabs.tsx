@@ -6,7 +6,7 @@ import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import { productStatus } from '../../../server/apis/product/product.interface';
 import WrappedText from '../../component/WrappedText';
-import ProductList from './ProductList';
+import ProductList from './List';
 
 const FirstRoute = () => <View style={{ flex: 1 }} />;
 

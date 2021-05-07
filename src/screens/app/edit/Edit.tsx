@@ -4,18 +4,19 @@ import { View, ScrollView, ActivityIndicator, ToastAndroid, Alert } from 'react-
 import { NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
-import ProductCommonDetails from './product';
+import ProductCommonDetails from './product/Sections';
 import {
     createProduct,
     deleteProductFromServer,
     generalProductSchema,
     updateProduct,
 } from './product/component/generalConfig';
-import { AIC, FLEX, JCC } from '../../../common/styles';
+import { AIC, BGCOLOR, FLEX, JCC, MH, MV } from '../../../common/styles';
 import { IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/produt.api';
-import { mainColor } from '../../../common/color';
+import { colorCode, mainColor } from '../../../common/color';
+import WrappedText from '../../component/WrappedText';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -130,17 +131,25 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             </View>
         );
     }
+
     return (
         <View style={{ flex: 1 }}>
             <StatusBar statusBarColor={mainColor} />
             <Header
-                headerTitle={'Create Product'}
+                headerTitle={update ? 'Update Product' : 'Create Product'}
                 onPressBack={navigation.goBack}
                 onPressCorrect={() => {}}
                 onPressDelete={() => {
                     deleteProduct();
                 }}
             />
+            <View style={[BGCOLOR(colorCode.WHITE), { borderBottomWidth: 1, borderColor: colorCode.BLACKLOW(10) }]}>
+                <WrappedText
+                    text={'This product is under ' + category + ' ' + subCategory + ' ' + subCategory1}
+                    containerStyle={[MV(0.1), MH(0.5)]}
+                    textColor={colorCode.BLACKLOW(40)}
+                />
+            </View>
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                 {!loading && (
                     <ProductCommonDetails
@@ -149,6 +158,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                         postDataToServer={postProductDataToServer}
                         setProductId={setProductId}
                         productId={productId}
+                        productTypeDetails={{ category, subCategory, subCategory1 }}
                     />
                 )}
             </ScrollView>

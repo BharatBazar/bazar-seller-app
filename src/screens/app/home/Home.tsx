@@ -293,7 +293,7 @@ export default class Home extends DataHandling<Props, State> {
             >
                 {section.category.subCategoryExist ? (
                     <AccordionHOC
-                        categor
+                        category={section.category.name}
                         section={section.subCategory.map((cat, index) => {
                             return {
                                 category: cat,
@@ -301,6 +301,7 @@ export default class Home extends DataHandling<Props, State> {
                                 subCategory1: [],
                             };
                         })}
+                        shopId={'60694f8582ea63ad28a2ec1f'}
                         navigation={this.props.navigation}
                     />
                 ) : (

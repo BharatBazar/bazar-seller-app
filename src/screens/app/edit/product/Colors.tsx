@@ -1,20 +1,20 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BGCOLOR, commonStyles, componentProps, provideShadow } from '../../../../../common/styles';
-import { getHP } from '../../../../../common/dimension';
-import { colorCode, productColor } from '../../../../../common/color';
-import ColorModal from '../../component/ColorModal';
-import TextButton from '../../../../component/TextButton';
-import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import ProductDetails from './product-color/ProductDetails';
+import { BGCOLOR, commonStyles, componentProps, provideShadow } from '../../../../common/styles';
+import { getHP } from '../../../../common/dimension';
+import { colorCode, productColor } from '../../../../common/color';
+import ColorModal from '../component/ColorModal';
+import TextButton from '../../../component/TextButton';
+import ProductDetailsHeading from './component/ProductDetailsHeading';
+import Color from './Color';
 import {
     generalProductColorSchema,
     generalSpacing,
     IPostDataToServer,
     marHor,
     marTop,
-} from '../component/generalConfig';
-import { IProductColor } from '../../../../../server/apis/product/product.interface';
+} from './component/generalConfig';
+import { IProductColor } from '../../../../server/apis/product/product.interface';
 
 export interface ProductColorProps {
     update: boolean;
@@ -22,6 +22,11 @@ export interface ProductColorProps {
     productId?: string;
     setProductId: (productId: string) => void;
     productColors: IProductColor[];
+    productTypeDetails: {
+        category: string;
+        subCategory1: string;
+        subCategory: string;
+    };
 }
 
 export interface Icolor {
@@ -41,6 +46,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     productId,
     setProductId,
     productColors,
+    productTypeDetails,
 }) => {
     const [colors, setColors] = React.useState<Icolor[]>([]);
     const [chosenColor, setChosenColor] = React.useState<IProductColor[]>(productColors);
@@ -124,7 +130,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 colors={colors}
             />
             {chosenColor.map((color, index) => (
-                <ProductDetails
+                <Color
+                    productTypeDetails={productTypeDetails}
                     productColorId={color._id}
                     postDataToServer={postDataToServer}
                     update={update}

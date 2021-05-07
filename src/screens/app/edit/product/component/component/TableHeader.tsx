@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { colorCode } from '../../../../../../../common/color';
-import { AIC, BGCOLOR, commonStyles, FDR, FLEX, JCC, MT } from '../../../../../../../common/styles';
-import WrappedText from '../../../../../../component/WrappedText';
-import { headerTitleI } from '../ProductDetails';
+import { colorCode } from '../../../../../../common/color';
+import { AIC, BGCOLOR, commonStyles, FDR, FLEX, JCC, MT } from '../../../../../../common/styles';
+import WrappedText from '../../../../../component/WrappedText';
+import { headerTitleI } from '../../Color';
 
 export interface TableHeaderProps {
     headerTitle: headerTitleI[];

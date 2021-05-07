@@ -12,9 +12,9 @@ const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 import Icon from 'react-native-vector-icons/Feather';
 import { colorCode, mainColor } from '../common/color';
-import ProdcutSearch from '../screens/app/ProductSearch';
-import Product from '../screens/app/productListing/Product';
-import CreateProduct from '../screens/app/createProduct/CreateProduct';
+import ProdcutSearch from '../screens/app/search/Search';
+import Product from '../screens/app/listing/Main';
+import CreateProduct from '../screens/app/edit/Edit';
 import { View } from 'react-native';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import { Easing } from 'react-native-reanimated';
@@ -22,6 +22,7 @@ import { NavigationProps } from '../common';
 import { setUpAxios } from '../server';
 import ProductCategory from '../screens/app/home/ProductCategory';
 import { provideShadow } from '../common/styles';
+import Toast from 'react-native-toast-message';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -58,6 +59,7 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
                     <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
                 </Stack.Navigator>
+                <Toast ref={(ref) => Toast.setRef(ref)} />
             </NavigationContainer>
         );
     }

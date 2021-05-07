@@ -1,21 +1,10 @@
 import { FontFamilies } from '@app/constants';
 import React, { Component } from 'react';
 import { View, TouchableHighlight, Text } from 'react-native';
-import { colorCode, mainColor } from '../../../../../../../common/color';
-import { getHP, getWP } from '../../../../../../../common/dimension';
-import {
-    AIC,
-    BC,
-    BGCOLOR,
-    BR,
-    BSW,
-    BTW,
-    commonStyles,
-    JCC,
-    MH,
-    provideShadow,
-} from '../../../../../../../common/styles';
-import WrappedRectangleButton from '../../../../../../component/WrappedRectangleButton';
+import { colorCode, mainColor } from '../../../../../../common/color';
+import { getHP, getWP } from '../../../../../../common/dimension';
+import { AIC, BC, BGCOLOR, BR, BSW, BTW, commonStyles, JCC, MH, provideShadow } from '../../../../../../common/styles';
+import WrappedRectangleButton from '../../../../../component/WrappedRectangleButton';
 
 interface Props {
     size: string;

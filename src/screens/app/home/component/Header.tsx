@@ -7,7 +7,7 @@ import { BGCOLOR, commonStyles, componentProps, PH, PV } from '../../../../commo
 import TextButton from '../../../component/TextButton';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import WrappedText from '../../../component/WrappedText';
-import { padHor } from '../../createProduct/product/component/generalConfig';
+import { padHor } from '../../edit/product/component/generalConfig';
 
 export interface HeaderProps {
     headerTitle: string;

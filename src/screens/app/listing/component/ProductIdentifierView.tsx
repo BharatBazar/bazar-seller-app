@@ -26,7 +26,7 @@ import {
 import { IProduct } from '../../../../server/apis/product/product.interface';
 import { FastImageWrapper } from '../../../component/FastImage';
 import WrappedText from '../../../component/WrappedText';
-import { border } from '../../createProduct/product/component/generalConfig';
+import { border } from '../../edit/product/component/generalConfig';
 export interface ProductIdentifierViewProps {
     product: IProduct;
     onPress: Function;

@@ -8,7 +8,7 @@ import { NavigationKey } from '../../../labels';
 import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
-import ProductTab from './ProductTabs';
+import ProductTab from './Tabs';
 
 export interface ProductProps extends NavigationProps {
     route: {

@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { BC, BGCOLOR, BR, BW, JCC, MT, PV } from '../../../../../common/styles';
-import WrappedCheckBox from '../../../../component/WrappedCheckBox';
-import { getHP } from '../../../../../common/dimension';
-import { fs13, fs17 } from '../../../../../common';
-import { borderColor, colorCode, mainColor } from '../../../../../common/color';
-import DeadlineContainer from './DeadlineContainer';
-import TextButton from '../../../../component/TextButton';
-import ProductContainer from '../component/productContainerHOC';
-import WrappedRectangleButton from '../../../../component/WrappedRectangleButton';
-import ProductButton from '../component/ProductButton';
-import ProductDetailsHeading from '../component/ProductDetailsHeading';
-import { marTop, padVer } from '../component/generalConfig';
+import { BC, BGCOLOR, BR, BW, JCC, MT, PV } from '../../../../common/styles';
+import WrappedCheckBox from '../../../component/WrappedCheckBox';
+import { getHP } from '../../../../common/dimension';
+import { fs13, fs17 } from '../../../../common';
+import { borderColor, colorCode, mainColor } from '../../../../common/color';
+import DeadlineContainer from './component/DeadlineContainer';
+import TextButton from '../../../component/TextButton';
+import ProductContainer from './component/productContainerHOC';
+import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
+import ProductButton from './component/ProductButton';
+import ProductDetailsHeading from './component/ProductDetailsHeading';
+import { marTop, padVer } from './component/generalConfig';
 export interface NewProductProps {}
 
 const NewProduct: React.FC<NewProductProps> = () => {
