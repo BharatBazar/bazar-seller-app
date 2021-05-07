@@ -14,7 +14,7 @@ import {
     marHor,
     marTop,
 } from './component/generalConfig';
-import { IProductColor } from '../../../../server/apis/product/product.interface';
+import { IProductColor, IProductSize } from '../../../../server/apis/product/product.interface';
 
 export interface ProductColorProps {
     update: boolean;
@@ -51,6 +51,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     const [colors, setColors] = React.useState<Icolor[]>([]);
     const [chosenColor, setChosenColor] = React.useState<IProductColor[]>(productColors);
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
+    const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
 
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let updatedColors: Icolor[] = [...colors];
@@ -87,12 +88,25 @@ const ProductColor: React.FC<ProductColorProps> = ({
             return item;
         });
         setColors(data);
+
         return () => {};
     }, []);
 
     React.useEffect(() => {
         setChosenColor(productColors);
+        if (update && productColors.length > 0) {
+            setDefaultSize(productColors[0].productSize);
+        }
     }, [productColors]);
+
+    const colorProps = (index: number) => {
+        if (index == 0) {
+            return { defaultSize: defaultSize, setDeafultSize: setDefaultSize };
+        } else
+            return {
+                defaultSize,
+            };
+    };
 
     return (
         <View
@@ -131,6 +145,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
             />
             {chosenColor.map((color, index) => (
                 <Color
+                    {...colorProps(index)}
                     productTypeDetails={productTypeDetails}
                     productColorId={color._id}
                     postDataToServer={postDataToServer}

@@ -7,7 +7,7 @@ import WrappedTextInput from '../../../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './Counter';
 import { fs12, fs15 } from '../../../../../../common';
-import { colorCode } from '../../../../../../common/color';
+import { colorCode, productColor } from '../../../../../../common/color';
 import TextButton from '../../../../../component/TextButton';
 import { IProductSize, IRProductSize } from '../../../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from '../generalConfig';
@@ -19,6 +19,9 @@ export interface ProductPriceProps {
     setParentId: Function;
     parentId: string;
     postDataToServer: Function;
+    setDefaultSize?: (size: IProductSize) => void;
+    setNew: Function;
+    neww: boolean;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -27,7 +30,11 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     onDelete,
     setParentId,
     parentId,
+    neww,
+    setNew,
+
     postDataToServer,
+    setDefaultSize,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productQuantity || 1);
     const [mrp, setMrp] = React.useState<string>(productMrp);
@@ -48,7 +55,13 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     parentId,
                 });
                 if (response.status == 1) {
+                    if (neww) {
+                        setNew(false);
+                    }
                     setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
+                    if (setDefaultSize) {
+                        setDefaultSize({ productSize, productMrp: mrp, productSp: sp, productQuantity: quantity });
+                    }
                     if (parentId.length == 0) {
                         setParentId(response.payload.parentId);
                     } else {
@@ -115,10 +128,10 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 </View>
             </View>
 
-            {(lastSp != sp || lastMrp != mrp || lastQuantity != quantity) && (
+            {(lastSp != sp || lastMrp != mrp || lastQuantity != quantity || sizeId.length == 0) && (
                 <View style={[FDR(), JCC('flex-end'), MV(0.1)]}>
                     <TextButton
-                        text={'Save'}
+                        text={sizeId.length == 0 ? 'Create' : 'Save'}
                         onPress={() => {
                             postProductSizeDataToServer();
                         }}

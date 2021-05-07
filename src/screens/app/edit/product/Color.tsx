@@ -8,7 +8,7 @@ import { getHP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs13, fs20, fs40 } from '../../../../common';
 import { colorCode } from '../../../../common/color';
-import ProductPrice from './component/component/Size';
+import Size from './component/component/Size';
 import TableHeader from './component/component/TableHeader';
 import ProductContainer from './component/productContainerHOC';
 import PhotoUplaod from './component/component/PhotoUpload';
@@ -22,6 +22,7 @@ import {
 } from './component/generalConfig';
 import { Icolor } from './Colors';
 import Loader from '../../../component/Loader';
+import { ToastHOC } from '../../../hoc/ToastHOC';
 
 export const Heading = (headingText: string, color: string) => {
     return (
@@ -53,6 +54,8 @@ export interface ProductDetailsProps {
         subCategory1: string;
         subCategory: string;
     };
+    defaultSize: IProductSize[];
+    setDeafultSize?: (size: Partial<IProductSize>) => void;
 }
 export interface headerTitleI {
     title: string;
@@ -90,11 +93,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     postDataToServer,
     productTypeDetails: { category, subCategory1, subCategory },
     size,
+    defaultSize,
+    setDeafultSize,
 }) => {
-    const [selectedSize, setSelectedSize] = useState<IProductSize[]>(productColor.productSize);
+    const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>(productColor.productSize.sort());
     const [photo, productPhoto] = useState<[string] | []>(productColor.productPhotos);
     const [colorId, setcolorId] = useState<string>(productColorId);
     const [loading, setLoading] = useState(true);
+    const [autoFillDefaultSize, setAutoFillDefaultSize] = useState(false);
+    const [neww, setProductNew] = useState(false);
 
     React.useEffect(() => {}, [colorId]);
 
@@ -129,6 +136,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 () => {},
                 () => {},
             );
+            setProductNew(true);
         }
     }, []);
 
@@ -205,6 +213,25 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         setSelectedSize(selectedSizes);
     };
 
+    const setDefaultSize = () => {
+        //selectedSize.slice(0);
+        let selectedSizes = [...defaultSize];
+
+        let newSize = selectedSizes.map((size) => {
+            return { ...size, parentId: '', _id: '' };
+        });
+
+        setSelectedSize(newSize);
+    };
+
+    const addSizeInDefaultSize = (size: Partial<IProductSize>) => {
+        const Size = [...defaultSize];
+        Size.push(size);
+        setDeafultSize(Size);
+    };
+
+    const sizeProps = index == 0 ? { setDefaultSize: addSizeInDefaultSize } : {};
+
     return (
         <ProductContainer>
             <View style={[FLEX(1)]}>
@@ -241,6 +268,21 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 {Heading('Upload product image', color.colorCode)}
                 <PhotoUplaod />
                 {Heading('Provide size for product', color.colorCode)}
+                {neww && index != 0 && (
+                    <WrappedCheckBox
+                        placeholder={'Auto fill size as first size added and update manually.'}
+                        value={autoFillDefaultSize}
+                        setValue={(value) => {
+                            if (value) {
+                                setDefaultSize();
+                            } else {
+                                ToastHOC.infoAlert(
+                                    'If you select the option again then whole size data for this color will be replaced by the first color size data.',
+                                );
+                            }
+                        }}
+                    />
+                )}
                 <ScrollView horizontal={true} contentContainerStyle={[MV(0.2)]}>
                     {size.map((size: string, index: number) => (
                         <WrappedSize
@@ -253,13 +295,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         />
                     ))}
                 </ScrollView>
-                {index == 0 && (
+                {/* {index == 0 && (
                     <WrappedCheckBox
                         placeholder={'Auto fill for other color and update manually.'}
                         value={true}
                         setValue={() => {}}
                     />
-                )}
+                )} */}
 
                 {selectedSize.length != 0 && (
                     <>
@@ -276,15 +318,18 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         )}
                         <TableHeader headerTitle={headerTitle} flex={columnFlex} />
 
-                        {selectedSize.map((size: IProductSize, index: number) => (
+                        {selectedSize.map((size: IProductSize, sizeIndex: number) => (
                             <View key={size.productSize.toString() + colorId}>
-                                <ProductPrice
+                                <Size
+                                    {...sizeProps}
                                     productSize={size}
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}
                                     flex={columnFlex}
-                                    onDelete={() => deleteSize(index)}
+                                    onDelete={() => deleteSize(sizeIndex)}
                                     setParentId={setParentId}
+                                    neww={neww}
+                                    setNew={setProductNew}
                                 />
                             </View>
                         ))}
