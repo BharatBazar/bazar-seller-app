@@ -4,19 +4,23 @@ import { View, ScrollView, ActivityIndicator, ToastAndroid, Alert } from 'react-
 import { NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
-import ProductCommonDetails from './product/Sections';
+import Sections from './product/Sections';
 import {
+    border,
     createProduct,
     deleteProductFromServer,
     generalProductSchema,
+    padHor,
     updateProduct,
 } from './product/component/generalConfig';
-import { AIC, BGCOLOR, FLEX, JCC, MH, MV } from '../../../common/styles';
+import { AIC, BGCOLOR, FDR, FLEX, H, HP, JCC, MH, MV, PH, PR, PV, W, WP } from '../../../common/styles';
 import { IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/produt.api';
 import { colorCode, mainColor } from '../../../common/color';
 import WrappedText from '../../component/WrappedText';
+import TextButton from '../../component/TextButton';
+import { ToastHOC } from '../../hoc/ToastHOC';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -40,13 +44,14 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const [productId, setProductId] = useState<string | undefined>(_id);
     const [productDetails, setProductDetails] = useState<IProduct>(generalProductSchema);
     const [loading, setLoading] = useState(true);
+    //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
+    const [checkAllError, setCheckAllError] = useState<number>(0);
 
     const fetchProduct = async () => {
         const response: IRProduct = await APIgetProduct({ _id: productId, shopId: shopId });
 
         setLoading(false);
         if (response.status == 1) {
-            console.log(response);
             setProductDetails(response.payload);
         }
     };
@@ -79,6 +84,16 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             createProductInServer({});
         }
     }, []);
+
+    React.useEffect(() => {
+        if (checkAllError == 2) {
+            ToastHOC.successAlert("All check's passed");
+            setCheckAllError(0);
+        } else if (checkAllError == 3) {
+            ToastHOC.errorAlert("Please clear all error's");
+            setCheckAllError(0);
+        }
+    }, [checkAllError]);
 
     const createProductInServer = async (data: Partial<IProduct>) => {
         const product = {
@@ -143,16 +158,26 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     deleteProduct();
                 }}
             />
-            <View style={[BGCOLOR(colorCode.WHITE), { borderBottomWidth: 1, borderColor: colorCode.BLACKLOW(10) }]}>
+            <View style={[border, FDR(), padHor, PR(0.1), PV(0.1)]}>
                 <WrappedText
-                    text={'This product is under ' + category + ' ' + subCategory + ' ' + subCategory1}
-                    containerStyle={[MV(0.1), MH(0.5)]}
+                    text={'This product is under ' + category + ' ' + subCategory + ' ' + subCategory1 + ' category.'}
+                    containerStyle={[FLEX(1)]}
                     textColor={colorCode.BLACKLOW(40)}
+                />
+                <TextButton
+                    text={'Mark as complete'}
+                    onPress={() => {
+                        setCheckAllError(1);
+                    }}
+                    textProps={{ textColor: colorCode.WHITE }}
+                    containerStyle={[AIC(), PH(0.5), WP(4)]}
                 />
             </View>
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                 {!loading && (
-                    <ProductCommonDetails
+                    <Sections
+                        checkAllError={checkAllError}
+                        setCheckAllError={setCheckAllError}
                         productDetails={productDetails}
                         update={update}
                         postDataToServer={postProductDataToServer}

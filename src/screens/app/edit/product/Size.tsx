@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { getHP } from '../../../../../../common/dimension';
-import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV } from '../../../../../../common/styles';
-import WrappedText from '../../../../../component/WrappedText';
-import WrappedTextInput from '../../../../../component/WrappedTextInput';
+import { getHP } from '../../../../common/dimension';
+import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV } from '../../../../common/styles';
+import WrappedText from '../../../component/WrappedText';
+import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
-import CounterComponent from './Counter';
-import { fs12, fs15 } from '../../../../../../common';
-import { colorCode, productColor } from '../../../../../../common/color';
-import TextButton from '../../../../../component/TextButton';
-import { IProductSize, IRProductSize } from '../../../../../../server/apis/product/product.interface';
-import { createProductSize, updateProductSize, deleteProductSize } from '../generalConfig';
+import CounterComponent from './component/component/Counter';
+import { fs12, fs15 } from '../../../../common';
+import { colorCode, productColor } from '../../../../common/color';
+import TextButton from '../../../component/TextButton';
+import { IProductSize, IRProductSize } from '../../../../server/apis/product/product.interface';
+import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
 
 export interface ProductPriceProps {
     flex: number[];

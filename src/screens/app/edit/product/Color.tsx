@@ -8,7 +8,7 @@ import { getHP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs13, fs20, fs40 } from '../../../../common';
 import { colorCode } from '../../../../common/color';
-import Size from './component/component/Size';
+import Size from './Size';
 import TableHeader from './component/component/TableHeader';
 import ProductContainer from './component/productContainerHOC';
 import PhotoUplaod from './component/component/PhotoUpload';
@@ -56,6 +56,7 @@ export interface ProductDetailsProps {
     };
     defaultSize: IProductSize[];
     setDeafultSize?: (size: Partial<IProductSize>) => void;
+    checkAllError: string;
 }
 export interface headerTitleI {
     title: string;
@@ -95,6 +96,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     size,
     defaultSize,
     setDeafultSize,
+    checkAllError,
 }) => {
     const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>(productColor.productSize.sort());
     const [photo, productPhoto] = useState<[string] | []>(productColor.productPhotos);
@@ -199,6 +201,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             },
         );
     };
+
+    React.useEffect(() => {
+        if (checkAllError) {
+            //Run a error check
+        }
+    }, [checkAllError]);
 
     const selectSize = (size: string) => {
         let selectedSizes = [...selectedSize];

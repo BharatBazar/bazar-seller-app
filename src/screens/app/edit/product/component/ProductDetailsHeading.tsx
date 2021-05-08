@@ -8,7 +8,7 @@ import { generalSpacing, marTop } from './generalConfig';
 export interface ProductDetailsHeadingProps {
     heading: string;
     subHeading: string;
-    error: string;
+    error?: string;
 }
 
 const ProductDetailsHeading: React.SFC<ProductDetailsHeadingProps> = ({ heading, subHeading, error }) => {

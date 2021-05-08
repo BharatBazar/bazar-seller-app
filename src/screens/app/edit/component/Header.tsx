@@ -8,6 +8,7 @@ import TextButton from '../../../component/TextButton';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import WrappedText from '../../../component/WrappedText';
 import { padHor } from '../product/component/generalConfig';
+import ProductButton from '../product/component/ProductButton';
 
 export interface HeaderProps {
     headerTitle: string;
@@ -33,13 +34,6 @@ const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressCorre
                 </View>
 
                 <View style={[commonStyles.fdr]}>
-                    <WrappedFeatherIcon
-                        onPress={() => {
-                            onPressCorrect();
-                        }}
-                        iconName={'check'}
-                        iconColor={colorCode.WHITE}
-                    />
                     <WrappedFeatherIcon
                         onPress={() => {
                             onPressDelete();

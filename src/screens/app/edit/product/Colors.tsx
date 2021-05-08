@@ -16,6 +16,16 @@ import {
 } from './component/generalConfig';
 import { IProductColor, IProductSize } from '../../../../server/apis/product/product.interface';
 
+export interface Icolor {
+    name: string;
+    colorCode: string;
+    rgbaColorCode?: string;
+    selected: boolean;
+}
+
+export type Isize = string[];
+
+const size: Isize = ['20', '21', '22', '23', '24', '25', '26', '27'];
 export interface ProductColorProps {
     update: boolean;
     postDataToServer: IPostDataToServer;
@@ -27,18 +37,18 @@ export interface ProductColorProps {
         subCategory1: string;
         subCategory: string;
     };
+    errorValue: number;
+    setError: (value: number) => void;
 }
 
-export interface Icolor {
-    name: string;
-    colorCode: string;
-    rgbaColorCode?: string;
-    selected: boolean;
+interface Error {
+    generalError?: string;
 }
 
-export type Isize = string[];
-
-const size: Isize = ['20', '21', '22', '23', '24', '25', '26', '27'];
+type possibleValue = 0 | 1 | 2 | 3;
+interface AllError {
+    [key: string]: possibleValue;
+}
 
 const ProductColor: React.FC<ProductColorProps> = ({
     update,
@@ -47,17 +57,22 @@ const ProductColor: React.FC<ProductColorProps> = ({
     setProductId,
     productColors,
     productTypeDetails,
+    errorValue,
+    setError,
 }) => {
     const [colors, setColors] = React.useState<Icolor[]>([]);
     const [chosenColor, setChosenColor] = React.useState<IProductColor[]>(productColors);
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
     const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
+    const [error, setErrors] = React.useState<Error>({});
+    const [childError, setChildError] = React.useState<possibleValue[]>([]);
 
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let updatedColors: Icolor[] = [...colors];
         updatedColors[index].selected = !updatedColors[index].selected;
         setColors(updatedColors.sort((item) => !item.selected));
         if (!updateColorArray) {
+            pushErrorKey();
             setChosenColor([
                 ...chosenColor,
                 {
@@ -70,9 +85,31 @@ const ProductColor: React.FC<ProductColorProps> = ({
         }
     };
 
+    React.useEffect(() => {
+        if (errorValue == 1) {
+            setAllErrorToParticularValue(1);
+            checkError();
+        }
+    }, [errorValue]);
+
+    const checkError = () => {
+        let error: Error = {};
+        if (chosenColor.length == 0) {
+            error['generalError'] = 'Please add atleast one color.';
+        }
+
+        setErrors(error);
+        if (Object.keys(error).length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
     const deleteColor = (index: number) => {
         let updatedColors: IProductColor[] = [...chosenColor];
         updatedColors.splice(index, 1);
+        removeErrorKey(index);
         const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].productColorName);
         updateColorArray(indexToUpdate, true);
         setChosenColor(updatedColors);
@@ -92,9 +129,46 @@ const ProductColor: React.FC<ProductColorProps> = ({
         return () => {};
     }, []);
 
+    function pushErrorKey() {
+        let error = [...childError];
+        error.push(0);
+        setChildError(error);
+    }
+
+    function removeErrorKey(index: number) {
+        let error = [...childError];
+        error.splice(index, 1);
+        setChildError(error);
+    }
+
+    function changeErrorValueAtIndex(index: number, value: possibleValue) {
+        let error = [...childError];
+        error[index] = value;
+        setChildError(error);
+    }
+
+    function setAllErrorToParticularValue(value: possibleValue) {
+        var error = [...childError];
+        error = error.map((item) => value);
+        setChildError(error);
+    }
+
+    React.useEffect(() => {
+        if (childError.every((item) => item == 2)) {
+            //All checks passed
+            setError(error['generalError'] ? 3 : 2);
+            setAllErrorToParticularValue(0);
+        } else if (childError.every((item) => item == 3 || item == 2)) {
+            //Not All check passed
+            setError(3);
+            setAllErrorToParticularValue(0);
+        }
+    }, [childError]);
+
     React.useEffect(() => {
         setChosenColor(productColors);
         if (update && productColors.length > 0) {
+            productColors.forEach((item) => pushErrorKey());
             setDefaultSize(productColors[0].productSize);
         }
     }, [productColors]);
@@ -122,7 +196,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 <ProductDetailsHeading
                     heading={'Select Color'}
                     subHeading={'Select color variant for product by clicking on add color.'}
-                    error={''}
+                    error={error['generalError']}
                 />
 
                 <TextButton
