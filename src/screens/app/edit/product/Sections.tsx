@@ -49,7 +49,6 @@ const Sections: React.FC<SectionsProps> = ({
     const setParticularError = (key: keyof AllError, value: number) => {
         let allError: AllError = { ...error };
         allError[key] = value;
-        console.log('key:', allError, value, new Date().getTime());
         setError(allError);
     };
 
@@ -60,23 +59,16 @@ const Sections: React.FC<SectionsProps> = ({
     }, [checkAllError]);
 
     React.useEffect(() => {
-        console.log('error value changed:', error);
         if (Object.values(error).every((item) => item == 2)) {
             //All checks passed
-            console.log('all 2', error);
             setAllError(0);
             setCheckAllError(2);
         } else if (Object.values(error).every((item) => item == 3 || item == 2)) {
             //Not All check passed
-            console.log('all 2 or 3', error);
             setAllError(0);
             setCheckAllError(3);
         }
     }, [error]);
-
-    React.useEffect(() => {
-        console.log('New beginings');
-    }, []);
 
     return (
         <View>

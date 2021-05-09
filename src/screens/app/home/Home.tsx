@@ -170,32 +170,6 @@ import { ShowProductDetails, ShowSubCategory } from '../component';
 import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
 import AccordionHOC from './component/Accordion';
 
-const BACON_IPSUM =
-    'Bacon ipsum dolor amet chuck turducken landjaeger tongue spare ribs. Picanha beef prosciutto meatball turkey shoulder shank salami cupim doner jowl pork belly cow. Chicken shankle rump swine tail frankfurter meatloaf ground round flank ham hock tongue shank andouille boudin brisket. ';
-
-const CONTENT = [
-    {
-        title: 'First',
-        content: BACON_IPSUM,
-    },
-    {
-        title: 'Second',
-        content: BACON_IPSUM,
-    },
-    {
-        title: 'Third',
-        content: BACON_IPSUM,
-    },
-    {
-        title: 'Fourth',
-        content: BACON_IPSUM,
-    },
-    {
-        title: 'Fifth',
-        content: BACON_IPSUM,
-    },
-];
-
 const SELECTORS = [
     {
         title: 'First',

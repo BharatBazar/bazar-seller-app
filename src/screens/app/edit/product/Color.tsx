@@ -6,12 +6,12 @@ import WrappedText from '../../../component/WrappedText';
 import { AIC, BGCOLOR, commonStyles, FDR, FLEX, HP, JCC, MH, ML, MT, MV, W } from '../../../../common/styles';
 import { getHP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
-import { fs13, fs20, fs40 } from '../../../../common';
+import { fs10, fs13, fs20, fs40 } from '../../../../common';
 import { colorCode } from '../../../../common/color';
 import Size from './Size';
 import TableHeader from './component/component/TableHeader';
 import ProductContainer from './component/productContainerHOC';
-import PhotoUplaod from './component/component/PhotoUpload';
+import PhotoUpload from './component/component/PhotoUpload';
 import { IProductColor, IProductSize, IRProductColor } from '../../../../server/apis/product/product.interface';
 import {
     createProductColor,
@@ -20,8 +20,6 @@ import {
     IPostDataToServer,
     updateProductColor,
 } from './component/generalConfig';
-import { Icolor } from './Colors';
-import Loader from '../../../component/Loader';
 import { ToastHOC } from '../../../hoc/ToastHOC';
 
 export const Heading = (headingText: string, color: string) => {
@@ -56,7 +54,8 @@ export interface ProductDetailsProps {
     };
     defaultSize: IProductSize[];
     setDeafultSize?: (size: Partial<IProductSize>) => void;
-    checkAllError: string;
+    errorValue: number;
+    setError: (value: number) => void;
 }
 export interface headerTitleI {
     title: string;
@@ -82,6 +81,10 @@ const headerTitle: headerTitleI[] = [
 
 const columnFlex = [1.5, 1.5, 3, 2.5, 2.5];
 
+interface Error {
+    generalError?: string;
+}
+
 const ProductDetails: React.FC<ProductDetailsProps> = ({
     index,
     onDelete,
@@ -96,16 +99,98 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     size,
     defaultSize,
     setDeafultSize,
-    checkAllError,
+    errorValue,
+    setError,
 }) => {
     const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>(productColor.productSize.sort());
-    const [photo, productPhoto] = useState<[string] | []>(productColor.productPhotos);
     const [colorId, setcolorId] = useState<string>(productColorId);
-    const [loading, setLoading] = useState(true);
     const [autoFillDefaultSize, setAutoFillDefaultSize] = useState(false);
     const [neww, setProductNew] = useState(false);
+    const [error, setErrors] = useState<Error>({});
+    const [childError, setChildError] = React.useState<possibleValue[]>([]);
 
-    React.useEffect(() => {}, [colorId]);
+    const checkError = () => {
+        let error: Error = {};
+        if (selectedSize.length == 0) {
+            error['generalError'] = 'Please add atleast one size.';
+        }
+
+        setErrors(error);
+        if (Object.keys(error).length == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    };
+
+    React.useEffect(() => {
+        const error = productColor.productSize.map((item) => 0);
+        setChildError(error);
+        return () => {};
+    }, []);
+
+    function pushErrorKey() {
+        let error = [...childError];
+        error.push(0);
+        setChildError(error);
+    }
+
+    function removeErrorKey(index: number) {
+        let error = [...childError];
+        error.splice(index, 1);
+        setChildError(error);
+    }
+
+    function changeErrorValueAtIndex(index: number, value: possibleValue) {
+        let error = [...childError];
+        error[index] = value;
+        setChildError(error);
+    }
+
+    function setAllErrorToParticularValue(value: possibleValue) {
+        var error = [...childError];
+        childError.splice(0);
+        error = error.map((item) => value);
+        setChildError(error);
+    }
+
+    React.useEffect(() => {
+        if (errorValue == 1) {
+            console.log('check error called in color');
+            const isError = checkError();
+            if (isError) {
+                setError(3);
+            } else {
+                setAllErrorToParticularValue(1);
+            }
+        }
+    }, [errorValue]);
+
+    React.useEffect(() => {
+        if (errorValue == 1 && childError.length > 0) {
+            if (childError.every((item) => item == 2)) {
+                //All checks passed
+                console.log('All checks passed!');
+                setAllErrorToParticularValue(0);
+                setError(2);
+            } else if (childError.every((item) => item == 3 || item == 2)) {
+                //Not All check passed
+                console.log(childError, 'Not all checks passed!');
+                setAllErrorToParticularValue(0);
+                setError(3);
+            }
+        }
+    }, [childError]);
+
+    React.useEffect(() => {
+        if (errorValue == 1) {
+            if (index % 2 == 0) {
+                setError(3);
+            } else {
+                setError(2);
+            }
+        }
+    }, [errorValue]);
 
     const deleteColorFromServer = async () => {
         Alert.alert('Warning', 'Do you really want to delete color it will delete all your progress?', [
@@ -202,22 +287,18 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         );
     };
 
-    React.useEffect(() => {
-        if (checkAllError) {
-            //Run a error check
-        }
-    }, [checkAllError]);
-
     const selectSize = (size: string) => {
         let selectedSizes = [...selectedSize];
         selectedSizes.push({ ...generalProductSizeSchema, productSize: size });
-
+        selectedSizes = selectedSizes.sort((a, b) => (+a.productSize < +b.productSize ? 1 : 0));
+        pushErrorKey();
         setSelectedSize(selectedSizes);
     };
 
     const deleteSize = (index: number) => {
         let selectedSizes = [...selectedSize];
         selectedSizes.splice(index, 1);
+        removeErrorKey(index);
         setSelectedSize(selectedSizes);
     };
 
@@ -239,7 +320,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     const sizeProps = index == 0 ? { setDefaultSize: addSizeInDefaultSize } : {};
-
+    console.log('generalError', error);
     return (
         <ProductContainer>
             <View style={[FLEX(1)]}>
@@ -274,8 +355,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     />
                 </View>
                 {Heading('Upload product image', color.colorCode)}
-                <PhotoUplaod />
+                <PhotoUpload />
                 {Heading('Provide size for product', color.colorCode)}
+                {error['generalError'] ? (
+                    <WrappedText text={error['generalError']} fontSize={fs10} textColor={colorCode.RED} />
+                ) : (
+                    <View />
+                )}
                 {neww && index != 0 && (
                     <WrappedCheckBox
                         placeholder={'Auto fill size as first size added and update manually.'}
@@ -338,6 +424,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     setParentId={setParentId}
                                     neww={neww}
                                     setNew={setProductNew}
+                                    errorValue={childError[index]}
+                                    setError={(value: possibleValue) => {
+                                        setTimeout(() => {
+                                            changeErrorValueAtIndex(index, value);
+                                        }, 10 + index * 10);
+                                    }}
                                 />
                             </View>
                         ))}

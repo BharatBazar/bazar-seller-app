@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { getHP } from '../../../../common/dimension';
-import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV } from '../../../../common/styles';
+import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV, MH } from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
 import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './component/component/Counter';
-import { fs12, fs15 } from '../../../../common';
+import { fs10, fs12, fs15, fs9 } from '../../../../common';
 import { colorCode, productColor } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize } from '../../../../server/apis/product/product.interface';
@@ -22,6 +22,8 @@ export interface ProductPriceProps {
     setDefaultSize?: (size: IProductSize) => void;
     setNew: Function;
     neww: boolean;
+    errorValue: number;
+    setError: (value: number) => void;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -34,6 +36,8 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setNew,
 
     postDataToServer,
+    errorValue,
+    setError,
     setDefaultSize,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productQuantity || 1);
@@ -45,37 +49,66 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         lastMrp: mrp,
         lastSp: sp,
     });
+    const [error, setErrors] = React.useState('');
+
+    const checkError = () => {
+        if (sp.length == 0 || mrp.length == 0) {
+            setErrors('For creating size for product your need to provide mrp and sp.');
+            return true;
+        } else if (sizeId.length == 0) {
+            setErrors('Please save size or delete it.');
+            return true;
+        } else {
+            setErrors('');
+            return false;
+        }
+    };
+
+    React.useEffect(() => {
+        if (errorValue == 1) {
+            const isError = checkError();
+            if (isError) {
+                setError(3);
+            } else {
+                setError(2);
+            }
+        }
+    }, [errorValue]);
 
     const postProductSizeDataToServer = async () => {
         let data = { productQuantity: quantity, productSp: sp, productMrp: mrp, productSize: productSize };
-        try {
-            if (sizeId.length == 0) {
-                const response: IRProductSize = await createProductSize({
-                    ...data,
-                    parentId,
-                });
-                if (response.status == 1) {
-                    if (neww) {
-                        setNew(false);
+        const isError = checkError();
+
+        if (!isError) {
+            try {
+                if (sizeId.length == 0) {
+                    const response: IRProductSize = await createProductSize({
+                        ...data,
+                        parentId,
+                    });
+                    if (response.status == 1) {
+                        if (neww) {
+                            setNew(false);
+                        }
+                        setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
+                        if (setDefaultSize) {
+                            setDefaultSize({ productSize, productMrp: mrp, productSp: sp, productQuantity: quantity });
+                        }
+                        if (parentId.length == 0) {
+                            setParentId(response.payload.parentId);
+                        } else {
+                            setSizeId(response.payload._id);
+                        }
                     }
-                    setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
-                    if (setDefaultSize) {
-                        setDefaultSize({ productSize, productMrp: mrp, productSp: sp, productQuantity: quantity });
-                    }
-                    if (parentId.length == 0) {
-                        setParentId(response.payload.parentId);
-                    } else {
-                        setSizeId(response.payload._id);
+                } else {
+                    const response = await updateProductSize({ ...data, _id: sizeId });
+                    if (response.status == 1) {
+                        setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
                     }
                 }
-            } else {
-                const response = await updateProductSize({ ...data, _id: sizeId });
-                if (response.status == 1) {
-                    setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
-                }
+            } catch (error) {
+                console.log(error);
             }
-        } catch (error) {
-            console.log(error);
         }
     };
 
@@ -127,7 +160,14 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     />
                 </View>
             </View>
-
+            {error.length > 0 && (
+                <WrappedText
+                    text={error}
+                    textColor={colorCode.RED}
+                    fontSize={fs10}
+                    containerStyle={[FLEX(1), MH(0.4), MV(0.05)]}
+                />
+            )}
             {(lastSp != sp || lastMrp != mrp || lastQuantity != quantity || sizeId.length == 0) && (
                 <View style={[FDR(), JCC('flex-end'), MV(0.1)]}>
                     <TextButton

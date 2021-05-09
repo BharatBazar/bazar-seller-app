@@ -45,7 +45,7 @@ interface Error {
     generalError?: string;
 }
 
-type possibleValue = 0 | 1 | 2 | 3;
+export type possibleValue = 0 | 1 | 2 | 3;
 interface AllError {
     [key: string]: possibleValue;
 }
@@ -84,13 +84,6 @@ const ProductColor: React.FC<ProductColorProps> = ({
             ]);
         }
     };
-
-    React.useEffect(() => {
-        if (errorValue == 1) {
-            setAllErrorToParticularValue(1);
-            checkError();
-        }
-    }, [errorValue]);
 
     const checkError = () => {
         let error: Error = {};
@@ -149,19 +142,35 @@ const ProductColor: React.FC<ProductColorProps> = ({
 
     function setAllErrorToParticularValue(value: possibleValue) {
         var error = [...childError];
+        childError.splice(0);
         error = error.map((item) => value);
         setChildError(error);
     }
 
     React.useEffect(() => {
-        if (childError.every((item) => item == 2)) {
-            //All checks passed
-            setError(error['generalError'] ? 3 : 2);
-            setAllErrorToParticularValue(0);
-        } else if (childError.every((item) => item == 3 || item == 2)) {
-            //Not All check passed
-            setError(3);
-            setAllErrorToParticularValue(0);
+        if (errorValue == 1) {
+            const isError = checkError();
+            if (isError) {
+                setError(3);
+            } else {
+                setAllErrorToParticularValue(1);
+            }
+        }
+    }, [errorValue]);
+
+    React.useEffect(() => {
+        if (errorValue == 1 && childError.length > 0) {
+            if (childError.every((item) => item == 2)) {
+                //All checks passed
+                console.log('All checks passed!');
+                setAllErrorToParticularValue(0);
+                setError(2);
+            } else if (childError.every((item) => item == 3 || item == 2)) {
+                //Not All check passed
+                console.log(childError, 'Not all checks passed!');
+                setAllErrorToParticularValue(0);
+                setError(3);
+            }
         }
     }, [childError]);
 
@@ -233,6 +242,12 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     productColor={color}
                     onDelete={() => {
                         deleteColor(index);
+                    }}
+                    errorValue={childError[index]}
+                    setError={(value: possibleValue) => {
+                        setTimeout(() => {
+                            changeErrorValueAtIndex(index, value);
+                        }, 10 + index * 10);
                     }}
                 />
             ))}
