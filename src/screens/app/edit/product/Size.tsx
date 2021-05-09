@@ -51,11 +51,11 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     });
     const [error, setErrors] = React.useState('');
 
-    const checkError = () => {
+    const checkError = (byPass?: boolean) => {
         if (sp.length == 0 || mrp.length == 0) {
             setErrors('For creating size for product your need to provide mrp and sp.');
             return true;
-        } else if (sizeId.length == 0) {
+        } else if (!byPass && sizeId.length == 0) {
             setErrors('Please save size or delete it.');
             return true;
         } else {
@@ -77,7 +77,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
 
     const postProductSizeDataToServer = async () => {
         let data = { productQuantity: quantity, productSp: sp, productMrp: mrp, productSize: productSize };
-        const isError = checkError();
+        const isError = checkError(true);
 
         if (!isError) {
             try {
