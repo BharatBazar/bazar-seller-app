@@ -36,7 +36,7 @@ function WrappedText(props: {
             <Text
                 style={[
                     {
-                        fontFamily: fontFamily,
+                        fontFamily: fontFamily || 'Roboto-Medium',
                         fontSize: fontSize,
                         fontWeight: fontWeight || 'normal',
                         color: textColor || '#000000',

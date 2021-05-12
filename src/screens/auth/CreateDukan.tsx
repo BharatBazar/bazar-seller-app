@@ -10,6 +10,7 @@ import {
     absoluteBottomWrapper,
     textInputContainerStyle,
     buttonContainerStyle,
+    MT,
 } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
@@ -185,7 +186,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                 textColor: colorCode.WHITE,
             },
             textInputProps: {
-                containerStyle: { textInputContainerStyle, marginTop: getHP(0.2) },
+                containerStyle: [textInputContainerStyle, MT(0.2)],
                 textInputStyle: { fontSize: fs13, color: '#000000' },
                 paddingLeft: getWP(0.2),
             },

@@ -12,6 +12,7 @@ import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
 import { provideShadow } from '../../common/styles';
+import { Right } from '../../navigation/NavigationEffect';
 
 const Stack = createStackNavigator();
 
@@ -44,31 +45,52 @@ class AuthNavigation extends React.Component<Props, {}> {
                     screenOptions={{ headerShown: false }}
                     initialRouteName={screen || NavigationKey.CREATEDUKAN}
                 >
-                    <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
+                    <Stack.Screen
+                        name={NavigationKey.CREATEDUKAN}
+                        component={CreateDukan}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
+                    />
                     <Stack.Screen
                         name={NavigationKey.SHOPDETAILS}
                         component={ShopDetails}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
                     />
                     <Stack.Screen
                         name={NavigationKey.SETPASSWORD}
                         component={SetPassword}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
                     />
                     <Stack.Screen
                         name={NavigationKey.ADDDUKANMEMBERS}
                         component={AddDukanMembers}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
                     />
                     <Stack.Screen
                         name={NavigationKey.PRODUCTDETAILS}
                         component={ProductDetails}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
                     />
                     <Stack.Screen
                         name={NavigationKey.PRODUCTSUBCATEGORY}
                         component={ProductSubCategory}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
                     />
                 </Stack.Navigator>
             </View>

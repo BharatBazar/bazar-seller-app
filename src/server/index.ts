@@ -1,7 +1,6 @@
 import axios from 'axios';
-import { Storage, StorageItemKeys } from '../storage';
 
-export const apiEndPoint = 'http://localhost:2112';
+export const apiEndPoint = 'http://10.0.2.2:2112';
 
 export async function setUpAxios() {
     axios.defaults.baseURL = apiEndPoint;

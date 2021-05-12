@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { fs13, fs28 } from '../../common';
-import { colorCode } from '../../common/color';
+import { colorCode, mainColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { AIC, FDR } from '../../common/styles';
+import { AIC, BGCOLOR, FDR, PH, PV } from '../../common/styles';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -19,26 +19,16 @@ class HeaderBar extends Component<Props, {}> {
 
         return (
             <View style={[styles.container, containerStyle]}>
-                <View style={[styles.statusbar, { backgroundColor: statusBarColor || undefined }]} />
-                <View
-                    style={[
-                        {
-                            backgroundColor: headerBackgroundColor,
-                            height: getHP(0.5),
-                        },
-                        AIC(),
-                        FDR(),
-                    ]}
-                >
+                <View style={[BGCOLOR(headerBackgroundColor), AIC(), FDR(), PV(0.1)]}>
                     <WrappedText
                         text={'Create your dukan'}
-                        textColor={colorCode.CHAKRALOW(60)}
+                        textColor={mainColor}
                         fontSize={fs28}
                         textStyle={{ marginLeft: getWP(0.5) }}
                     />
                     <WrappedText
-                        text={'in 4 simple steps'}
-                        textColor={colorCode.CHAKRALOW(20)}
+                        text={'in 5 simple steps'}
+                        textColor={colorCode.CHAKRALOW(60)}
                         fontSize={fs13}
                         textStyle={{ marginLeft: getWP(0.1) }}
                     />
@@ -52,7 +42,7 @@ export default HeaderBar;
 
 const styles = StyleSheet.create({
     container: {
-        height: getHP(0.5) + getStatusBarHeight(),
+        //height: getHP(0.5),
         backgroundColor: colorCode.WHITE,
     },
     statusbar: {

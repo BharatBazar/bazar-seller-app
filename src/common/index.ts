@@ -1,12 +1,13 @@
+import { Platform } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { getHP, getWP } from './dimension';
 const ratio = getHP(1) / getWP(1);
 
-const scaleRatio = ratio > 2 ? 0.45 : 0.5;
-
+//const scaleRatio = ratio > 2 ? 0.8 : 0.8;
+const scaleRatio = getWP(1) * 0.022;
 export function provideFontSize(fontSize: number) {
-    //return ratio * fontSize * scaleRatio;
-    return fontSize;
+    return fontSize * scaleRatio;
+    // return fontSize;
 }
 
 export const fs3 = provideFontSize(3);
@@ -86,3 +87,16 @@ export const passwordValidation = [
         matched: false,
     },
 ];
+
+export const FontFamily = {
+    FontsFreeNetSFProDisplayMedium: Platform.OS == 'ios' ? 'Roboto-Medium' : 'FontsFree-Net-SFProDisplay-Medium',
+    FontsFreeNetSFProDisplayBold: Platform.OS == 'ios' ? 'Roboto-Bold' : 'FontsFree-Net-SFProDisplay-Bold',
+    FontsFreeNetSFProDisplayRegular: Platform.OS == 'ios' ? 'Roboto-Regular' : 'FontsFree-Net-SFProDisplay-Regular',
+    RobotoRegular: 'Roboto-Regular',
+    RobotoThin: 'Roboto-Thin',
+    RobotoLight: 'Roboto_Light',
+    RobotoBlack: 'Roboto-Black',
+    RobotoMedium: 'Roboto-Medium',
+    RobotBold: 'Roboto-Bold',
+    Helvatica: 'Helvetica',
+};

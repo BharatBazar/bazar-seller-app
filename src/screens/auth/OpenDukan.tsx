@@ -135,10 +135,10 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     textStyle={[provideShadow(5), MT(0.2)]}
                 />
                 <WrappedText
-                    text={'Requires an active seller account'}
+                    text={'Requires an active dukandar account'}
                     fontSize={fs13}
                     textColor={colorCode.BLACKLOW(40)}
-                    textStyle={{ marginLeft: getWP(0.05), marginTop: getHP(0.1) }}
+                    textStyle={{ marginLeft: getWP(0.05), marginTop: getHP(0.05) }}
                 />
                 {error['error'] && <ServerErrorText errorText={error['error']} />}
                 {/* <ShadowWrapperHOC containerStyle={{ marginTop: getHP(0.3) }}> */}
