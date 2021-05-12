@@ -170,9 +170,9 @@ export const generalSpacing = getHP(0.3);
 
 export const textInputContainerStyle = {
     height: getHP(0.4),
-    borderWidth: 0.18,
+    borderWidth: getHP(0.0015),
     borderRadius: getHP(0.01),
-    borderColor: colorCode.BLACKLOW(30),
+    borderColor: colorCode.BLACKLOW(40),
     flexDirection: 'row',
     marginTop: getHP(0.1),
     backgroundColor: colorCode.WHITE,

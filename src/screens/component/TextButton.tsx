@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { ActivityIndicator, ViewStyle } from 'react-native';
+import { ActivityIndicator, View, ViewStyle } from 'react-native';
 import { colorCode } from '../../common/color';
 import { getWP } from '../../common/dimension';
+import { absoluteBottomWrapper, ML, MR } from '../../common/styles';
 import WrappedRectangleButton from './WrappedRectangleButton';
 import WrappedText from './WrappedText';
 
@@ -41,10 +42,13 @@ const TextButton: React.FC<TextButtonProps> = ({
                 } else onPress();
             }}
         >
-            <WrappedText text={text} {...textProps} />
             {isLoading && (
-                <ActivityIndicator size={'small'} color={loaderColor || '#ffffff'} style={{ marginLeft: getWP(0.3) }} />
+                <>
+                    <ActivityIndicator size={'small'} color={loaderColor || '#ffffff'} style={[MR(0.2)]} />
+                    <View style={[absoluteBottomWrapper, { backgroundColor: '#FFFFFF66', top: 0 }]} />
+                </>
             )}
+            <WrappedText text={text} {...textProps} />
         </WrappedRectangleButton>
     );
 };

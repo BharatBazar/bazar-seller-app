@@ -6,7 +6,7 @@ import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
 import { GlobalText, WelcomeText } from '../../common/customScreenText';
-import { FontFamily, fs12, fs28, NavigationProps } from '../../common';
+import { FontFamily, fs10, fs11, fs12, fs17, fs18, fs20, fs28, fs32, fs40, fs44, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import { setUpAxios } from '../../server';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
@@ -26,16 +26,19 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
             },
             buttonTextProps: {
                 textColor: colorCode.WHITE,
+                fontSize: fs20,
             },
         };
 
         return (
             <ScreenHOC>
-                <View style={[PV(0.2), FLEX(1), PH(0.5), { paddingTop: STATUS_BAR_HEIGHT }]}>
-                    <WrappedText text={GlobalText.companyName} fontSize={fs28} fontFamily={FontFamily.RobotBold} />
+                <View style={[PV(0.1), FLEX(1), PH(0.5), { paddingTop: STATUS_BAR_HEIGHT }]}>
+                    <WrappedText text={GlobalText.companyName} fontSize={fs40} fontFamily={FontFamily.RobotoMedium} />
+
                     <WrappedText
                         text={GlobalText.companyMessage}
-                        fontSize={fs12}
+                        fontSize={fs17}
+                        textColor={colorCode.BLACKLOW(60)}
                         fontFamily={FontFamily.RobotoMedium}
                     />
                     <View style={[FLEX(1), AIC(), JCC()]}>

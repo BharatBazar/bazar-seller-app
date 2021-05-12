@@ -3,11 +3,11 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getHP, getWP } from './dimension';
 const ratio = getHP(1) / getWP(1);
 
-//const scaleRatio = ratio > 2 ? 0.8 : 0.8;
-const scaleRatio = getWP(1) * 0.022;
+const scaleRatio = ratio > 2 ? 0.47 : 0.49;
+//const scaleRatio = getWP(1) * 0.015;
 export function provideFontSize(fontSize: number) {
-    return fontSize * scaleRatio;
-    // return fontSize;
+    return fontSize * scaleRatio * ratio;
+    //return fontSize;
 }
 
 export const fs3 = provideFontSize(3);

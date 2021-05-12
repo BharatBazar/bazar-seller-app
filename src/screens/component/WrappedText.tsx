@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View, StyleSheet, SafeAreaView } from 'react-native';
+import { fs11, fs12, fs16 } from '../../common';
 import { getHP } from '../../common/dimension';
 
 function WrappedText(props: {
@@ -36,8 +37,9 @@ function WrappedText(props: {
             <Text
                 style={[
                     {
-                        fontFamily: fontFamily || 'Roboto-Medium',
-                        fontSize: fontSize,
+                        fontFamily: fontFamily || 'Roboto-Regular',
+                        fontSize: fontSize || fs11,
+
                         fontWeight: fontWeight || 'normal',
                         color: textColor || '#000000',
                         flexWrap: 'wrap',

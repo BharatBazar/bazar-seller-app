@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { fs12, fs17 } from '../../common';
+import { FontFamily, fs10, fs12, fs13, fs14, fs17 } from '../../common';
 import { getHP } from '../../common/dimension';
 import { AIC, JCC } from '../../common/styles';
 import WrappedRoundButton from './WrappedRoundButton';
@@ -123,7 +123,8 @@ const styles = StyleSheet.create({
     textInput: {
         flex: 9,
         color: '#1A202C',
-        fontSize: fs17,
+        fontSize: fs13,
+        fontFamily: FontFamily.RobotoLight,
         padding: 0,
         height: '100%',
         width: '100%',
@@ -132,7 +133,7 @@ const styles = StyleSheet.create({
         //paddingLeft: 20,
     },
     errorText: {
-        fontSize: fs12,
+        fontSize: fs10,
         color: '#ee7955',
         fontStyle: 'normal',
     },

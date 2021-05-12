@@ -61,7 +61,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
         this.state = {
             otpSent: false,
-            signInButtonState: 1,
+            signInButtonState: 0,
             otpButtonState: 1,
             formState: { phoneNumber: '', otp: '', name: '', email: '' },
             error: {},
@@ -130,7 +130,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
         const response: IRCheckPhoneNumber = await this.fetchData(triggerOtp, {
             phoneNumber: this.state.formState.phoneNumber,
         });
-        console.log(response);
+
         if (response.status == 1) {
             this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
             this.setTimer();
@@ -187,7 +187,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
             },
             textInputProps: {
                 containerStyle: [textInputContainerStyle, MT(0.2)],
-                textInputStyle: { fontSize: fs13, color: '#000000' },
+                textInputStyle: { fontSize: fs13, color: '#00000099' },
                 paddingLeft: getWP(0.2),
             },
         };
