@@ -1,6 +1,7 @@
+import React from 'react';
+import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerActions, NavigationContainer } from '@react-navigation/native';
-import React from 'react';
 import { NavigationKey } from '../labels';
 import Welcome from '../screens/auth/Welcome';
 import AuthNavigation from '../screens/auth/navigator';
@@ -15,7 +16,6 @@ import { colorCode, mainColor } from '../common/color';
 import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/edit/Edit';
-import { View } from 'react-native';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import { Easing } from 'react-native-reanimated';
 import { NavigationProps } from '../common';
@@ -47,7 +47,7 @@ class AppNavigation extends React.Component {
                             close: config,
                         },
                     }}
-                    initialRouteName={NavigationKey.BHARATBAZARHOME}
+                    initialRouteName={NavigationKey.WELCOME}
                 >
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.AUTHNAVIGATOR} component={AuthNavigation} />

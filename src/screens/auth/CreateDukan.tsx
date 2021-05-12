@@ -229,7 +229,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                                     this.checkPhoneNumber(this.state.formState.phoneNumber);
                                 }}
                                 isLoading={otpButtonState == 2 ? true : false}
-                                disabled={otpButtonState == 2 || timer > 0 || otp.length == 6}
+                                disabled={otpButtonState == 2 || timer > 0}
                             />
 
                             {otpSent && (

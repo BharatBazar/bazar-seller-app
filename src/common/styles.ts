@@ -215,16 +215,10 @@ export const commonStyles = StyleSheet.create({
     textInputContainerStyle: {
         height: getHP(0.4),
         borderWidth: 0.18,
-        width: '100%',
         borderRadius: getHP(0.03),
         borderColor: colorCode.BLACKLOW(30),
         flexDirection: 'row',
         marginTop: getHP(0.1),
-        elevation: 2,
-        shadowColor: colorCode.BLACKLOW(50),
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
         backgroundColor: colorCode.WHITE,
     },
     buttonContainerStyle: {

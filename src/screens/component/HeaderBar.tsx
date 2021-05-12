@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
+import { color } from 'react-native-reanimated';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { fs12, fs13, fs20, fs28 } from '../../common';
 import { colorCode } from '../../common/color';
@@ -8,7 +9,7 @@ import { commonStyles } from '../../common/styles';
 import WrappedText from './WrappedText';
 
 interface Props {
-    containerStyle?: ViewStyle;
+    containerStyle?: ViewStyle | ViewStyle[];
     statusBarColor: string;
     headerBackgroundColor: string;
 }
@@ -53,10 +54,6 @@ export default HeaderBar;
 const styles = StyleSheet.create({
     container: {
         height: getHP(0.5) + getStatusBarHeight(),
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
         backgroundColor: colorCode.WHITE,
     },
     statusbar: {

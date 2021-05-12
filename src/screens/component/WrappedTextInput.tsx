@@ -136,6 +136,7 @@ const styles = StyleSheet.create({
         flex: 9,
         color: '#1A202C',
         fontSize: fs17,
+        padding: 0,
         height: '100%',
         width: '100%',
     },
@@ -144,7 +145,7 @@ const styles = StyleSheet.create({
     },
     errorText: {
         fontSize: fs12,
-        color: colorCode.RED,
+        color: '#ee7955',
         fontStyle: 'normal',
     },
     eye: {

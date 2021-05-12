@@ -11,6 +11,7 @@ import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
+import { provideShadow } from '../../common/styles';
 
 const Stack = createStackNavigator();
 
@@ -33,11 +34,15 @@ class AuthNavigation extends React.Component<Props, {}> {
         }
         return (
             <View style={{ height: '100%', backgroundColor: '#ffffff' }}>
-                <HeaderBar statusBarColor={'#ffffff'} headerBackgroundColor={'#ffffff'} />
+                <HeaderBar
+                    statusBarColor={'#ffffff'}
+                    headerBackgroundColor={'#ffffff'}
+                    containerStyle={[provideShadow(2)]}
+                />
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName={screen || NavigationKey.PRODUCTSUBCATEGORY}
+                    initialRouteName={screen || NavigationKey.CREATEDUKAN}
                 >
                     <Stack.Screen name={NavigationKey.CREATEDUKAN} component={CreateDukan} />
                     <Stack.Screen

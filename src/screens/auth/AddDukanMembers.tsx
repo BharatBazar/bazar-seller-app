@@ -3,7 +3,7 @@ import { View, ScrollView, Alert } from 'react-native';
 import { fs12, fs13, fs20, mobileValidation, NavigationProps } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, commonStyles, MH, MV, PH, PV } from '../../common/styles';
+import { BGCOLOR, commonStyles, MH, MV, PH, provideShadow, PV } from '../../common/styles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
 import Icons from 'react-native-vector-icons/Feather';
@@ -23,6 +23,7 @@ import { createShopMember, deleteShopMember } from '../../server/apis/shopMember
 import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { NavigationKey } from '../../labels';
+import { border } from '../app/edit/product/component/generalConfig';
 
 const componentProps = {
     buttonTextProps: {
@@ -102,11 +103,11 @@ const AddMember = ({
                     <View
                         style={[
                             { width: '100%' },
-                            commonStyles.shadow,
+                            border,
                             BGCOLOR(colorCode.WHITE),
                             PH(0.3),
                             PV(0.2),
-                            { marginVertical: '2%', borderRadius: getWP(0.2) },
+                            { marginVertical: '2%', borderRadius: getWP(0.1) },
                         ]}
                         key={item.key}
                     >
