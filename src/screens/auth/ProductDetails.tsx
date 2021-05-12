@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { BGCOLOR, BR, commonStyles, componentProps, MH, MT, PH, PV } from '../../common/styles';
+import { AIC, BGCOLOR, BR, buttonContainerStyle, componentProps, JCC, PH } from '../../common/styles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
@@ -101,7 +101,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
             <TextButton
                 text={'Submit'}
                 textProps={componentProps.buttonTextProps}
-                containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.2) }}
+                containerStyle={{ ...buttonContainerStyle, marginTop: getHP(0.2) }}
                 onPress={() => {
                     const selectedCategory: [string] = data.filter((item) => item.selected).map((item) => item._id);
                     if (selectedCategory.length == 0) {
@@ -116,7 +116,8 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
 const styles = StyleSheet.create({
     productCategory: {
         ...BR(0.05),
-        ...commonStyles.alcjcc,
+        ...AIC(),
+        ...JCC(),
 
         backgroundColor: colorCode.WHITE,
         borderColor: colorCode.GREENLOW(50),

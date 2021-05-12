@@ -6,10 +6,9 @@ import {
     BGCOLOR,
     borderinsideeffect,
     BR,
-    commonStyles,
     FDR,
-    H,
     HP,
+    JCC,
     MH,
     ML,
     MT,
@@ -224,7 +223,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
                                 renderItem={({ item, index }: { item: productData; index: number }) => {
                                     return (
                                         <ProductCategory
-                                            containerStyle={{ width: getWP(3), ...commonStyles.alcjcc, ...MH(0.2) }}
+                                            containerStyle={{ width: getWP(3), ...AIC(), ...JCC(), ...MH(0.2) }}
                                             item={item}
                                             onPressCategory={() => {
                                                 const prodcutCategory = [...category];
@@ -296,7 +295,8 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
 const styles = StyleSheet.create({
     productCategory: {
         ...BR(0.05),
-        ...commonStyles.alcjcc,
+        ...AIC(),
+        ...JCC(),
 
         backgroundColor: colorCode.WHITE,
         borderColor: colorCode.GREENLOW(50),

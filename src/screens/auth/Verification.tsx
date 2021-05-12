@@ -1,16 +1,15 @@
 import * as React from 'react';
-import { Component } from 'react';
 import { View } from 'react-native';
 import { fs28 } from '../../common';
 import { getHP } from '../../common/dimension';
-import { commonStyles, PH, PV } from '../../common/styles';
+import { FLEX, PH, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 
 export interface VerificationProps {}
 
 const Verification: React.SFC<VerificationProps> = () => {
     return (
-        <View style={[commonStyles.containerPadidng, PH(0.6), PV(0.5)]}>
+        <View style={[FLEX(1), PH(0.6), PV(0.5)]}>
             <WrappedText text={'Verification of dukan'} fontSize={fs28} />
             <WrappedText
                 text={

@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, TouchableHighlight, Text } from 'react-native';
 import { colorCode, mainColor } from '../../../../../../common/color';
 import { getHP, getWP } from '../../../../../../common/dimension';
-import { AIC, BC, BGCOLOR, BR, BSW, BTW, commonStyles, JCC, MH, provideShadow } from '../../../../../../common/styles';
+import { AIC, BC, BGCOLOR, BR, JCC, MH, provideShadow } from '../../../../../../common/styles';
 import WrappedRectangleButton from '../../../../../component/WrappedRectangleButton';
 import { ToastHOC } from '../../../../../hoc/ToastHOC';
 

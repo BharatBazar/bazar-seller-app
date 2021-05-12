@@ -1,7 +1,15 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode } from '../../common/color';
-import { colorTransparency, commonStyles, PH, PV } from '../../common/styles';
+import {
+    absoluteBottomWrapper,
+    buttonContainerStyle,
+    colorTransparency,
+    MT,
+    PH,
+    PV,
+    textInputContainerStyle,
+} from '../../common/styles';
 import { ShopDetailsText } from '../../common/customScreenText';
 import { fs13, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
@@ -49,7 +57,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
             textColor: colorCode.WHITE,
         },
         textInputProps: {
-            containerStyle: commonStyles.textInputContainerStyle,
+            containerStyle: textInputContainerStyle,
             textInputStyle: { fontSize: fs13, color: '#000000' + colorTransparency[50] },
             paddingLeft: getWP(0.2),
         },
@@ -108,7 +116,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                         <TextButton
                             text={'Submit'}
                             textProps={componentProps.buttonTextProps}
-                            containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.4) }}
+                            containerStyle={[buttonContainerStyle, MT(0.4)]}
                             onPress={() => {
                                 validateFields();
                             }}
@@ -124,7 +132,7 @@ export default ShopDetails;
 
 const styles = StyleSheet.create({
     buttonsWrapper: {
-        ...commonStyles.absoluteBottomWrapper,
+        ...absoluteBottomWrapper,
         bottom: '5%',
     },
 });

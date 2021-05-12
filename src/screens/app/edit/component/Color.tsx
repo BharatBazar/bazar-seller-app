@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { View, ViewStyle } from 'react-native';
-import { BGCOLOR, commonStyles } from '../../../../common/styles';
+import { AIC, BGCOLOR, FDR, provideShadow } from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
 import { getHP, getWP } from '../../../../common/dimension';
 import { colorCode, mainColor } from '../../../../common/color';
@@ -21,10 +21,7 @@ export interface ColorProps {
 const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) => {
     return (
         <WrappedRectangleButton
-            containerStyle={[
-                { flex: colorStyle ? 0 : 1 },
-                item.selected ? (colorStyle ? {} : { ...commonStyles.shadow }) : {},
-            ]}
+            containerStyle={[{ flex: colorStyle ? 0 : 1 }, item.selected ? (colorStyle ? {} : provideShadow()) : {}]}
             onPress={() => {
                 if (!showCancel && !item.selected) {
                     onPress();
@@ -35,7 +32,7 @@ const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) 
                 }
             }}
         >
-            <View style={[commonStyles.fdr, BGCOLOR(colorCode.WHITE), commonStyles.aic]}>
+            <View style={[FDR(), BGCOLOR(colorCode.WHITE), AIC()]}>
                 <View
                     style={[
                         {

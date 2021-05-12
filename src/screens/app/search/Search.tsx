@@ -3,8 +3,8 @@ import { Component } from 'react';
 import { View, TextInput } from 'react-native';
 import { colorCode } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
-import { commonStyles } from '../../../common/styles';
-import StatusBar, { STATUS_BAR_HEIGHT } from '../../component/StatusBar';
+import { AIC, FDR } from '../../../common/styles';
+import StatusBar from '../../component/StatusBar';
 import Icon from 'react-native-vector-icons/Feather';
 import { fs20, NavigationProps } from '../../../common';
 
@@ -28,8 +28,8 @@ export default class ProdcutSearch extends Component<ProductSearchProps, Product
                 <StatusBar statusBarColor={colorCode.CHAKRALOW(70)} />
                 <View
                     style={[
-                        commonStyles.fdr,
-                        commonStyles.aic,
+                        FDR(),
+                        AIC(),
                         {
                             backgroundColor: colorCode.WHITE,
                             borderBottomWidth: 0.5,

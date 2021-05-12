@@ -1,6 +1,6 @@
 import * as React from 'react';
 import TextButton from '../../../../component/TextButton';
-import { BR, commonStyles, componentProps } from '../../../../../common/styles';
+import { BR, componentProps } from '../../../../../common/styles';
 import { getHP } from '../../../../../common/dimension';
 import { fs10, fs11, fs12, fs9 } from '../../../../../common';
 import { borRad, marTop, padHor } from './generalConfig';

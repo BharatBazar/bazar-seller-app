@@ -1,10 +1,19 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { fs10, fs11, fs12, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
+import { fs10, fs11, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, mainColor } from '../../common/color';
 import { GlobalText } from '../../common/customScreenText';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, commonStyles, FDR, MT, PH, provideShadow, PV } from '../../common/styles';
+import {
+    BGCOLOR,
+    buttonContainerStyle,
+    FDR,
+    MT,
+    PH,
+    provideShadow,
+    PV,
+    textInputContainerStyle,
+} from '../../common/styles';
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
 import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
@@ -24,7 +33,7 @@ const componentProps = {
         textColor: colorCode.WHITE,
     },
     textInputProps: {
-        containerStyle: commonStyles.textInputContainerStyle,
+        containerStyle: textInputContainerStyle,
         textInputStyle: { fontSize: fs13, color: colorCode.BLACKLOW(50) },
         paddingLeft: getWP(0.2),
     },
@@ -158,7 +167,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     <TextButton
                         text={'Sign In'}
                         textProps={componentProps.buttonTextProps}
-                        containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.4) }}
+                        containerStyle={{ ...buttonContainerStyle, marginTop: getHP(0.4) }}
                         onPress={() => {
                             validateField();
                         }}
@@ -179,7 +188,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                         text={'Register'}
                         textProps={{ textColor: mainColor, textStyle: [provideShadow(2)] }}
                         containerStyle={{
-                            ...commonStyles.buttonContainerStyle,
+                            ...buttonContainerStyle,
                             marginTop: getHP(0.1),
                             backgroundColor: colorCode.CHAKRALOW(20),
                         }}

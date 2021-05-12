@@ -1,7 +1,16 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { commonStyles, PH, PV } from '../../common/styles';
+import {
+    AIC,
+    PH,
+    PV,
+    FDR,
+    JCC,
+    absoluteBottomWrapper,
+    textInputContainerStyle,
+    buttonContainerStyle,
+} from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
 import { fs13, NavigationProps } from '../../common';
@@ -176,7 +185,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                 textColor: colorCode.WHITE,
             },
             textInputProps: {
-                containerStyle: { ...commonStyles.textInputContainerStyle, marginTop: getHP(0.2) },
+                containerStyle: { textInputContainerStyle, marginTop: getHP(0.2) },
                 textInputStyle: { fontSize: fs13, color: '#000000' },
                 paddingLeft: getWP(0.2),
             },
@@ -202,7 +211,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                         />
                         {this.returnErrorText('serverError')}
                         <View style={{ marginTop: getHP(0.2) }}>
-                            <View style={[commonStyles.fdr, commonStyles.aic]}>
+                            <View style={[FDR(), AIC()]}>
                                 <View style={{ flex: 1 }}>
                                     <WrappedTextInput
                                         placeholder={CreateDukanText.ownerMobileNumber}
@@ -222,7 +231,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                                 }
                                 textProps={componentProps.buttonTextProps}
                                 containerStyle={[
-                                    commonStyles.buttonContainerStyle,
+                                    buttonContainerStyle,
                                     { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
                                 ]}
                                 onPress={() => {
@@ -276,7 +285,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
                                     <TextButton
                                         text={CreateDukanText.SignIn}
                                         textProps={componentProps.buttonTextProps}
-                                        containerStyle={commonStyles.buttonContainerStyle}
+                                        containerStyle={buttonContainerStyle}
                                         onPress={() => {
                                             this.validateFields();
                                         }}
@@ -297,7 +306,7 @@ export default CreateDukan;
 
 const styles = StyleSheet.create({
     buttonsWrapper: {
-        ...commonStyles.absoluteBottomWrapper,
+        ...absoluteBottomWrapper,
         bottom: '5%',
     },
 });

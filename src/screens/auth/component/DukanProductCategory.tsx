@@ -1,18 +1,18 @@
 import * as React from 'react';
 import { colorCode } from '../../../common/color';
-import { BR, commonStyles, PH, PV } from '../../../common/styles';
+import { AIC, PH, provideShadow, PV } from '../../../common/styles';
 import WrappedRectangleButton from '../../component/WrappedRectangleButton';
 import { productData } from '../ProductDetails';
 import Icon from 'react-native-vector-icons/Feather';
-import { StyleProp, View, ViewStyle } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import { getHP, getWP } from '../../../common/dimension';
 import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
-import { fs10, fs11, fs9 } from '../../../common';
+import { fs10, fs9 } from '../../../common';
 
 export interface ProductCategoryProps {
     item: productData;
-    containerStyle: ViewStyle;
+    containerStyle: ViewStyle | ViewStyle[];
     onPressCategory: () => void;
 }
 
@@ -21,7 +21,7 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
         <WrappedRectangleButton
             containerStyle={[
                 containerStyle,
-                item.selected ? { ...commonStyles.shadow, borderWidth: 0.5 } : {},
+                item.selected ? { ...provideShadow(), borderWidth: 0.5 } : {},
                 { borderColor: colorCode.GREENLOW(60), borderRadius: getWP(0.1), backgroundColor: colorCode.WHITE },
             ]}
             onPress={onPressCategory}
@@ -44,7 +44,7 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
                     }}
                     resizeMode={'cover'}
                 />
-                <View style={[PV(0.1), PH(0.1), commonStyles.aic]}>
+                <View style={[PV(0.1), PH(0.1), AIC()]}>
                     <WrappedText
                         text={item.name}
                         textColor={item.selected ? colorCode.GREENLOW(50) : colorCode.CHAKRALOW(70)}

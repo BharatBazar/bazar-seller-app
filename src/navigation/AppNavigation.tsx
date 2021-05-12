@@ -23,6 +23,7 @@ import { setUpAxios } from '../server';
 import ProductCategory from '../screens/app/home/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
+import { Right } from './NavigationEffect';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -50,7 +51,13 @@ class AppNavigation extends React.Component {
                     initialRouteName={NavigationKey.WELCOME}
                 >
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
-                    <Stack.Screen name={NavigationKey.AUTHNAVIGATOR} component={AuthNavigation} />
+                    <Stack.Screen
+                        name={NavigationKey.AUTHNAVIGATOR}
+                        component={AuthNavigation}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
+                    />
                     <Stack.Screen name={NavigationKey.VERIFICATION} component={Verification} />
                     <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
                     <Stack.Screen name={NavigationKey.BHARATBAZARHOME} component={BharatBazarHome} />

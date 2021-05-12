@@ -3,7 +3,7 @@
 // import { FlatList, View, Text, StyleSheet } from 'react-native';
 // import { fs20, NavigationProps } from '../../../common';
 // import { colorCode } from '../../../common/color';
-// import { BGCOLOR, commonStyles, PH } from '../../../common/styles';
+// import { BGCOLOR, PH } from '../../../common/styles';
 // import { NavigationKey } from '../../../labels';
 // import { getShop } from '../../../server/apis/shop/shop.api';
 // import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
@@ -153,20 +153,19 @@
 // export default Home;
 
 // const styles = StyleSheet.create({});
-import React, { Component } from 'react';
-import { Switch, ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import Collapsible from 'react-native-collapsible';
 import Accordion from 'react-native-collapsible/Accordion';
-import { fs20, NavigationProps } from '../../../common';
+import { NavigationProps } from '../../../common';
 import { colorCode } from '../../../common/color';
-import { BGCOLOR, commonStyles, PH } from '../../../common/styles';
+import { BGCOLOR } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import { getShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
 import { DataHandling } from '../../../server/DataHandlingHOC';
 import WrappedText from '../../component/WrappedText';
-import { ShowProductDetails, ShowSubCategory } from '../component';
+import { ShowSubCategory } from '../component';
 import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
 import AccordionHOC from './component/Accordion';
 

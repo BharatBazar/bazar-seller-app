@@ -3,7 +3,7 @@ import { View, ScrollView, Alert, AlertButton } from 'react-native';
 import WrappedSize from './component/component/WrappedSize';
 import WrappedCheckBox from '../../../component/WrappedCheckBox';
 import WrappedText from '../../../component/WrappedText';
-import { AIC, BGCOLOR, commonStyles, FDR, FLEX, HP, JCC, MH, ML, MT, MV, W } from '../../../../common/styles';
+import { AIC, BGCOLOR, FDR, FLEX, HP, JCC, MH, ML, MT, MV, W, provideShadow } from '../../../../common/styles';
 import { getHP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs10, fs13, fs20, fs40 } from '../../../../common';
@@ -333,7 +333,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         onPress={() => {
                             deleteColorFromServer();
                         }}
-                        containerStyle={[commonStyles.shadowLight, BGCOLOR(colorCode.WHITE)]}
+                        containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                     />
                 </View>
                 <View style={[FDR(), AIC(), FLEX(1)]}>

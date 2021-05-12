@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
-import { color } from 'react-native-reanimated';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { fs12, fs13, fs20, fs28 } from '../../common';
+import { fs13, fs28 } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { commonStyles } from '../../common/styles';
+import { AIC, FDR } from '../../common/styles';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -27,8 +26,8 @@ class HeaderBar extends Component<Props, {}> {
                             backgroundColor: headerBackgroundColor,
                             height: getHP(0.5),
                         },
-                        commonStyles.aic,
-                        commonStyles.fdr,
+                        AIC(),
+                        FDR(),
                     ]}
                 >
                     <WrappedText

@@ -3,7 +3,18 @@ import { View, ScrollView, Alert } from 'react-native';
 import { fs12, fs13, fs20, mobileValidation, NavigationProps } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, commonStyles, MH, MV, PH, provideShadow, PV } from '../../common/styles';
+import {
+    BGCOLOR,
+    buttonContainerStyle,
+    FDR,
+    MH,
+    MV,
+    PH,
+    provideShadow,
+    PV,
+    textInputContainerStyle,
+    WP,
+} from '../../common/styles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
 import Icons from 'react-native-vector-icons/Feather';
@@ -31,7 +42,7 @@ const componentProps = {
         textStyle: { fontSize: fs12 },
     },
     textInputProps: {
-        containerStyle: { ...commonStyles.textInputContainerStyle, width: getWP(6) },
+        containerStyle: [WP(6), textInputContainerStyle],
         textInputStyle: { fontSize: fs13 },
         paddingLeft: getWP(0.2),
     },
@@ -86,14 +97,14 @@ const AddMember = ({
 
     return (
         <View style={[]}>
-            <View style={[commonStyles.fdr, MV(0.2)]}>
+            <View style={[FDR(), MV(0.2)]}>
                 <WrappedText text={'Add ' + role + ' to your dukan'} fontSize={fs20} />
                 <WrappedRoundButton
                     height={getHP(0.3)}
                     onPress={() => {
                         onPressPlus();
                     }}
-                    containerStyle={[commonStyles.shadow, { backgroundColor: colorCode.WHITE, marginLeft: getWP(0.2) }]}
+                    containerStyle={[provideShadow(), { backgroundColor: colorCode.WHITE, marginLeft: getWP(0.2) }]}
                 >
                     <Icons name={'plus'} />
                 </WrappedRoundButton>
@@ -130,14 +141,14 @@ const AddMember = ({
                             errorText={item.error['phoneNumber']}
                             {...componentProps.textInputProps}
                         />
-                        <View style={[commonStyles.fdr, { justifyContent: 'flex-end' }]}>
+                        <View style={[FDR(), { justifyContent: 'flex-end' }]}>
                             <TextButton
                                 onPress={() => {
                                     validateField(index);
                                 }}
                                 textProps={componentProps.buttonTextProps}
                                 text={item.added ? 'Update' : 'Add'}
-                                containerStyle={[commonStyles.buttonContainerStyle, { marginHorizontal: 0 }]}
+                                containerStyle={[buttonContainerStyle, MH(0)]}
                             />
                             <TextButton
                                 onPress={() => {
@@ -149,7 +160,7 @@ const AddMember = ({
                                 }}
                                 textProps={componentProps.buttonTextProps}
                                 text={'Delete'}
-                                containerStyle={[commonStyles.buttonContainerStyle, { marginHorizontal: 10 }]}
+                                containerStyle={[buttonContainerStyle, { marginHorizontal: 10 }]}
                             />
                         </View>
                     </View>
@@ -313,7 +324,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                             textProps={componentProps.buttonTextProps}
                             text={'Do this later'}
                             containerStyle={[
-                                commonStyles.buttonContainerStyle,
+                                buttonContainerStyle,
                                 { marginTop: getHP(0.3) },
                                 //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
                             ]}
@@ -324,7 +335,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                         textProps={componentProps.buttonTextProps}
                         text={'Submit'}
                         containerStyle={[
-                            commonStyles.buttonContainerStyle,
+                            buttonContainerStyle,
                             { marginTop: getHP(0.1) },
                             //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
                         ]}

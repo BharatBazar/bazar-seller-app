@@ -1,16 +1,14 @@
 import * as React from 'react';
 import { View, TextInput } from 'react-native';
-import { color } from 'react-native-reanimated';
-import { fs18, fs20, NavigationProps } from '../../../common';
+import { fs18, NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
-import { AIC, BGCOLOR, commonStyles, FDR, FLEX, JCC, PH, PV } from '../../../common/styles';
+import { AIC, BGCOLOR, FDR, FLEX, JCC, PH, PV } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
 import Status from './component/Status';
-import ProductTab from './Tabs';
 
 export interface ProductProps extends NavigationProps {
     route: {
@@ -30,7 +28,7 @@ const Product: React.FC<ProductProps> = ({
             <StatusBar statusBarColor={colorCode.CHAKRALOW(70)} />
             <View style={[PH(0.3), PV(0.1), BGCOLOR(mainColor)]}>
                 <View style={[FDR(), JCC('space-between'), AIC('center')]}>
-                    <View style={[commonStyles.fdr]}>
+                    <View style={[FDR()]}>
                         <WrappedFeatherIcon
                             onPress={() => {
                                 navigation.goBack();
@@ -41,7 +39,7 @@ const Product: React.FC<ProductProps> = ({
                         <WrappedText text={itemType} textColor={colorCode.WHITE} fontSize={fs18} />
                     </View>
 
-                    <View style={[commonStyles.fdr]}>
+                    <View style={[FDR()]}>
                         <WrappedFeatherIcon
                             onPress={() => {
                                 navigation.navigate(NavigationKey.CREATEPRODUCT, {

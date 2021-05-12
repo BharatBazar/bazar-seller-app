@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BGCOLOR, commonStyles, componentProps, provideShadow } from '../../../../common/styles';
+import { BGCOLOR, buttonContainerStyle, componentProps, MT, provideShadow } from '../../../../common/styles';
 import { getHP } from '../../../../common/dimension';
 import { colorCode, productColor } from '../../../../common/color';
 import ColorModal from '../component/ColorModal';
@@ -211,10 +211,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 <TextButton
                     text={'Add color'}
                     textProps={componentProps.buttonTextProps}
-                    containerStyle={{
-                        ...commonStyles.buttonContainerStyle,
-                        marginTop: getHP(0.2),
-                    }}
+                    containerStyle={[MT(0.2), buttonContainerStyle]}
                     onPress={() => {
                         setColorPopup(true);
                     }}

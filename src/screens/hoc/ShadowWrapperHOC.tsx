@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import { colorCode } from '../../common/color';
-import { BGCOLOR, commonStyles, BR, PV, PH, provideShadow } from '../../common/styles';
+import { BGCOLOR, BR, PV, PH, provideShadow } from '../../common/styles';
 
 export interface ScreenHOCProps {
     children: React.ReactNode;

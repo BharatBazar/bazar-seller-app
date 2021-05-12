@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { fs12, fs13, fs15, NavigationProps, passwordValidation } from '../../common';
+import { fs12, fs13, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, messageColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { commonStyles, FLEX, PV, PH, MT } from '../../common/styles';
+import { FLEX, PV, PH, MT, FDR, buttonContainerStyle, textInputContainerStyle } from '../../common/styles';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
 import ScreenHOC from '../hoc/ScreenHOC';
@@ -12,7 +12,7 @@ import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import WrappedText from '../component/WrappedText';
 import { DataHandling } from '../../server/DataHandlingHOC';
-import { ICreateShopMember, IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import API from '../../server/apis';
 import { NavigationKey } from '../../labels';
 import ServerErrorText from './component/errorText';
@@ -54,7 +54,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
             fontSize: fs13,
         },
         textInputProps: {
-            containerStyle: commonStyles.textInputContainerStyle,
+            containerStyle: textInputContainerStyle,
             textInputStyle: { fontSize: fs13 },
             paddingLeft: getWP(0.2),
         },
@@ -136,7 +136,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
                         <View style={{ marginTop: getHP(0.1) }}>
                             {password.map((item, index) => {
                                 return (
-                                    <View style={[commonStyles.fdr, MT(0.05)]} key={index}>
+                                    <View style={[FDR(), MT(0.05)]} key={index}>
                                         <FeatherIcon
                                             name={item.matched ? 'check-circle' : 'x-circle'}
                                             color={item.matched ? colorCode.GREEN : messageColor}
@@ -164,7 +164,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
                         <TextButton
                             text={'SET PASSWORD'}
                             textProps={componentProps.buttonTextProps}
-                            containerStyle={{ ...commonStyles.buttonContainerStyle, marginTop: getHP(0.4) }}
+                            containerStyle={[buttonContainerStyle, MT(0.4)]}
                             onPress={() => {
                                 validateFields();
                             }}

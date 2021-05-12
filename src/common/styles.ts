@@ -167,102 +167,42 @@ export const provideShadow = (height?: number) =>
 export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
 
 export const generalSpacing = getHP(0.3);
-export const commonStyles = StyleSheet.create({
-    cntr: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    row: {
-        flexDirection: 'row',
-    },
-    alcjcc: {
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    line: {
-        height: 1,
-        width: '100%',
-        backgroundColor: '#000000' + colorTransparency[10],
-    },
-    aic: {
-        alignItems: 'center',
-    },
-    jcc: {
-        justifyContent: 'center',
-    },
-    fdr: {
-        flexDirection: 'row',
-    },
-    spbtw: {
-        justifyContent: 'space-between',
-    },
-    mv: {
-        marginVertical: getHP(0.3),
-    },
-    paddH5: {
-        paddingHorizontal: getHP(0.05),
-    },
-    paddV5: {
-        paddingVertical: getHP(0.05),
-    },
-    margH5: {},
-    absoluteBottomWrapper: {
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-    },
-    textInputContainerStyle: {
-        height: getHP(0.4),
-        borderWidth: 0.18,
-        borderRadius: getHP(0.03),
-        borderColor: colorCode.BLACKLOW(30),
-        flexDirection: 'row',
-        marginTop: getHP(0.1),
-        backgroundColor: colorCode.WHITE,
-    },
-    buttonContainerStyle: {
-        ...PH(),
-        ...PV(),
 
-        ...BR(),
+export const textInputContainerStyle = {
+    height: getHP(0.4),
+    borderWidth: 0.18,
+    borderRadius: getHP(0.01),
+    borderColor: colorCode.BLACKLOW(30),
+    flexDirection: 'row',
+    marginTop: getHP(0.1),
+    backgroundColor: colorCode.WHITE,
+};
 
-        marginTop: getHP(0.2),
-        alignItems: 'center',
-        justifyContent: 'center',
-        //borderWidth: 1,
-        //borderColor: colorCode.SAFFRON,
-        backgroundColor: colorCode.CHAKRALOW(70),
-    },
-    shadow: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.2,
-        shadowRadius: 10,
-        elevation: 2,
-    },
-    shadowLight: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-    },
-    containerPadidng: {
-        flex: 1,
-        paddingTop: STATUS_BAR_HEIGHT,
-    },
-    borderStyle: {
-        borderColor: colorCode.BLACKLOW(50),
-        borderWidth: 1,
-    },
-});
+export const buttonContainerStyle: ViewStyle = {
+    ...PH(),
+    ...PV(),
 
+    ...BR(),
+
+    marginTop: getHP(0.2),
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    backgroundColor: colorCode.CHAKRALOW(70),
+};
+
+export const absoluteBottomWrapper: ViewStyle = {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+};
 export const componentProps = {
     buttonTextProps: {
         textColor: colorCode.WHITE,
     },
     textInputProps: {
-        containerStyle: commonStyles.textInputContainerStyle,
+        containerStyle: textInputContainerStyle,
         textInputStyle: { fontSize: fs13, color: '#000000' + colorTransparency[50] },
         paddingLeft: getWP(0.2),
     },

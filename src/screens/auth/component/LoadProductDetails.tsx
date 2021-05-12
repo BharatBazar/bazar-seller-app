@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Component } from 'react';
 import { ActivityIndicator, FlatList, View } from 'react-native';
 import { colorCode } from '../../../common/color';
-import { getHP, getWP } from '../../../common/dimension';
-import { commonStyles, MH, ML } from '../../../common/styles';
+import { getHP } from '../../../common/dimension';
+import { AIC, JCC, MH, ML, WP } from '../../../common/styles';
 import { getProductCatalogueAPI } from '../../../server/apis/productCatalogue/productCatalogue.api';
 import { IRGetProductCatalogue, product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
 import { DataHandling } from '../../../server/DataHandlingHOC';
@@ -67,7 +66,7 @@ const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, se
                 renderItem={({ item, index }: { item: productData; index: number }) => {
                     return (
                         <ProductCategory
-                            containerStyle={{ width: getWP(3), ...commonStyles.alcjcc, ...MH(0.2) }}
+                            containerStyle={[WP(3), MH(0.2), AIC(), JCC()]}
                             item={item}
                             onPressCategory={() => {
                                 const prodcutCategory = [...data];

@@ -1,22 +1,10 @@
 import React, { Component } from 'react';
-import {
-    Image,
-    KeyboardTypeOptions,
-    StyleProp,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
-} from 'react-native';
-import { color } from 'react-native-reanimated';
+import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { fs12, fs17 } from '../../common';
-import { colorCode } from '../../common/color';
 import { getHP } from '../../common/dimension';
-import { commonStyles } from '../../common/styles';
+import { AIC, JCC } from '../../common/styles';
 import WrappedRoundButton from './WrappedRoundButton';
-import WrappedText from './WrappedText';
 
 interface Props {
     containerStyle?: StyleProp<any>;
@@ -98,7 +86,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                                     secureTextEntry: !prevState.secureTextEntry,
                                 }));
                             }}
-                            containerStyle={commonStyles.alcjcc}
+                            containerStyle={[AIC(), JCC()]}
                             height={containerStyle.height}
                         >
                             <Icon
