@@ -3,18 +3,9 @@ import { View, ScrollView, Alert } from 'react-native';
 import { fs12, fs13, fs20, mobileValidation, NavigationProps } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import {
-    BGCOLOR,
-    buttonContainerStyle,
-    FDR,
-    MH,
-    MV,
-    PH,
-    provideShadow,
-    PV,
-    textInputContainerStyle,
-    WP,
-} from '../../common/styles';
+import { BGCOLOR, FDR, MH, MV, PH, provideShadow, PV, WP } from '../../common/styles';
+
+import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
 import Icons from 'react-native-vector-icons/Feather';

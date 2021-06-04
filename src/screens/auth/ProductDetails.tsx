@@ -1,7 +1,9 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { AIC, BGCOLOR, BR, buttonContainerStyle, componentProps, JCC, PH } from '../../common/styles';
+import { AIC, BGCOLOR, BR, JCC, PH } from '../../common/styles';
+
+import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';

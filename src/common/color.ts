@@ -1,4 +1,3 @@
-import { color } from 'react-native-reanimated';
 import { colorTransparency } from './styles';
 
 const applyColorCode = (color: string, percentage: 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100) =>
@@ -21,7 +20,19 @@ export const colorCode = {
 export const mainColor = colorCode.CHAKRALOW(70);
 export const borderColor = colorCode.BLACKLOW(10);
 export const messageColor = colorCode.BLACKLOW(40);
+export const errorColor = colorCode.RED;
+export const black10 = colorCode.BLACKLOW(10);
+export const black20 = colorCode.BLACKLOW(20);
+export const black30 = colorCode.BLACKLOW(30);
+export const black40 = colorCode.BLACKLOW(40);
+export const black50 = colorCode.BLACKLOW(50);
+export const black60 = colorCode.BLACKLOW(60);
+export const black70 = colorCode.BLACKLOW(70);
+export const black80 = colorCode.BLACKLOW(80);
+export const black90 = colorCode.BLACKLOW(90);
+export const black100 = colorCode.BLACKLOW(100);
 
+export const generalColor = '#124234';
 export const productColor = [
     { name: 'maroon', colorCode: '#800000' },
     { name: 'dark red', colorCode: '#8B0000', rgbaColorCode: '(139,0,0)' },

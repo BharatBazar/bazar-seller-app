@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BGCOLOR, buttonContainerStyle, componentProps, MT, provideShadow } from '../../../../common/styles';
+import { BGCOLOR, MT, provideShadow } from '../../../../common/styles';
+
+import { componentProps, buttonContainerStyle } from '../../../../common/containerStyles';
 import { getHP } from '../../../../common/dimension';
 import { colorCode, productColor } from '../../../../common/color';
 import ColorModal from '../component/ColorModal';

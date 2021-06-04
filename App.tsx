@@ -15,7 +15,7 @@ import AppNavigation from './src/navigation/AppNavigation';
 const App: () => Node = () => {
     return (
         <>
-            <StatusBar translucent={true} />
+            <StatusBar translucent={true} backgroundColor={'#00000000'} />
             <AppNavigation />
         </>
     );

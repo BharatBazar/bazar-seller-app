@@ -2,28 +2,20 @@ import * as React from 'react';
 import { View } from 'react-native';
 import { fs10, fs11, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, mainColor } from '../../common/color';
+import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import { GlobalText } from '../../common/customScreenText';
 import { getHP, getWP } from '../../common/dimension';
-import {
-    BGCOLOR,
-    buttonContainerStyle,
-    FDR,
-    MT,
-    PH,
-    provideShadow,
-    PV,
-    textInputContainerStyle,
-} from '../../common/styles';
+import { BGCOLOR, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
 import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
 import { DataHandling } from '../../server/DataHandlingHOC';
 import LineHeading from '../component/LineHeading';
+import StatusBar from '../component/StatusBar';
 import TextButton from '../component/TextButton';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import WrappedText from '../component/WrappedText';
 import WrappedTextInput from '../component/WrappedTextInput';
-import ScreenHOC from '../hoc/ScreenHOC';
 import ServerErrorText from './component/errorText';
 
 export interface OpenDukanProps extends NavigationProps {}
@@ -118,7 +110,8 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
 
     const privacyText = { fontSize: fs11, textColor: colorCode.BLACKLOW(40) };
     return (
-        <ScreenHOC translucent={false} barStyle={'dark-content'}>
+        <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
+            <StatusBar />
             <View style={[PV(0.2), PH(0.5), BGCOLOR(colorCode.WHITE)]}>
                 <WrappedFeatherIcon
                     onPress={() => {
@@ -206,7 +199,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     />
                 </View>
             </View>
-        </ScreenHOC>
+        </View>
     );
 };
 

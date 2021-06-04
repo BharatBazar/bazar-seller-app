@@ -1,15 +1,9 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode } from '../../common/color';
-import {
-    absoluteBottomWrapper,
-    buttonContainerStyle,
-    colorTransparency,
-    MT,
-    PH,
-    PV,
-    textInputContainerStyle,
-} from '../../common/styles';
+import { colorTransparency, MT, PH, PV } from '../../common/styles';
+
+import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import { ShopDetailsText } from '../../common/customScreenText';
 import { fs13, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
