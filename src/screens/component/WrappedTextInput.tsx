@@ -3,7 +3,7 @@ import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } fro
 import Icon from 'react-native-vector-icons/Feather';
 import { FontFamily, fs10, fs13 } from '../../common';
 import { getHP } from '../../common/dimension';
-import { AIC, JCC } from '../../common/styles';
+import { AIC, JCC, MT } from '../../common/styles';
 import WrappedRoundButton from './WrappedRoundButton';
 
 interface Props {
@@ -101,7 +101,9 @@ export default class WrappedTextInput extends Component<Props, State> {
                     )}
                 </View>
                 {errorText ? (
-                    <View style={[styles.errorContainer, errorContainer, { paddingLeft: paddingLeft || 0 }]}>
+                    <View
+                        style={[styles.errorContainer, errorContainer, { paddingLeft: paddingLeft || 0, marginTop: 3 }]}
+                    >
                         <Text style={styles.errorText}>{errorText}</Text>
                     </View>
                 ) : (

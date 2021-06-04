@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import { colorCode } from '../../common/color';
-import { colorTransparency, MT, PH, PV } from '../../common/styles';
+import { black20, colorCode } from '../../common/color';
+import { BC, BR, BW, colorTransparency, HP, MT, PH, PV } from '../../common/styles';
 
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import { ShopDetailsText } from '../../common/customScreenText';
-import { fs13, NavigationProps } from '../../common';
+import { fs12, fs13, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
@@ -17,6 +17,7 @@ import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import ServerErrorText from './component/errorText';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { border, marTop } from '../app/edit/product/component/generalConfig';
 
 export interface ShopDetailsProps extends NavigationProps {
     route: {
@@ -30,12 +31,12 @@ const dataHandling = new DataHandling('');
 
 interface shopDetails {
     shopName: string;
-    addressOfShop: string;
+    shopDescription: string;
 }
 
 interface error {
     shopName?: string;
-    addressOfShop?: string;
+    shopDescription?: string;
     error?: string;
 }
 const ShopDetails: React.FC<ShopDetailsProps> = ({
@@ -44,7 +45,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         params: { ownerDetails },
     },
 }) => {
-    const [details, setDetails] = React.useState<shopDetails>({ shopName: '', addressOfShop: '' });
+    const [details, setDetails] = React.useState<shopDetails>({ shopName: '', shopDescription: '' });
     const [error, setError] = React.useState<error>({});
     const componentProps = {
         buttonTextProps: {
@@ -52,7 +53,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         },
         textInputProps: {
             containerStyle: textInputContainerStyle,
-            textInputStyle: { fontSize: fs13, color: '#000000' + colorTransparency[50] },
+            textInputStyle: { fontSize: fs12, color: '#000000' + colorTransparency[50] },
             paddingLeft: getWP(0.2),
         },
     };
@@ -73,8 +74,8 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
             error['shopName'] = 'Please enter a attractive shop name.';
         }
 
-        if (details.addressOfShop.length < 3) {
-            error['addressOfShop'] = 'Please enter a valid shop address.';
+        if (details.shopDescription.length < 3) {
+            error['shopDescription'] = 'Please enter a valid shop description.';
         }
 
         if (Object.keys(error).length == 0) {
@@ -100,11 +101,13 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                         />
 
                         <WrappedTextInput
-                            placeholder={'Dukan ka pata'}
-                            value={details.addressOfShop}
-                            errorText={error['addressOfShop']}
-                            onChangeText={(name: string) => setDetails({ ...details, addressOfShop: name })}
+                            placeholder={'Dukan ke bare mai jankari'}
+                            value={details.shopDescription}
+                            multiline={true}
+                            errorText={error['shopDescription']}
+                            onChangeText={(name: string) => setDetails({ ...details, shopDescription: name })}
                             {...componentProps.textInputProps}
+                            containerStyle={[HP(1.5), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}
                         />
 
                         <TextButton

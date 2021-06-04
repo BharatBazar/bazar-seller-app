@@ -1,6 +1,6 @@
 import { createStackNavigator } from '@react-navigation/stack';
 import CreateDukan from './CreateDukan';
-import ShopDetails from './ShopDetails';
+import ShopDetails from './DukanDetails';
 import SetPassword from './SetPassword';
 import AddDukanMembers from './AddDukanMembers';
 import { NavigationKey } from '../../labels';

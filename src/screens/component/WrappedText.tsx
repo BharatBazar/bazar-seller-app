@@ -48,7 +48,7 @@ function WrappedText(props: {
                     textStyle,
                 ]}
                 ellipsizeMode={ellipsizeMode || 'tail'}
-                numberOfLines={numberOfLines || 4}
+                numberOfLines={numberOfLines || undefined}
             >
                 {text}
             </Text>

@@ -3,8 +3,7 @@ import { View, ScrollView, Alert } from 'react-native';
 import { fs12, fs13, fs20, mobileValidation, NavigationProps } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, FDR, MH, MV, PH, provideShadow, PV, WP } from '../../common/styles';
-
+import { BGCOLOR, FDR, FLEX, MH, MV, PH, provideShadow, PV, WP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
@@ -295,7 +294,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     }
 
     return (
-        <ScrollView style={{ flex: 1, ...PH(0.4), ...PV(0.3) }}>
+        <ScrollView style={[FLEX(1)]} contentContainerStyle={[PV(0.1), PH(0.3)]}>
             <ShadowWrapperHOC>
                 <>
                     <HeaderText
