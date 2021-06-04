@@ -1,6 +1,7 @@
 import axios from 'axios';
+import { Platform } from 'react-native';
 
-export const apiEndPoint = 'http://10.0.2.2:2112';
+export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://10.0.2.2:2112';
 
 export async function setUpAxios() {
     axios.defaults.baseURL = apiEndPoint;

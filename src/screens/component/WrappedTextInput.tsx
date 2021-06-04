@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
         flex: 9,
         color: '#1A202C',
         fontSize: fs13,
-        fontFamily: FontFamily.RobotoLight,
+        fontFamily: FontFamily.RobotoRegular,
         padding: 0,
         height: '100%',
         width: '100%',
