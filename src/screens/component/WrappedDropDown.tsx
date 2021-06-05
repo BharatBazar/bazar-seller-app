@@ -3,6 +3,7 @@ import * as React from 'react';
 import { BW, colorTransparency, H, MT, provideShadow } from '../../common/styles';
 import { getHP } from '../../common/dimension';
 import { fs12, fs20 } from '../../common';
+import { black50 } from '../../common/color';
 
 export interface WrappedDropDownProps {
     data: { label: string; value: string }[];
@@ -11,7 +12,7 @@ export interface WrappedDropDownProps {
     callBack?: Function;
     zIndex: number;
     arrowColor?: string;
-    header: string;
+    header?: string;
     placeholder: string;
     zIndexInverse: number;
     provideController?: Function;
@@ -22,15 +23,15 @@ const dropDownProps = {
     max: 10,
 
     style: [
-        BW(0),
+        BW(1),
         {
-            borderTopRightRadius: getHP(0.2),
-            borderTopLeftRadius: getHP(0.2),
-            borderBottomRightRadius: getHP(0.2),
-            borderBottomLeftRadius: getHP(0.2),
+            borderTopRightRadius: getHP(0.05),
+            borderTopLeftRadius: getHP(0.05),
+            borderBottomRightRadius: getHP(0.05),
+            borderBottomLeftRadius: getHP(0.05),
         },
     ],
-    containerStyle: [H(getHP(0.7))],
+    containerStyle: [H(getHP(0.45))],
     itemStyle: {
         justifyContent: 'flex-start',
     },
@@ -38,14 +39,14 @@ const dropDownProps = {
         BW(0),
         provideShadow(6),
         {
-            borderTopRightRadius: getHP(0.2),
-            borderTopLeftRadius: getHP(0.2),
-            borderBottomRightRadius: getHP(0.2),
-            borderBottomLeftRadius: getHP(0.2),
+            borderTopRightRadius: getHP(0.05),
+            borderTopLeftRadius: getHP(0.05),
+            borderBottomRightRadius: getHP(0.05),
+            borderBottomLeftRadius: getHP(0.05),
         },
     ],
     arrowSize: fs20,
-    labelStyle: { letterSpacing: 0.5, color: '#000000' + colorTransparency[80], fontSize: fs12 },
+    labelStyle: { letterSpacing: 0.5, color: black50, fontSize: fs12 },
 };
 
 const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({

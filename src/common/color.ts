@@ -31,7 +31,7 @@ export const black70 = colorCode.BLACKLOW(70);
 export const black80 = colorCode.BLACKLOW(80);
 export const black90 = colorCode.BLACKLOW(90);
 export const black100 = colorCode.BLACKLOW(100);
-
+export const disabledColor = black10;
 export const generalColor = '#124234';
 export const productColor = [
     { name: 'maroon', colorCode: '#800000' },

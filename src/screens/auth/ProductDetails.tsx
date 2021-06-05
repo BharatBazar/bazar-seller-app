@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { AIC, BGCOLOR, BR, JCC, PH } from '../../common/styles';
+import { AIC, BGCOLOR, BR, FLEX, JCC, PH } from '../../common/styles';
 
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
@@ -68,7 +68,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
 
     return (
         <ScrollView
-            style={[{ flex: 1 }, PH(0.6), BGCOLOR(colorCode.WHITE)]}
+            style={[FLEX(1), PH(0.6), BGCOLOR(colorCode.WHITE)]}
             contentContainerStyle={{ paddingBottom: '2%' }}
         >
             <HeaderText

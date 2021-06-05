@@ -14,6 +14,7 @@ import ProductSubCategory from './ProductSubCategory';
 import { FLEX, provideShadow } from '../../common/styles';
 import { Right } from '../../navigation/NavigationEffect';
 import StatusBar from '../component/StatusBar';
+import Address from './Address';
 
 const Stack = createStackNavigator();
 
@@ -45,11 +46,20 @@ class AuthNavigation extends React.Component<Props, {}> {
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName={screen || NavigationKey.CREATEDUKAN}
+                    initialRouteName={screen || NavigationKey.ADDRESS}
                 >
                     <Stack.Screen
                         name={NavigationKey.CREATEDUKAN}
                         component={CreateDukan}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
+                    />
+
+                    <Stack.Screen
+                        name={NavigationKey.SETPASSWORD}
+                        component={SetPassword}
+                        initialParams={(ownerDetails && { ownerDetails }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -63,8 +73,8 @@ class AuthNavigation extends React.Component<Props, {}> {
                         }}
                     />
                     <Stack.Screen
-                        name={NavigationKey.SETPASSWORD}
-                        component={SetPassword}
+                        name={NavigationKey.ADDRESS}
+                        component={Address}
                         initialParams={(ownerDetails && { ownerDetails }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
