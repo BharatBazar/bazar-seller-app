@@ -9,8 +9,17 @@ export interface IAddress {
     addressType: addressType;
     parent: string;
     name: string;
+    _id: string;
 }
 
 export interface IRAddress extends CommonApiResponse {
     payload: IAddress[];
+}
+
+export interface ICheckPincode extends CommonApiResponse {
+    payload: {
+        state: Partial<IAddress>;
+        city: Partial<IAddress>;
+        area: [Partial<IAddress>];
+    };
 }

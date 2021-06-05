@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, TextInput, Button } from 'react-native';
-import { fs13, fs20, NavigationProps, pinCodeValidation } from '../../common';
+import { fs13, fs20, NavigationProps } from '../../common';
 import { black50, colorCode, disabledColor, errorColor, generalColor } from '../../common/color';
 import { buttonContainerStyle, textInputContainerStyle, componentProps } from '../../common/containerStyles';
 import { getHP } from '../../common/dimension';
@@ -14,36 +14,51 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 import WrappedText from '../component/WrappedText';
 import { initializeAxios } from '../../server';
+import { updateShop } from '../../server/apis/shop/shop.api';
+import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
+import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { IAddress } from '../../server/apis/address/address.interface';
 
-export interface AddressProps extends NavigationProps {}
+export interface AddressProps extends NavigationProps {
+    route: {
+        params: {
+            ownerDetails: IshopMember;
+        };
+    };
+}
 
 interface Error {
-    pinCode: string;
+    pincode: string;
     area: string;
     localAddress: string;
     error: string;
 }
 
-const Address: React.FC<AddressProps> = () => {
-    const [pinCode, setPinCode] = React.useState<string>('');
+const Address: React.FC<AddressProps> = ({
+    navigation,
+    route: {
+        params: { ownerDetails },
+    },
+}) => {
+    const [pincode, setPinCode] = React.useState<string>('');
     const [area, setArea] = React.useState('');
     const [error, setError] = React.useState<Partial<Error>>({});
-    const [areas, setAreas] = React.useState([]);
-    const [state, setState] = React.useState('');
-    const [city, setCity] = React.useState('');
+    const [areas, setAreas] = React.useState<{ label: string | undefined; value: string | undefined }[]>([]);
+    const [state, setState] = React.useState<Partial<IAddress>>({});
+    const [city, setCity] = React.useState<Partial<IAddress>>({});
     const [localAddress, setLocalAddress] = React.useState('');
     const [loader, setLoader] = React.useState<number>(0);
     const [pincodeVerfied, setPincodeVerified] = React.useState(undefined);
     const [previousPin, setPreviousPin] = React.useState<undefined | string>(undefined);
 
     const checkPincodeInServer = async () => {
-        if (pinCode.length != 6) {
-            setError({ pinCode: 'Please provide valid pincode.' });
+        if (pincode.length != 6) {
+            setError({ pincode: 'Please provide valid pincode.' });
         } else {
             setError({});
             try {
                 setLoader(1);
-                const a = await checkPincode(pinCode);
+                const a = await checkPincode(pincode);
                 setLoader(0);
                 if (a.status == 1) {
                     console.log(a);
@@ -53,7 +68,7 @@ const Address: React.FC<AddressProps> = () => {
                         return { label: item.name, value: item._id };
                     });
                     setAreas(areas);
-                    setPreviousPin(pinCode);
+                    setPreviousPin(pincode);
                 }
             } catch (error) {
                 setLoader(0);
@@ -63,6 +78,25 @@ const Address: React.FC<AddressProps> = () => {
         }
     };
 
+    async function submitDetails() {
+        setLoader(2);
+        try {
+            const data = {
+                state: state._id,
+                city: city._id,
+                area,
+                localAddress,
+                pincode,
+                _id: ownerDetails.shop,
+            };
+            const response: IRShopUpdate = await updateShop(data);
+            setLoader(0);
+        } catch (error) {
+            setError({ error: error.message });
+            setLoader(0);
+        }
+    }
+
     const validateDetail = async () => {
         let error: Partial<Error> = {};
         if (area.length == 0) {
@@ -71,13 +105,14 @@ const Address: React.FC<AddressProps> = () => {
         if (localAddress.length < 5) {
             error['localAddress'] = 'Please provide a valid local address so that people can reach your dukan.';
         }
-        if (previousPin !== pinCode) {
-            error['pinCode'] = 'Please verify pincode number.';
+        if (previousPin !== pincode) {
+            error['pincode'] = 'Please verify pincode number.';
         }
 
         setError(error);
         if (Object.keys(error).length == 0) {
             //Submit details to server
+            submitDetails();
         }
     };
     React.useEffect(() => {
@@ -103,7 +138,7 @@ const Address: React.FC<AddressProps> = () => {
                     <TextInput
                         keyboardType={'number-pad'}
                         placeholder={'Pincode'}
-                        value={pinCode}
+                        value={pincode}
                         onChangeText={(value) => {
                             setPinCode(value);
                         }}
@@ -116,7 +151,7 @@ const Address: React.FC<AddressProps> = () => {
                         ]}
                     />
 
-                    {previousPin != pinCode ? (
+                    {previousPin != pincode ? (
                         <TextButton
                             text={'Verify'}
                             textProps={componentProps.buttonTextProps}
@@ -140,7 +175,7 @@ const Address: React.FC<AddressProps> = () => {
                         />
                     )}
                 </View>
-                {error['pinCode'] && <WrappedText text={error['pinCode']} textColor={errorColor} />}
+                {error['pincode'] && <WrappedText text={error['pincode']} textColor={errorColor} />}
                 <View style={[FDR(), MT(0.1)]}>
                     <TextInput
                         keyboardType={'number-pad'}
@@ -180,7 +215,7 @@ const Address: React.FC<AddressProps> = () => {
                     zIndex={5000}
                     zIndexInverse={1000}
                     selectValue={area}
-                    setValue={(value) => {
+                    setValue={(value: string) => {
                         setArea(value);
                     }}
                     placeholder={'Area'}
@@ -221,8 +256,8 @@ const Address: React.FC<AddressProps> = () => {
                         onPress={() => {
                             validateDetail();
                         }}
-                        //isLoading={setPasswordButton == 2 ? true : false}
-                        //disabled={setPasswordButton == 2}
+                        isLoading={loader == 2}
+                        disabled={loader == 2}
                     />
                 </View>
             </ShadowWrapperHOC>

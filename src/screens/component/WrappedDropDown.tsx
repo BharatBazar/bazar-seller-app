@@ -6,7 +6,7 @@ import { fs12, fs14, fs20 } from '../../common';
 import { black50 } from '../../common/color';
 
 export interface WrappedDropDownProps {
-    data: { label: string; value: string }[];
+    data: { label?: string; value?: string }[];
     selectValue: string;
     setValue: Function;
     callBack?: Function;

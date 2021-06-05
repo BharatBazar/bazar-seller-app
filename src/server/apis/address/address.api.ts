@@ -1,11 +1,11 @@
-import { addressType } from './address.interface';
+import { addressType, ICheckPincode } from './address.interface';
 import Axios from 'axios';
 
 export async function createAddress(data) {
     return Axios.post('/address/create', data);
 }
 
-export async function checkPincode(pincode: string) {
+export async function checkPincode(pincode: string): Promise<ICheckPincode> {
     return Axios.post('/address/checkPincode', { name: pincode });
 }
 

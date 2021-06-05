@@ -16,16 +16,28 @@ export const ShopApis: IapiEndPOint = {
 
 export interface Shop {
     _id: string;
-    shopName: string;
-    addressOfShop: string;
-    // shopImage: [{_id:ObjectId }];
-    // ownerImage: [{_id:ObjectId }];
+    shopName?: string;
+    addressOfShop?: string;
+    membersDetailSkipped?: boolean;
+    isTerminated?: boolean;
+
+    shopDescription: string;
+
+    shopImage: [string];
+    ownerImage: [string];
     // whatYouSell: string[];
-    owner: IshopMember;
-    coOwner: IshopMember[];
-    worker: IshopMember[];
+    owner: {};
+    coOwner: {}[];
+    worker: {}[];
     isVerified: boolean;
-    isTerminated: boolean;
+    state: string;
+    city: string;
+    area: string;
+    pincode: string;
+    localAddress: string;
+    rating: Number;
+    noOfRating: Number;
+
     category: product[];
     subCategory: product[][];
     subCategory1: product[][][];
@@ -44,6 +56,23 @@ export interface updateShopData {
     category: string[];
     subCategory: string[][];
     subCategory1: string[][][];
+
+    shopDescription: string;
+
+    shopImage: [string];
+    ownerImage: [string];
+    // whatYouSell: string[];
+    owner: {};
+    coOwner: {}[];
+    worker: {}[];
+    isVerified: boolean;
+    state: string;
+    city: string;
+    area: string;
+    pincode: string;
+    localAddress: string;
+    rating: Number;
+    noOfRating: Number;
 }
 
 export interface IRShopUpdate extends CommonApiResponse {

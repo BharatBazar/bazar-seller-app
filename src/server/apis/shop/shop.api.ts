@@ -1,7 +1,7 @@
 import { makeRequest } from '../common.interface';
 import { IRShopUpdate, updateShopData, ShopApis, Shop } from './shop.interface';
 
-export function updateShop(data: updateShopData): Promise<IRShopUpdate> {
+export function updateShop(data: Partial<updateShopData>): Promise<IRShopUpdate> {
     const options = {
         ...ShopApis.UpdateShop,
         data,
