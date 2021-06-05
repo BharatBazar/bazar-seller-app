@@ -7,7 +7,7 @@ import { buttonContainerStyle, componentProps } from '../../common/containerStyl
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
-import { initializeAxios } from '../../server';
+
 import HeaderText from './component/HeaderText';
 import { getHP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
@@ -58,7 +58,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
     };
 
     useEffect(() => {
-        initializeAxios();
         fetchProductDetails({ categoryType: 'Category' });
         //getShopDetails();
         return () => {};

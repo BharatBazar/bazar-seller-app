@@ -13,7 +13,7 @@ export class DataHandling<Props, State> extends Component<Props, State> {
             return { isNetworkError: true, message, status: 0 };
         } else {
             const data = error.response.data;
-            console.log('error', data);
+
             message = data.message;
             return { isNetworkError: false, message, status: 0 };
         }

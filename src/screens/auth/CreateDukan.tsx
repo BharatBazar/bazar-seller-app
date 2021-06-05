@@ -137,13 +137,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         }
     }
 
-    async componentDidMount() {
-        // await initializeAxios();
-        // this.props.navigation.navigate(NavigationKey.OPENDUKAN, {
-        //     phoneNumber: '9893137876',
-        // });
-    }
-
     componentDidUpdate() {
         if (this.state.timer == 0) {
             this.clearTimeOut();

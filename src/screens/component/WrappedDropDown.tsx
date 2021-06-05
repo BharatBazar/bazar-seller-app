@@ -1,8 +1,8 @@
 import DropDownPicker from 'react-native-dropdown-picker';
 import * as React from 'react';
-import { BW, colorTransparency, H, MT, provideShadow } from '../../common/styles';
+import { BGCOLOR, BW, colorTransparency, H, MT, PH, provideShadow } from '../../common/styles';
 import { getHP } from '../../common/dimension';
-import { fs12, fs20 } from '../../common';
+import { fs12, fs14, fs20 } from '../../common';
 import { black50 } from '../../common/color';
 
 export interface WrappedDropDownProps {
@@ -55,8 +55,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
     setValue,
     callBack = () => {},
     zIndex,
-    arrowColor,
-    header,
+
     placeholder,
     provideController,
     zIndexInverse,
@@ -76,10 +75,13 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
                     callBack();
                 }
             }}
+            showArrow={true}
             zIndex={zIndex}
             zIndexInverse={zIndexInverse}
             {...dropDownProps}
-            arrowColor={arrowColor || '#800947' + colorTransparency[60]}
+            arrowSize={fs14}
+            arrowStyle={{ height: fs14, width: fs14 }}
+            arrowColor={black50}
         />
         // </View>
         // <View style={[{ zIndex: zIndex }]}>

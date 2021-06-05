@@ -13,7 +13,7 @@ const handleError = (error: { isAxiosError: any; response: { data: any } }) => {
     if (isNetworkError(error)) {
         message = 'Network Error';
     } else {
-        const data = error.response.data;
+        const data = error.response.data || 'Error in handle error function';
         message = data.message;
     }
     return Promise.reject({ message });
@@ -24,6 +24,7 @@ export function initializeAxios() {
 
     axios.interceptors.response.use(
         (response) => {
+            console.log('SErver response', response);
             if (response.data) {
                 return response.data;
             }

@@ -1,4 +1,3 @@
-import { addressType } from './../address copy/address.interface';
 import { addressType } from './address.interface';
 import Axios from 'axios';
 
@@ -7,7 +6,7 @@ export async function createAddress(data) {
 }
 
 export async function checkPincode(pincode: string) {
-    return Axios.post('/address/checkPincode', { pincode });
+    return Axios.post('/address/checkPincode', { name: pincode });
 }
 
 export async function deleteAddress(data) {

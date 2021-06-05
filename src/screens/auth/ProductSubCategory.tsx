@@ -20,7 +20,7 @@ import {
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
-import { initializeAxios } from '../../server';
+
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
@@ -127,8 +127,6 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     };
 
     useEffect(() => {
-        initializeAxios();
-
         getShopDetails();
         return () => {};
     }, []);
