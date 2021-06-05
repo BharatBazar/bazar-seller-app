@@ -13,7 +13,7 @@ import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
 import { createShopMember, triggerOtp } from '../../server/apis/shopMember/shopMember.api';
 import { IRCheckPhoneNumber, IRCreateShopMember } from '../../server/apis/shopMember/shopMember.interface';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
@@ -45,7 +45,7 @@ export interface CreateDukanState {
     timer: number;
 }
 
-class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
+class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     private timer: NodeJS.Timeout;
 
     constructor(props: CreateDukanProps) {
@@ -80,7 +80,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
     submitDetails = async () => {
         this.setState({ signInButtonState: 2 });
-        const response: IRCreateShopMember = await this.fetchData(createShopMember, {
+        const response: IRCreateShopMember = await createShopMember({
             ...this.state.formState,
             role: 'owner',
         });
@@ -119,7 +119,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
 
     async sendOtp() {
         this.setState({ otpButtonState: 2 });
-        const response: IRCheckPhoneNumber = await this.fetchData(triggerOtp, {
+        const response: IRCheckPhoneNumber = await triggerOtp({
             phoneNumber: this.state.formState.phoneNumber,
         });
 
@@ -138,7 +138,7 @@ class CreateDukan extends DataHandling<CreateDukanProps, CreateDukanState> {
     }
 
     async componentDidMount() {
-        // await setUpAxios();
+        // await initializeAxios();
         // this.props.navigation.navigate(NavigationKey.OPENDUKAN, {
         //     phoneNumber: '9893137876',
         // });

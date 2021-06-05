@@ -4,7 +4,6 @@ import * as Animatable from 'react-native-animatable';
 import Accordion from 'react-native-collapsible/Accordion';
 import { fs14, fs16, fs22, NavigationProps } from '../../../../common';
 import { NavigationKey } from '../../../../labels';
-import { DataHandling } from '../../../../server/DataHandlingHOC';
 import { ShowSubCategory } from '../../component';
 import { product } from '../../../../server/apis/productCatalogue/productCatalogue.interface';
 import { getHP, getWP } from '../../../../common/dimension';
@@ -25,7 +24,7 @@ interface State {
     activeSections: number[];
 }
 
-export default class AccordionHOC extends DataHandling<Props, State> {
+export default class AccordionHOC extends React.Component<Props, State> {
     state = {
         activeSections: [],
         shop: {},

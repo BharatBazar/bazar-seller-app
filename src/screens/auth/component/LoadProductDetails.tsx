@@ -5,7 +5,6 @@ import { getHP } from '../../../common/dimension';
 import { AIC, JCC, MH, ML, WP } from '../../../common/styles';
 import { getProductCatalogueAPI } from '../../../server/apis/productCatalogue/productCatalogue.api';
 import { IRGetProductCatalogue, product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
-import { DataHandling } from '../../../server/DataHandlingHOC';
 import { productData } from '../ProductDetails';
 import ProductCategory from './DukanProductCategory';
 import ServerErrorText from './errorText';
@@ -15,8 +14,6 @@ export interface LoadProductDetailsProps {
     data: productData[];
     setData: Function;
 }
-
-const dataHandling = new DataHandling('');
 
 const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, setData }) => {
     const [loader, setLoader] = React.useState<Boolean>(false);
@@ -32,7 +29,7 @@ const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, se
     };
     const fetchProductDetails = async (data: any) => {
         setLoader(true);
-        const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, data);
+        const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
 
         if (response.status == 1) {
             setLoader(false);

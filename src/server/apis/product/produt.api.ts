@@ -79,31 +79,31 @@ export async function APIgetAllProduct(data: { query: IProduct }): Promise<IProd
 //Product color api
 
 export async function APICreateProductColor(data: IProductColor): Promise<IRProductColor> {
-    return axios.post('/productColor/create', data).then((r) => r.data);
+    return axios.post('/productColor/create', data);
 }
 
 export async function APIDeleteProductColor(data: { _id: string; parentId?: string }): Promise<IRProductColor> {
-    return axios
-        .delete('/productColor/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''))
-        .then((r) => r.data);
+    return axios.delete(
+        '/productColor/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''),
+    );
 }
 
 export async function APIUpdateProductColor(data: IProductColor): Promise<IRProductColor> {
-    return axios.patch('/productColor/update', data).then((r) => r.data);
+    return axios.patch('/productColor/update', data);
 }
 
 //Product size api
 
 export async function APICreateProductSize(data: IProductSize): Promise<IRProductSize> {
-    return axios.post('/productSize/create', data).then((r) => r.data);
+    return axios.post('/productSize/create', data);
 }
 
 export async function APIDeleteProductSize(data: { _id: string; parentId?: string }): Promise<IRProductSize> {
-    return axios
-        .delete('/productSize/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''))
-        .then((r) => r.data);
+    return axios.delete(
+        '/productSize/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''),
+    );
 }
 
 export async function APIUpdateProductSize(data: IProductSize): Promise<IRProductSize> {
-    return axios.patch('/productSize/update', data).then((r) => r.data);
+    return axios.patch('/productSize/update', data);
 }

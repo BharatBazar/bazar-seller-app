@@ -19,7 +19,7 @@ import {
     IRShopMemberDelete,
     IshopMember,
 } from '../../server/apis/shopMember/shopMember.interface';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import { createShopMember, deleteShopMember } from '../../server/apis/shopMember/shopMember.api';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
@@ -76,7 +76,7 @@ const AddMember = ({
     }
 
     const deleteMember = async (id: string, index: number) => {
-        const response: IRShopMemberDelete = await dataHandling.fetchData(deleteShopMember, { _id: id });
+        const response: IRShopMemberDelete = await deleteShopMember({ _id: id });
         if (response.status == 1) {
             Alert.alert(response.message);
             onPressCross(role, index, true);
@@ -171,7 +171,6 @@ export interface AddDukanMembersProps extends NavigationProps {
     };
 }
 
-const dataHandling = new DataHandling('');
 interface error {
     name?: string;
     phoneNumber?: string;
@@ -257,7 +256,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                 shop: ownerDetails.shop,
             };
         }
-        const response: IRCreateShopMember = await dataHandling.fetchData(createShopMember, data);
+        const response: IRCreateShopMember = await createShopMember(data);
 
         if (response.status == 1) {
             Alert.alert('Member added!!');
@@ -275,7 +274,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     };
 
     async function ifSkipped() {
-        const response: IRShopUpdate = await dataHandling.fetchData(updateShop, {
+        const response: IRShopUpdate = await updateShop({
             _id: ownerDetails.shop,
             membersDetailSkipped: true,
         });

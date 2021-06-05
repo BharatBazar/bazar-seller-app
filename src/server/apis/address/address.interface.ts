@@ -1,4 +1,4 @@
-import { CommonApiResponse } from './../common.interface';
+import { CommonApiResponse } from '../common.interface';
 export enum addressType {
     'state' = 'State',
     'city' = 'City',

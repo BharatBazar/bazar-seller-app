@@ -18,9 +18,9 @@ import {
     W,
 } from '../../common/styles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
-import { setUpAxios } from '../../server';
+import { initializeAxios } from '../../server';
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
@@ -40,8 +40,6 @@ import { NavigationKey } from '../../labels';
 
 export interface ProductSubCategory extends NavigationProps {}
 
-const dataHandling = new DataHandling('');
-
 interface selected {
     selected: boolean;
 }
@@ -56,7 +54,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     const [subCategory, setSubCategory] = React.useState<{ [key: string]: productData[] }>({});
 
     const submitDetails = async (data: updateShopData) => {
-        const response: IRShopUpdate = await dataHandling.fetchData(updateShop, {
+        const response: IRShopUpdate = await updateShop({
             ...data,
             _id: '60694f8582ea63ad28a2ec1f',
         });
@@ -68,7 +66,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     };
 
     const fetchProductDetails = async (data: Object) => {
-        const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, data);
+        const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
         if (response.status == 1) {
             const data: productData[] = response.payload.map((item) => {
                 return { ...item, selected: false };
@@ -80,13 +78,13 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     };
 
     const getShopDetails = async () => {
-        let response: IRGetShop = await dataHandling.fetchData(getShop, {
+        let response: IRGetShop = await getShop({
             _id: '60694f8582ea63ad28a2ec1f',
         });
         console.log(response.payload.category, response.payload.subCategory, response.payload.subCategory1);
         if (response.status == 1) {
             setShop(response.payload);
-            const response1: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, {
+            const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
                 subCategoryRef: { $in: response.payload.category.map((item) => item._id) },
             });
 
@@ -129,7 +127,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     };
 
     useEffect(() => {
-        setUpAxios();
+        initializeAxios();
 
         getShopDetails();
         return () => {};

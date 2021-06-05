@@ -5,9 +5,9 @@ import { AIC, BGCOLOR, BR, FLEX, JCC, PH } from '../../common/styles';
 
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
-import { setUpAxios } from '../../server';
+import { initializeAxios } from '../../server';
 import HeaderText from './component/HeaderText';
 import { getHP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
@@ -22,8 +22,6 @@ import { NavigationKey } from '../../labels';
 
 export interface ProductDetail extends NavigationProps {}
 
-const dataHandling = new DataHandling('');
-
 interface selected {
     selected: boolean;
 }
@@ -36,7 +34,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
 
     const submitDetails = async (data: updateShopData) => {
         console.log(data);
-        const response: IRShopUpdate = await dataHandling.fetchData(updateShop, {
+        const response: IRShopUpdate = await updateShop({
             ...data,
             _id: '60694f8582ea63ad28a2ec1f',
         });
@@ -48,7 +46,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
     };
 
     const fetchProductDetails = async (data: Object) => {
-        const response: IRGetProductCatalogue = await dataHandling.fetchData(getProductCatalogueAPI, data);
+        const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
         if (response.status == 1) {
             const data: productData[] = response.payload.map((item) => {
                 return { ...item, selected: false };
@@ -60,7 +58,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
     };
 
     useEffect(() => {
-        setUpAxios();
+        initializeAxios();
         fetchProductDetails({ categoryType: 'Category' });
         //getShopDetails();
         return () => {};

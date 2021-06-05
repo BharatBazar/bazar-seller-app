@@ -9,7 +9,7 @@ import { BGCOLOR, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styl
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
 import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import LineHeading from '../component/LineHeading';
 import StatusBar from '../component/StatusBar';
 import TextButton from '../component/TextButton';
@@ -30,8 +30,6 @@ const componentProps = {
         paddingLeft: getWP(0.2),
     },
 };
-
-const dataHandling = new DataHandling('');
 
 interface Error {
     password?: string;
@@ -71,7 +69,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     };
 
     const submitDetails = async () => {
-        const response: IRShopMemberLogin = await dataHandling.fetchData(shopMemberLogin, formData);
+        const response: IRShopMemberLogin = await shopMemberLogin(formData);
         console.log(response);
         if (response.status == 1) {
             const state = response.payload;

@@ -6,12 +6,11 @@ import { NavigationKey } from '../../../labels';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
 import { AIC, BGCOLOR, FLEX, JCC } from '../../../common/styles';
-import { DataHandling } from '../../../server/DataHandlingHOC';
+
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
 import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
 
-const dataHandling = new DataHandling('');
 export interface CategoryProps extends NavigationProps {
     route: {
         params: {

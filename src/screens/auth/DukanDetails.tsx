@@ -12,7 +12,7 @@ import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import ServerErrorText from './component/errorText';
@@ -26,8 +26,6 @@ export interface ShopDetailsProps extends NavigationProps {
         };
     };
 }
-
-const dataHandling = new DataHandling('');
 
 interface shopDetails {
     shopName: string;
@@ -59,7 +57,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
     };
 
     async function submitDetails() {
-        const response: IRShopUpdate = await dataHandling.fetchData(updateShop, { ...details, _id: ownerDetails.shop });
+        const response: IRShopUpdate = await updateShop({ ...details, _id: ownerDetails.shop });
         if (response.status == 1) {
             navigation.navigate(NavigationKey.ADDDUKANMEMBERS, { ownerDetails: ownerDetails.shop });
         } else {

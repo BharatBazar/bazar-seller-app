@@ -8,7 +8,7 @@ import ScreenHOC from '../hoc/ScreenHOC';
 import { GlobalText, WelcomeText } from '../../common/customScreenText';
 import { FontFamily, fs12, fs14, fs20, fs40, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
-import { setUpAxios } from '../../server';
+import { initializeAxios } from '../../server';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 
 export interface WelcomeProps extends NavigationProps {}
@@ -17,7 +17,7 @@ export interface WelcomeState {}
 
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
     componentDidMount() {
-        setUpAxios();
+        initializeAxios();
     }
     render() {
         const componentProps = {

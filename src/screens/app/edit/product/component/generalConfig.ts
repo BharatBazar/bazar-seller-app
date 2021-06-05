@@ -1,4 +1,3 @@
-import { DataHandling } from '../../../../../server/DataHandlingHOC';
 import {
     IProduct,
     productStatus,
@@ -72,40 +71,38 @@ export const generalProductSizeSchema: IProductSize = {
     _id: '',
 };
 
-const dataHandling = new DataHandling('');
-
 export async function createProduct(data: IProduct) {
-    return await dataHandling.fetchData(APIcreateProduct, data);
+    return await APIcreateProduct(data);
 }
 
 export async function createProductColor(data: Partial<IProductColor>) {
-    return await dataHandling.fetchData(APICreateProductColor, data);
+    return await APICreateProductColor(data);
 }
 
 export async function createProductSize(data: Partial<IProductSize>) {
-    return await dataHandling.fetchData(APICreateProductSize, data);
+    return await APICreateProductSize(data);
 }
 
 export async function updateProduct(data: Partial<IProduct>) {
-    return await dataHandling.fetchData(APIupdateProduct, data);
+    return await APIupdateProduct(data);
 }
 export async function updateProductColor(data: Partial<IProductColor>) {
-    return await dataHandling.fetchData(APIUpdateProductColor, data);
+    return await APIUpdateProductColor(data);
 }
 export async function updateProductSize(data: Partial<IProductSize>) {
-    return await dataHandling.fetchData(APIUpdateProductSize, data);
+    return await APIUpdateProductSize(data);
 }
 
 export async function deleteProductColor(data: { _id: string; parentId: string }): Promise<IRProductColor> {
-    return await dataHandling.fetchData(APIDeleteProductColor, data);
+    return await APIDeleteProductColor(data);
 }
 
 export async function deleteProductSize(data: { _id: string; parentId: string }): Promise<IRProductSize> {
-    return await dataHandling.fetchData(APIDeleteProductSize, data);
+    return await APIDeleteProductSize(data);
 }
 
 export async function deleteProductFromServer(data: { _id: string }) {
-    return await dataHandling.fetchData(APIdeleteProduct, data);
+    return await APIdeleteProduct(data);
 }
 
 export type IPostDataToServer = (a: IProduct, b: () => void, c: (error: string) => void) => void;

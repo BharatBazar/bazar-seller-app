@@ -163,7 +163,7 @@ import { BGCOLOR } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import { getShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
-import { DataHandling } from '../../../server/DataHandlingHOC';
+
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
 import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
@@ -196,7 +196,7 @@ interface State {
     section: ISection[];
 }
 
-export default class Home extends DataHandling<Props, State> {
+export default class Home extends React.Component<Props, State> {
     state = {
         activeSections: [],
         shop: {},
@@ -210,7 +210,7 @@ export default class Home extends DataHandling<Props, State> {
     };
 
     getShopDetails = async () => {
-        let response: IRGetShop = await this.fetchData(getShop, {
+        let response: IRGetShop = await getShop({
             _id: '60694f8582ea63ad28a2ec1f',
         });
         if (response.status == 1) {

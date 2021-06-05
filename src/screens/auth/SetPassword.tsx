@@ -13,7 +13,7 @@ import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import WrappedText from '../component/WrappedText';
-import { DataHandling } from '../../server/DataHandlingHOC';
+
 import { IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import API from '../../server/apis';
 import { NavigationKey } from '../../labels';
@@ -37,8 +37,6 @@ type error = {
     confirmPassword?: string;
     serverError?: string;
 };
-
-const dataHandling = new DataHandling('', {});
 
 const SetPassword: React.FC<OpenDukanProps> = ({
     route: {
@@ -64,7 +62,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
 
     const setPassword = async () => {
         setSetPasswordButton(2);
-        const response: IRSetPassword = await dataHandling.fetchData(API.setPassword, {
+        const response: IRSetPassword = await API.setPassword({
             phoneNumber: ownerDetails.phoneNumber,
             password: formData.password,
         });
