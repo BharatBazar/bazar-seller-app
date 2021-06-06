@@ -118,22 +118,19 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     };
 
     async sendOtp() {
-        this.setState({ otpButtonState: 2 });
-        const response: IRCheckPhoneNumber = await triggerOtp({
-            phoneNumber: this.state.formState.phoneNumber,
-        });
-
-        if (response.status == 1) {
-            this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
-            this.setTimer();
-            this.setField('otp', response.payload);
-        } else {
-            this.setState({
-                otpSent: false,
-                timer: -1,
-                otpButtonState: -1,
-                error: { ...this.state.error, serverError: response.message },
+        try {
+            this.setState({ otpButtonState: 2 });
+            const response: IRCheckPhoneNumber = await triggerOtp({
+                phoneNumber: this.state.formState.phoneNumber,
             });
+            console.log(response);
+            if (response.status == 1) {
+                this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
+                this.setTimer();
+                this.setField('otp', response.payload);
+            }
+        } catch (error) {
+            this.setState({ otpSent: false, timer: -1, otpButtonState: -1, error: { serverError: error.message } });
         }
     }
 

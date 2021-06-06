@@ -46,7 +46,7 @@ class AuthNavigation extends React.Component<Props, {}> {
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}
-                    initialRouteName={screen || NavigationKey.ADDRESS}
+                    initialRouteName={screen || NavigationKey.CREATEDUKAN}
                 >
                     <Stack.Screen
                         name={NavigationKey.CREATEDUKAN}

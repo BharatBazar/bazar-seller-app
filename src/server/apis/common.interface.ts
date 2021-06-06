@@ -10,4 +10,4 @@ export interface IapiEndPOint {
     [key: string]: { method: Method; url: string };
 }
 
-export const makeRequest = (options: AxiosRequestConfig) => axios(options).then((response) => response.data);
+export const makeRequest = (options: AxiosRequestConfig) => axios(options);
