@@ -16,4 +16,5 @@ export const NavigationKey = {
     CREATEPRODUCT: 'CreateProduct',
     PRODUCTCATEGORY: 'ProductCategory',
     ADDRESS: 'Address',
+    SPLASH: 'SplashScreen',
 };

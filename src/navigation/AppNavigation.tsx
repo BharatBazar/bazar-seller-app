@@ -24,6 +24,7 @@ import ProductCategory from '../screens/app/home/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
 import { Right } from './NavigationEffect';
+import Splash from '../screens/startup/Splash';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -48,8 +49,9 @@ class AppNavigation extends React.Component {
                             close: config,
                         },
                     }}
-                    initialRouteName={NavigationKey.WELCOME}
+                    initialRouteName={NavigationKey.SPLASH}
                 >
+                    <Stack.Screen name={NavigationKey.SPLASH} component={Splash} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
                     <Stack.Screen
                         name={NavigationKey.AUTHNAVIGATOR}
