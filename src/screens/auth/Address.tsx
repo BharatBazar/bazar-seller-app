@@ -18,6 +18,7 @@ import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { IAddress } from '../../server/apis/address/address.interface';
+import { NavigationKey } from '../../labels';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -91,6 +92,7 @@ const Address: React.FC<AddressProps> = ({
             };
             const response: IRShopUpdate = await updateShop(data);
             setLoader(0);
+            navigation.replace(NavigationKey.ADDDUKANMEMBERS, { ownerDetails: ownerDetails });
         } catch (error) {
             setError({ error: error.message });
             setLoader(0);

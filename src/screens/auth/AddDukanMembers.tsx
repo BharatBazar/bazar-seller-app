@@ -297,7 +297,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
             <ShadowWrapperHOC>
                 <>
                     <HeaderText
-                        step={'Step 4'}
+                        step={'Step 5'}
                         heading={'Add member to your dukan'}
                         subHeading={
                             'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and Co-owner account any time.'

@@ -68,7 +68,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
         });
         setSetPasswordButton(0);
         if (response.status == 1) {
-            navigation.navigate(NavigationKey.SHOPDETAILS, { ownerDetails: ownerDetails });
+            navigation.replace(NavigationKey.SHOPDETAILS, { ownerDetails: ownerDetails });
         } else {
             setError({ serverError: response.message });
         }

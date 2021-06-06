@@ -59,7 +59,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
     async function submitDetails() {
         const response: IRShopUpdate = await updateShop({ ...details, _id: ownerDetails.shop });
         if (response.status == 1) {
-            navigation.navigate(NavigationKey.ADDDUKANMEMBERS, { ownerDetails: ownerDetails.shop });
+            navigation.replace(NavigationKey.ADDRESS, { ownerDetails: ownerDetails });
         } else {
             setError({ error: response.message });
         }

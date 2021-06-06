@@ -2,7 +2,6 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
 import { AIC, PH, PV, FDR, MT } from '../../common/styles';
-
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
@@ -13,7 +12,6 @@ import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
 import { createShopMember, triggerOtp } from '../../server/apis/shopMember/shopMember.api';
 import { IRCheckPhoneNumber, IRCreateShopMember } from '../../server/apis/shopMember/shopMember.interface';
-
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
@@ -86,7 +84,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         });
         if (response.status == 1) {
             this.setState({ signInButtonState: 0 });
-            this.props.navigation.navigate(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
+            this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
         } else {
             this.setState({ error: { ...this.state.error, serverError: response.message }, signInButtonState: 0 });
         }
