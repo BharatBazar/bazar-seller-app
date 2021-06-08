@@ -26,6 +26,15 @@ export const PV = (percentage?: number): ViewStyle => {
 export const PT = (percentage?: number): ViewStyle => {
     return { paddingTop: getHP(percentage || 0.05) };
 };
+
+export const P = (percentage?: number): ViewStyle => {
+    return { padding: getHP(percentage || 0.05) };
+};
+
+export const M = (percentage?: number): ViewStyle => {
+    return { margin: getHP(percentage || 0.05) };
+};
+
 export const MH = (percentage?: number): ViewStyle => {
     return { marginHorizontal: getWP(percentage || 0.5) };
 };

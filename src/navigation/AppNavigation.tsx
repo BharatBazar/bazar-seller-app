@@ -7,11 +7,11 @@ import Welcome from '../screens/auth/Welcome';
 import AuthNavigation from '../screens/auth/navigator';
 import Verification from '../screens/auth/Verification';
 import OpenDukan from '../screens/auth/OpenDukan';
-import Home from '../screens/app/home/Home';
+import Home from '../screens/app/dashboard/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-import Icon from 'react-native-vector-icons/Feather';
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { colorCode, mainColor } from '../common/color';
 import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
@@ -20,11 +20,14 @@ import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types
 import { Easing } from 'react-native-reanimated';
 import { NavigationProps } from '../common';
 import { initializeAxios } from '../server';
-import ProductCategory from '../screens/app/home/ProductCategory';
+import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
 import { Right } from './NavigationEffect';
 import Splash from '../screens/startup/SplashScreen';
+import { SideMenu } from '../screens/app/drawer/SideMenu';
+import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';
+import { getHP } from '../common/dimension';
 
 const config: TransitionSpec = {
     animation: 'timing',
@@ -80,9 +83,13 @@ class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
     render() {
         return (
             <Drawer.Navigator
-                drawerContent={() => {
-                    <View />;
+                drawerStyle={{
+                    width: '85%',
+                    marginTop: STATUS_BAR_HEIGHT,
+                    borderTopRightRadius: getHP(0.1),
+                    borderBottomRightRadius: getHP(0.1),
                 }}
+                drawerContent={(props) => <SideMenu {...props} />}
                 screenOptions={{
                     headerShown: true,
                     headerStyle: {
@@ -91,9 +98,9 @@ class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
                         ...provideShadow(2),
                     },
                     headerLeft: () => (
-                        <Icon
-                            name={'align-justify'}
-                            size={20}
+                        <MaterialIcon
+                            name={'menu'}
+                            size={25}
                             color={colorCode.WHITE}
                             onPress={() => {
                                 this.props.navigation.dispatch(DrawerActions.openDrawer());
@@ -101,9 +108,9 @@ class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
                         />
                     ),
                     headerRight: () => (
-                        <Icon
+                        <MaterialIcon
                             name={'search'}
-                            size={20}
+                            size={25}
                             color={colorCode.WHITE}
                             onPress={() => this.props.navigation.navigate(NavigationKey.PRODUCTSEARCH)}
                         />
