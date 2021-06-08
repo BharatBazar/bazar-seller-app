@@ -18,9 +18,7 @@ import {
     W,
 } from '../../common/styles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
-
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
-
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
@@ -29,16 +27,22 @@ import { getShop, updateShop } from '../../server/apis/shop/shop.api';
 import ProductCategory from './component/DukanProductCategory';
 import ServerErrorText from './component/errorText';
 import WrappedText from '../component/WrappedText';
-import { colorCode, mainColor, messageColor } from '../../common/color';
+import { colorCode } from '../../common/color';
 import LoadProductDetails from './component/LoadProductDetails';
-import { fs12, fs16, fs20, fs25, NavigationProps } from '../../common';
+import { fs12, fs20, NavigationProps } from '../../common';
 import ProductButton from '../app/edit/product/component/ProductButton';
-import HeadingHighlight from './component/HeadingHighlight';
-import { border, borRad, padHor, padVer } from '../app/edit/product/component/generalConfig';
-import { color } from 'react-native-reanimated';
+import { padHor, padVer } from '../app/edit/product/component/generalConfig';
 import { NavigationKey } from '../../labels';
+import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { Storage, StorageItemKeys } from '../../storage';
 
-export interface ProductSubCategory extends NavigationProps {}
+export interface ProductSubCategory extends NavigationProps {
+    route: {
+        params: {
+            ownerDetails: IshopMember;
+        };
+    };
+}
 
 interface selected {
     selected: boolean;
@@ -46,7 +50,12 @@ interface selected {
 
 export interface productData extends product, selected {}
 
-const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
+const ProductSubCategory: React.SFC<ProductSubCategory> = ({
+    navigation,
+    route: {
+        params: { ownerDetails },
+    },
+}) => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
     const [shop, setShop] = React.useState<Partial<Shop>>({});
@@ -56,10 +65,11 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
     const submitDetails = async (data: updateShopData) => {
         const response: IRShopUpdate = await updateShop({
             ...data,
-            _id: '60694f8582ea63ad28a2ec1f',
+            _id: ownerDetails.shop,
         });
         if (response.status == 1) {
-            navigation.navigate(NavigationKey.BHARATBAZARHOME);
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.VERIFICATION);
+            navigation.replace(NavigationKey.VERIFICATION);
         } else {
             setError(response.message);
         }
@@ -79,9 +89,8 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({ navigation }) => {
 
     const getShopDetails = async () => {
         let response: IRGetShop = await getShop({
-            _id: '60694f8582ea63ad28a2ec1f',
+            _id: ownerDetails.shop,
         });
-        console.log(response.payload.category, response.payload.subCategory, response.payload.subCategory1);
         if (response.status == 1) {
             setShop(response.payload);
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({

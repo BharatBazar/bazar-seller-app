@@ -8,9 +8,10 @@ import DatePicker from 'react-native-date-picker';
 import WrappedText from '../../../../component/WrappedText';
 import LineHeading from '../../../../component/LineHeading';
 import TextButton from '../../../../component/TextButton';
-import { AIC, BGCOLOR, BR, componentProps, FC, FS, JCC, MT, MV, PV } from '../../../../../common/styles';
+import { AIC, BGCOLOR, BR, FC, FS, JCC, MT, MV, PV } from '../../../../../common/styles';
 import { fs15, fs20, fs28 } from '../../../../../common';
 import { borderColor, colorCode, mainColor } from '../../../../../common/color';
+import { componentProps } from '../../../../../common/containerStyles';
 
 export interface DeadlineContainerProps {
     isVisible: boolean;

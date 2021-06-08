@@ -280,12 +280,12 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
             membersDetailSkipped: true,
         });
         if (response.status == 1) {
-            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.VERIFICATION);
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.PRODUCTDETAILS);
             navigation.reset({
                 index: 0,
                 routes: [
                     {
-                        name: NavigationKey.VERIFICATION,
+                        name: NavigationKey.PRODUCTDETAILS,
                     },
                 ],
             });

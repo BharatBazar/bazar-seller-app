@@ -69,6 +69,8 @@ export interface IRShopMemberLogin extends CommonApiResponse {
         shopVerification?: boolean;
         passwordAvailable?: boolean;
         addressAvailable?: boolean;
+        category?: boolean;
+        subCategory?: boolean;
     };
 }
 

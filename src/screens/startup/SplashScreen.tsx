@@ -11,14 +11,18 @@ export interface SplashProps extends NavigationProps {}
 
 const Splash: React.FC<SplashProps> = ({ navigation }) => {
     const checkAppState = async () => {
+        // let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+        // console.log(ownerDetails);
+        // navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: NavigationKey.PRODUCTDETAILS, ownerDetails });
         try {
             const token = await Storage.getItem(StorageItemKeys.Token);
             if (token) {
                 const isSignupComplete = await Storage.getItem(StorageItemKeys.isSignupCompleted);
                 if (isSignupComplete != undefined || isSignupComplete == false) {
                     const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
-                    let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+
                     if (screenName != NavigationKey.VERIFICATION) {
+                        let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
                         navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: screenName, ownerDetails });
                     } else {
                         navigation.replace(screenName);

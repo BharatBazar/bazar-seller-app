@@ -1,158 +1,3 @@
-// import React from 'react';
-// import { useEffect } from 'react';
-// import { FlatList, View, Text, StyleSheet } from 'react-native';
-// import { fs20, NavigationProps } from '../../../common';
-// import { colorCode } from '../../../common/color';
-// import { BGCOLOR, PH } from '../../../common/styles';
-// import { NavigationKey } from '../../../labels';
-// import { getShop } from '../../../server/apis/shop/shop.api';
-// import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
-// import { DataHandling } from '../../../server/DataHandlingHOC';
-// import WrappedText from '../../component/WrappedText';
-// import { ShowProductDetails, ShowSubCategory } from '../component';
-// import TreeView from 'react-native-final-tree-view';
-// import Accordion from 'react-native-collapsible/Accordion';
-
-// function getIndicator(isExpanded, hasChildrenNodes) {
-//     if (!hasChildrenNodes) {
-//         return '-';
-//     } else if (isExpanded) {
-//         return '\\/';
-//     } else {
-//         return '>';
-//     }
-// }
-
-// export interface HomeProps extends NavigationProps {}
-
-// const SECTIONS = [
-//     {
-//         title: 'First',
-//         content: 'Lorem ipsum...',
-//     },
-//     {
-//         title: 'Second',
-//         content: 'Lorem ipsum...',
-//     },
-// ];
-
-// const family = [
-//     {
-//         id: 'Grandparent',
-//         name: 'Grandpa',
-//         age: 78,
-//         children: [
-//             {
-//                 id: 'Me',
-//                 name: 'Me',
-//                 age: 30,
-//                 children: [
-//                     {
-//                         id: 'Erick',
-//                         name: 'Erick',
-//                         age: 10,
-//                     },
-//                     {
-//                         id: 'Rose',
-//                         name: 'Rose',
-//                         age: 12,
-//                     },
-//                 ],
-//             },
-//         ],
-//     },
-// ];
-
-// const Home: React.SFC<HomeProps> = ({ navigation }) => {
-//     const [shop, setShop] = React.useState<Partial<Shop>>({});
-//     const [activeSections, setSection] = React.useState([]);
-//     const getShopDetails = async () => {
-//         let response: IRGetShop = await new DataHandling('').fetchData(getShop, {
-//             _id: '60694f8582ea63ad28a2ec1f',
-//         });
-//         if (response.status == 1) {
-//             setShop(response.payload);
-//         } else {
-//         }
-//     };
-
-//     useEffect(() => {
-//         getShopDetails();
-//         return () => {};
-//     }, []);
-
-//     const _renderSectionTitle = (section) => {
-//         return (
-//             <View style={styles.content}>
-//                 <Text>{section.content}</Text>
-//             </View>
-//         );
-//     };
-
-//     const _renderHeader = (section) => {
-//         return (
-//             <View style={styles.header}>
-//                 <Text style={styles.headerText}>{section.title}</Text>
-//             </View>
-//         );
-//     };
-
-//     const _renderContent = (section) => {
-//         return (
-//             <View style={styles.content}>
-//                 <Text>{section.content}</Text>
-//             </View>
-//         );
-//     };
-
-//     const _updateSections = (activeSections) => {
-//         setSection({ activeSections });
-//     };
-
-//     return (
-//         <View>
-//             <View style={[BGCOLOR(colorCode.WHITE), { borderBottomWidth: 1, borderColor: colorCode.BLACKLOW(10) }]}>
-//                 <WrappedText
-//                     text={'Product you sell in bharat bazar from your dukan'}
-//                     containerStyle={{ margin: '5%' }}
-//                     textColor={colorCode.BLACKLOW(40)}
-//                 />
-//             </View>
-//             <FlatList
-//                 data={shop.category}
-//                 keyExtractor={(item) => item.name}
-//                 renderItem={({ item, index }) => (
-//                     <ShowSubCategory
-//                         item={item}
-//                         onPress={() => {
-//                             if (item.subCategoryExist) {
-//                                 navigation.navigate(NavigationKey.PRODUCTCATEGORY, {
-//                                     current: shop.subCategory[index],
-//                                     categoryName: item.name,
-//                                     forward: shop.subCategory1[index],
-//                                 });
-//                             } else {
-//                                 navigation.navigate(NavigationKey.PRODUCT, { itemType: item.name });
-//                             }
-//                         }}
-//                     />
-//                 )}
-//             />
-//             <Accordion
-//                 sections={SECTIONS}
-//                 activeSections={activeSections}
-//                 renderSectionTitle={_renderSectionTitle}
-//                 renderHeader={_renderHeader}
-//                 renderContent={_renderContent}
-//                 onChange={_updateSections}
-//             />
-//         </View>
-//     );
-// };
-
-// export default Home;
-
-// const styles = StyleSheet.create({});
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import * as Animatable from 'react-native-animatable';
@@ -163,25 +8,12 @@ import { BGCOLOR } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import { getShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
-
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
 import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
 import AccordionHOC from './component/Accordion';
-
-const SELECTORS = [
-    {
-        title: 'First',
-        value: 0,
-    },
-    {
-        title: 'Third',
-        value: 2,
-    },
-    {
-        title: 'None',
-    },
-];
+import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
+import { Storage, StorageItemKeys } from '../../../storage';
 
 interface Props extends NavigationProps {}
 
@@ -194,12 +26,14 @@ interface State {
     activeSections: number[];
     shop: Partial<Shop>;
     section: ISection[];
+    userDetails: Partial<IshopMember>;
 }
 
 export default class Home extends React.Component<Props, State> {
     state = {
         activeSections: [],
         shop: {},
+        userDetails: {},
         section: [],
     };
 
@@ -210,8 +44,11 @@ export default class Home extends React.Component<Props, State> {
     };
 
     getShopDetails = async () => {
+        const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
+        console.log(userDetails);
+        this.setState({ userDetails });
         let response: IRGetShop = await getShop({
-            _id: '60694f8582ea63ad28a2ec1f',
+            _id: userDetails.shop,
         });
         if (response.status == 1) {
             this.setState({
@@ -245,7 +82,7 @@ export default class Home extends React.Component<Props, State> {
                     onPress={() => {
                         this.props.navigation.navigate(NavigationKey.PRODUCT, {
                             itemType: section.category.name,
-                            shopId: '60694f8582ea63ad28a2ec1f',
+                            shopId: this.state.userDetails.shop,
                             category: section.category.name,
                             subCategory: '',
                             subCategory1: '',
@@ -274,7 +111,7 @@ export default class Home extends React.Component<Props, State> {
                                 subCategory1: [],
                             };
                         })}
-                        shopId={'60694f8582ea63ad28a2ec1f'}
+                        shopId={this.state.userDetails.shop}
                         navigation={this.props.navigation}
                     />
                 ) : (
@@ -285,7 +122,7 @@ export default class Home extends React.Component<Props, State> {
     };
 
     render() {
-        const { activeSections } = this.state;
+        const { activeSections, userDetails } = this.state;
 
         return (
             <View style={styles.container}>

@@ -84,12 +84,17 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 screen = NavigationKey.ADDDUKANMEMBERS;
             } else if (state.shopVerification) {
                 screen = NavigationKey.VERIFICATION;
+            } else if (state.category) {
+                screen = NavigationKey.PRODUCTDETAILS;
+            } else if (state.subCategory) {
+                screen = NavigationKey.PRODUCTSUBCATEGORY;
             } else {
                 await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
                 screen = NavigationKey.HOME;
             }
             if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) resetTo(screen);
             else {
+                await Storage.setItem(StorageItemKeys.currentScreen, screen);
                 navigateTo(screen, state.data);
             }
         } else {

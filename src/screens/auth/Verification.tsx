@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { fs28 } from '../../common';
+import { fs28, NavigationProps } from '../../common';
 import { getHP } from '../../common/dimension';
 import { FLEX, PH, PV } from '../../common/styles';
+import { NavigationKey } from '../../labels';
 import WrappedText from '../component/WrappedText';
 
-export interface VerificationProps {}
+export interface VerificationProps extends NavigationProps {}
 
-const Verification: React.SFC<VerificationProps> = () => {
+const Verification: React.SFC<VerificationProps> = ({ navigation }) => {
     const checkVerficationStatus = () => {
         //Check details about verification and show message on the screen
         // if(verificationIsCompleted) {
@@ -15,7 +16,12 @@ const Verification: React.SFC<VerificationProps> = () => {
         //     go to home screen
         //
         // }
+        navigation.navigate(NavigationKey.BHARATBAZARHOME);
     };
+
+    React.useEffect(() => {
+        checkVerficationStatus();
+    }, []);
 
     return (
         <View style={[FLEX(1), PH(0.6), PV(0.5)]}>

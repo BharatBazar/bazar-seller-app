@@ -19,8 +19,15 @@ import ServerErrorText from './component/errorText';
 import { colorCode } from '../../common/color';
 import { NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
+import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 
-export interface ProductDetail extends NavigationProps {}
+export interface ProductDetail extends NavigationProps {
+    route: {
+        params: {
+            ownerDetails: IshopMember;
+        };
+    };
+}
 
 interface selected {
     selected: boolean;
@@ -28,15 +35,19 @@ interface selected {
 
 export interface productData extends product, selected {}
 
-const ProductDetails: React.SFC<ProductDetail> = ({ navigation }) => {
+const ProductDetails: React.SFC<ProductDetail> = ({
+    navigation,
+    route: {
+        params: { ownerDetails },
+    },
+}) => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
 
     const submitDetails = async (data: updateShopData) => {
-        console.log(data);
         const response: IRShopUpdate = await updateShop({
             ...data,
-            _id: '60694f8582ea63ad28a2ec1f',
+            _id: ownerDetails.shop,
         });
         if (response.status == 1) {
             navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY);
