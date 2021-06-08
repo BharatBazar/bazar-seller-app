@@ -2,23 +2,21 @@ import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { black20, colorCode } from '../../common/color';
 import { BC, BR, BW, colorTransparency, HP, MT, PH, PV } from '../../common/styles';
-
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import { ShopDetailsText } from '../../common/customScreenText';
-import { fs12, fs13, NavigationProps } from '../../common';
+import { fs12, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
-
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import ServerErrorText from './component/errorText';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import { border, marTop } from '../app/edit/product/component/generalConfig';
-
+import { marTop } from '../app/edit/product/component/generalConfig';
+import { Storage, StorageItemKeys } from '../../storage';
 export interface ShopDetailsProps extends NavigationProps {
     route: {
         params: {
@@ -59,6 +57,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
     async function submitDetails() {
         const response: IRShopUpdate = await updateShop({ ...details, _id: ownerDetails.shop });
         if (response.status == 1) {
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.ADDRESS);
             navigation.replace(NavigationKey.ADDRESS, { ownerDetails: ownerDetails });
         } else {
             setError({ error: response.message });

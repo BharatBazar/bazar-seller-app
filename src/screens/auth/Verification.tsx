@@ -8,6 +8,15 @@ import WrappedText from '../component/WrappedText';
 export interface VerificationProps {}
 
 const Verification: React.SFC<VerificationProps> = () => {
+    const checkVerficationStatus = () => {
+        //Check details about verification and show message on the screen
+        // if(verificationIsCompleted) {
+        //     set isSignupComplete to true
+        //     go to home screen
+        //
+        // }
+    };
+
     return (
         <View style={[FLEX(1), PH(0.6), PV(0.5)]}>
             <WrappedText text={'Verification of dukan'} fontSize={fs28} />

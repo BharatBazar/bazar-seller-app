@@ -9,7 +9,7 @@ import { BGCOLOR, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styl
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
 import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
-
+import { Storage, StorageItemKeys } from '../../storage';
 import LineHeading from '../component/LineHeading';
 import StatusBar from '../component/StatusBar';
 import TextButton from '../component/TextButton';
@@ -70,20 +70,24 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
 
     const submitDetails = async () => {
         const response: IRShopMemberLogin = await shopMemberLogin(formData);
-        console.log(response);
         if (response.status == 1) {
             const state = response.payload;
+            await Storage.setItem(StorageItemKeys.Token, 'toker exist');
+            await Storage.setItem(StorageItemKeys.userDetail, state.data);
+            let screen = '';
             if (state.passwordAvailable) {
-                navigateTo(NavigationKey.SETPASSWORD, state.data);
+                screen = NavigationKey.SETPASSWORD;
             } else if (state.shopNameAvailable) {
-                navigateTo(NavigationKey.SHOPDETAILS, state.data);
+                screen = NavigationKey.SHOPDETAILS;
             } else if (state.memberDetails) {
-                navigateTo(NavigationKey.ADDDUKANMEMBERS, state.data);
+                screen = NavigationKey.ADDDUKANMEMBERS;
             } else if (state.shopVerification) {
-                resetTo(NavigationKey.VERIFICATION);
+                screen = NavigationKey.VERIFICATION;
             } else {
-                resetTo(NavigationKey.HOME);
+                await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
+                screen = NavigationKey.HOME;
             }
+            resetTo(screen);
         } else {
             setError({ error: response.message });
         }
@@ -91,7 +95,6 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
 
     const validateField = () => {
         let error: Error = {};
-
         if (!mobileValidation.test(formData.phoneNumber)) {
             error['phoneNumber'] = 'Please enter correct mobile number';
         }

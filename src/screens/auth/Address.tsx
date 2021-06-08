@@ -19,6 +19,7 @@ import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { IAddress } from '../../server/apis/address/address.interface';
 import { NavigationKey } from '../../labels';
+import { Storage, StorageItemKeys } from '../../storage';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -92,6 +93,8 @@ const Address: React.FC<AddressProps> = ({
             };
             const response: IRShopUpdate = await updateShop(data);
             setLoader(0);
+
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.ADDDUKANMEMBERS);
             navigation.replace(NavigationKey.ADDDUKANMEMBERS, { ownerDetails: ownerDetails });
         } catch (error) {
             setError({ error: error.message });

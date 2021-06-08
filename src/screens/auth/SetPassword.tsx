@@ -13,6 +13,7 @@ import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import WrappedText from '../component/WrappedText';
+import { Storage, StorageItemKeys } from '../../storage';
 
 import { IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import API from '../../server/apis';
@@ -68,6 +69,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
         });
         setSetPasswordButton(0);
         if (response.status == 1) {
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SHOPDETAILS);
             navigation.replace(NavigationKey.SHOPDETAILS, { ownerDetails: ownerDetails });
         } else {
             setError({ serverError: response.message });

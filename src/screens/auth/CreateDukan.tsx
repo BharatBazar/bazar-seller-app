@@ -16,6 +16,7 @@ import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
+import { Storage, StorageItemKeys } from '../../storage';
 
 export interface CreateDukanProps extends NavigationProps {}
 
@@ -83,6 +84,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             role: 'owner',
         });
         if (response.status == 1) {
+            await Storage.setItem(StorageItemKeys.Token, 'token exists');
+            await Storage.setItem(StorageItemKeys.isSignupCompleted, 'false');
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
+            await Storage.setItem(StorageItemKeys.userDetail, response.payload);
             this.setState({ signInButtonState: 0 });
             this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
         } else {

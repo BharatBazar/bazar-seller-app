@@ -24,7 +24,7 @@ import ProductCategory from '../screens/app/home/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
 import { Right } from './NavigationEffect';
-import Splash from '../screens/startup/Splash';
+import Splash from '../screens/startup/SplashScreen';
 
 const config: TransitionSpec = {
     animation: 'timing',

@@ -27,4 +27,7 @@ export class Storage {
 
 export const StorageItemKeys = {
     Token: 'token',
+    isSignupCompleted: 'isSignupComplete',
+    currentScreen: 'currentScreen',
+    userDetail: 'userDetails',
 };

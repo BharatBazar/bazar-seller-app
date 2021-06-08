@@ -25,6 +25,7 @@ import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { NavigationKey } from '../../labels';
 import { border } from '../app/edit/product/component/generalConfig';
+import { Storage, StorageItemKeys } from '../../storage';
 
 const componentProps = {
     buttonTextProps: {
@@ -279,6 +280,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
             membersDetailSkipped: true,
         });
         if (response.status == 1) {
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.VERIFICATION);
             navigation.reset({
                 index: 0,
                 routes: [
