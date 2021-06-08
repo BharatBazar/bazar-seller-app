@@ -30,7 +30,6 @@ const componentProps = {
         paddingLeft: getWP(0.2),
     },
 };
-
 interface Error {
     password?: string;
     phoneNumber?: string;
@@ -79,6 +78,8 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 screen = NavigationKey.SETPASSWORD;
             } else if (state.shopNameAvailable) {
                 screen = NavigationKey.SHOPDETAILS;
+            } else if (state.addressAvailable) {
+                screen = NavigationKey.ADDRESS;
             } else if (state.memberDetails) {
                 screen = NavigationKey.ADDDUKANMEMBERS;
             } else if (state.shopVerification) {
@@ -87,7 +88,10 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
                 screen = NavigationKey.HOME;
             }
-            resetTo(screen);
+            if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) resetTo(screen);
+            else {
+                navigateTo(screen, state.data);
+            }
         } else {
             setError({ error: response.message });
         }

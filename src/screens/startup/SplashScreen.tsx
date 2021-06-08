@@ -18,7 +18,11 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                 if (isSignupComplete != undefined || isSignupComplete == false) {
                     const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
                     let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-                    navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: screenName, ownerDetails });
+                    if (screenName != NavigationKey.VERIFICATION) {
+                        navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: screenName, ownerDetails });
+                    } else {
+                        navigation.replace(screenName);
+                    }
                 } else if (isSignupComplete) {
                     navigation.replace(NavigationKey.HOME);
                 }
