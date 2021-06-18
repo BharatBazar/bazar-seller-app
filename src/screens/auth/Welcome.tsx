@@ -6,7 +6,7 @@ import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
 import { GlobalText, WelcomeText } from '../../common/customScreenText';
-import { FontFamily, fs12, fs14, fs20, fs40, NavigationProps } from '../../common';
+import { FontFamily, fs12, fs14, fs40, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';

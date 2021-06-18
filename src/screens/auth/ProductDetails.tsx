@@ -2,12 +2,9 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { AIC, BGCOLOR, BR, FLEX, JCC, PH } from '../../common/styles';
-
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
-
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
-
 import HeaderText from './component/HeaderText';
 import { getHP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
