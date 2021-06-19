@@ -13,7 +13,7 @@ import {
     padHor,
     updateProduct,
 } from './product/component/generalConfig';
-import { AIC, BGCOLOR, FDR, FLEX, H, HP, JCC, MH, MV, PH, PR, PV, W, WP } from '../../../common/styles';
+import { AIC, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/styles';
 import { IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/produt.api';
