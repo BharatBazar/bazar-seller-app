@@ -24,14 +24,15 @@ import WrappedText from '../../../../component/WrappedText';
 import { mainColor } from '../../../../../common/color';
 import { FontFamily, fs14, fs20 } from '../../../../../common';
 import SearchComponent from '../../../search/component/SearchComponent';
-import MateialIcon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Feather';
+import ProductButton from './ProductButton';
 
 interface ShowFilterModalProps {
     isVisible: boolean;
     setPopup: Function;
 }
 
-const ShowFilter = ({ selected }: { selected?: boolean }) => {
+export const ShowFilter = ({ selected }: { selected?: boolean }) => {
     return (
         <View style={[BW(1), BC('#8A8A8A'), PV(0.1), PL(0.3), BR(0.1), FDR(), { marginBottom: getHP(0.05) }]}>
             <View style={[FLEX(1)]}>
@@ -45,7 +46,7 @@ const ShowFilter = ({ selected }: { selected?: boolean }) => {
             </View>
             {selected && (
                 <View style={[FLEX(0.2), AIC(), JCC()]}>
-                    <MateialIcon name={'check-circle-outline'} size={fs20} color={mainColor} />
+                    <Icon name={'x-circle'} size={fs20} color={mainColor} />
                 </View>
             )}
         </View>

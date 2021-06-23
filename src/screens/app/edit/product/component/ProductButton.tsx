@@ -29,7 +29,7 @@ const ProductButton: React.SFC<ProductButtonProps> = ({ buttonText, onPress, isL
                     alignSelf: 'flex-start',
 
                     height: getHP(0.3),
-                    width: buttonWidth || '40%',
+                    width: buttonWidth || '30%',
                     justifyContent: 'center',
                 },
                 padHor,
