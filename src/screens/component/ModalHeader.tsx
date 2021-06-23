@@ -14,10 +14,10 @@ export interface ModalHeaderProps {
 
 const ModalHeader: React.SFC<ModalHeaderProps> = ({ setPopup, heading, subHeading }) => {
     return (
-        <View style={[FDR(), JCC('space-between'), AIC()]}>
+        <View style={[FDR(), JCC('space-between')]}>
             <View>
-                <WrappedText text={heading} fontSize={fs28} />
-                <WrappedText text={subHeading} textColor={colorCode.BLACKLOW(40)} />
+                <WrappedText text={heading} fontSize={fs28} textColor={'#1a1a1a'} />
+                <WrappedText text={subHeading} textColor={'#8A8A8A'} />
             </View>
             <WrappedFeatherIcon
                 iconSize={fs20}

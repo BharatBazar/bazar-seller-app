@@ -9,10 +9,8 @@ import Verification from '../screens/auth/Verification';
 import OpenDukan from '../screens/auth/OpenDukan';
 import Home from '../screens/app/dashboard/Home';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-const Stack = createStackNavigator();
-const Drawer = createDrawerNavigator();
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { colorCode, mainColor } from '../common/color';
+import { colorCode } from '../common/color';
 import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/edit/Edit';
@@ -29,6 +27,8 @@ import { SideMenu } from '../screens/app/drawer/SideMenu';
 import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';
 import { getHP } from '../common/dimension';
 
+const Stack = createStackNavigator();
+const Drawer = createDrawerNavigator();
 const config: TransitionSpec = {
     animation: 'timing',
     config: {

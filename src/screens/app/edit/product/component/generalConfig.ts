@@ -67,6 +67,20 @@ export const generalProductSizeSchema: IProductSize = {
     _id: '',
 };
 
+export enum filterType {
+    DropDown = 'DropDown',
+    Tags = 'Tags',
+    CheckBox = 'CheckBox',
+}
+export interface IFilter {
+    name: string;
+    description: string;
+    filterType: filterType;
+    value: {
+        name: string;
+    };
+}
+
 export async function createProduct(data: IProduct) {
     return await APIcreateProduct(data);
 }

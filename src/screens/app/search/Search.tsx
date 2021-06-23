@@ -7,6 +7,7 @@ import { AIC, FDR } from '../../../common/styles';
 import StatusBar from '../../component/StatusBar';
 import Icon from 'react-native-vector-icons/Feather';
 import { fs20, NavigationProps } from '../../../common';
+import SearchComponent from './component/SearchComponent';
 
 interface ProductSearchProps extends NavigationProps {}
 
@@ -44,29 +45,7 @@ export default class ProdcutSearch extends Component<ProductSearchProps, Product
                         color={colorCode.CHAKRALOW(70)}
                         onPress={() => this.props.navigation.goBack()}
                     />
-                    <TextInput
-                        style={[
-                            {
-                                height: getHP(0.7),
-                                paddingLeft: '3%',
-
-                                flex: 1,
-                            },
-                        ]}
-                        value={searchedText}
-                        onChangeText={(searchedText: string) => this.setState({ searchedText })}
-                        placeholder={'Search for any item by their product number'}
-                    />
-                    {searchedText.length > 0 && (
-                        <Icon
-                            name={'x'}
-                            size={fs20}
-                            color={colorCode.BLACKLOW(50)}
-                            onPress={() => {
-                                this.setState({ searchedText: '' });
-                            }}
-                        />
-                    )}
+                    <SearchComponent />
                 </View>
             </View>
         );

@@ -4,19 +4,21 @@ import { fs28, NavigationProps } from '../../common';
 import { getHP } from '../../common/dimension';
 import { FLEX, PH, PV } from '../../common/styles';
 import { NavigationKey } from '../../labels';
+import { StorageItemKeys, Storage } from '../../storage';
 import WrappedText from '../component/WrappedText';
 
 export interface VerificationProps extends NavigationProps {}
 
 const Verification: React.SFC<VerificationProps> = ({ navigation }) => {
-    const checkVerficationStatus = () => {
+    const checkVerficationStatus = async () => {
         //Check details about verification and show message on the screen
         // if(verificationIsCompleted) {
         //     set isSignupComplete to true
         //     go to home screen
         //
         // }
-        navigation.navigate(NavigationKey.BHARATBAZARHOME);
+        await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
+        navigation.replace(NavigationKey.BHARATBAZARHOME);
     };
 
     React.useEffect(() => {

@@ -7,6 +7,7 @@ import Description from './Description';
 import Colors from './Colors';
 import { IProduct } from '../../../../server/apis/product/product.interface';
 import { IPostDataToServer } from './component/generalConfig';
+import Filter from './Filter';
 
 export interface SectionsProps {
     productDetails: IProduct;
@@ -98,6 +99,24 @@ const Sections: React.FC<SectionsProps> = ({
 
             <ShowPrice showPrice={productDetails['showPrice'] || false} />
             <NewProduct />
+            <Filter
+                filters={[
+                    {
+                        name: 'Category',
+                        value: ['28', '30'],
+                        filterType: 'DropDown',
+                        unit: 'cm',
+                        description: 'Select size in the filter',
+                    },
+                    {
+                        name: 'Pattern',
+                        value: ['28', '30'],
+                        filterType: 'DropDown',
+                        unit: 'cm',
+                        description: 'Select size in the filter',
+                    },
+                ]}
+            />
             <Colors
                 errorValue={error['colors']}
                 setError={(value: number) => {
