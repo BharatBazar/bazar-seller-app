@@ -81,6 +81,7 @@ interface BharatBazarHomeProps extends NavigationProps {}
 
 class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
     render() {
+        console.log('Bharat bazar home =>');
         return (
             <Drawer.Navigator
                 drawerStyle={{

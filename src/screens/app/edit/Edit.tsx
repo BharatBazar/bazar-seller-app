@@ -177,6 +177,38 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                 {!loading && (
                     <Sections
+                        filter={[
+                            {
+                                name: 'Category',
+                                value: ['28', '30'],
+                                filterType: 'DropDown',
+                                unit: 'cm',
+                                description: 'Select size in the filter',
+                            },
+                            {
+                                name: 'Pattern',
+                                value: ['28', '30'],
+                                filterType: 'DropDown',
+                                unit: 'cm',
+                                description: 'Select size in the filter',
+                            },
+                        ]}
+                        distribution={[
+                            {
+                                name: 'Size',
+                                value: ['28', '30'],
+                                filterType: 'DropDown',
+                                unit: 'cm',
+                                description: 'Select size in the filter',
+                            },
+                            {
+                                name: 'Colors',
+                                value: ['28', '30'],
+                                filterType: 'DropDown',
+                                unit: 'cm',
+                                description: 'Select size in the filter',
+                            },
+                        ]}
                         checkAllError={checkAllError}
                         setCheckAllError={setCheckAllError}
                         productDetails={productDetails}

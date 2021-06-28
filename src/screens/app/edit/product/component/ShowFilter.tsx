@@ -26,7 +26,7 @@ import { FontFamily, fs14, fs20 } from '../../../../../common';
 import SearchComponent from '../../../search/component/SearchComponent';
 import Icon from 'react-native-vector-icons/Feather';
 import ProductButton from './ProductButton';
-
+import WrappedRectangleButton from '../../../../component/WrappedRectangleButton';
 interface ShowFilterModalProps {
     isVisible: boolean;
     setPopup: Function;
@@ -45,9 +45,9 @@ export const ShowFilter = ({ selected }: { selected?: boolean }) => {
                 />
             </View>
             {selected && (
-                <View style={[FLEX(0.2), AIC(), JCC()]}>
+                <WrappedRectangleButton onPress={() => {}} containerStyle={[FLEX(0.2), AIC(), JCC()]}>
                     <Icon name={'x-circle'} size={fs20} color={mainColor} />
-                </View>
+                </WrappedRectangleButton>
             )}
         </View>
     );

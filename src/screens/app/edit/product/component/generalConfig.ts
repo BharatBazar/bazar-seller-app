@@ -72,13 +72,20 @@ export enum filterType {
     Tags = 'Tags',
     CheckBox = 'CheckBox',
 }
-export interface IFilter {
+
+export interface IClassifier {
     name: string;
     description: string;
-    filterType: filterType;
-    value: {
-        name: string;
-    };
+    image: string;
+    type: string;
+}
+export interface IFilter {
+    name: string;
+    image?: string;
+    description: string;
+    multiple: boolean;
+    values: IClassifier[];
+    type: string;
 }
 
 export async function createProduct(data: IProduct) {

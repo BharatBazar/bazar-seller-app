@@ -6,7 +6,7 @@ import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
 import ShowFilterModal, { ShowFilter } from './component/ShowFilter';
-import { fs16, fs18, fs20 } from '../../../../common';
+import { fs18 } from '../../../../common';
 import { getHP } from '../../../../common/dimension';
 import ProductButton from './component/ProductButton';
 import TextButton from '../../../component/TextButton';
@@ -35,7 +35,7 @@ const Filter: React.SFC<FilterProps> = ({ filters }) => {
                         JCC('center'),
                         MT(0.2),
                         BW(1.5),
-                        BC(selectedTags.length != 0 ? mainColor : borderColor),
+                        BC(selectedTags.length == 0 ? mainColor : borderColor),
                         BGCOLOR('#FFFFFF'),
                         { marginBottom: getHP(0.2) },
                     ]}

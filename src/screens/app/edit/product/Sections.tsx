@@ -6,7 +6,7 @@ import Title from './Title';
 import Description from './Description';
 import Colors from './Colors';
 import { IProduct } from '../../../../server/apis/product/product.interface';
-import { IPostDataToServer } from './component/generalConfig';
+import { IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
 
 export interface SectionsProps {
@@ -20,6 +20,8 @@ export interface SectionsProps {
         subCategory1: string;
         subCategory: string;
     };
+    filter: IFilter[];
+    distribution: IFilter[];
     checkAllError: number;
     setCheckAllError: (a: number) => void;
 }
@@ -39,6 +41,8 @@ const Sections: React.FC<SectionsProps> = ({
     productTypeDetails,
     checkAllError,
     setCheckAllError,
+    filter,
+    distribution,
 }) => {
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
     const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0 });
@@ -99,38 +103,25 @@ const Sections: React.FC<SectionsProps> = ({
 
             <ShowPrice showPrice={productDetails['showPrice'] || false} />
             <NewProduct />
-            <Filter
-                filters={[
-                    {
-                        name: 'Category',
-                        value: ['28', '30'],
-                        filterType: 'DropDown',
-                        unit: 'cm',
-                        description: 'Select size in the filter',
-                    },
-                    {
-                        name: 'Pattern',
-                        value: ['28', '30'],
-                        filterType: 'DropDown',
-                        unit: 'cm',
-                        description: 'Select size in the filter',
-                    },
-                ]}
-            />
-            <Colors
-                errorValue={error['colors']}
-                setError={(value: number) => {
-                    setTimeout(() => {
-                        setParticularError('colors', value);
-                    }, 20);
-                }}
-                setProductId={setProductId}
-                update={update}
-                postDataToServer={postDataToServer}
-                productId={productId}
-                productColors={productDetails.productColor}
-                productTypeDetails={productTypeDetails}
-            />
+            <Filter filters={filter} />
+            {distribution.length == 0 ? (
+                <View />
+            ) : (
+                <Colors
+                    errorValue={error['colors']}
+                    setError={(value: number) => {
+                        setTimeout(() => {
+                            setParticularError('colors', value);
+                        }, 20);
+                    }}
+                    setProductId={setProductId}
+                    update={update}
+                    postDataToServer={postDataToServer}
+                    productId={productId}
+                    productColors={productDetails.productColor}
+                    productTypeDetails={productTypeDetails}
+                />
+            )}
         </View>
     );
 };
