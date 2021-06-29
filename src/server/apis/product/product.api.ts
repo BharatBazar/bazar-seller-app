@@ -13,11 +13,11 @@ import axios from 'axios';
 //Product apis
 
 export async function APIcreateProduct(data: IProduct): Promise<IRProduct> {
-    return axios.post(`/create`, data);
+    return axios.post('/create', data);
 }
 
 export async function APIupdateProduct(data: IProduct): Promise<IRProduct> {
-    return axios.patch(`/update`, data);
+    return axios.patch('/update', data);
 }
 
 export async function APIdeleteProduct(data: { _id: string }): Promise<IRProduct> {

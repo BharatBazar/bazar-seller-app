@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { View } from 'react-native';
 
 export class DataHandling<Props, State> extends Component<Props, State> {
     handleError = (error) => {

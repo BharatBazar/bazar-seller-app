@@ -1,3 +1,4 @@
+import axios from 'axios';
 import * as React from 'react';
 import { View, TextInput } from 'react-native';
 import { fs18, NavigationProps } from '../../../common';
@@ -5,6 +6,7 @@ import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, PH, PV } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
+import { apiEndPoint } from '../../../server';
 import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
@@ -23,6 +25,15 @@ const Product: React.FC<ProductProps> = ({
     },
 }) => {
     const [searchedText, setSearchedText] = React.useState('');
+
+    React.useEffect(() => {
+        console.log(apiEndPoint + `/catalogue/${'mens'}/${'clothes'}/${'jeans'}`);
+        axios.defaults.baseURL = apiEndPoint + `/catalogue/${'mens'}/${'clothes'}/${'jeans'}`;
+        return () => {
+            axios.defaults.baseURL = apiEndPoint;
+        };
+    }, []);
+
     return (
         <View style={{ flex: 1, backgroundColor: colorCode.WHITELOW(20) }}>
             <StatusBar statusBarColor={colorCode.CHAKRALOW(70)} />

@@ -78,7 +78,6 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     };
 
     React.useEffect(() => {
-        console.log('New beginings||');
         if (update) {
             fetchProduct();
         } else {

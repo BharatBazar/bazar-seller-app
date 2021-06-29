@@ -31,6 +31,7 @@ export function initializeAxios() {
             return response;
         },
         function (error) {
+            console.log('Error =>', error);
             return handleError(error);
         },
     );
