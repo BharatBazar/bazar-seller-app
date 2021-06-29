@@ -16,7 +16,7 @@ import {
 import { AIC, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/styles';
 import { IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
-import { APIgetProduct } from '../../../server/apis/product/produt.api';
+import { APIgetProduct } from '../../../server/apis/product/product.api';
 import { colorCode, mainColor } from '../../../common/color';
 import WrappedText from '../../component/WrappedText';
 import TextButton from '../../component/TextButton';
@@ -105,7 +105,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             shopId: shopId,
         };
         const response: IRProduct = await createProduct(product);
-        console.log(response);
+
         setLoading(false);
         if (response.status == 1) {
             setProductId(response.payload._id);
@@ -136,7 +136,6 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             }
         } catch (error) {
             errroCallBack(error.message);
-            console.log(error.message);
         }
     };
 

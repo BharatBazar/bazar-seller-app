@@ -5,7 +5,7 @@ import { sub } from 'react-native-reanimated';
 import { NavigationProps } from '../../../common';
 import { NavigationKey } from '../../../labels';
 import { IProduct, IProducts, productStatus } from '../../../server/apis/product/product.interface';
-import { APIgetAllProduct } from '../../../server/apis/product/produt.api';
+import { APIgetAllProduct } from '../../../server/apis/product/product.api';
 import ProductIdentifierView from './component/ProductIdentifierView';
 
 export interface ProductListProps extends NavigationProps {

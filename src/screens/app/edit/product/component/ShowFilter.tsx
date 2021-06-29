@@ -1,23 +1,7 @@
 import * as React from 'react';
-import { View, TextInput, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { getHP } from '../../../../../common/dimension';
-import {
-    AIC,
-    BC,
-    BGCOLOR,
-    BR,
-    BW,
-    FDR,
-    FLEX,
-    HP,
-    JCC,
-    MT,
-    MV,
-    PH,
-    PL,
-    provideShadow,
-    PV,
-} from '../../../../../common/styles';
+import { AIC, BC, BR, BW, FDR, FLEX, HP, JCC, MT, MV, PL, PV } from '../../../../../common/styles';
 import ModalHOC from '../../../../hoc/ModalHOC';
 import ModalHeader from '../../../../component/ModalHeader';
 import WrappedText from '../../../../component/WrappedText';
@@ -25,7 +9,6 @@ import { mainColor } from '../../../../../common/color';
 import { FontFamily, fs14, fs20 } from '../../../../../common';
 import SearchComponent from '../../../search/component/SearchComponent';
 import Icon from 'react-native-vector-icons/Feather';
-import ProductButton from './ProductButton';
 import WrappedRectangleButton from '../../../../component/WrappedRectangleButton';
 interface ShowFilterModalProps {
     isVisible: boolean;

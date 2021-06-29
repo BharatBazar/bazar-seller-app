@@ -9,44 +9,67 @@ export enum productStatus {
     LIVE = 'Live',
 }
 
+export interface IFilter {
+    name: string; //Filter name Like waist size
+    description: string; // Filter details descipbing about filter
+    image: string; // Image url
+    type: classifierTypes; // It will refer to the type to which the filter belongs
+    multiple: boolean; // Multiple values can selected or not
+    distributionLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
+}
+
+export enum classifierTypes {
+    SIZE = 'Size',
+    COLOR = 'Color',
+    BRAND = 'Brand',
+    PATTERN = 'Pattern',
+    FIT = 'Fit',
+}
+export interface IClassfier {
+    name: string; // Name should be any thing like value for example for size name will be 28, for color name will be red etc..
+    description: string; // Description should be meta data or for example for color colorCode will be description, for size unit like cm or inch will be description
+    image: string; // Can be provided for pattern or brand etc..
+    type: classifierTypes; //type is the classifier to which the document belongs
+}
+
 export interface IProduct {
     //Also i need to think about how i will be dealing with language preferences how can i use multiple language.
     _id?: string;
     shopId: string;
-    productCategory?: string;
-    productSubCategory1?: string;
-    productSubCategory2?: string | undefined;
+
     //Above field will have predifined information about the size, unit etc.
-    productTitle?: string;
-    productSubtitle?: string;
-    productColor: [Partial<IProductColor>] | [];
+    title?: string;
+    subTitle?: string;
+    colors: [Partial<IProductColor>] | [];
     showPrice?: boolean; //Whether dukandar wants to show price to customer or not
     productStatus?: productStatus;
-    productRating?: number;
-    productNew?: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    productNewDeadline?: Date;
-    productDescription?: string; // Will be a audio as audio is better to understand in common language
-    productDiscount?: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
-    productDiscountDeadline?: [Date];
+    rating?: number;
+    new?: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
+    newDeadline?: Date;
+    description?: string; // Will be a audio as audio is better to understand in common language
+    discount?: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
+    discountDeadline?: [Date];
+    brand: string | IFilter;
+    fit: string | IFilter;
+    pattern?: [string] | [IFilter];
 }
 
 export interface IProductColor {
-    parentId: string;
-    productColorName: string;
-    productColorCode: string;
-    productIncludedColor: [string] | [];
-    productPhotos: [string] | [];
     _id: string;
-    productSize: [IProductSize] | [];
+    parentId: string; // will refer to main table
+    color: string | IFilter; // will refer to color table
+    sizes: [string]; // will refer to jeans size table
+    photos: [string];
+    includedColor: [string] | [IFilter];
 }
 
 export interface IProductSize {
-    parentId: string;
-    productMrp: string;
-    productSp: string;
-    productQuantity: number;
-    productSize: string;
     _id: string;
+    size: string | IFilter; //Will refer to size table
+    mrp: string;
+    quantity: string;
+    sp: string;
+    parentId: string;
 }
 
 export interface IRProduct extends CommonApiResponse {

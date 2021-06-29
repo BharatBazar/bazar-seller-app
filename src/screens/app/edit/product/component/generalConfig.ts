@@ -16,7 +16,7 @@ import {
     APIupdateProduct,
     APIUpdateProductColor,
     APIUpdateProductSize,
-} from '../../../../../server/apis/product/produt.api';
+} from '../../../../../server/apis/product/product.api';
 import { getHP } from '../../../../../common/dimension';
 import { PH, PV, BR } from '../../../../../common/styles';
 export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
