@@ -16,8 +16,8 @@ const ModalHeader: React.SFC<ModalHeaderProps> = ({ setPopup, heading, subHeadin
     return (
         <View style={[FDR(), JCC('space-between')]}>
             <View>
-                <WrappedText text={heading} fontSize={fs28} textColor={'#1a1a1a'} />
-                <WrappedText text={subHeading} textColor={'#8A8A8A'} />
+                <WrappedText text={heading} fontSize={fs28} textColor={'#242424'} />
+                <WrappedText text={subHeading} textColor={'#646464'} />
             </View>
             <WrappedFeatherIcon
                 iconSize={fs20}

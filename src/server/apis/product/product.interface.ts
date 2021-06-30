@@ -1,4 +1,3 @@
-import { IProductColor } from './product.interface';
 import { CommonApiResponse } from '../common.interface';
 
 export enum productStatus {
@@ -16,6 +15,7 @@ export interface IFilter {
     type: classifierTypes; // It will refer to the type to which the filter belongs
     multiple: boolean; // Multiple values can selected or not
     distributionLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
+    values: IClassifier[];
 }
 
 export enum classifierTypes {
@@ -25,7 +25,8 @@ export enum classifierTypes {
     PATTERN = 'Pattern',
     FIT = 'Fit',
 }
-export interface IClassfier {
+export interface IClassifier {
+    _id: string;
     name: string; // Name should be any thing like value for example for size name will be 28, for color name will be red etc..
     description: string; // Description should be meta data or for example for color colorCode will be description, for size unit like cm or inch will be description
     image: string; // Can be provided for pattern or brand etc..
@@ -34,24 +35,24 @@ export interface IClassfier {
 
 export interface IProduct {
     //Also i need to think about how i will be dealing with language preferences how can i use multiple language.
-    _id?: string;
+    _id: string;
     shopId: string;
 
     //Above field will have predifined information about the size, unit etc.
-    title?: string;
-    subTitle?: string;
+    title: string;
+    subTitle: string;
     colors: [Partial<IProductColor>] | [];
-    showPrice?: boolean; //Whether dukandar wants to show price to customer or not
-    productStatus?: productStatus;
-    rating?: number;
-    new?: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    newDeadline?: Date;
-    description?: string; // Will be a audio as audio is better to understand in common language
-    discount?: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
-    discountDeadline?: [Date];
+    showPrice: boolean; //Whether dukandar wants to show price to customer or not
+    productStatus: productStatus;
+    rating: number;
+    new: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
+    newDeadline: Date;
+    description: string; // Will be a audio as audio is better to understand in common language
+    discount: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
+    discountDeadline: [Date];
     brand: string | IFilter;
     fit: string | IFilter;
-    pattern?: [string] | [IFilter];
+    pattern: [string] | [IFilter];
 }
 
 export interface IProductColor {
