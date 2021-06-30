@@ -68,7 +68,7 @@ export interface IProductSize {
     _id: string;
     size: string | IFilter; //Will refer to size table
     mrp: string;
-    quantity: string;
+    quantity: number;
     sp: string;
     parentId: string;
 }

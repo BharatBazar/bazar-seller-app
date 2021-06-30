@@ -42,7 +42,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     },
 }) => {
     const [productId, setProductId] = useState<string | undefined>(_id);
-    const [productDetails, setProductDetails] = useState<IProduct>(generalProductSchema);
+    const [productDetails, setProductDetails] = useState<Partial<IProduct>>(generalProductSchema);
     const [loading, setLoading] = useState(true);
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
     const [checkAllError, setCheckAllError] = useState<number>(0);
@@ -96,11 +96,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     }, [checkAllError]);
 
     const createProductInServer = async (data: Partial<IProduct>) => {
-        const product = {
+        const product: Partial<IProduct> = {
             ...data,
-            productCategory: category,
-            productSubCategory1: subCategory,
-            productSubCategory2: subCategory1,
+
             shopId: shopId,
         };
         const response: IRProduct = await createProduct(product);

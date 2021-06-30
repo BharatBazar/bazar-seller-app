@@ -10,7 +10,7 @@ import { IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
 
 export interface SectionsProps {
-    productDetails: IProduct;
+    productDetails: Partial<IProduct>;
     update: boolean;
     postDataToServer: IPostDataToServer;
     setProductId: (productId: string) => void;
@@ -78,8 +78,8 @@ const Sections: React.FC<SectionsProps> = ({
     return (
         <View>
             <Title
-                title={productDetails['productTitle']}
-                subTitle={productDetails['productSubtitle']}
+                title={productDetails['title']}
+                subTitle={productDetails['subTitle']}
                 update={update}
                 errorValue={error['title']}
                 setError={(value: number) => {
@@ -90,7 +90,7 @@ const Sections: React.FC<SectionsProps> = ({
             />
 
             <Description
-                description={productDetails['productDescription'] || ''}
+                description={productDetails['description'] || ''}
                 update={productDetails['productDescription'] ? true : false}
                 postDataToServer={postDataToServer}
                 errorValue={error['description']}
@@ -103,7 +103,7 @@ const Sections: React.FC<SectionsProps> = ({
 
             <ShowPrice showPrice={productDetails['showPrice'] || false} />
             <NewProduct />
-            <Filter filters={filter} postDataToServer={postDataToServer} />
+            <Filter filters={filter} postDataToServer={postDataToServer} productDetails={productDetails} />
             {distribution.length == 0 ? (
                 <View />
             ) : (
@@ -118,7 +118,7 @@ const Sections: React.FC<SectionsProps> = ({
                     update={update}
                     postDataToServer={postDataToServer}
                     productId={productId}
-                    productColors={productDetails.productColor}
+                    productColors={productDetails.colors}
                     productTypeDetails={productTypeDetails}
                 />
             )}

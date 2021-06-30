@@ -9,7 +9,7 @@ import { IPostDataToServer, marTop } from './component/generalConfig';
 
 export interface DescriptionProps {
     description: string;
-    update: boolean;
+    update?: boolean;
     postDataToServer: IPostDataToServer;
     errorValue: number;
     setError: (value: number) => void;
@@ -53,7 +53,7 @@ const ProductDescription: React.SFC<DescriptionProps> = ({
         setLoader(true);
         setErrors({});
         postDataToServer(
-            { productDescription },
+            { description: productDescription },
             () => {
                 setLastDes(productDescription);
                 setLoader(false);

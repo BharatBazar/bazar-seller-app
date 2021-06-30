@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { BC, BGCOLOR, BR, BW, FDR, JCC, ML, MT, PV } from '../../../../common/styles';
-import { IFilter } from './component/generalConfig';
+import { IFilter, IPostDataToServer } from './component/generalConfig';
 import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
@@ -11,11 +11,12 @@ import { getHP } from '../../../../common/dimension';
 import ProductButton from './component/ProductButton';
 import TextButton from '../../../component/TextButton';
 import { borderColor, mainColor } from '../../../../common/color';
-import { IClassifier } from '../../../../server/apis/product/product.interface';
+import { IClassifier, IProduct } from '../../../../server/apis/product/product.interface';
 
 interface FilterProps {
     filters: IFilter[];
-    postDataToServer: Function;
+    postDataToServer: IPostDataToServer;
+    productDetails: Partial<IProduct>;
 }
 
 export enum selectAction {
@@ -27,10 +28,29 @@ interface Error {
     generalError: string;
 }
 
-const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer }) => {
+const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails }) => {
+    const getTypeDetails = (type: keyof IProduct) => {
+        let exist: IClassifier | undefined | IClassifier[] = productDetails ? productDetails[type] : undefined;
+        if (exist) {
+            if (typeof exist === 'object') {
+                let data = {};
+                data[exist._id] = exist;
+                return data;
+            } else {
+                let data = {};
+                exist.forEach((element) => {
+                    data[element._id] = element;
+                });
+                return data;
+            }
+        } else {
+            return {};
+        }
+    };
+
     const renderFilter = (filter: IFilter, index: number) => {
         const [showPopup, setPopup] = React.useState<boolean>(false);
-        const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
+        const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>(getTypeDetails(filter.type));
         const [loading, setLoader] = React.useState(false);
         const [error, setErrors] = React.useState<Partial<Error>>({});
 

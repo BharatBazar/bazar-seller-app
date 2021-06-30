@@ -16,7 +16,7 @@ import {
     marHor,
     marTop,
 } from './component/generalConfig';
-import { IProductColor, IProductSize } from '../../../../server/apis/product/product.interface';
+import { IFilter, IProductColor, IProductSize } from '../../../../server/apis/product/product.interface';
 
 export interface Icolor {
     name: string;
@@ -30,6 +30,7 @@ export type Isize = string[];
 const size: Isize = ['20', '21', '22', '23', '24', '25', '26', '27'];
 export interface ProductColorProps {
     update: boolean;
+    distribution: IFilter[];
     postDataToServer: IPostDataToServer;
     productId?: string;
     setProductId: (productId: string) => void;
@@ -80,8 +81,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 {
                     ...generalProductColorSchema,
                     new: true,
-                    productColorCode: colors[index].colorCode,
-                    productColorName: colors[index].name,
+                    code: colors[index].colorCode,
+                    name: colors[index].name,
                 },
             ]);
         }
@@ -112,7 +113,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
 
     React.useEffect(() => {
         const data: Icolor[] = productColor.map((item) => {
-            if (chosenColor.findIndex((color) => color.productColorCode == item.colorCode) > -1) {
+            if (chosenColor.findIndex((color) => color.colorCode == item.colorCode) > -1) {
                 item['selected'] = true;
             } else {
                 item['selected'] = false;

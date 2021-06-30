@@ -34,35 +34,35 @@ export const border = {
 export const generalProductSchema: Partial<IProduct> = {
     productCategory: '',
     productSubCategory1: '',
-    productSubCategory2: '',
-    productTitle: '',
-    productSubtitle: '',
-    productColor: [],
+    SubCategory2: '',
+    title: '',
+    subTitle: '',
+    colors: [],
     showPrice: false, //Whether dukandar wants to show price to customer or not
     productStatus: productStatus.NOTCOMPLETED,
-    productRating: undefined,
-    productNew: false, // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    productNewDeadline: undefined,
-    productDescription: '', // Will be a audio as audio is better to understand in common language
-    productDiscount: undefined, // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
-    productDiscountDeadline: undefined,
+    rating: undefined,
+    new: false, // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
+    newDeadline: undefined,
+    description: '', // Will be a audio as audio is better to understand in common language
+    discount: undefined, // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
+    iscountDeadline: undefined,
 };
 
 export const generalProductColorSchema: IProductColor = {
-    productPhotos: [],
-    productSize: [],
-    productIncludedColor: [],
-    productColorName: '',
-    productColorCode: '',
+    photos: [],
+    sizes: [],
+    includedColors: [],
+    name: '',
+    code: '',
     parentId: '',
     _id: '',
 };
 
 export const generalProductSizeSchema: IProductSize = {
-    productMrp: '',
-    productSize: '',
-    productQuantity: 1,
-    productSp: '',
+    mrp: '',
+    size: '',
+    quantity: 1,
+    sp: '',
     parentId: '',
     _id: '',
 };
@@ -97,7 +97,7 @@ export interface IClassifier {
     image: string; // Can be provided for pattern or brand etc..
     type: classifierTypes; //type is the classifier to which the document belongs
 }
-export async function createProduct(data: IProduct) {
+export async function createProduct(data: Partial<IProduct>) {
     return await APIcreateProduct(data);
 }
 
@@ -131,4 +131,4 @@ export async function deleteProductFromServer(data: { _id: string }) {
     return await APIdeleteProduct(data);
 }
 
-export type IPostDataToServer = (a: IProduct, b: () => void, c: (error: string) => void) => void;
+export type IPostDataToServer = (a: Partial<IProduct>, b: () => void, c: (error: string) => void) => void;

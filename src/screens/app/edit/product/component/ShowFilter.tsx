@@ -17,6 +17,7 @@ import { selectAction } from '../Filter';
 export const ShowFilter = ({
     selected,
     item,
+
     onPress,
 }: {
     selected?: boolean;
