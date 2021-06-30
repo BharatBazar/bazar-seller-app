@@ -73,21 +73,30 @@ export enum filterType {
     CheckBox = 'CheckBox',
 }
 
-export interface IClassifier {
-    name: string;
-    description: string;
-    image: string;
-    type: string;
-}
 export interface IFilter {
-    name: string;
-    image?: string;
-    description: string;
-    multiple: boolean;
+    name: string; //Filter name Like waist size
+    description: string; // Filter details descipbing about filter
+    image: string; // Image url
+    type: classifierTypes; // It will refer to the type to which the filter belongs
+    multiple: boolean; // Multiple values can selected or not
+    distributionLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
     values: IClassifier[];
-    type: string;
 }
 
+export enum classifierTypes {
+    SIZE = 'size',
+    COLOR = 'color',
+    BRAND = 'brand',
+    PATTERN = 'pattern',
+    FIT = 'fit',
+}
+export interface IClassifier {
+    _id: string;
+    name: string; // Name should be any thing like value for example for size name will be 28, for color name will be red etc..
+    description: string; // Description should be meta data or for example for color colorCode will be description, for size unit like cm or inch will be description
+    image: string; // Can be provided for pattern or brand etc..
+    type: classifierTypes; //type is the classifier to which the document belongs
+}
 export async function createProduct(data: IProduct) {
     return await APIcreateProduct(data);
 }

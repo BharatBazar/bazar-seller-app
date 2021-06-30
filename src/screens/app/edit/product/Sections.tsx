@@ -103,7 +103,7 @@ const Sections: React.FC<SectionsProps> = ({
 
             <ShowPrice showPrice={productDetails['showPrice'] || false} />
             <NewProduct />
-            <Filter filters={filter} />
+            <Filter filters={filter} postDataToServer={postDataToServer} />
             {distribution.length == 0 ? (
                 <View />
             ) : (

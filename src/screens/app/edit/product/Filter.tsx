@@ -6,7 +6,7 @@ import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
 import ShowFilterModal, { ShowFilter } from './component/ShowFilter';
-import { fs18 } from '../../../../common';
+import { fs12, fs18 } from '../../../../common';
 import { getHP } from '../../../../common/dimension';
 import ProductButton from './component/ProductButton';
 import TextButton from '../../../component/TextButton';
@@ -15,6 +15,7 @@ import { IClassifier } from '../../../../server/apis/product/product.interface';
 
 interface FilterProps {
     filters: IFilter[];
+    postDataToServer: Function;
 }
 
 export enum selectAction {
@@ -22,10 +23,16 @@ export enum selectAction {
     remove = 'Remove',
 }
 
-const Filter: React.SFC<FilterProps> = ({ filters }) => {
+interface Error {
+    generalError: string;
+}
+
+const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer }) => {
     const renderFilter = (filter: IFilter, index: number) => {
         const [showPopup, setPopup] = React.useState<boolean>(false);
         const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
+        const [loading, setLoader] = React.useState(false);
+        const [error, setErrors] = React.useState<Partial<Error>>({});
 
         const addData = (data: IClassifier) => {
             const array = { ...selectedTags };
@@ -37,6 +44,30 @@ const Filter: React.SFC<FilterProps> = ({ filters }) => {
             const array = { ...selectedTags };
             delete array[data._id];
             setSelected(array);
+        };
+
+        const submitData = () => {
+            if (Object.keys(selectedTags).length == 0) {
+                setErrors({ generalError: 'Please select atleast one filter.' });
+            } else {
+                setLoader(true);
+                setErrors({});
+
+                const data = {};
+                data[filter.type] = filter.multiple ? Object.keys(selectedTags) : Object.keys(selectedTags)[0];
+
+                postDataToServer(
+                    data,
+                    () => {
+                        setLoader(false);
+                        //setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
+                    },
+                    (error: string) => {
+                        setLoader(false);
+                        setErrors({ generalError: error });
+                    },
+                );
+            }
         };
 
         const onSelect = (data: IClassifier) => {
@@ -64,6 +95,7 @@ const Filter: React.SFC<FilterProps> = ({ filters }) => {
             >
                 <WrappedText text={filter.name} fontSize={fs18} />
                 <WrappedText text={filter.description} textColor={'#8A8A8A'} />
+                <WrappedText text={error.generalError || ''} fontSize={fs12} />
                 <View style={[MT(0.1)]} />
 
                 <TextButton
@@ -107,7 +139,13 @@ const Filter: React.SFC<FilterProps> = ({ filters }) => {
                     onSelect={onSelect}
                 />
                 <View style={[FDR(), JCC('flex-end')]}>
-                    <ProductButton buttonText={'Save'} onPress={() => {}} />
+                    <ProductButton
+                        buttonText={'Save'}
+                        onPress={() => {
+                            submitData();
+                        }}
+                        isLoading={loading}
+                    />
                     <View style={[ML(0.1)]} />
                     <ProductButton buttonText={'Undo'} onPress={() => {}} />
                 </View>
