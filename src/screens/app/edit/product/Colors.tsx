@@ -16,7 +16,7 @@ import {
     marHor,
     marTop,
 } from './component/generalConfig';
-import { IFilter, IProductColor, IProductSize } from '../../../../server/apis/product/product.interface';
+import { IClassifier, IFilter, IClassifier, IProductSize } from '../../../../server/apis/product/product.interface';
 
 export interface Icolor {
     name: string;
@@ -34,7 +34,7 @@ export interface ProductColorProps {
     postDataToServer: IPostDataToServer;
     productId?: string;
     setProductId: (productId: string) => void;
-    productColors: IProductColor[];
+    productColors: IClassifier[];
     productTypeDetails: {
         category: string;
         subCategory1: string;
@@ -62,9 +62,10 @@ const ProductColor: React.FC<ProductColorProps> = ({
     productTypeDetails,
     errorValue,
     setError,
+    distribution,
 }) => {
-    const [colors, setColors] = React.useState<Icolor[]>([]);
-    const [chosenColor, setChosenColor] = React.useState<IProductColor[]>(productColors);
+    const [colors, setColors] = React.useState<IClassifier[]>(distribution[0].values);
+    const [chosenColor, setChosenColor] = React.useState<IClassifier[]>(productColors);
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
     const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
     const [error, setErrors] = React.useState<Error>({});
@@ -103,17 +104,17 @@ const ProductColor: React.FC<ProductColorProps> = ({
     };
 
     const deleteColor = (index: number) => {
-        let updatedColors: IProductColor[] = [...chosenColor];
+        let updatedColors: IClassifier[] = [...chosenColor];
         updatedColors.splice(index, 1);
         removeErrorKey(index);
-        const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].productColorName);
+        const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].name);
         updateColorArray(indexToUpdate, true);
         setChosenColor(updatedColors);
     };
 
     React.useEffect(() => {
-        const data: Icolor[] = productColor.map((item) => {
-            if (chosenColor.findIndex((color) => color.colorCode == item.colorCode) > -1) {
+        const data: IClassifier & { selected: boolean }[] = productColor.map((item) => {
+            if (chosenColor.findIndex((color) => color.name == item.name) > -1) {
                 item['selected'] = true;
             } else {
                 item['selected'] = false;
