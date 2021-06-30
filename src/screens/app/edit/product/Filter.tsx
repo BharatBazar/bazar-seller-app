@@ -23,24 +23,45 @@ export enum selectAction {
 }
 
 const Filter: React.SFC<FilterProps> = ({ filters }) => {
-    const renderFilter = (filter: IFilter) => {
+    const renderFilter = (filter: IFilter, index: number) => {
         const [showPopup, setPopup] = React.useState<boolean>(false);
         const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
 
+        const addData = (data: IClassifier) => {
+            const array = { ...selectedTags };
+            array[data._id] = data;
+            setSelected(array);
+        };
+
+        const deleteData = (data: IClassifier) => {
+            const array = { ...selectedTags };
+            delete array[data._id];
+            setSelected(array);
+        };
+
         const onSelect = (data: IClassifier) => {
-            if (!selectedTags[data._id]) {
-                const array = { ...selectedTags };
-                array[data._id] = data;
-                setSelected(array);
+            if (!filter.multiple) {
+                if (selectedTags[data._id]) {
+                    deleteData(data);
+                } else {
+                    const array = {};
+                    array[data._id] = data;
+                    setSelected(array);
+                }
             } else {
-                const array = { ...selectedTags };
-                delete array[data._id];
-                setSelected(array);
+                if (!selectedTags[data._id]) {
+                    addData(data);
+                } else {
+                    deleteData(data);
+                }
             }
         };
 
         return (
-            <View style={[MT(0.1), { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}>
+            <View
+                key={index}
+                style={[MT(0.1), { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}
+            >
                 <WrappedText text={filter.name} fontSize={fs18} />
                 <WrappedText text={filter.description} textColor={'#8A8A8A'} />
                 <View style={[MT(0.1)]} />
@@ -104,7 +125,7 @@ const Filter: React.SFC<FilterProps> = ({ filters }) => {
                 error={''}
             />
             <View style={[{ borderBottomWidth: 1, borderColor: '#E5E5E5', paddingBottom: getHP(0.2) }]} />
-            {filters.map((item) => renderFilter(item))}
+            {filters.map((item, index) => renderFilter(item, index))}
         </ProductContainer>
     );
 };
