@@ -119,7 +119,7 @@ const Sections: React.FC<SectionsProps> = ({
                     update={update}
                     postDataToServer={postDataToServer}
                     productId={productId}
-                    productColors={productDetails.colors}
+                    productColors={productDetails['colors']}
                     productTypeDetails={productTypeDetails}
                 />
             )}

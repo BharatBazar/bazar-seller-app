@@ -16,7 +16,13 @@ import {
     marHor,
     marTop,
 } from './component/generalConfig';
-import { IClassifier, IFilter, IClassifier, IProductSize } from '../../../../server/apis/product/product.interface';
+import {
+    IClassifier,
+    IColorApp,
+    IFilter,
+    IProductColor,
+    IProductSize,
+} from '../../../../server/apis/product/product.interface';
 
 export interface Icolor {
     name: string;
@@ -34,7 +40,7 @@ export interface ProductColorProps {
     postDataToServer: IPostDataToServer;
     productId?: string;
     setProductId: (productId: string) => void;
-    productColors: IClassifier[];
+    productColors: IProductColor[];
     productTypeDetails: {
         category: string;
         subCategory1: string;
@@ -64,34 +70,69 @@ const ProductColor: React.FC<ProductColorProps> = ({
     setError,
     distribution,
 }) => {
+    const getProductColor = () => {
+        let data: { [key: string]: IColorApp } = {};
+        productColors.forEach((color) => {
+            data[color._id] = { ...color, name: color.color.name, description: color.color.description };
+        });
+        return data;
+    };
+
+    //This are all the colors
     const [colors, setColors] = React.useState<IClassifier[]>(distribution[0].values);
-    const [chosenColor, setChosenColor] = React.useState<IClassifier[]>(productColors);
+    // This are chosen colors
+    const [chosenColor, setChosenColor] = React.useState<{ [key: string]: IColorApp }>(getProductColor());
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
     const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
     const [error, setErrors] = React.useState<Error>({});
     const [childError, setChildError] = React.useState<possibleValue[]>([]);
 
+    const addItem = (data: IClassifier) => {
+        let colors = { ...chosenColor };
+
+        colors[data._id] = data;
+        console.log(colors);
+        setChosenColor(colors);
+    };
+
+    const deleteItem = (data: IClassifier) => {
+        let colors = { ...chosenColor };
+        delete colors[data._id];
+        setChosenColor(colors);
+    };
+
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
-        let updatedColors: Icolor[] = [...colors];
-        updatedColors[index].selected = !updatedColors[index].selected;
-        setColors(updatedColors.sort((item) => !item.selected));
-        if (!updateColorArray) {
-            pushErrorKey();
-            setChosenColor([
-                ...chosenColor,
-                {
-                    ...generalProductColorSchema,
-                    new: true,
-                    code: colors[index].colorCode,
-                    name: colors[index].name,
-                },
-            ]);
+        let colorNow = colors[index];
+        console.log(colorNow, chosenColor);
+        if (chosenColor[colorNow._id]) {
+            deleteItem(colorNow);
+        } else {
+            if (!updateColorArray) {
+                addItem({ ...generalProductColorSchema, ...colorNow });
+            } else {
+                addItem(colorNow);
+            }
         }
+        // let updatedColors: Icolor[] = [...colors];
+        // updatedColors[index].selected = !updatedColors[index].selected;
+        // setColors(updatedColors.sort((item) => !item.selected));
+        // if (!updateColorArray) {
+        //     pushErrorKey();
+        //     setChosenColor([
+        //         ...chosenColor,
+        //         {
+        //             ...generalProductColorSchema,
+        //             new: true,
+        //             code: colors[index].colorCode,
+        //             name: colors[index].name,
+        //         },
+        //     ]);
+        // }
     };
 
     const checkError = () => {
         let error: Error = {};
-        if (chosenColor.length == 0) {
+        if (Object.keys(chosenColor).length == 0) {
             error['generalError'] = 'Please add atleast one color.';
         }
 
@@ -104,24 +145,24 @@ const ProductColor: React.FC<ProductColorProps> = ({
     };
 
     const deleteColor = (index: number) => {
-        let updatedColors: IClassifier[] = [...chosenColor];
-        updatedColors.splice(index, 1);
-        removeErrorKey(index);
-        const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].name);
-        updateColorArray(indexToUpdate, true);
-        setChosenColor(updatedColors);
+        // let updatedColors: IClassifier[] = [...chosenColor];
+        // updatedColors.splice(index, 1);
+        // removeErrorKey(index);
+        // const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].name);
+        // updateColorArray(indexToUpdate, true);
+        // setChosenColor(updatedColors);
     };
 
     React.useEffect(() => {
-        const data: IClassifier & { selected: boolean }[] = productColor.map((item) => {
-            if (chosenColor.findIndex((color) => color.name == item.name) > -1) {
-                item['selected'] = true;
-            } else {
-                item['selected'] = false;
-            }
-            return item;
-        });
-        setColors(data);
+        // const data: IClassifier & { selected: boolean }[] = productColor.map((item) => {
+        //     if (chosenColor.findIndex((color) => color.name == item.name) > -1) {
+        //         item['selected'] = true;
+        //     } else {
+        //         item['selected'] = false;
+        //     }
+        //     return item;
+        // });
+        // setColors(data);
 
         return () => {};
     }, []);
@@ -222,12 +263,13 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 />
             </View>
             <ColorModal
+                chosenColor={chosenColor}
                 isVisible={colorPopup}
                 setPopup={setColorPopup}
                 updateColorArray={updateColorArray}
                 colors={colors}
             />
-            {chosenColor.map((color, index) => (
+            {Object.values(chosenColor).map((color, index) => (
                 <Color
                     {...colorProps(index)}
                     productTypeDetails={productTypeDetails}
@@ -236,9 +278,9 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     update={update}
                     productId={productId}
                     setProductId={setProductId}
-                    key={color.productColorName}
-                    color={{ colorCode: color.productColorCode, name: color.productColorName }}
-                    size={[...size]}
+                    key={color.name}
+                    color={color}
+                    size={distribution[1].values}
                     index={index}
                     productColor={color}
                     onDelete={() => {

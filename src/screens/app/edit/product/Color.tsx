@@ -12,7 +12,12 @@ import Size from './Size';
 import TableHeader from './component/component/TableHeader';
 import ProductContainer from './component/productContainerHOC';
 import PhotoUpload from './component/component/PhotoUpload';
-import { IProductColor, IProductSize, IRProductColor } from '../../../../server/apis/product/product.interface';
+import {
+    IClassifier,
+    IProductColor,
+    IProductSize,
+    IRProductColor,
+} from '../../../../server/apis/product/product.interface';
 import {
     createProductColor,
     deleteProductColor,
@@ -37,15 +42,15 @@ export const Heading = (headingText: string, color: string) => {
 };
 
 export interface ProductDetailsProps {
-    productColor: IProductColor;
-    color: { name: string; colorCode: string };
+    productColor: IClassifier;
+    color: IClassifier;
     productColorId: string;
     onDelete: Function;
     index: number;
     productId?: string;
     setProductId: (productId: string) => void;
     update?: boolean;
-    size: string[];
+    size: IClassifier[];
     postDataToServer: IPostDataToServer;
     productTypeDetails: {
         category: string;
@@ -102,7 +107,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     errorValue,
     setError,
 }) => {
-    const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>(productColor.productSize.sort());
+    const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>([]);
     const [colorId, setcolorId] = useState<string>(productColorId);
     const [autoFillDefaultSize, setAutoFillDefaultSize] = useState(false);
     const [neww, setProductNew] = useState(false);
@@ -340,7 +345,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     <View
                         style={[
                             { height: getHP(0.4), width: getHP(0.4), alignSelf: 'center' },
-                            BGCOLOR(color.colorCode),
+                            BGCOLOR(color.description),
                         ]}
                     />
                     <WrappedText
@@ -354,9 +359,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         fontSize={fs20}
                     />
                 </View>
-                {Heading('Upload product image', color.colorCode)}
+                {Heading('Upload product image', color.description)}
                 <PhotoUpload />
-                {Heading('Provide size for product', color.colorCode)}
+                {Heading('Provide size for product', color.description)}
                 {error['generalError'] ? (
                     <WrappedText text={error['generalError']} fontSize={fs10} textColor={colorCode.RED} />
                 ) : (
@@ -401,7 +406,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     <>
                         {Heading(
                             'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
-                            color.colorCode,
+                            color.description,
                         )}
                         {index == 0 && (
                             <WrappedCheckBox
