@@ -18,6 +18,7 @@ import {
     IProductColor,
     IProductSize,
     IRProductColor,
+    ISizeApp,
 } from '../../../../server/apis/product/product.interface';
 import {
     createProductColor,
@@ -109,13 +110,30 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     errorValue,
     setError,
 }) => {
-    const [sizes, setSizes] = useState<IClassifier[]>(size);
-    const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>([]);
+    const getProductSize = () => {
+        let data: { [key: string]: ISizeApp } = {};
+        productColor.sizes.forEach((size) => {
+            data[size.size._id] = { ...size, name: size.size.name, description: size.size.description };
+        });
+        return data;
+    };
+
+    const [sizes, setSizes] = useState<IClassifier[]>(size); //All available size
+    const [selectedSize, setSelectedSize] = useState<{ [key: string]: ISizeApp }>(getProductSize()); //Selected size
+
     const [colorId, setcolorId] = useState<string>(productColorId);
     const [autoFillDefaultSize, setAutoFillDefaultSize] = useState(false);
     const [neww, setProductNew] = useState(false);
     const [error, setErrors] = useState<Error>({});
     const [childError, setChildError] = React.useState<possibleValue[]>([]);
+
+    React.useEffect(() => {
+        // const error = productColor.productSize.map((item) => 0);
+        // setChildError(error);
+        // return () => {};
+    }, []);
+
+    // Error related function //
 
     const checkError = () => {
         let error: Error = {};
@@ -130,12 +148,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             return true;
         }
     };
-
-    React.useEffect(() => {
-        // const error = productColor.productSize.map((item) => 0);
-        // setChildError(error);
-        // return () => {};
-    }, []);
 
     function pushErrorKey() {
         let error = [...childError];
@@ -199,6 +211,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             }
         }
     }, [errorValue]);
+
+    // Close //
 
     const deleteColorFromServer = async () => {
         Alert.alert('Warning', 'Do you really want to delete color it will delete all your progress?', [
@@ -285,7 +299,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         let data: string[] = [];
         data.push(parentId);
         postDataToServer(
-            { productColor: data },
+            { colors: data },
             () => {
                 setcolorId(parentId);
             },
@@ -295,17 +309,17 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         );
     };
 
-    const selectSize = (size: string) => {
-        let selectedSizes = [...selectedSize];
-        selectedSizes.push({ ...generalProductSizeSchema, productSize: size });
-        selectedSizes = selectedSizes.sort((a, b) => (+a.productSize < +b.productSize ? 1 : 0));
+    const selectSize = (size: IClassifier) => {
+        let selectedSizes: { [key: string]: ISizeApp } = { ...selectedSize };
+        selectedSizes[size._id] = { ...generalProductSizeSchema, name: size.name, description: size.description };
+        //selectedSizes = selectedSizes.sort((a, b) => (+a.name < +b.name ? 1 : 0));
         pushErrorKey();
         setSelectedSize(selectedSizes);
     };
 
-    const deleteSize = (index: number) => {
-        let selectedSizes = [...selectedSize];
-        selectedSizes.splice(index, 1);
+    const deleteSize = (data: ISizeApp) => {
+        let selectedSizes = { ...selectedSize };
+        delete selectedSizes[data._id];
         removeErrorKey(index);
         setSelectedSize(selectedSizes);
     };
@@ -323,7 +337,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     //If size at color index 0 changes chage size
-    const addSizeInDefaultSize = (size: Partial<IProductSize>) => {
+    const addSizeInDefaultSize = (size: IProductSize) => {
         const Size = [...defaultSize];
         Size.push(size);
         setDeafultSize(Size);
@@ -388,11 +402,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     />
                 )}
                 <ScrollView horizontal={true} contentContainerStyle={[MV(0.2)]}>
-                    {size.map((size: string, index: number) => (
+                    {sizes.map((size: IClassifier, index: number) => (
                         <WrappedSize
-                            key={size}
-                            size={size}
-                            selected={selectedSize.findIndex((item) => item.productSize == size) > -1}
+                            key={size.name}
+                            size={size.name}
+                            selected={selectedSize[size._id] ? true : false}
                             onPress={() => {
                                 selectSize(size);
                             }}
@@ -407,7 +421,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     />
                 )} */}
 
-                {selectedSize.length != 0 && (
+                {Object.values(selectedSize).length != 0 && (
                     <>
                         {Heading(
                             'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
@@ -422,15 +436,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         )}
                         <TableHeader headerTitle={headerTitle} flex={columnFlex} />
 
-                        {selectedSize.map((size: IProductSize, sizeIndex: number) => (
-                            <View key={size.productSize.toString() + colorId}>
+                        {Object.values(selectedSize).map((size: ISizeApp, sizeIndex: number) => (
+                            <View key={size.name + colorId}>
                                 <Size
                                     {...sizeProps}
                                     productSize={size}
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}
                                     flex={columnFlex}
-                                    onDelete={() => deleteSize(sizeIndex)}
+                                    onDelete={() => deleteSize(size)}
                                     setParentId={setParentId}
                                     neww={neww}
                                     setNew={setProductNew}

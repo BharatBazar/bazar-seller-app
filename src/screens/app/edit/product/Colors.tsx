@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { BGCOLOR, MT, provideShadow } from '../../../../common/styles';
-
 import { componentProps, buttonContainerStyle } from '../../../../common/containerStyles';
 import { getHP } from '../../../../common/dimension';
 import { colorCode } from '../../../../common/color';
@@ -24,30 +23,32 @@ import {
     IProductSize,
 } from '../../../../server/apis/product/product.interface';
 
-export interface Icolor {
-    name: string;
-    colorCode: string;
-    rgbaColorCode?: string;
-    selected: boolean;
-}
-
-export type Isize = string[];
-
-const size: Isize = ['20', '21', '22', '23', '24', '25', '26', '27'];
+// Format of productColors data
+// [{
+//     color: {name:string,description:string,_id:string},
+//     sizes: {
+//         size:  {name:string,description:string,_id:string},
+//         mrp:string,
+//         sp: string
+//     }
+// }]
 export interface ProductColorProps {
-    update: boolean;
-    distribution: IFilter[];
-    postDataToServer: IPostDataToServer;
-    productId?: string;
-    setProductId: (productId: string) => void;
-    productColors: IProductColor[];
+    update: boolean; //If it is first time or else true means not first time
+    distribution: IFilter[]; //distribution gives data about the colors and sizes
+    postDataToServer: IPostDataToServer; // To post data to the main prodcut schema for updating color in it mainly
+    productId?: string; // productId is main product schema product id
+    setProductId: (productId: string) => void; // If nothing is created and you are creating in the lower layer first then product id will be returned from there
+    productColors: IProductColor[]; // It is the default data that is alreay provided or created for this product it is complex structure
+
     productTypeDetails: {
         category: string;
-        subCategory1: string;
         subCategory: string;
-    };
-    errorValue: number;
-    setError: (value: number) => void;
+        subCategory1: string;
+    }; // This tell about the category or location of product it is basically address to reach product house
+
+    errorValue: number; //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
+    // It basically trigers the error checking in this component
+    setError: (value: number) => void; // If error checking has started then it set value of errorNumber that it is passed or failed
 }
 
 interface Error {
@@ -70,40 +71,59 @@ const ProductColor: React.FC<ProductColorProps> = ({
     setError,
     distribution,
 }) => {
+    //Function to set color schema for the component so that it is easily updatable
     const getProductColor = () => {
         let data: { [key: string]: IColorApp } = {};
         productColors.forEach((color) => {
-            data[color._id] = { ...color, name: color.color.name, description: color.color.description };
+            data[color.color._id] = {
+                ...color,
+                name: color.color.name,
+                description: color.color.description,
+                new: false,
+            };
         });
         return data;
     };
 
     //This are all the colors
     const [colors, setColors] = React.useState<IClassifier[]>(distribution[0].values);
+
     // This are chosen colors
     const [chosenColor, setChosenColor] = React.useState<{ [key: string]: IColorApp }>(getProductColor());
+
+    // Show color popup to select deselect colors
     const [colorPopup, setColorPopup] = React.useState<boolean>(false);
+
+    // Default size is a concept or a secondary flow through which all
+    // the component can get a default size according to first component so that they
+    // dont need to provide manually as the values are repeating mostly Its value will be
+    // always equal to size strucutre of index first color
     const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
+
+    // Set Errors in the component
     const [error, setErrors] = React.useState<Error>({});
+
+    // Child error is basically a flag for running error handling in the Color Component
     const [childError, setChildError] = React.useState<possibleValue[]>([]);
 
+    // Adding item to selected colors or chosen colors object
     const addItem = (data: IColorApp) => {
         let colors = { ...chosenColor };
-
         colors[data._id] = data;
-        console.log(colors);
         setChosenColor(colors);
     };
 
+    // It is trigered when we need to delete color
     const deleteItem = (data: IColorApp) => {
         let colors = { ...chosenColor };
         delete colors[data._id];
         setChosenColor(colors);
     };
 
+    //
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let colorNow = colors[index];
-        console.log(colorNow, chosenColor);
+
         if (chosenColor[colorNow._id]) {
             deleteItem(colorNow);
         } else {
