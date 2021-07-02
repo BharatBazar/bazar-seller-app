@@ -4,7 +4,7 @@ import { BGCOLOR, MT, provideShadow } from '../../../../common/styles';
 
 import { componentProps, buttonContainerStyle } from '../../../../common/containerStyles';
 import { getHP } from '../../../../common/dimension';
-import { colorCode, productColor } from '../../../../common/color';
+import { colorCode } from '../../../../common/color';
 import ColorModal from '../component/ColorModal';
 import TextButton from '../../../component/TextButton';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
@@ -87,7 +87,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     const [error, setErrors] = React.useState<Error>({});
     const [childError, setChildError] = React.useState<possibleValue[]>([]);
 
-    const addItem = (data: IClassifier) => {
+    const addItem = (data: IColorApp) => {
         let colors = { ...chosenColor };
 
         colors[data._id] = data;
@@ -95,7 +95,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
         setChosenColor(colors);
     };
 
-    const deleteItem = (data: IClassifier) => {
+    const deleteItem = (data: IColorApp) => {
         let colors = { ...chosenColor };
         delete colors[data._id];
         setChosenColor(colors);
@@ -108,7 +108,13 @@ const ProductColor: React.FC<ProductColorProps> = ({
             deleteItem(colorNow);
         } else {
             if (!updateColorArray) {
-                addItem({ ...generalProductColorSchema, ...colorNow });
+                addItem({
+                    ...generalProductColorSchema,
+                    name: colorNow.name,
+                    description: colorNow.description,
+                    _id: colorNow._id,
+                    new: true,
+                });
             } else {
                 addItem(colorNow);
             }
@@ -144,13 +150,10 @@ const ProductColor: React.FC<ProductColorProps> = ({
         }
     };
 
-    const deleteColor = (index: number) => {
-        // let updatedColors: IClassifier[] = [...chosenColor];
-        // updatedColors.splice(index, 1);
-        // removeErrorKey(index);
-        // const indexToUpdate: number = colors.findIndex((item) => item.name == chosenColor[index].name);
-        // updateColorArray(indexToUpdate, true);
-        // setChosenColor(updatedColors);
+    const deleteColor = (id: string) => {
+        let colors = { ...chosenColor };
+        delete colors[id];
+        setChosenColor(colors);
     };
 
     React.useEffect(() => {
@@ -271,6 +274,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
             />
             {Object.values(chosenColor).map((color, index) => (
                 <Color
+                    //this function provides default size
+                    //Default size is to set size for all the other colors it will be always equal to size at index 0
                     {...colorProps(index)}
                     productTypeDetails={productTypeDetails}
                     productColorId={color._id}
@@ -284,7 +289,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     index={index}
                     productColor={color}
                     onDelete={() => {
-                        deleteColor(index);
+                        deleteColor(color._id);
                     }}
                     errorValue={childError[index]}
                     setError={(value: possibleValue) => {

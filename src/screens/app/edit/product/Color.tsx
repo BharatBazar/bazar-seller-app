@@ -14,6 +14,7 @@ import ProductContainer from './component/productContainerHOC';
 import PhotoUpload from './component/component/PhotoUpload';
 import {
     IClassifier,
+    IColorApp,
     IProductColor,
     IProductSize,
     IRProductColor,
@@ -26,6 +27,7 @@ import {
     updateProductColor,
 } from './component/generalConfig';
 import { ToastHOC } from '../../../hoc/ToastHOC';
+import { possibleValue } from './Colors';
 
 export const Heading = (headingText: string, color: string) => {
     return (
@@ -42,8 +44,8 @@ export const Heading = (headingText: string, color: string) => {
 };
 
 export interface ProductDetailsProps {
-    productColor: IClassifier;
-    color: IClassifier;
+    productColor: IColorApp;
+    color: IColorApp;
     productColorId: string;
     onDelete: Function;
     index: number;
@@ -107,6 +109,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     errorValue,
     setError,
 }) => {
+    const [sizes, setSizes] = useState<IClassifier[]>(size);
     const [selectedSize, setSelectedSize] = useState<Partial<IProductSize>[]>([]);
     const [colorId, setcolorId] = useState<string>(productColorId);
     const [autoFillDefaultSize, setAutoFillDefaultSize] = useState(false);
@@ -129,9 +132,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     React.useEffect(() => {
-        const error = productColor.productSize.map((item) => 0);
-        setChildError(error);
-        return () => {};
+        // const error = productColor.productSize.map((item) => 0);
+        // setChildError(error);
+        // return () => {};
     }, []);
 
     function pushErrorKey() {
@@ -224,7 +227,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     React.useEffect(() => {
         if (productColor.new) {
             postProductColorDataToServer(
-                { productColorName: color.name, productColorCode: color.colorCode },
+                { color: productColor._id },
                 () => {},
                 () => {},
             );
@@ -307,6 +310,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         setSelectedSize(selectedSizes);
     };
 
+    //Default size is to set size for all the other colors it will be always equal to size at index 0
     const setDefaultSize = () => {
         //selectedSize.slice(0);
         let selectedSizes = [...defaultSize];
@@ -318,6 +322,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         setSelectedSize(newSize);
     };
 
+    //If size at color index 0 changes chage size
     const addSizeInDefaultSize = (size: Partial<IProductSize>) => {
         const Size = [...defaultSize];
         Size.push(size);

@@ -58,7 +58,7 @@ export interface IProduct {
 export interface IProductColor {
     _id: string;
     parentId: string; // will refer to main table
-    color: IClassifier; // will refer to color table
+    color: IClassifier | string; // will refer to color table
     sizes: [IProductSize]; // will refer to jeans size table
     photos: [string];
     includedColor: [IClassifier];
@@ -67,6 +67,7 @@ export interface IProductColor {
 export interface IColorApp {
     _id: string;
     name: string;
+    new: boolean;
     description: string;
     sizes: [IProductSize];
     photos: [string];
@@ -75,7 +76,17 @@ export interface IColorApp {
 
 export interface IProductSize {
     _id: string;
-    size: string | IClassifier; //Will refer to size table
+    size: IClassifier; //Will refer to size table
+    mrp: string;
+    quantity: number;
+    sp: string;
+    parentId: string;
+}
+
+export interface ISizeApp {
+    _id: string;
+    name: string;
+    description: string;
     mrp: string;
     quantity: number;
     sp: string;

@@ -1,3 +1,4 @@
+import { ISizeApp } from './../../../../../server/apis/product/product.interface';
 import {
     IProduct,
     productStatus,
@@ -53,14 +54,16 @@ export const generalProductColorSchema: IProductColor = {
     sizes: [],
     includedColors: [],
     name: '',
-    code: '',
+    description: '',
     parentId: '',
     _id: '',
 };
 
-export const generalProductSizeSchema: IProductSize = {
+export const generalProductSizeSchema: ISizeApp = {
+    name: '',
+    description: '',
     mrp: '',
-    size: '',
+
     quantity: 1,
     sp: '',
     parentId: '',

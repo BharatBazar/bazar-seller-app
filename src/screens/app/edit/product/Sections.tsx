@@ -78,8 +78,8 @@ const Sections: React.FC<SectionsProps> = ({
     return (
         <View>
             <Title
-                title={productDetails['title']}
-                subTitle={productDetails['subTitle']}
+                title={productDetails['title'] || ''}
+                subTitle={productDetails['subTitle'] || ''}
                 update={update}
                 errorValue={error['title']}
                 setError={(value: number) => {

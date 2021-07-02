@@ -6,13 +6,13 @@ import { Icolor } from '../Edit';
 import ModalHOC from '../../../hoc/ModalHOC';
 import Color from './Color';
 import ModalHeader from '../../../component/ModalHeader';
-import { IClassifier, IProductColor } from '../../../../server/apis/product/product.interface';
+import { IClassifier, IColorApp, IProductColor } from '../../../../server/apis/product/product.interface';
 
 export interface ColorModalProps {
     setPopup: Function;
     isVisible: boolean;
     colors: Icolor[];
-    chosenColor: { [key: string]: IClassifier };
+    chosenColor: { [key: string]: IColorApp };
 
     updateColorArray: Function;
 }
