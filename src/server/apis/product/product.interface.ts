@@ -41,7 +41,7 @@ export interface IProduct {
     //Above field will have predifined information about the size, unit etc.
     title: string;
     subTitle: string;
-    colors: [Partial<IProductColor>] | [];
+    colors: [IProductColor] | [string] | [];
     showPrice: boolean; //Whether dukandar wants to show price to customer or not
     productStatus: productStatus;
     rating: number;
@@ -50,23 +50,45 @@ export interface IProduct {
     description: string; // Will be a audio as audio is better to understand in common language
     discount: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
     discountDeadline: [Date];
-    brand: string | IFilter;
-    fit: string | IFilter;
-    pattern: [string] | [IFilter];
+    brand: string | IClassifier;
+    fit: string | IClassifier;
+    pattern: [string] | [IClassifier];
 }
 
 export interface IProductColor {
     _id: string;
     parentId: string; // will refer to main table
-    color: string | IFilter; // will refer to color table
-    sizes: [string]; // will refer to jeans size table
+    color: IClassifier | string; // will refer to color table
+    sizes: [IProductSize]; // will refer to jeans size table
     photos: [string];
-    includedColor: [string] | [IFilter];
+    includedColor: [IClassifier];
+}
+
+export interface IColorApp {
+    _id: string;
+    colorId: string; // id of the color classifier
+    name: string;
+    new: boolean;
+    description: string;
+    sizes: [IProductSize];
+    photos: [string];
+    includedColor: [IClassifier];
 }
 
 export interface IProductSize {
     _id: string;
-    size: string | IFilter; //Will refer to size table
+    size: IClassifier | string; //Will refer to size table
+    mrp: string;
+    quantity: number;
+    sp: string;
+    parentId: string;
+}
+
+export interface ISizeApp {
+    _id: string;
+    sizeId: string; // id of the size clssifier
+    name: string;
+    description: string;
     mrp: string;
     quantity: number;
     sp: string;

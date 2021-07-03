@@ -6,24 +6,26 @@ import WrappedText from '../../../component/WrappedText';
 import { getHP, getWP } from '../../../../common/dimension';
 import { colorCode, mainColor } from '../../../../common/color';
 import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
-import { Icolor } from '../Edit';
+
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs20 } from '../../../../common';
 import { ToastHOC } from '../../../hoc/ToastHOC';
+import { IClassifier } from '../../../../server/apis/product/product.interface';
 
 export interface ColorProps {
-    item: Icolor;
+    item: IClassifier;
+    selected: boolean;
     onPress: Function;
     showCancel?: boolean;
     colorStyle?: ViewStyle;
 }
 
-const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) => {
+const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle, selected }) => {
     return (
         <WrappedRectangleButton
-            containerStyle={[{ flex: colorStyle ? 0 : 1 }, item.selected ? (colorStyle ? {} : provideShadow()) : {}]}
+            containerStyle={[{ flex: colorStyle ? 0 : 1 }, selected ? (colorStyle ? {} : provideShadow()) : {}]}
             onPress={() => {
-                if (!showCancel && !item.selected) {
+                if (!showCancel && !selected) {
                     onPress();
                 } else {
                     ToastHOC.infoAlert(
@@ -36,7 +38,7 @@ const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) 
                 <View
                     style={[
                         {
-                            backgroundColor: item.colorCode,
+                            backgroundColor: item.description,
                             height: getHP(0.7),
                             width: getHP(0.7),
                         },
@@ -46,7 +48,7 @@ const Color: React.FC<ColorProps> = ({ item, onPress, showCancel, colorStyle }) 
                 <WrappedText
                     text={item.name.trim()}
                     containerStyle={{ marginLeft: colorStyle ? getWP(0.1) : getWP(0.5) }}
-                    textColor={item.selected ? mainColor : null}
+                    textColor={selected ? mainColor : null}
                 />
                 {showCancel && (
                     <WrappedFeatherIcon

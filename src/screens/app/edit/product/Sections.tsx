@@ -5,7 +5,7 @@ import ShowPrice from '../component/ShowPrice';
 import Title from './Title';
 import Description from './Description';
 import Colors from './Colors';
-import { IProduct } from '../../../../server/apis/product/product.interface';
+import { IProduct, IProductColor } from '../../../../server/apis/product/product.interface';
 import { IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
 
@@ -78,8 +78,8 @@ const Sections: React.FC<SectionsProps> = ({
     return (
         <View>
             <Title
-                title={productDetails['title']}
-                subTitle={productDetails['subTitle']}
+                title={productDetails['title'] || ''}
+                subTitle={productDetails['subTitle'] || ''}
                 update={update}
                 errorValue={error['title']}
                 setError={(value: number) => {
@@ -119,7 +119,7 @@ const Sections: React.FC<SectionsProps> = ({
                     update={update}
                     postDataToServer={postDataToServer}
                     productId={productId}
-                    productColors={productDetails.colors}
+                    productColors={productDetails['colors'] as IProductColor[]}
                     productTypeDetails={productTypeDetails}
                 />
             )}
