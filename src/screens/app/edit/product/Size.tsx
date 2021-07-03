@@ -6,12 +6,11 @@ import WrappedText from '../../../component/WrappedText';
 import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './component/component/Counter';
-import { fs10, fs12, fs15, fs9 } from '../../../../common';
-import { colorCode, productColor } from '../../../../common/color';
+import { fs10, fs12, fs15 } from '../../../../common';
+import { colorCode } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
-import { Isize } from './Colors';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -43,10 +42,10 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
-    const [sp, setSp] = React.useState<string>(productSp);
-    const [sizeId, setSizeId] = React.useState<string>(_id);
+    const [sp, setSp] = React.useState<string>(productSize.sp);
+    const [sizeId, setSizeId] = React.useState<string>(productSize._id);
     const [lastState, setLastState] = React.useState<{ lastQuantity: number; lastMrp: string; lastSp: string }>({
-        lastQuantity: productQuantity,
+        lastQuantity: productSize.quantity,
         lastMrp: mrp,
         lastSp: sp,
     });
@@ -76,8 +75,8 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         }
     }, [errorValue]);
 
-    const postProductSizeDataToServer = async (size: ISizeApp) => {
-        let data:IProductSize = { quantity: quantity, sp: sp, mrp: mrp, size:size._id};
+    const postProductSizeDataToServer = async () => {
+        let data: Partial<IProductSize> = { quantity: quantity, sp: sp, mrp: mrp, size: productSize.sizeId };
         const isError = checkError(true);
 
         if (!isError) {
@@ -92,9 +91,9 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                             setNew(false);
                         }
                         setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
-                        if (setDefaultSize) {
-                            setDefaultSize({ _id:, productMrp: mrp, productSp: sp, productQuantity: quantity });
-                        }
+                        // if (setDefaultSize) {
+                        //     setDefaultSize({ _id: , productMrp: mrp, productSp: sp, productQuantity: quantity });
+                        // }
                         if (parentId.length == 0) {
                             setParentId(response.payload.parentId);
                         } else {
@@ -137,7 +136,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                         onPress={() => deleteProductSizeFromServer()}
                     />
                 </View>
-                <WrappedText text={productSize} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
+                <WrappedText text={productSize.name} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
                 <CounterComponent
                     counter={quantity}
                     setCounter={setQuantity}

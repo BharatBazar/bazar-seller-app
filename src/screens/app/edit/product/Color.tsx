@@ -46,7 +46,7 @@ export const Heading = (headingText: string, color: string) => {
 
 export interface ProductDetailsProps {
     //Provides detail about the product color at particular index
-    productColor: IColorApp;
+    productColor: IColorApp & { size: IClassifier };
 
     color: IColorApp;
 
@@ -169,7 +169,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     const checkError = () => {
         let error: Error = {};
-        if (selectedSize.length == 0) {
+        if (Object.keys(selectedSize).length == 0) {
             error['generalError'] = 'Please add atleast one size.';
         }
 
@@ -276,7 +276,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     React.useEffect(() => {
         if (productColor.new) {
             postProductColorDataToServer(
-                { color: productColor._id },
+                { color: productColor.colorId },
                 () => {},
                 () => {},
             );
@@ -486,7 +486,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}
                                     flex={columnFlex}
-                                    onDelete={() => deleteSize()}
+                                    onDelete={() => deleteSize(size.sizeId)}
                                     setParentId={setParentId}
                                     neww={neww}
                                     setNew={setProductNew}
