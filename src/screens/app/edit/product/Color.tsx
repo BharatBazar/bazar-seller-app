@@ -45,23 +45,45 @@ export const Heading = (headingText: string, color: string) => {
 };
 
 export interface ProductDetailsProps {
+    //Provides detail about the product color at particular index
     productColor: IColorApp;
+
     color: IColorApp;
+
+    // Color id is basically id of color in the backend collection
     productColorId: string;
+
+    // on Delete function is to delete the color from upper component that is involved
+    // in its existence
     onDelete: Function;
+    // Index at which the color is in array
     index: number;
+
+    // product id is main product id so that color cann be added to location
     productId?: string;
+
+    // If new color created and the product is not created produt id need to be set
     setProductId: (productId: string) => void;
+
+    // If product is created or not
     update?: boolean;
+    // It provides detail about all the avaialable size
     size: IClassifier[];
+
+    //posting data to main schema
     postDataToServer: IPostDataToServer;
+
     productTypeDetails: {
         category: string;
         subCategory1: string;
         subCategory: string;
     };
+
+    //size details of first size component
     defaultSize: IProductSize[];
+    // To set default size
     setDeafultSize?: (size: Partial<IProductSize>) => void;
+
     errorValue: number;
     setError: (value: number) => void;
 }
@@ -95,6 +117,7 @@ interface Error {
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({
     index,
+
     onDelete,
     productId,
     color,
@@ -110,10 +133,19 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     errorValue,
     setError,
 }) => {
+    //parse size array to object in order to satisfy fast access
+
+    // so this is very important that _id that is key will be id of the classifier
+    // while _id in object will be id of the color in color table or product color table..
     const getProductSize = () => {
         let data: { [key: string]: ISizeApp } = {};
         productColor.sizes.forEach((size) => {
-            data[size.size._id] = { ...size, name: size.size.name, description: size.size.description };
+            data[size.size._id] = {
+                ...size,
+                name: size.size.name,
+                description: size.size.description,
+                sizeId: size.size._id,
+            };
         });
         return data;
     };
@@ -214,6 +246,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     // Close //
 
+    // If user want to delete color directly from server
     const deleteColorFromServer = async () => {
         Alert.alert('Warning', 'Do you really want to delete color it will delete all your progress?', [
             { text: 'Cancel', style: 'cancel' },
@@ -238,6 +271,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         ]);
     };
 
+    // If product is new creates is document in the backend
+    // and connecting things for query purpose
     React.useEffect(() => {
         if (productColor.new) {
             postProductColorDataToServer(
@@ -249,12 +284,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         }
     }, []);
 
+    // For updating product color data like photos, sizes etc..
     const postProductColorDataToServer = async (
         data: Partial<IProductColor>,
         successCallBack: Function,
         errroCallBack: Function,
     ) => {
         try {
+            // If color id is there means product can be directly updated
             if (colorId.length != 0) {
                 //Call update product function
                 const productColor = {
@@ -273,6 +310,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 const color = {
                     ...data,
                 };
+
+                //create product and provide parentId for relations and connectivity
                 if (productId) {
                     color['parentId'] = productId;
                 }
@@ -280,6 +319,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 const response: IRProductColor = await createProductColor(color);
 
                 if (response.status == 1) {
+                    // Setting product id for all other sizes and colors or data update
                     if (!productId) {
                         setProductId(response.payload.parentId);
                     }
@@ -295,9 +335,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         }
     };
 
+    // Doubt
     const setParentId = (parentId: string) => {
         let data: string[] = [];
         data.push(parentId);
+
         postDataToServer(
             { colors: data },
             () => {
@@ -317,9 +359,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         setSelectedSize(selectedSizes);
     };
 
-    const deleteSize = (data: ISizeApp) => {
+    const deleteSize = (_id: string) => {
         let selectedSizes = { ...selectedSize };
-        delete selectedSizes[data._id];
+        delete selectedSizes[_id];
         removeErrorKey(index);
         setSelectedSize(selectedSizes);
     };
@@ -344,7 +386,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     const sizeProps = index == 0 ? { setDefaultSize: addSizeInDefaultSize } : {};
-    console.log('generalError', error);
+
     return (
         <ProductContainer>
             <View style={[FLEX(1)]}>
@@ -444,7 +486,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}
                                     flex={columnFlex}
-                                    onDelete={() => deleteSize(size)}
+                                    onDelete={() => deleteSize()}
                                     setParentId={setParentId}
                                     neww={neww}
                                     setNew={setProductNew}

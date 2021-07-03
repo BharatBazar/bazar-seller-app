@@ -80,6 +80,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 name: color.color.name,
                 description: color.color.description,
                 new: false,
+                colorId: color.color._id,
             };
         });
         return data;
@@ -96,8 +97,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
 
     // Default size is a concept or a secondary flow through which all
     // the component can get a default size according to first component so that they
-    // dont need to provide manually as the values are repeating mostly Its value will be
-    // always equal to size strucutre of index first color
+    // dont need to provide manually as the values are repeating mostly so
+    // all the size will get size at index first..
     const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
 
     // Set Errors in the component
@@ -120,6 +121,12 @@ const ProductColor: React.FC<ProductColorProps> = ({
         setChosenColor(colors);
     };
 
+    const deleteColor = (id: string) => {
+        let colors = { ...chosenColor };
+        delete colors[id];
+        setChosenColor(colors);
+    };
+
     //
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let colorNow = colors[index];
@@ -128,6 +135,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
             deleteItem(colorNow);
         } else {
             if (!updateColorArray) {
+                pushErrorKey();
                 addItem({
                     ...generalProductColorSchema,
                     name: colorNow.name,
@@ -168,12 +176,6 @@ const ProductColor: React.FC<ProductColorProps> = ({
         } else {
             return true;
         }
-    };
-
-    const deleteColor = (id: string) => {
-        let colors = { ...chosenColor };
-        delete colors[id];
-        setChosenColor(colors);
     };
 
     React.useEffect(() => {
@@ -242,11 +244,13 @@ const ProductColor: React.FC<ProductColorProps> = ({
         }
     }, [childError]);
 
+    // when product colors changes it means new color has arrived or the state has to be updated
+    // Sometimes the default or if it is update flow then product color data comes after render
     React.useEffect(() => {
-        setChosenColor(productColors);
+        setChosenColor(getProductColor());
         if (update && productColors.length > 0) {
             productColors.forEach((item) => pushErrorKey());
-            setDefaultSize(productColors[0].productSize);
+            setDefaultSize(productColors[0].sizes);
         }
     }, [productColors]);
 
@@ -295,10 +299,10 @@ const ProductColor: React.FC<ProductColorProps> = ({
             {Object.values(chosenColor).map((color, index) => (
                 <Color
                     //this function provides default size
-                    //Default size is to set size for all the other colors it will be always equal to size at index 0
+                    //Default size is to set size for all the other sizes it will be always equal to size at index 0
                     {...colorProps(index)}
                     productTypeDetails={productTypeDetails}
-                    productColorId={color._id}
+                    productColorId={color.new ? '' : color._id}
                     postDataToServer={postDataToServer}
                     update={update}
                     productId={productId}
@@ -309,7 +313,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     index={index}
                     productColor={color}
                     onDelete={() => {
-                        deleteColor(color._id);
+                        deleteColor(color.colorId);
                     }}
                     errorValue={childError[index]}
                     setError={(value: possibleValue) => {

@@ -9,12 +9,13 @@ import CounterComponent from './component/component/Counter';
 import { fs10, fs12, fs15, fs9 } from '../../../../common';
 import { colorCode, productColor } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
-import { IProductSize, IRProductSize } from '../../../../server/apis/product/product.interface';
+import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
+import { Isize } from './Colors';
 
 export interface ProductPriceProps {
     flex: number[];
-    productSize: IProductSize;
+    productSize: ISizeApp;
     onDelete: Function;
     setParentId: Function;
     parentId: string;
@@ -28,7 +29,7 @@ export interface ProductPriceProps {
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
     flex,
-    productSize: { productSize, productMrp, productQuantity, productSp, _id },
+    productSize,
     onDelete,
     setParentId,
     parentId,
@@ -40,8 +41,8 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setError,
     setDefaultSize,
 }) => {
-    const [quantity, setQuantity] = React.useState<number>(productQuantity || 1);
-    const [mrp, setMrp] = React.useState<string>(productMrp);
+    const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
+    const [mrp, setMrp] = React.useState<string>(productSize.mrp);
     const [sp, setSp] = React.useState<string>(productSp);
     const [sizeId, setSizeId] = React.useState<string>(_id);
     const [lastState, setLastState] = React.useState<{ lastQuantity: number; lastMrp: string; lastSp: string }>({
@@ -75,8 +76,8 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         }
     }, [errorValue]);
 
-    const postProductSizeDataToServer = async () => {
-        let data = { productQuantity: quantity, productSp: sp, productMrp: mrp, productSize: productSize };
+    const postProductSizeDataToServer = async (size: ISizeApp) => {
+        let data:IProductSize = { quantity: quantity, sp: sp, mrp: mrp, size:size._id};
         const isError = checkError(true);
 
         if (!isError) {
@@ -92,7 +93,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                         }
                         setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
                         if (setDefaultSize) {
-                            setDefaultSize({ productSize, productMrp: mrp, productSp: sp, productQuantity: quantity });
+                            setDefaultSize({ _id:, productMrp: mrp, productSp: sp, productQuantity: quantity });
                         }
                         if (parentId.length == 0) {
                             setParentId(response.payload.parentId);

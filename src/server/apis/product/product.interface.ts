@@ -66,6 +66,7 @@ export interface IProductColor {
 
 export interface IColorApp {
     _id: string;
+    colorId: string; // id of the color classifier
     name: string;
     new: boolean;
     description: string;
@@ -85,6 +86,7 @@ export interface IProductSize {
 
 export interface ISizeApp {
     _id: string;
+    sizeId: string; // id of the size clssifier
     name: string;
     description: string;
     mrp: string;
