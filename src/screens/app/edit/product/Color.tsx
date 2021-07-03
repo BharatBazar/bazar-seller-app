@@ -80,9 +80,9 @@ export interface ProductDetailsProps {
     };
 
     //size details of first size component
-    defaultSize: IProductSize[];
+    defaultSize: ISizeApp[];
     // To set default size
-    setDeafultSize?: (size: Partial<IProductSize>) => void;
+    setDeafultSize?: (size: ISizeApp[]) => void;
 
     errorValue: number;
     setError: (value: number) => void;
@@ -165,7 +165,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         // return () => {};
     }, []);
 
-    // Error related function //
+    // Error flow related function explained in Colors.tsx //
 
     const checkError = () => {
         let error: Error = {};
@@ -353,8 +353,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     const selectSize = (size: IClassifier) => {
         let selectedSizes: { [key: string]: ISizeApp } = { ...selectedSize };
-        selectedSizes[size._id] = { ...generalProductSizeSchema, name: size.name, description: size.description };
-        //selectedSizes = selectedSizes.sort((a, b) => (+a.name < +b.name ? 1 : 0));
+        selectedSizes[size._id] = {
+            ...generalProductSizeSchema,
+            name: size.name,
+            description: size.description,
+            sizeId: size._id,
+        };
         pushErrorKey();
         setSelectedSize(selectedSizes);
     };
@@ -369,20 +373,29 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     //Default size is to set size for all the other colors it will be always equal to size at index 0
     const setDefaultSize = () => {
         //selectedSize.slice(0);
-        let selectedSizes = [...defaultSize];
-
-        let newSize = selectedSizes.map((size) => {
-            return { ...size, parentId: '', _id: '' };
+        let selectedSizes = { ...selectedSize };
+        console.log(defaultSize);
+        defaultSize.forEach((size, index) => {
+            if (!selectedSizes[size.sizeId]) {
+                selectedSizes[size.sizeId] = size;
+                if (index == defaultSize.length - 1) {
+                    setSelectedSize(selectedSizes);
+                }
+            } else {
+                if (index == defaultSize.length - 1) {
+                    setSelectedSize(selectedSizes);
+                }
+            }
         });
-
-        setSelectedSize(newSize);
     };
 
     //If size at color index 0 changes chage size
-    const addSizeInDefaultSize = (size: IProductSize) => {
+    const addSizeInDefaultSize = (size: ISizeApp) => {
         const Size = [...defaultSize];
         Size.push(size);
-        setDeafultSize(Size);
+        if (setDeafultSize) {
+            setDeafultSize(Size);
+        }
     };
 
     const sizeProps = index == 0 ? { setDefaultSize: addSizeInDefaultSize } : {};

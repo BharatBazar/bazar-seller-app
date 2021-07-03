@@ -19,7 +19,7 @@ export interface ProductPriceProps {
     setParentId: Function;
     parentId: string;
     postDataToServer: Function;
-    setDefaultSize?: (size: IProductSize) => void;
+    setDefaultSize?: (size: Partial<ISizeApp>) => void;
     setNew: Function;
     neww: boolean;
     errorValue: number;
@@ -40,6 +40,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setError,
     setDefaultSize,
 }) => {
+    console.log(productSize);
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
     const [sp, setSp] = React.useState<string>(productSize.sp);
@@ -91,9 +92,9 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                             setNew(false);
                         }
                         setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
-                        // if (setDefaultSize) {
-                        //     setDefaultSize({ _id: , productMrp: mrp, productSp: sp, productQuantity: quantity });
-                        // }
+                        if (setDefaultSize) {
+                            setDefaultSize({ ...productSize, sp, mrp, quantity });
+                        }
                         if (parentId.length == 0) {
                             setParentId(response.payload.parentId);
                         } else {

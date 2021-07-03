@@ -21,6 +21,7 @@ import {
     IFilter,
     IProductColor,
     IProductSize,
+    ISizeApp,
 } from '../../../../server/apis/product/product.interface';
 
 // Format of productColors data
@@ -99,7 +100,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     // the component can get a default size according to first component so that they
     // dont need to provide manually as the values are repeating mostly so
     // all the size will get size at index first..
-    const [defaultSize, setDefaultSize] = React.useState<IProductSize[]>([]);
+    const [defaultSize, setDefaultSize] = React.useState<ISizeApp[]>([]);
 
     // Set Errors in the component
     const [error, setErrors] = React.useState<Error>({});
@@ -110,12 +111,12 @@ const ProductColor: React.FC<ProductColorProps> = ({
     // Adding item to selected colors or chosen colors object
     const addItem = (data: IColorApp) => {
         let colors = { ...chosenColor };
-        colors[data._id] = data;
+        colors[data.colorId] = data;
         setChosenColor(colors);
     };
 
     // It is trigered when we need to delete color
-    const deleteItem = (data: IColorApp) => {
+    const deleteItem = (data: IClassifier) => {
         let colors = { ...chosenColor };
         delete colors[data._id];
         setChosenColor(colors);
@@ -124,6 +125,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     // delete color
     const deleteColor = (id: string) => {
         let colors = { ...chosenColor };
+
         delete colors[id];
         setChosenColor(colors);
     };
@@ -134,23 +136,15 @@ const ProductColor: React.FC<ProductColorProps> = ({
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let colorNow = colors[index];
 
-        if (chosenColor[colorNow._id]) {
-            deleteItem(colorNow);
-            removeErrorKey(index);
-        } else {
-            if (!updateColorArray) {
-                pushErrorKey();
-                addItem({
-                    ...generalProductColorSchema,
-                    name: colorNow.name,
-                    description: colorNow.description,
-                    _id: colorNow._id,
-                    new: true,
-                });
-            } else {
-                addItem(colorNow);
-            }
-        }
+        pushErrorKey();
+        const data: IColorApp = {
+            ...generalProductColorSchema,
+            name: colorNow.name,
+            description: colorNow.description,
+            colorId: colorNow._id,
+            new: true,
+        };
+        addItem(data);
     };
 
     //check error on this component itself
@@ -241,8 +235,17 @@ const ProductColor: React.FC<ProductColorProps> = ({
     React.useEffect(() => {
         setChosenColor(getProductColor());
         if (update && productColors.length > 0) {
+            //If update flow then by default size exist so need to add error key
             productColors.forEach((item) => pushErrorKey());
-            setDefaultSize(productColors[0].sizes);
+
+            //updating default size with existing sizes
+            const data: ISizeApp[] = productColors[0].sizes.map((size) => {
+                return {
+                    ...size,
+                    sizeId: size.size,
+                };
+            });
+            setDefaultSize(data);
         }
     }, [productColors]);
 
@@ -309,6 +312,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     index={index}
                     productColor={color}
                     onDelete={() => {
+                        removeErrorKey(index);
                         deleteColor(color.colorId);
                     }}
                     errorValue={childError[index]}
