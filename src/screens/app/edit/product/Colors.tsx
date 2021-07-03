@@ -121,18 +121,22 @@ const ProductColor: React.FC<ProductColorProps> = ({
         setChosenColor(colors);
     };
 
+    // delete color
     const deleteColor = (id: string) => {
         let colors = { ...chosenColor };
         delete colors[id];
         setChosenColor(colors);
     };
 
-    //
+    // it basically add new color to this color component
+    //  and push error key so that it can be tested
+    // or else remove error key and delete color from the component
     const updateColorArray = (index: number, updateColorArray?: boolean) => {
         let colorNow = colors[index];
 
         if (chosenColor[colorNow._id]) {
             deleteItem(colorNow);
+            removeErrorKey(index);
         } else {
             if (!updateColorArray) {
                 pushErrorKey();
@@ -147,29 +151,14 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 addItem(colorNow);
             }
         }
-        // let updatedColors: Icolor[] = [...colors];
-        // updatedColors[index].selected = !updatedColors[index].selected;
-        // setColors(updatedColors.sort((item) => !item.selected));
-        // if (!updateColorArray) {
-        //     pushErrorKey();
-        //     setChosenColor([
-        //         ...chosenColor,
-        //         {
-        //             ...generalProductColorSchema,
-        //             new: true,
-        //             code: colors[index].colorCode,
-        //             name: colors[index].name,
-        //         },
-        //     ]);
-        // }
     };
 
+    //check error on this component itself
     const checkError = () => {
         let error: Error = {};
         if (Object.keys(chosenColor).length == 0) {
             error['generalError'] = 'Please add atleast one color.';
         }
-
         setErrors(error);
         if (Object.keys(error).length == 0) {
             return false;
@@ -178,38 +167,29 @@ const ProductColor: React.FC<ProductColorProps> = ({
         }
     };
 
-    React.useEffect(() => {
-        // const data: IClassifier & { selected: boolean }[] = productColor.map((item) => {
-        //     if (chosenColor.findIndex((color) => color.name == item.name) > -1) {
-        //         item['selected'] = true;
-        //     } else {
-        //         item['selected'] = false;
-        //     }
-        //     return item;
-        // });
-        // setColors(data);
-
-        return () => {};
-    }, []);
-
+    // push error or add new error as color is added
     function pushErrorKey() {
         let error = [...childError];
         error.push(0);
         setChildError(error);
     }
 
+    //remove error key as a color is deleted
     function removeErrorKey(index: number) {
         let error = [...childError];
         error.splice(index, 1);
         setChildError(error);
     }
 
+    //change error value at particular index
     function changeErrorValueAtIndex(index: number, value: possibleValue) {
         let error = [...childError];
         error[index] = value;
         setChildError(error);
     }
 
+    // set all error to particular value so that error check can be triggered
+    // into the component where this particular index value is passed
     function setAllErrorToParticularValue(value: possibleValue) {
         var error = [...childError];
         childError.splice(0);
@@ -217,27 +197,39 @@ const ProductColor: React.FC<ProductColorProps> = ({
         setChildError(error);
     }
 
+    // This hook trigger error state if 1 means start checking error
     React.useEffect(() => {
         if (errorValue == 1) {
+            //check error in the component first if error is here then
+            //pass 3 to parent which means error exist
+
             const isError = checkError();
             if (isError) {
                 setError(3);
-            } else {
+            }
+            // If error is not in the component then check further in the child compoentn
+            else {
+                // set all the child error value to 1 which means start testing error values..
                 setAllErrorToParticularValue(1);
             }
         }
     }, [errorValue]);
 
+    // when ever child error changes for example the error
+    // check is triggered by setting value to one that
+    // itself will trigger error check in the child component
+    // after child component checks the error it will return its status that is
+    // either 2 or 3 if all 2 then it means that error does not exist in the component and it can
+    // pass 2 to parent component telling him that no error and 3 for error existence
+    // it will be checked only when errorValue is 1 that means trigger error check
     React.useEffect(() => {
         if (errorValue == 1 && childError.length > 0) {
             if (childError.every((item) => item == 2)) {
                 //All checks passed
-                console.log('All checks passed!');
                 setAllErrorToParticularValue(0);
                 setError(2);
             } else if (childError.every((item) => item == 3 || item == 2)) {
                 //Not All check passed
-                console.log(childError, 'Not all checks passed!');
                 setAllErrorToParticularValue(0);
                 setError(3);
             }
@@ -254,6 +246,10 @@ const ProductColor: React.FC<ProductColorProps> = ({
         }
     }, [productColors]);
 
+    // return props to child component
+    // pass setDefaultSize to index 0 as only
+    // it has right to change default size
+    // other component are allowed to copy only
     const colorProps = (index: number) => {
         if (index == 0) {
             return { defaultSize: defaultSize, setDeafultSize: setDefaultSize };

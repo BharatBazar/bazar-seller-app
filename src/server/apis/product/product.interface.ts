@@ -41,7 +41,7 @@ export interface IProduct {
     //Above field will have predifined information about the size, unit etc.
     title: string;
     subTitle: string;
-    colors: [Partial<IProductColor>] | [string] | [];
+    colors: [IProductColor] | [string] | [];
     showPrice: boolean; //Whether dukandar wants to show price to customer or not
     productStatus: productStatus;
     rating: number;
