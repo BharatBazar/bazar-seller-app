@@ -9,14 +9,16 @@ export default class Loader extends React.Component {
             <View
                 style={{
                     zIndex: 999,
-                    elevation: 100,
+                    elevation: 1000,
                     position: 'absolute',
-                    height: '100%',
-                    width: '100%',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: 'black',
-                    opacity: 0.5,
+                    backgroundColor: '#FFFFFF',
+                    opacity: 0.2,
                 }}
             >
                 {this.props.showCancelButton ? (
@@ -46,7 +48,7 @@ export default class Loader extends React.Component {
                 ) : (
                     <View />
                 )}
-                <View
+                {/* <View
                     style={{
                         height: 50,
                         width: 50,
@@ -56,9 +58,9 @@ export default class Loader extends React.Component {
                         backgroundColor: 'black',
                         overflow: 'hidden',
                     }}
-                >
-                    <ActivityIndicator size={20} color="white" />
-                </View>
+                > */}
+                <ActivityIndicator size={20} color="black" />
+                {/* </View> */}
                 {/* <Title>{"Loading Conversation"}</Title> */}
             </View>
         );

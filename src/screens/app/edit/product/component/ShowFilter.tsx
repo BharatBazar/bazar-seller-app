@@ -13,6 +13,7 @@ import WrappedRectangleButton from '../../../../component/WrappedRectangleButton
 import { IClassifier } from '../../../../../server/apis/product/product.interface';
 import Ripple from 'react-native-material-ripple';
 import { selectAction } from '../Filter';
+import Loader from '../../../../component/Loader';
 
 export const ShowFilter = ({
     selected,

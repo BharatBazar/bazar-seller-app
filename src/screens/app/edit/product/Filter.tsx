@@ -12,12 +12,9 @@ import ProductButton from './component/ProductButton';
 import TextButton from '../../../component/TextButton';
 import { borderColor, mainColor } from '../../../../common/color';
 import { IClassifier, IProduct } from '../../../../server/apis/product/product.interface';
-
-interface FilterProps {
-    filters: IFilter[];
-    postDataToServer: IPostDataToServer;
-    productDetails: Partial<IProduct>;
-}
+import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
+import { ToastHOC } from '../../../hoc/ToastHOC';
+import Loader from '../../../component/Loader';
 
 export enum selectAction {
     add = 'Add',
@@ -33,6 +30,7 @@ const renderFilter = (
     index: number,
     fitlerValues: IClassifier | IClassifier[],
     postDataToServer: IPostDataToServer,
+    productId: string,
 ) => {
     console.log(fitlerValues);
     const [showPopup, setPopup] = React.useState<boolean>(false);
@@ -84,43 +82,65 @@ const renderFilter = (
         }
     };
 
-    const submitData = () => {
-        if (Object.keys(selectedTags).length == 0) {
-            setErrors({ generalError: 'Please select atleast one filter.' });
-        } else {
+    const addDataInServer = (filterValue: string) => {
+        // if (Object.keys(selectedTags).length == 0) {
+        //     setErrors({ generalError: 'Please select atleast one filter.' });
+        // } else {
+        setLoader(true);
+        setErrors({});
+
+        const data = {};
+        data[filter.type] = [filterValue];
+
+        postDataToServer(
+            data,
+            () => {
+                setLoader(false);
+                //setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
+            },
+            (error: string) => {
+                setLoader(false);
+                setErrors({ generalError: error });
+            },
+        );
+        //}
+    };
+    const removeDataFromServer = async (filterValue: string) => {
+        try {
             setLoader(true);
             setErrors({});
 
             const data = {};
-            data[filter.type] = filter.multiple ? Object.keys(selectedTags) : Object.keys(selectedTags)[0];
-            console.log(filter.type, data);
-            postDataToServer(
-                data,
-                () => {
-                    setLoader(false);
-                    //setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
-                },
-                (error: string) => {
-                    setLoader(false);
-                    setErrors({ generalError: error });
-                },
-            );
+            data[filter.type] = filterValue;
+
+            const response = await APIDeleteFilter({ _id: productId, filter: data });
+            setLoader(false);
+            if (response.status == 1) {
+                ToastHOC.successAlert('Filter deleted from product!!');
+            }
+        } catch (error) {
+            setLoader(false);
+            ToastHOC.errorAlert('Problem adding filter to product!!');
         }
     };
 
     const onSelect = (data: IClassifier) => {
         if (!filter.multiple) {
             if (selectedTags[data._id]) {
+                removeDataFromServer(data._id);
                 deleteData(data);
             } else {
                 const array = {};
                 array[data._id] = data;
+                addDataInServer(data._id);
                 setSelected(array);
             }
         } else {
             if (!selectedTags[data._id]) {
                 addData(data);
+                addDataInServer(data._id);
             } else {
+                removeDataFromServer(data._id);
                 deleteData(data);
             }
         }
@@ -188,22 +208,18 @@ const renderFilter = (
                 selectedData={selectedTags}
                 onSelect={onSelect}
             />
-            <View style={[FDR(), JCC('flex-end')]}>
-                <ProductButton
-                    buttonText={'Save'}
-                    onPress={() => {
-                        submitData();
-                    }}
-                    isLoading={loading}
-                />
-                <View style={[ML(0.1)]} />
-                <ProductButton buttonText={'Undo'} onPress={() => {}} />
-            </View>
         </View>
     );
 };
 
-const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails }) => {
+interface FilterProps {
+    filters: IFilter[];
+    postDataToServer: IPostDataToServer;
+    productDetails: Partial<IProduct>;
+    productId: string;
+}
+
+const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails, productId }) => {
     console.log('productDetails', productDetails);
 
     return (
@@ -216,7 +232,9 @@ const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDeta
                 error={''}
             />
             <View style={[{ borderBottomWidth: 1, borderColor: '#E5E5E5', paddingBottom: getHP(0.2) }]} />
-            {filters.map((item, index) => renderFilter(item, index, productDetails[item.type], postDataToServer))}
+            {filters.map((item, index) =>
+                renderFilter(item, index, productDetails[item.type], postDataToServer, productId),
+            )}
         </ProductContainer>
     );
 };

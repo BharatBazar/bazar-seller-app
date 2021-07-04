@@ -59,3 +59,7 @@ export async function APIDeleteProductSize(data: { _id: string; parentId?: strin
 export async function APIUpdateProductSize(data: IProductSize): Promise<IRProductSize> {
     return axios.patch('/size/update', data);
 }
+
+export async function APIDeleteFilter(data: IProduct): Promise<IRProductSize> {
+    return axios.patch('/delete/filter', data);
+}
