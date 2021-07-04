@@ -21,6 +21,7 @@ import { colorCode, mainColor } from '../../../common/color';
 import WrappedText from '../../component/WrappedText';
 import TextButton from '../../component/TextButton';
 import { ToastHOC } from '../../hoc/ToastHOC';
+import Loader from '../../component/Loader';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -352,6 +353,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     />
                 )}
             </ScrollView>
+            {/* <Loader /> */}
         </View>
     );
 };

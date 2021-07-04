@@ -40,7 +40,6 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setError,
     setDefaultSize,
 }) => {
-    console.log(productSize);
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
     const [sp, setSp] = React.useState<string>(productSize.sp);

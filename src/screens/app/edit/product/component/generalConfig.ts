@@ -11,6 +11,7 @@ import {
     APIcreateProduct,
     APICreateProductColor,
     APICreateProductSize,
+    APIDeleteFilter,
     APIdeleteProduct,
     APIDeleteProductColor,
     APIDeleteProductSize,
@@ -132,6 +133,10 @@ export async function deleteProductSize(data: { _id: string; parentId: string })
 
 export async function deleteProductFromServer(data: { _id: string }) {
     return await APIdeleteProduct(data);
+}
+
+export async function deleteJeansFilter(data: IProduct) {
+    return await APIDeleteFilter(data);
 }
 
 export type IPostDataToServer = (a: Partial<IProduct>, b: () => void, c: (error: string) => void) => void;
