@@ -13,7 +13,7 @@ export interface ProductTitleProps {
     errorValue: number;
     setError: (value: number) => void;
     update: boolean;
-    postDataToServer: (a: IProduct, b: () => void, c: (error: string) => void) => void;
+    postDataToServer: (a: Partial<IProduct>, b: () => void, c: (error: string) => void) => void;
 }
 
 interface Error {
@@ -46,7 +46,6 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({
     }, [title, subTitle]);
 
     React.useEffect(() => {
-        console.log('error value', errorValue);
         if (errorValue == 1) {
             //Run a error check
             console.log('Run an error check');
@@ -86,7 +85,7 @@ const ProductTitle: React.SFC<ProductTitleProps> = ({
             setLoader(true);
             setErrors({});
             postDataToServer(
-                { productTitle, productSubtitle: productSubTitle },
+                { title: productTitle, subTitle: productSubTitle },
                 () => {
                     setLoader(false);
                     setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });

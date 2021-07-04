@@ -134,4 +134,4 @@ export async function deleteProductFromServer(data: { _id: string }) {
     return await APIdeleteProduct(data);
 }
 
-export type IPostDataToServer = (a: IProduct, b: () => void, c: (error: string) => void) => void;
+export type IPostDataToServer = (a: Partial<IProduct>, b: () => void, c: (error: string) => void) => void;

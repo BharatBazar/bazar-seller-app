@@ -33,9 +33,10 @@ export interface ProductIdentifierViewProps {
 }
 
 const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
-    product: { _id, productColor, productTitle, productSubtitle },
+    product: { _id, productColor, title, subTitle },
     onPress,
 }) => {
+    console.log(title, subTitle);
     return (
         <Ripple
             style={[border, FDR(), WP(10), AIC(), MT(0.1), HP(2)]}
@@ -57,17 +58,15 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 <View style={[FLEX(4), PH(0.5)]}>
                     <View style={[FLEX(1)]}>
                         <WrappedText
-                            text={
-                                productTitle.length == 0 ? 'Product title will come here' : productTitle?.toUpperCase()
-                            }
+                            text={title.length == 0 ? 'Product title will come here' : title?.toUpperCase()}
                             fontSize={fs16}
-                            textColor={productTitle?.length == 0 ? '#000000' + colorTransparency[60] : '#000000'}
+                            textColor={title?.length == 0 ? '#000000' + colorTransparency[60] : '#000000'}
                         />
                     </View>
                     <View style={[FLEX(2)]}>
                         <WrappedText
-                            text={productSubtitle?.length == 0 ? 'Product subtitle will come here' : productSubtitle}
-                            textColor={colorCode.BLACKLOW(productSubtitle?.length == 0 ? 40 : 70)}
+                            text={subTitle?.length == 0 ? 'Product subtitle will come here' : subTitle}
+                            textColor={colorCode.BLACKLOW(subTitle?.length == 0 ? 40 : 70)}
                             fontSize={fs12}
                             ellipsizeMode={'middle'}
                         />

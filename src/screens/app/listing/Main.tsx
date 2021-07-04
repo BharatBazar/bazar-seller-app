@@ -11,6 +11,7 @@ import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
 import Status from './component/Status';
+import ProductTab from './Tabs';
 
 export interface ProductProps extends NavigationProps {
     route: {
@@ -87,7 +88,7 @@ const Product: React.FC<ProductProps> = ({
                 </View>
             </View>
             <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), PH(0.3), { flexWrap: 'wrap' }]}>
-                <Status
+                {/* <Status
                     name={'Incomplete'}
                     count={10}
                     onPress={() => {}}
@@ -120,14 +121,14 @@ const Product: React.FC<ProductProps> = ({
                     count={3}
                     onPress={() => {}}
                     message={'Items which are live in the market.Your grahak can check this items.'}
-                />
-                {/* <ProductTab
+                /> */}
+                <ProductTab
                     navigation={navigation}
                     shopId={shopId}
                     category={category}
                     subCategory={subCategory}
                     subCategory1={subCategory1}
-                /> */}
+                />
             </View>
         </View>
     );

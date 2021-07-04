@@ -32,10 +32,7 @@ const ProductList: React.SFC<ProductListProps> = ({
             setLoader(true);
             const response: IProducts = await APIgetAllProduct({
                 query: {
-                    productCategory: category,
-                    productSubCategory1: subCategory,
-                    productSubCategory2: subCategory1,
-                    productStatus: productStatus,
+                    status: productStatus,
                     shopId: shopId,
                 },
             });

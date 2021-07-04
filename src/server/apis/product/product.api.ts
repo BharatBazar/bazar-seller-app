@@ -28,7 +28,7 @@ export async function APIgetProduct(data: IProduct): Promise<IProduct> {
     return axios.post('/get', data);
 }
 
-export async function APIgetAllProduct(data: { query: IProduct }): Promise<IProducts> {
+export async function APIgetAllProduct(data: { query: Partial<IProduct> }): Promise<IProducts> {
     return axios.post('/getAll', data);
 }
 
