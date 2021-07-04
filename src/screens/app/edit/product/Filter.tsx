@@ -28,114 +28,144 @@ interface Error {
     generalError: string;
 }
 
-const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails }) => {
-    const getTypeDetails = (type: keyof IProduct) => {
-        let exist: IClassifier | undefined | IClassifier[] = productDetails ? productDetails[type] : undefined;
+const renderFilter = (
+    filter: IFilter,
+    index: number,
+    fitlerValues: IClassifier | IClassifier[],
+    postDataToServer: IPostDataToServer,
+) => {
+    console.log(fitlerValues);
+    const [showPopup, setPopup] = React.useState<boolean>(false);
+    const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
+    const [loading, setLoader] = React.useState(false);
+    const [error, setErrors] = React.useState<Partial<Error>>({});
+
+    const addData = (data: IClassifier) => {
+        const array = { ...selectedTags };
+        array[data._id] = data;
+        setSelected(array);
+    };
+
+    const deleteData = (data: IClassifier) => {
+        const array = { ...selectedTags };
+        delete array[data._id];
+        setSelected(array);
+    };
+
+    const getTypeDetails = () => {
+        let exist: IClassifier | undefined | IClassifier[] = fitlerValues || undefined;
         if (exist) {
-            if (typeof exist === 'object') {
+            var isArr = exist instanceof Array;
+            console.log('exist  =>', isArr);
+
+            if (!isArr) {
                 let data = {};
                 data[exist._id] = exist;
-                return data;
+                setSelected(data);
             } else {
                 let data = {};
-                exist.forEach((element) => {
-                    data[element._id] = element;
-                });
-                return data;
+                console.log('type details', exist);
+
+                if (exist.length > 0) {
+                    console.log(exist);
+                    exist.forEach((element, index) => {
+                        console.log(element);
+                        data[element._id] = element;
+                        if (exist.length - 1 == index) {
+                            setSelected(data);
+                        }
+                    });
+                } else {
+                    setSelected({});
+                }
             }
         } else {
-            return {};
+            setSelected({});
         }
     };
 
-    const renderFilter = (filter: IFilter, index: number) => {
-        const [showPopup, setPopup] = React.useState<boolean>(false);
-        const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>(getTypeDetails(filter.type));
-        const [loading, setLoader] = React.useState(false);
-        const [error, setErrors] = React.useState<Partial<Error>>({});
+    const submitData = () => {
+        if (Object.keys(selectedTags).length == 0) {
+            setErrors({ generalError: 'Please select atleast one filter.' });
+        } else {
+            setLoader(true);
+            setErrors({});
 
-        const addData = (data: IClassifier) => {
-            const array = { ...selectedTags };
-            array[data._id] = data;
-            setSelected(array);
-        };
+            const data = {};
+            data[filter.type] = filter.multiple ? Object.keys(selectedTags) : Object.keys(selectedTags)[0];
+            console.log(filter.type, data);
+            postDataToServer(
+                data,
+                () => {
+                    setLoader(false);
+                    //setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
+                },
+                (error: string) => {
+                    setLoader(false);
+                    setErrors({ generalError: error });
+                },
+            );
+        }
+    };
 
-        const deleteData = (data: IClassifier) => {
-            const array = { ...selectedTags };
-            delete array[data._id];
-            setSelected(array);
-        };
-
-        const submitData = () => {
-            if (Object.keys(selectedTags).length == 0) {
-                setErrors({ generalError: 'Please select atleast one filter.' });
+    const onSelect = (data: IClassifier) => {
+        if (!filter.multiple) {
+            if (selectedTags[data._id]) {
+                deleteData(data);
             } else {
-                setLoader(true);
-                setErrors({});
-
-                const data = {};
-                data[filter.type] = filter.multiple ? Object.keys(selectedTags) : Object.keys(selectedTags)[0];
-
-                postDataToServer(
-                    data,
-                    () => {
-                        setLoader(false);
-                        //setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
-                    },
-                    (error: string) => {
-                        setLoader(false);
-                        setErrors({ generalError: error });
-                    },
-                );
+                const array = {};
+                array[data._id] = data;
+                setSelected(array);
             }
-        };
-
-        const onSelect = (data: IClassifier) => {
-            if (!filter.multiple) {
-                if (selectedTags[data._id]) {
-                    deleteData(data);
-                } else {
-                    const array = {};
-                    array[data._id] = data;
-                    setSelected(array);
-                }
+        } else {
+            if (!selectedTags[data._id]) {
+                addData(data);
             } else {
-                if (!selectedTags[data._id]) {
-                    addData(data);
-                } else {
-                    deleteData(data);
-                }
+                deleteData(data);
             }
-        };
+        }
+    };
 
-        return (
-            <View
-                key={index}
-                style={[MT(0.1), { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}
-            >
-                <WrappedText text={filter.name} fontSize={fs18} />
-                <WrappedText text={filter.description} textColor={'#8A8A8A'} />
-                <WrappedText text={error.generalError || ''} fontSize={fs12} />
-                <View style={[MT(0.1)]} />
+    React.useEffect(() => {
+        getTypeDetails();
+        // if (isArr && selectedTags && Object.values(selectedTags).length != fitlerValues.length) {
+        //     setSelected(getTypeDetails());
+        // } else if (!isArr && fitlerValues instanceof Object && selectedTags == {}) {
+        //     setSelected(getTypeDetails());
+        // }
+        return () => {};
+    }, [fitlerValues]);
 
-                <TextButton
-                    text={Object.keys(selectedTags).length > 0 ? 'Selected Filter' : 'Select Filters'}
-                    containerStyle={[
-                        PV(0.1),
-                        BR(0.1),
-                        JCC('center'),
-                        MT(0.2),
-                        BW(1.5),
-                        BC(Object.keys(selectedTags).length > 0 ? mainColor : borderColor),
-                        BGCOLOR('#FFFFFF'),
-                        { marginBottom: getHP(0.2) },
-                    ]}
-                    textProps={{ textColor: Object.keys(selectedTags).length > 0 ? mainColor : '#8A8A8A' }}
-                    onPress={() => {
-                        setPopup(true);
-                    }}
-                />
-                {Object.values(selectedTags).map((classifier: IClassifier) => {
+    console.log(selectedTags);
+    return (
+        <View
+            key={index}
+            style={[MT(0.1), { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}
+        >
+            <WrappedText text={filter.name} fontSize={fs18} />
+            <WrappedText text={filter.description} textColor={'#8A8A8A'} />
+            <WrappedText text={error.generalError || ''} fontSize={fs12} />
+            <View style={[MT(0.1)]} />
+
+            <TextButton
+                text={selectedTags && Object.keys(selectedTags).length > 0 ? 'Selected Filter' : 'Select Filters'}
+                containerStyle={[
+                    PV(0.1),
+                    BR(0.1),
+                    JCC('center'),
+                    MT(0.2),
+                    BW(1.5),
+                    BC(selectedTags && Object.keys(selectedTags).length > 0 ? mainColor : borderColor),
+                    BGCOLOR('#FFFFFF'),
+                    { marginBottom: getHP(0.2) },
+                ]}
+                textProps={{ textColor: selectedTags && Object.keys(selectedTags).length > 0 ? mainColor : '#8A8A8A' }}
+                onPress={() => {
+                    setPopup(true);
+                }}
+            />
+            {selectedTags &&
+                Object.values(selectedTags).map((classifier: IClassifier) => {
                     return (
                         <ShowFilter
                             item={classifier}
@@ -146,32 +176,35 @@ const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDeta
                         />
                     );
                 })}
-                <View style={[MT(0.1)]} />
+            <View style={[MT(0.1)]} />
 
-                <ShowFilterModal
-                    isVisible={showPopup}
-                    setPopup={setPopup}
-                    title={filter.name}
-                    description={filter.description}
-                    placeholderText={filter.name}
-                    data={filter.values}
-                    selectedData={selectedTags}
-                    onSelect={onSelect}
+            <ShowFilterModal
+                isVisible={showPopup}
+                setPopup={setPopup}
+                title={filter.name}
+                description={filter.description}
+                placeholderText={filter.name}
+                data={filter.values}
+                selectedData={selectedTags}
+                onSelect={onSelect}
+            />
+            <View style={[FDR(), JCC('flex-end')]}>
+                <ProductButton
+                    buttonText={'Save'}
+                    onPress={() => {
+                        submitData();
+                    }}
+                    isLoading={loading}
                 />
-                <View style={[FDR(), JCC('flex-end')]}>
-                    <ProductButton
-                        buttonText={'Save'}
-                        onPress={() => {
-                            submitData();
-                        }}
-                        isLoading={loading}
-                    />
-                    <View style={[ML(0.1)]} />
-                    <ProductButton buttonText={'Undo'} onPress={() => {}} />
-                </View>
+                <View style={[ML(0.1)]} />
+                <ProductButton buttonText={'Undo'} onPress={() => {}} />
             </View>
-        );
-    };
+        </View>
+    );
+};
+
+const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails }) => {
+    console.log('productDetails', productDetails);
 
     return (
         <ProductContainer>
@@ -183,7 +216,7 @@ const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDeta
                 error={''}
             />
             <View style={[{ borderBottomWidth: 1, borderColor: '#E5E5E5', paddingBottom: getHP(0.2) }]} />
-            {filters.map((item, index) => renderFilter(item, index))}
+            {filters.map((item, index) => renderFilter(item, index, productDetails[item.type], postDataToServer))}
         </ProductContainer>
     );
 };
