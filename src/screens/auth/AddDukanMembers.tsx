@@ -3,7 +3,7 @@ import { View, ScrollView, Alert } from 'react-native';
 import { fs12, fs13, fs20, mobileValidation, NavigationProps } from '../../common';
 import { colorCode } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, FDR, FLEX, MH, MV, PH, provideShadow, PV, WP } from '../../common/styles';
+import { BGCOLOR, FDR, FLEX, MH, ML, MV, PH, provideShadow, PV, WP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
@@ -55,18 +55,21 @@ const AddMember = ({
         value: string | Object,
         role: 'Co-owner' | 'worker',
         index: number,
-        field: 'name' | 'phoneNumber' | 'error',
+        field: 'firstName' | 'phoneNumber' | 'error' | 'lastName',
     ) => void;
     submitDetails: (index: number, role: 'Co-owner' | 'worker') => void;
 }) => {
     function validateField(index: number) {
-        const { phoneNumber, name } = data[index];
+        const { phoneNumber, firstName, lastName } = data[index];
         let error: error = {};
         if (!mobileValidation.test(phoneNumber)) {
             error['phoneNumber'] = 'Please enter correct ' + role + ' mobile number';
         }
-        if (name.length < 3) {
-            error['name'] = 'Please enter correct ' + role + ' name';
+        if (firstName.length < 3) {
+            error['firstName'] = 'Please enter correct ' + role + ' firstName';
+        }
+        if (lastName.length < 3) {
+            error['lastName'] = 'Please enter correct ' + role + ' lastName';
         }
         if (Object.keys(error).length == 0) {
             setField({}, role, index, 'error');
@@ -114,15 +117,30 @@ const AddMember = ({
                         key={item.key}
                     >
                         {item.error['error'] && <ServerErrorText errorText={item.error['error']} />}
-                        <WrappedTextInput
-                            value={item.name}
-                            placeholder={role + ' name'}
-                            {...componentProps.textInputProps}
-                            onChangeText={(text) => {
-                                setField(text, role, index, 'name');
-                            }}
-                            errorText={item.error['name']}
-                        />
+                        <View style={[FDR()]}>
+                            <View style={[FLEX(1)]}>
+                                <WrappedTextInput
+                                    value={item.firstName}
+                                    placeholder={role + ' firstName'}
+                                    {...componentProps.textInputProps}
+                                    onChangeText={(text) => {
+                                        setField(text, role, index, 'firstName');
+                                    }}
+                                    errorText={item.error['firstName']}
+                                />
+                            </View>
+                            <View style={[FLEX(1), ML(0.1)]}>
+                                <WrappedTextInput
+                                    value={item.lastName}
+                                    placeholder={role + ' lastName'}
+                                    {...componentProps.textInputProps}
+                                    onChangeText={(text) => {
+                                        setField(text, role, index, 'lastName');
+                                    }}
+                                    errorText={item.error['lastName']}
+                                />
+                            </View>
+                        </View>
                         <WrappedTextInput
                             placeholder={role + ' mobile number'}
                             value={item.phoneNumber}
@@ -173,12 +191,14 @@ export interface AddDukanMembersProps extends NavigationProps {
 }
 
 interface error {
-    name?: string;
+    firstName?: string;
+    lastName?: string;
     phoneNumber?: string;
     error?: string;
 }
 type member = {
-    name: string;
+    firstName: string;
+    lastName: string;
     phoneNumber: string;
     role: 'owner' | 'Co-owner' | 'worker';
     key: string;
@@ -189,7 +209,8 @@ type member = {
 
 const getDefaultValue = (role: 'Co-owner' | 'worker') => {
     return {
-        name: '',
+        firstName: '',
+        lastName: '',
         _id: '',
         phoneNumber: '',
         key: getId(),
@@ -245,32 +266,34 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     };
 
     const submitDetails = async (index: number, role: 'worker' | 'Co-owner', skipped = false) => {
-        let data: ICreateShopMember;
+        let data: Partial<ICreateShopMember>;
         let details: member;
         if (!skipped) {
             details = role == 'worker' ? worker[index] : coOwner[index];
 
             data = {
-                name: details.name,
+                firstName: details.firstName,
+                lastName: details.lastName,
                 phoneNumber: details.phoneNumber,
                 role: details.role,
                 shop: ownerDetails.shop,
             };
-        }
-        const response: IRCreateShopMember = await createShopMember(data);
 
-        if (response.status == 1) {
-            Alert.alert('Member added!!');
-            if (role == 'Co-owner') {
-                coOwner[index] = { ...coOwner[index], added: true, _id: response.payload._id };
-                setcoOwner(coOwner);
+            const response: IRCreateShopMember = await createShopMember(data);
+
+            if (response.status == 1) {
+                Alert.alert('Member added!!');
+                if (role == 'Co-owner') {
+                    coOwner[index] = { ...coOwner[index], added: true, _id: response.payload._id };
+                    setcoOwner(coOwner);
+                } else {
+                    worker[index] = { ...worker[index], added: true, _id: response.payload._id };
+                    setWorker(worker);
+                }
+                setSubmittedCount(submittedCount + 1);
             } else {
-                worker[index] = { ...worker[index], added: true, _id: response.payload._id };
-                setWorker(worker);
+                setField({ error: response.message }, role, index, 'error');
             }
-            setSubmittedCount(submittedCount + 1);
-        } else {
-            setField({ error: response.message }, role, index, 'error');
         }
     };
 

@@ -10,7 +10,7 @@ import {
     IRShopMemberLogin,
 } from './shopMember.interface';
 
-export function createShopMember(data: ICreateShopMember): Promise<IRCreateShopMember> {
+export function createShopMember(data: Partial<ICreateShopMember>): Promise<IRCreateShopMember> {
     const options = {
         ...apiEndPointShopMember.CreateShopMember,
         data,

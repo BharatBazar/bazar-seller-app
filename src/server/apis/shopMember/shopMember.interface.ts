@@ -1,6 +1,5 @@
 import { Shop } from './../shop/shop.interface';
 import { Ipermission } from './../permissions/permission.interface';
-import { Method } from 'axios';
 import { CommonApiResponse, IapiEndPOint } from './../common.interface';
 
 export const apiEndPointShopMember: IapiEndPOint = {
@@ -21,7 +20,8 @@ export const apiEndPointShopMember: IapiEndPOint = {
 };
 
 export interface IshopMember {
-    name: string;
+    firstName: string;
+    lastName: string;
     //photo: [{_id:ObjectId}];
     permissions: string;
     phoneNumber: string;
@@ -34,7 +34,8 @@ export interface IshopMember {
 }
 
 export interface IshopMemberPopulated {
-    name: string;
+    firstName: string;
+    lastName: string;
     //photo: [{_id:ObjectId}];
     permissions: Ipermission;
     phoneNumber: string;
@@ -78,13 +79,15 @@ export type ICreateShopMember =
     | {
           phoneNumber: string;
           email: string;
-          name: string;
+          firstName: string;
+          lastName: string;
           role: 'owner';
           otp: string;
       }
     | {
           phoneNumber: string;
-          name: string;
+          firstName: string;
+          lastName: string;
           role: 'worker' | 'Co-owner';
           email?: string;
           shop: string;

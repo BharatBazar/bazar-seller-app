@@ -19,7 +19,7 @@ export const colorCode = {
 
 export const mainColor = colorCode.CHAKRALOW(70);
 export const borderColor = colorCode.BLACKLOW(10);
-export const messageColor = colorCode.BLACKLOW(40);
+export const messageColor = '#8A8A8A';
 export const errorColor = '#ed4337';
 export const black10 = colorCode.BLACKLOW(10);
 export const black20 = colorCode.BLACKLOW(20);
