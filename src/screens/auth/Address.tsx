@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { fs13, fs20, NavigationProps } from '../../common';
-import { black50, colorCode, disabledColor, errorColor, generalColor } from '../../common/color';
+import { black50, colorCode, disabledColor, errorColor } from '../../common/color';
 import { buttonContainerStyle, textInputContainerStyle, componentProps } from '../../common/containerStyles';
 import { getHP } from '../../common/dimension';
 import { AIC, BGCOLOR, BR, FDR, FLEX, HP, JCC, ML, MT, PH, PV } from '../../common/styles';
@@ -11,7 +11,6 @@ import WrappedDropDown from '../component/WrappedDropDown';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-
 import WrappedText from '../component/WrappedText';
 import { initializeAxios } from '../../server';
 import { updateShop } from '../../server/apis/shop/shop.api';
@@ -50,7 +49,6 @@ const Address: React.FC<AddressProps> = ({
     const [city, setCity] = React.useState<Partial<IAddress>>({});
     const [localAddress, setLocalAddress] = React.useState('');
     const [loader, setLoader] = React.useState<number>(0);
-    const [pincodeVerfied, setPincodeVerified] = React.useState(undefined);
     const [previousPin, setPreviousPin] = React.useState<undefined | string>(undefined);
 
     const checkPincodeInServer = async () => {

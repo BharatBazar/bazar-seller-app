@@ -22,7 +22,7 @@ const Verification: React.SFC<VerificationProps> = ({ navigation }) => {
     };
 
     React.useEffect(() => {
-        checkVerficationStatus();
+        //   checkVerficationStatus();
     }, []);
 
     return (

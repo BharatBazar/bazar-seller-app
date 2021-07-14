@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet } from 'react-native';
-import { AIC, BGCOLOR, BR, FLEX, JCC, PH } from '../../common/styles';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { AIC, BGCOLOR, BR, FLEX, JCC, MT, MV, PH, PV } from '../../common/styles';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
@@ -76,6 +76,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             style={[FLEX(1), PH(0.6), BGCOLOR(colorCode.WHITE)]}
             contentContainerStyle={{ paddingBottom: '2%' }}
         >
+            <View style={[MT(0.1)]} />
             <HeaderText
                 step={'Step 5'}
                 heading={'What you sell'}
@@ -86,7 +87,14 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             <FlatList
                 data={data}
                 numColumns={2}
-                style={{ height: getHP(6), marginTop: getHP(0.2) }}
+                style={{
+                    height: getHP(6),
+                    marginTop: getHP(0.2),
+                    borderTopWidth: 0.5,
+                    borderBottomWidth: 0.5,
+                    borderColor: '#8A8A8A',
+                }}
+                //contentContainerStyle={{ paddingTop: getHP(0.1) }}
                 columnWrapperStyle={{ justifyContent: 'space-evenly' }}
                 keyExtractor={(item) => item.name}
                 renderItem={({ item, index }: { item: productData; index: number }) => {
@@ -108,7 +116,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             <TextButton
                 text={'Submit'}
                 textProps={componentProps.buttonTextProps}
-                containerStyle={{ ...buttonContainerStyle, marginTop: getHP(0.2) }}
+                containerStyle={{ ...buttonContainerStyle, marginTop: getHP(0.5) }}
                 onPress={() => {
                     const selectedCategory: [string] = data.filter((item) => item.selected).map((item) => item._id);
                     if (selectedCategory.length == 0) {

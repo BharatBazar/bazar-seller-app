@@ -300,6 +300,18 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         }
     };
 
+    const goNext = () => {
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: NavigationKey.VERIFICATION,
+                    params: { ownerDetails },
+                },
+            ],
+        });
+    };
+
     async function ifSkipped() {
         const response: IRShopUpdate = await updateShop({
             _id: ownerDetails.shop,
@@ -307,14 +319,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         });
         if (response.status == 1) {
             await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.PRODUCTDETAILS);
-            navigation.reset({
-                index: 0,
-                routes: [
-                    {
-                        name: NavigationKey.PRODUCTDETAILS,
-                    },
-                ],
-            });
+            goNext();
         } else {
             setError(response.message);
         }
@@ -348,7 +353,9 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                         />
                     )}
                     <TextButton
-                        onPress={() => {}}
+                        onPress={() => {
+                            goNext();
+                        }}
                         textProps={componentProps.buttonTextProps}
                         text={'Submit'}
                         containerStyle={[
