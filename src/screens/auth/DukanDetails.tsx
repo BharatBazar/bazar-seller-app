@@ -83,7 +83,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         }
     };
     return (
-        <View style={[{ flex: 1 }, PH(0.3), PV(0.4)]}>
+        <View style={[{ flex: 1 }, PH(0.3), PV(0.2)]}>
             <ShadowWrapperHOC>
                 <>
                     <HeaderText step={'Step 3'} heading={'Dukan Details'} subHeading={ShopDetailsText.MESSAGE} />
@@ -104,7 +104,8 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                             errorText={error['shopDescription']}
                             onChangeText={(name: string) => setDetails({ ...details, shopDescription: name })}
                             {...componentProps.textInputProps}
-                            containerStyle={[HP(1.5), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}
+                            textAlignVertical={'top'}
+                            containerStyle={[HP(2), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}
                         />
 
                         <TextButton

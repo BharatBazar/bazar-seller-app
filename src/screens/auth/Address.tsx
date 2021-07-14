@@ -74,7 +74,9 @@ const Address: React.FC<AddressProps> = ({
                 }
             } catch (error) {
                 setLoader(0);
-                console.log(error);
+                setState({});
+                setCity({});
+
                 setError({ error: error.message });
             }
         }

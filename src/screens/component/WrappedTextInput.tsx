@@ -30,6 +30,7 @@ interface Props {
     eyeButtonHeight?: number;
     paddingLeft?: number;
     multiline?: boolean;
+    textAlignVertical?: 'center' | 'auto' | 'top' | 'bottom';
 }
 
 interface State {
@@ -62,6 +63,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             eyeButtonHeight,
             multiline,
             paddingLeft,
+            textAlignVertical,
             onChangeText,
             autoCapitalize,
         } = this.props;
@@ -76,6 +78,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                         multiline={multiline || false}
                         autoCorrect={false}
                         placeholder={placeholder}
+                        textAlignVertical={textAlignVertical}
                         placeholderTextColor={placeholderTextColor || '#1A202C4D'}
                         style={[styles.textInput, textInputStyle, { paddingLeft: paddingLeft || 0 }]}
                         secureTextEntry={secureTextEntry || false}

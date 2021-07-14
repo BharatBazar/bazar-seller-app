@@ -4,11 +4,9 @@ import { fs12, fs13, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, messageColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
 import { FLEX, PV, PH, MT, FDR } from '../../common/styles';
-
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
-import ScreenHOC from '../hoc/ScreenHOC';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
