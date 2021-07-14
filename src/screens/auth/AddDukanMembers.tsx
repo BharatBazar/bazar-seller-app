@@ -115,7 +115,7 @@ const AddMember = ({
                         ]}
                         key={item.key}
                     >
-                        {item.error['error'] && <ServerErrorText errorText={item.error['error']} />}
+                        {item.error['error'] && <ServerErrorText errorText={item.error['error']} marginTop={0} />}
                         <View style={[FDR()]}>
                             <View style={[FLEX(1)]}>
                                 <WrappedTextInput
@@ -265,34 +265,38 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     };
 
     const submitDetails = async (index: number, role: 'worker' | 'Co-owner', skipped = false) => {
-        let data: Partial<ICreateShopMember>;
-        let details: member;
-        if (!skipped) {
-            details = role == 'worker' ? worker[index] : coOwner[index];
+        try {
+            let data: Partial<ICreateShopMember>;
+            let details: member;
+            if (!skipped) {
+                details = role == 'worker' ? worker[index] : coOwner[index];
 
-            data = {
-                firstName: details.firstName,
-                lastName: details.lastName,
-                phoneNumber: details.phoneNumber,
-                role: details.role,
-                shop: ownerDetails.shop,
-            };
+                data = {
+                    firstName: details.firstName,
+                    lastName: details.lastName,
+                    phoneNumber: details.phoneNumber,
+                    role: details.role,
+                    shop: ownerDetails.shop,
+                };
 
-            const response: IRCreateShopMember = await createShopMember(data);
-            console.log(response);
-            if (response.status == 1) {
-                Alert.alert('Member added!!');
-                if (role == 'Co-owner') {
-                    coOwner[index] = { ...coOwner[index], added: true, _id: response.payload._id };
-                    setcoOwner(coOwner);
+                const response: IRCreateShopMember = await createShopMember(data);
+
+                if (response.status == 1) {
+                    Alert.alert('Member added!!');
+                    if (role == 'Co-owner') {
+                        coOwner[index] = { ...coOwner[index], added: true, _id: response.payload._id };
+                        setcoOwner(coOwner);
+                    } else {
+                        worker[index] = { ...worker[index], added: true, _id: response.payload._id };
+                        setWorker(worker);
+                    }
+                    setSubmittedCount(submittedCount + 1);
                 } else {
-                    worker[index] = { ...worker[index], added: true, _id: response.payload._id };
-                    setWorker(worker);
+                    setField({ error: response.message }, role, index, 'error');
                 }
-                setSubmittedCount(submittedCount + 1);
-            } else {
-                setField({ error: response.message }, role, index, 'error');
             }
+        } catch (error) {
+            setField({ error: error.message }, role, index, 'error');
         }
     };
 

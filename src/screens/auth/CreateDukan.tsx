@@ -81,19 +81,23 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
     submitDetails = async () => {
         this.setState({ signInButtonState: 2 });
-        const response: IRCreateShopMember = await createShopMember({
-            ...this.state.formState,
-            role: 'owner',
-        });
-        if (response.status == 1) {
-            await Storage.setItem(StorageItemKeys.Token, 'token exists');
-            await Storage.setItem(StorageItemKeys.isSignupCompleted, 'false');
-            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
-            await Storage.setItem(StorageItemKeys.userDetail, response.payload);
-            this.setState({ signInButtonState: 0 });
-            this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
-        } else {
-            this.setState({ error: { ...this.state.error, serverError: response.message }, signInButtonState: 0 });
+        try {
+            const response: IRCreateShopMember = await createShopMember({
+                ...this.state.formState,
+                role: 'owner',
+            });
+            if (response.status == 1) {
+                await Storage.setItem(StorageItemKeys.Token, 'token exists');
+                await Storage.setItem(StorageItemKeys.isSignupCompleted, 'false');
+                await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
+                await Storage.setItem(StorageItemKeys.userDetail, response.payload);
+                this.setState({ signInButtonState: 0 });
+                this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
+            } else {
+                this.setState({ error: { ...this.state.error, serverError: response.message }, signInButtonState: 0 });
+            }
+        } catch (error) {
+            this.setState({ error: { ...this.state.error, serverError: error.message }, signInButtonState: 0 });
         }
     };
 
