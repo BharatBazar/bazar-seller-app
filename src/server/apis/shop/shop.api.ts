@@ -1,18 +1,11 @@
-import { makeRequest } from '../common.interface';
-import { IRShopUpdate, updateShopData, ShopApis, Shop } from './shop.interface';
+import axios from 'axios';
+
+import { IRShopUpdate, updateShopData, Shop } from './shop.interface';
 
 export function updateShop(data: Partial<updateShopData>): Promise<IRShopUpdate> {
-    const options = {
-        ...ShopApis.UpdateShop,
-        data,
-    };
-    return makeRequest(options);
+    return axios.patch('/shop/update', data);
 }
 
 export function getShop(data: { _id: string }): Promise<Shop> {
-    const options = {
-        ...ShopApis.GetShop,
-        data,
-    };
-    return makeRequest(options);
+    return axios.post('/shop/get', data);
 }

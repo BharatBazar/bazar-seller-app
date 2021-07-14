@@ -1,7 +1,5 @@
 import axios from 'axios';
-import { makeRequest } from '../common.interface';
 import {
-    apiEndPointShopMember,
     IRCreateShopMember,
     ICreateShopMember,
     IRCheckPhoneNumber,
@@ -11,43 +9,22 @@ import {
 } from './shopMember.interface';
 
 export function createShopMember(data: Partial<ICreateShopMember>): Promise<IRCreateShopMember> {
-    const options = {
-        ...apiEndPointShopMember.CreateShopMember,
-        data,
-    };
-    return makeRequest(options);
+    return axios.post('/shopMember/create', data);
 }
 
 export function triggerOtp(data: { phoneNumber: string }): Promise<IRCheckPhoneNumber> {
-    const options = {
-        ...apiEndPointShopMember.CheckPhoneNumber,
-        data,
-    };
-    return makeRequest(options);
+    return axios.post('/shopMember/checkPhoneNumber', data);
 }
 
 export function setPassword(data: { phoneNumber: string; password: string }): Promise<IRSetPassword> {
-    const options = {
-        ...apiEndPointShopMember.ShopMemberCreatePassword,
-        data,
-    };
-
-    return makeRequest(options);
+    return axios.post('/shopMember/createPassword', data);
 }
 
 export function shopMemberLogin(data: { phoneNumber: string; password: string }): Promise<IRShopMemberLogin> {
-    const options = {
-        ...apiEndPointShopMember.ShopMemberLogin,
-        data,
-    };
-    return makeRequest(options);
+    return axios.post('/shopMember/login', data);
 }
 
 export function deleteShopMember(data: { _id: string }): Promise<IRShopMemberDelete> {
-    const options = {
-        ...apiEndPointShopMember.ShopMemberDelete,
-        data,
-    };
-    return makeRequest(options);
+    return axios.delete('/shopMember/delete', data);
 }
 //createShopMember({ phoneNumber: '9893137876', email: 'bothra.rajat08@gmail.com',name:"Rajat",role:'worker' });

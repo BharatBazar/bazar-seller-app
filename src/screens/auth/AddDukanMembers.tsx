@@ -19,7 +19,6 @@ import {
     IRShopMemberDelete,
     IshopMember,
 } from '../../server/apis/shopMember/shopMember.interface';
-
 import { createShopMember, deleteShopMember } from '../../server/apis/shopMember/shopMember.api';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
@@ -33,7 +32,7 @@ const componentProps = {
         textStyle: { fontSize: fs12 },
     },
     textInputProps: {
-        containerStyle: [WP(6), textInputContainerStyle],
+        containerStyle: [textInputContainerStyle],
         textInputStyle: { fontSize: fs13 },
         paddingLeft: getWP(0.2),
     },
@@ -66,10 +65,10 @@ const AddMember = ({
             error['phoneNumber'] = 'Please enter correct ' + role + ' mobile number';
         }
         if (firstName.length < 3) {
-            error['firstName'] = 'Please enter correct ' + role + ' firstName';
+            error['firstName'] = 'Please enter correct ' + role + ' first name.';
         }
         if (lastName.length < 3) {
-            error['lastName'] = 'Please enter correct ' + role + ' lastName';
+            error['lastName'] = 'Please enter correct ' + role + ' last name.';
         }
         if (Object.keys(error).length == 0) {
             setField({}, role, index, 'error');
@@ -121,7 +120,7 @@ const AddMember = ({
                             <View style={[FLEX(1)]}>
                                 <WrappedTextInput
                                     value={item.firstName}
-                                    placeholder={role + ' firstName'}
+                                    placeholder={role + ' first name'}
                                     {...componentProps.textInputProps}
                                     onChangeText={(text) => {
                                         setField(text, role, index, 'firstName');
@@ -132,7 +131,7 @@ const AddMember = ({
                             <View style={[FLEX(1), ML(0.1)]}>
                                 <WrappedTextInput
                                     value={item.lastName}
-                                    placeholder={role + ' lastName'}
+                                    placeholder={role + ' last name'}
                                     {...componentProps.textInputProps}
                                     onChangeText={(text) => {
                                         setField(text, role, index, 'lastName');
@@ -280,7 +279,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
             };
 
             const response: IRCreateShopMember = await createShopMember(data);
-
+            console.log(response);
             if (response.status == 1) {
                 Alert.alert('Member added!!');
                 if (role == 'Co-owner') {
@@ -325,7 +324,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                         step={'Step 5'}
                         heading={'Add member to your dukan'}
                         subHeading={
-                            'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app.Also permission related to their account currently their account is not active you can activate or deactivate worker and Co-owner account any time.'
+                            'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app. Currently their account is not active you can activate and no perission is given to them. You can activate their account once your shop is verified. After that you can anytime activate and deactivate their account.'
                         }
                     />
                     {error.length > 0 && <ServerErrorText errorText={error} />}
