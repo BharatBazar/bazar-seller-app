@@ -35,6 +35,7 @@ class AuthNavigation extends React.Component<Props, {}> {
             var ownerDetails = undefined;
             var screen = undefined;
         }
+
         return (
             <View style={[FLEX(1)]}>
                 <StatusBar />

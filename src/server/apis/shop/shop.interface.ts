@@ -16,10 +16,10 @@ export const ShopApis: IapiEndPOint = {
 
 export interface Shop {
     _id: string;
-    shopName?: string;
-    addressOfShop?: string;
-    membersDetailSkipped?: boolean;
-    isTerminated?: boolean;
+    shopName: string;
+    addressOfShop: string;
+    membersDetailSkipped: boolean;
+    isTerminated: boolean;
 
     shopDescription: string;
 
@@ -47,12 +47,18 @@ export interface IRGetShop extends CommonApiResponse {
     payload: Shop;
 }
 
+export enum verificationStatus {
+    registered = 'Registered',
+    rejected = 'Rejected',
+    verified = 'Verified',
+}
+
 export interface updateShopData {
     _id: string;
-    shopName?: string;
-    addressOfShop?: string;
-    membersDetailSkipped?: boolean;
-    isTerminated?: boolean;
+    shopName: string;
+    addressOfShop: string;
+    membersDetailSkipped: boolean;
+    isTerminated: boolean;
     category: string[];
     subCategory: string[][];
     subCategory1: string[][][];
@@ -66,6 +72,8 @@ export interface updateShopData {
     coOwner: {}[];
     worker: {}[];
     isVerified: boolean;
+    shopVerificationStatus: verificationStatus;
+    remarks: string;
     state: string;
     city: string;
     area: string;
@@ -77,4 +85,8 @@ export interface updateShopData {
 
 export interface IRShopUpdate extends CommonApiResponse {
     payload: Shop;
+}
+
+export interface IRShopVerification extends CommonApiResponse {
+    payload: { isVerified: boolean; shopVerificationStatus: verificationStatus; remarks: string };
 }

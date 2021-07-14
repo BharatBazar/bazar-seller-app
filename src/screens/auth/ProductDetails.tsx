@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { AIC, BGCOLOR, BR, FLEX, JCC, MT, MV, PH, PV } from '../../common/styles';
+import { AIC, BGCOLOR, BR, FLEX, JCC, MT, PH } from '../../common/styles';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
@@ -17,6 +17,7 @@ import { colorCode } from '../../common/color';
 import { NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { Storage, StorageItemKeys } from '../../storage';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -68,6 +69,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     useEffect(() => {
         fetchProductDetails({ categoryType: 'Category' });
         //getShopDetails();
+
         return () => {};
     }, []);
 
