@@ -16,7 +16,7 @@ interface Props {
     keyboardType?: KeyboardTypeOptions;
     eyeButton?: any;
     icon?: any;
-
+    editable?: boolean;
     textInputStyle?: StyleProp<any>;
     placeholderTextColor?: string;
     errorContainer?: StyleProp<any>;
@@ -62,6 +62,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             errorContainer,
             eyeButtonHeight,
             multiline,
+            editable,
             paddingLeft,
             textAlignVertical,
             onChangeText,
@@ -72,6 +73,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             <View>
                 <View style={[styles.mainContainer, containerStyle]}>
                     <TextInput
+                        editable={editable}
                         value={value}
                         autoCapitalize={autoCapitalize || 'none'}
                         onChangeText={onChangeText}
@@ -80,7 +82,14 @@ export default class WrappedTextInput extends Component<Props, State> {
                         placeholder={placeholder}
                         textAlignVertical={textAlignVertical}
                         placeholderTextColor={placeholderTextColor || '#1A202C4D'}
-                        style={[styles.textInput, textInputStyle, { paddingLeft: paddingLeft || 0 }]}
+                        style={[
+                            styles.textInput,
+                            textInputStyle,
+                            {
+                                paddingLeft: paddingLeft || 0,
+                                backgroundColor: editable == false ? '#64646433' : '#00000000',
+                            },
+                        ]}
                         secureTextEntry={secureTextEntry || false}
                     />
                     {eyeButton ? (

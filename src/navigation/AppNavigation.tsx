@@ -26,6 +26,7 @@ import Splash from '../screens/startup/SplashScreen';
 import { SideMenu } from '../screens/app/drawer/SideMenu';
 import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';
 import { getHP } from '../common/dimension';
+import ForgetPassword from '../screens/auth/ForgetPassword';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -70,6 +71,7 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />
                     <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
                     <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
+                    <Stack.Screen name={NavigationKey.FORGETPASSWORD} component={ForgetPassword} />
                 </Stack.Navigator>
                 <Toast ref={(ref) => Toast.setRef(ref)} />
             </NavigationContainer>

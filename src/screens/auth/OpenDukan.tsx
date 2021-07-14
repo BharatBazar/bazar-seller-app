@@ -145,11 +145,13 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 />
                 {error['error'] && <ServerErrorText errorText={error['error']} />}
                 {/* <ShadowWrapperHOC containerStyle={{ marginTop: getHP(0.3) }}> */}
-                <WrappedText
+                <TextButton
                     text={'Forgot password?'}
-                    fontSize={fs13}
-                    textColor={colorCode.SAFFRONLOW(90)}
-                    containerStyle={{ alignSelf: 'flex-end', ...MT(0.5) }}
+                    onPress={() => {
+                        navigation.replace(NavigationKey.FORGETPASSWORD);
+                    }}
+                    textProps={{ textColor: colorCode.SAFFRON }}
+                    containerStyle={{ alignSelf: 'flex-end', ...MT(0.5), backgroundColor: '#00000000' }}
                 />
                 <View style={{ marginTop: getHP(0.05) }}>
                     <WrappedTextInput
@@ -159,6 +161,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                         {...componentProps.textInputProps}
                         errorText={error['phoneNumber']}
                     />
+
                     <WrappedTextInput
                         placeholder={'Password'}
                         value={formData.password}
@@ -167,6 +170,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                         {...componentProps.textInputProps}
                         errorText={error['password']}
                     />
+
                     <TextButton
                         text={'Sign In'}
                         textProps={componentProps.buttonTextProps}
@@ -175,6 +179,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                             validateField();
                         }}
                     />
+
                     <View style={[MT(0.1)]}>
                         <View style={[FDR()]}>
                             <WrappedText text={'By signing in you agree to Bharat Bazar'} {...privacyText} />
