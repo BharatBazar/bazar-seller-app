@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { AIC, PH, PV, FDR, MT } from '../../common/styles';
+import { AIC, PH, PV, FDR, MT, FLEX, ML } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
@@ -23,7 +23,8 @@ export interface CreateDukanProps extends NavigationProps {}
 type formState = {
     phoneNumber: string;
     otp: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
 };
 
@@ -31,7 +32,8 @@ type formError = {
     phoneNumber?: string;
     generalError?: string;
     serverError?: string;
-    nameError?: string;
+    firstNameError?: string;
+    lastNameError?: string;
     emailError?: string;
     otpError?: string;
 };
@@ -51,10 +53,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: false,
+            otpSent: true,
             signInButtonState: 0,
             otpButtonState: 1,
-            formState: { phoneNumber: '', otp: '', name: '', email: '' },
+            formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '' },
             error: {},
             timer: -1,
         };
@@ -97,7 +99,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
     validateFields = () => {
         const { formState } = this.state;
-        const { phoneNumber, otp, email, name } = formState;
+        const { phoneNumber, otp, email, firstName, lastName } = formState;
         let error: formError = {};
         if (otp.length < 6) {
             error['otpError'] = ErrorText.otpError;
@@ -108,8 +110,11 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         if (!emailValidation.test(email)) {
             error['emailError'] = ErrorText.emailError;
         }
-        if (name.length < 3) {
-            error['nameError'] = ErrorText.nameError;
+        if (firstName.length < 3) {
+            error['firstNameError'] = ErrorText.firstNameError;
+        }
+        if (lastName.length < 3) {
+            error['lastNameError'] = ErrorText.lastNameError;
         }
 
         if (Object.keys(error).length == 0) {
@@ -181,7 +186,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             otpSent,
             signInButtonState,
             otpButtonState,
-            formState: { phoneNumber, otp, name, email },
+            formState: { phoneNumber, otp, firstName, email, lastName },
             error,
             timer,
         } = this.state;
@@ -244,13 +249,26 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                         />
                                     )}
 
-                                    <WrappedTextInput
-                                        value={name}
-                                        placeholder={CreateDukanText.ownerName}
-                                        onChangeText={(name) => this.setField('name', name)}
-                                        errorText={error['nameError']}
-                                        {...componentProps.textInputProps}
-                                    />
+                                    <View style={[FDR()]}>
+                                        <View style={[FLEX(1)]}>
+                                            <WrappedTextInput
+                                                value={firstName}
+                                                placeholder={CreateDukanText.ownerFirstName}
+                                                onChangeText={(firstName) => this.setField('firstName', firstName)}
+                                                errorText={error['firstNameError']}
+                                                {...componentProps.textInputProps}
+                                            />
+                                        </View>
+                                        <View style={[FLEX(1), ML(0.1)]}>
+                                            <WrappedTextInput
+                                                value={lastName}
+                                                placeholder={CreateDukanText.ownerLastName}
+                                                onChangeText={(lastName) => this.setField('lastName', lastName)}
+                                                errorText={error['lastNameError']}
+                                                {...componentProps.textInputProps}
+                                            />
+                                        </View>
+                                    </View>
                                     <WrappedText
                                         text={CreateDukanText.ownerNameMessage}
                                         fontSize={10}

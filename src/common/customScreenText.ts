@@ -4,10 +4,11 @@ export const WelcomeText = {
 };
 
 export const ErrorText = {
-    phoneNumberError: 'Please enter correct mobile number',
+    phoneNumberError: 'Please enter correct mobile number.',
     otpError: 'Please enter correct OTP.',
-    emailError: 'Please enter correct email',
-    nameError: 'Please enter correct name',
+    emailError: 'Please enter correct email.',
+    firstNameError: 'Please enter correct first name.',
+    lastNameError: 'Please enter correct last name.',
 };
 
 export const CreateDukanText = {
@@ -16,9 +17,10 @@ export const CreateDukanText = {
     ownerMobileNumber: 'Owner mobile number',
     sendOtp: 'Send OTP',
     resendOTp: 'Resend OTP',
-    verificationOtp: 'Verification Code',
+    verificationOtp: 'Verification code',
     otpMessage: 'We have sent an One Time Password(OTP) in a SMS to provided mobile number.',
-    ownerName: 'Owner name',
+    ownerFirstName: 'Owner first name',
+    ownerLastName: 'Owner last name',
     ownerNameMessage: 'Owner name is an important field it will appear on your public facing digital dukan.',
     ownerEmail: 'Owner email or other active email',
     ownerEmailMessage:

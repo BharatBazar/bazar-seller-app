@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
 import { FontFamily, fs10, fs13 } from '../../common';
+import { colorCode, errorColor } from '../../common/color';
 import { getHP } from '../../common/dimension';
 import { AIC, JCC, MT } from '../../common/styles';
 import WrappedRoundButton from './WrappedRoundButton';
@@ -101,9 +102,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                     )}
                 </View>
                 {errorText ? (
-                    <View
-                        style={[styles.errorContainer, errorContainer, { paddingLeft: paddingLeft || 0, marginTop: 3 }]}
-                    >
+                    <View style={[styles.errorContainer, errorContainer, { paddingLeft: 1 || 0, marginTop: 0 }]}>
                         <Text style={styles.errorText}>{errorText}</Text>
                     </View>
                 ) : (
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     },
     errorText: {
         fontSize: fs10,
-        color: '#ee7955',
+        color: errorColor,
         fontStyle: 'normal',
     },
     eye: {

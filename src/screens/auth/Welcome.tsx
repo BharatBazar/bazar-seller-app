@@ -30,12 +30,17 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
         return (
             <ScreenHOC>
                 <View style={[PV(0.1), FLEX(1), PH(0.5), { paddingTop: STATUS_BAR_HEIGHT }]}>
-                    <WrappedText text={GlobalText.companyName} fontSize={fs40} fontFamily={FontFamily.RobotoMedium} />
+                    <WrappedText
+                        text={GlobalText.companyName}
+                        fontSize={fs40}
+                        fontFamily={FontFamily.RobotoMedium}
+                        textColor={'#242424'}
+                    />
 
                     <WrappedText
                         text={GlobalText.companyMessage}
                         fontSize={fs12}
-                        textColor={colorCode.BLACKLOW(60)}
+                        textColor={'#8A8A8A'}
                         fontFamily={FontFamily.RobotoMedium}
                     />
                     <View style={[FLEX(1), AIC(), JCC()]}>

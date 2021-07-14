@@ -11,12 +11,11 @@ export interface SplashProps extends NavigationProps {}
 
 const Splash: React.FC<SplashProps> = ({ navigation }) => {
     const checkAppState = async () => {
-        navigation.replace(NavigationKey.BHARATBAZARHOME);
-        return;
+        //navigation.replace(NavigationKey.BHARATBAZARHOME);
+        //return;
 
         try {
             const token = await Storage.getItem(StorageItemKeys.Token);
-            console.log(token);
 
             if (token) {
                 const isSignupComplete = await Storage.getItem(StorageItemKeys.isSignupCompleted);
