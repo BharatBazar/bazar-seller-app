@@ -53,7 +53,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: true,
+            otpSent: false,
             signInButtonState: 0,
             otpButtonState: 1,
             formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '' },
@@ -131,7 +131,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             const response: IRCheckPhoneNumber = await triggerOtp({
                 phoneNumber: this.state.formState.phoneNumber,
             });
-            console.log(response);
             if (response.status == 1) {
                 this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
                 this.setTimer();
