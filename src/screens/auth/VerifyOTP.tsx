@@ -122,6 +122,9 @@ class VerifyOTP extends React.Component<VerifyOTPProps, VerifyOTPState> {
                     timer: -1,
                     otpButtonState: -1,
                 });
+                this.props.navigation.replace(NavigationKey.RESETPASSWORD, {
+                    phoneNumber: this.state.formState.phoneNumber,
+                });
             }
         } catch (error) {
             this.setState({

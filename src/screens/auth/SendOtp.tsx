@@ -17,11 +17,11 @@ import { IRCheckPhoneNumber } from '../../server/apis/shopMember/shopMember.inte
 import { forgetPassword } from '../../server/apis/shopMember/shopMember.api';
 import { NavigationKey } from '../../labels';
 
-export interface ForgetPasswordProps extends NavigationProps {}
+export interface SendOtpProps extends NavigationProps {}
 
-export interface ForgetPasswordProps {}
+export interface SendOtpProps {}
 
-export interface ForgetPasswordState {
+export interface SendOtpState {
     otpSent: boolean;
     signInButtonState: number;
     otpButtonState: number;
@@ -43,10 +43,10 @@ type formError = {
     otpError?: string;
 };
 
-class ForgetPassword extends React.Component<ForgetPasswordProps, ForgetPasswordState> {
+class SendOtp extends React.Component<SendOtpProps, SendOtpState> {
     private timer: NodeJS.Timeout;
 
-    constructor(props: ForgetPasswordProps) {
+    constructor(props: SendOtpProps) {
         super(props);
 
         this.state = {
@@ -230,4 +230,4 @@ class ForgetPassword extends React.Component<ForgetPasswordProps, ForgetPassword
     }
 }
 
-export default ForgetPassword;
+export default SendOtp;

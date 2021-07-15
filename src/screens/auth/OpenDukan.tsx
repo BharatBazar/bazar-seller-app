@@ -68,37 +68,42 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     };
 
     const submitDetails = async () => {
-        const response: IRShopMemberLogin = await shopMemberLogin(formData);
-        if (response.status == 1) {
-            const state = response.payload;
-            await Storage.setItem(StorageItemKeys.Token, 'toker exist');
-            await Storage.setItem(StorageItemKeys.userDetail, state.data);
-            let screen = '';
-            if (state.passwordAvailable) {
-                screen = NavigationKey.SETPASSWORD;
-            } else if (state.shopNameAvailable) {
-                screen = NavigationKey.SHOPDETAILS;
-            } else if (state.addressAvailable) {
-                screen = NavigationKey.ADDRESS;
-            } else if (state.memberDetails) {
-                screen = NavigationKey.ADDDUKANMEMBERS;
-            } else if (state.shopVerification) {
-                screen = NavigationKey.VERIFICATION;
-            } else if (state.category) {
-                screen = NavigationKey.PRODUCTDETAILS;
-            } else if (state.subCategory) {
-                screen = NavigationKey.PRODUCTSUBCATEGORY;
+        try {
+            const response: IRShopMemberLogin = await shopMemberLogin(formData);
+            if (response.status == 1) {
+                const state = response.payload;
+                await Storage.setItem(StorageItemKeys.Token, 'toker exist');
+                await Storage.setItem(StorageItemKeys.userDetail, state.data);
+                let screen = '';
+                if (state.passwordAvailable) {
+                    screen = NavigationKey.SETPASSWORD;
+                } else if (state.shopNameAvailable) {
+                    screen = NavigationKey.SHOPDETAILS;
+                } else if (state.addressAvailable) {
+                    screen = NavigationKey.ADDRESS;
+                } else if (state.memberDetails) {
+                    screen = NavigationKey.ADDDUKANMEMBERS;
+                } else if (state.shopVerification) {
+                    screen = NavigationKey.VERIFICATION;
+                } else if (state.category) {
+                    screen = NavigationKey.PRODUCTDETAILS;
+                } else if (state.subCategory) {
+                    screen = NavigationKey.PRODUCTSUBCATEGORY;
+                } else {
+                    await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
+                    screen = NavigationKey.HOME;
+                }
+                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) resetTo(screen);
+                else {
+                    await Storage.setItem(StorageItemKeys.currentScreen, screen);
+                    navigateTo(screen, state.data);
+                }
             } else {
-                await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
-                screen = NavigationKey.HOME;
+                setError({ error: response.message });
             }
-            if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) resetTo(screen);
-            else {
-                await Storage.setItem(StorageItemKeys.currentScreen, screen);
-                navigateTo(screen, state.data);
-            }
-        } else {
-            setError({ error: response.message });
+        } catch (error) {
+            console.log(error, 'error');
+            setError({ error: error.message });
         }
     };
 

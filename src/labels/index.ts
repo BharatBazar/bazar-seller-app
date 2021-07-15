@@ -19,4 +19,5 @@ export const NavigationKey = {
     SPLASH: 'SplashScreen',
     FORGETPASSWORD: 'ForgetPassword',
     VERIFYOTP: 'VerifyOTP',
+    RESETPASSWORD: 'ResetPassword',
 };

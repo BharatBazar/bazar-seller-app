@@ -26,8 +26,9 @@ import Splash from '../screens/startup/SplashScreen';
 import { SideMenu } from '../screens/app/drawer/SideMenu';
 import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';
 import { getHP } from '../common/dimension';
-import ForgetPassword from '../screens/auth/ForgetPassword';
+import ForgetPassword from '../screens/auth/SendOtp';
 import VerifyOTP from '../screens/auth/VerifyOTP';
+import ResetPassword from '../screens/auth/ResetPassword';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -76,6 +77,13 @@ class AppNavigation extends React.Component {
                     <Stack.Screen
                         name={NavigationKey.VERIFYOTP}
                         component={VerifyOTP}
+                        options={{
+                            cardStyleInterpolator: Fade,
+                        }}
+                    />
+                    <Stack.Screen
+                        name={NavigationKey.RESETPASSWORD}
+                        component={ResetPassword}
                         options={{
                             cardStyleInterpolator: Fade,
                         }}
