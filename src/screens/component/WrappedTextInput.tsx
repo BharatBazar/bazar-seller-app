@@ -81,7 +81,7 @@ export default class WrappedTextInput extends Component<Props, State> {
                         autoCorrect={false}
                         placeholder={placeholder}
                         textAlignVertical={textAlignVertical}
-                        placeholderTextColor={placeholderTextColor || '#1A202C4D'}
+                        placeholderTextColor={placeholderTextColor || '#8a8a8a'}
                         style={[
                             styles.textInput,
                             textInputStyle,

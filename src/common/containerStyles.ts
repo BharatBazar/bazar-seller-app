@@ -9,10 +9,10 @@ export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
 export const generalSpacing = getHP(0.3);
 
 export const textInputContainerStyle: ViewStyle = {
-    height: getHP(0.45),
+    height: getHP(0.5),
     borderWidth: 1,
     borderRadius: getHP(0.05),
-    borderColor: '#e2e2e2',
+    borderColor: '#8a8a8a33',
     padding: 0,
     flexDirection: 'row',
     marginTop: getHP(0.1),

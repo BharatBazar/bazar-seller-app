@@ -18,4 +18,5 @@ export const NavigationKey = {
     ADDRESS: 'Address',
     SPLASH: 'SplashScreen',
     FORGETPASSWORD: 'ForgetPassword',
+    VERIFYOTP: 'VerifyOTP',
 };

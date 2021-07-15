@@ -21,12 +21,13 @@ import { initializeAxios } from '../server';
 import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
-import { Right } from './NavigationEffect';
+import { Fade, Right } from './NavigationEffect';
 import Splash from '../screens/startup/SplashScreen';
 import { SideMenu } from '../screens/app/drawer/SideMenu';
 import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';
 import { getHP } from '../common/dimension';
 import ForgetPassword from '../screens/auth/ForgetPassword';
+import VerifyOTP from '../screens/auth/VerifyOTP';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -72,6 +73,13 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
                     <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
                     <Stack.Screen name={NavigationKey.FORGETPASSWORD} component={ForgetPassword} />
+                    <Stack.Screen
+                        name={NavigationKey.VERIFYOTP}
+                        component={VerifyOTP}
+                        options={{
+                            cardStyleInterpolator: Fade,
+                        }}
+                    />
                 </Stack.Navigator>
                 <Toast ref={(ref) => Toast.setRef(ref)} />
             </NavigationContainer>

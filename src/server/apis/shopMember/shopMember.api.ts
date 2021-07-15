@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { CommonApiResponse } from '../common.interface';
 import {
     IRCreateShopMember,
     ICreateShopMember,
@@ -6,6 +7,7 @@ import {
     IRSetPassword,
     IRShopMemberDelete,
     IRShopMemberLogin,
+    IRForgetPassword,
 } from './shopMember.interface';
 
 export async function createShopMember(data: Partial<ICreateShopMember>): Promise<IRCreateShopMember> {
@@ -27,4 +29,17 @@ export async function shopMemberLogin(data: { phoneNumber: string; password: str
 export async function deleteShopMember(data: { _id: string }): Promise<IRShopMemberDelete> {
     return axios.delete('/shopMember/delete', data);
 }
+
+export async function forgetPassword(data: {
+    phoneNumber: string;
+    verify?: boolean;
+    otp?: string;
+}): Promise<IRForgetPassword> {
+    return axios.post('/shopMember/forgetPassword', data);
+}
+
+export async function updatePassword(data: { phoneNumber: string; password: string }): Promise<CommonApiResponse> {
+    return axios.post('/shopMember/updatePassword', data);
+}
+
 //createShopMember({ phoneNumber: '9893137876', email: 'bothra.rajat08@gmail.com',name:"Rajat",role:'worker' });

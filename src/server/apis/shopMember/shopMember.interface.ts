@@ -62,6 +62,9 @@ export interface IRShopMemberDelete extends CommonApiResponse {
     payload: string;
 }
 
+export interface IRForgetPassword extends CommonApiResponse {
+    payload: string;
+}
 export interface IRShopMemberLogin extends CommonApiResponse {
     payload: {
         data: IshopMemberPopulated;
