@@ -22,20 +22,29 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                 console.log(isSignupComplete, isSignupComplete == false);
                 if (isSignupComplete == undefined || isSignupComplete == false) {
                     const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
+                    if (!screenName) {
+                        navigation.replace(NavigationKey.WELCOME);
+                        return;
+                    }
                     let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
                     if (screenName != NavigationKey.VERIFICATION) {
                         navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: screenName, ownerDetails });
+                        return;
                     } else {
                         navigation.replace(screenName, { screen: screenName, ownerDetails });
+                        return;
                     }
                 } else if (isSignupComplete) {
                     navigation.replace(NavigationKey.BHARATBAZARHOME);
+                    return;
                 } else {
                     navigation.replace(NavigationKey.WELCOME);
+                    return;
                 }
             } else {
                 navigation.replace(NavigationKey.WELCOME);
+                return;
             }
         } catch (error) {
             console.log(error);

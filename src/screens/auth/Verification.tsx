@@ -2,7 +2,7 @@ import * as React from 'react';
 import { View, ScrollView } from 'react-native';
 import { FontFamily, fs12, fs16, fs20, fs28, NavigationProps } from '../../common';
 import { getHP } from '../../common/dimension';
-import { BC, BGCOLOR, BR, BW, FLEX, HP, MT, PH, provideShadow, PV } from '../../common/styles';
+import { BC, BGCOLOR, BR, BW, colorTransparency, FLEX, HP, MT, PH, provideShadow, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
@@ -23,7 +23,10 @@ export interface VerificationProps extends NavigationProps {
     };
 }
 
-const labels = ['Your dukan is registered.', 'Your dukan is verified.'];
+const labels = [
+    'Your dukan is registered with us. Our executive\nwill be contacting you soon and will start\nprocess for verification of your dukan.',
+    'Your dukan is verified.',
+];
 const customStyles = {
     stepIndicatorSize: getHP(0.5),
     currentStepIndicatorSize: getHP(0.7),
@@ -104,9 +107,10 @@ const Verification: React.SFC<VerificationProps> = ({
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
             <StatusBar />
-            <View style={[FLEX(1)]}>
-                <ScrollView style={[PH(0.5)]}>
-                    <WrappedText text={'Verification of dukan'} fontSize={fs28} textColor={'#161616'} />
+            <View style={[PH(0.5), FLEX(1)]}>
+                <WrappedText text={'Verification of dukan'} fontSize={fs28} textColor={'#161616'} />
+
+                <ScrollView style={[{ marginBottom: getHP(1.5) }]} showsVerticalScrollIndicator={false}>
                     <WrappedText
                         text={
                             'Hurrray! You have successfull completed all the process to get you started in your journey of growth and success.'
@@ -117,15 +121,15 @@ const Verification: React.SFC<VerificationProps> = ({
                         text={
                             'Together we will grow & will end all the monopoly in the market. Bharat Bazar will be cheerfull as it was when there was no monopoly.'
                         }
-                        textStyle={{ marginTop: getHP(0.3) }}
+                        textStyle={{ marginTop: getHP(0.2) }}
                     />
                     <WrappedText
                         text={
                             'Company will contact you soon for dukan verification. After that you will be able to access your dukan.'
                         }
-                        textStyle={{ marginTop: getHP(0.3) }}
+                        textStyle={{ marginTop: getHP(0.2) }}
                     />
-                    <WrappedText
+                    {/* <WrappedText
                         text={'Dukan Verification Status'}
                         fontSize={fs20}
                         containerStyle={[MT(0.4)]}
@@ -139,14 +143,15 @@ const Verification: React.SFC<VerificationProps> = ({
                             stepCount={2}
                             direction={'vertical'}
                         />
-                    </View>
+                    </View> */}
                     <View
                         style={[
                             BW(1),
+                            MT(0.4),
                             BC(mainColor),
                             provideShadow(10),
                             { shadowColor: mainColor, shadowOffset: { width: 10, height: 10 }, shadowRadius: 2 },
-                            // BGCOLOR(mainColor + colorTransparency[10]),
+
                             PH(0.2),
                             PV(0.1),
                             BR(0.1),
@@ -164,22 +169,6 @@ const Verification: React.SFC<VerificationProps> = ({
                             containerStyle={[MT(0.05)]}
                         />
                     </View>
-                    <TextButton
-                        onPress={() => {
-                            navigation.replace(NavigationKey.AUTHNAVIGATOR, {
-                                screen: NavigationKey.ADDDUKANMEMBERS,
-                                ownerDetails,
-                            });
-                        }}
-                        textProps={componentProps.buttonTextProps}
-                        text={'Add dukan members'}
-                        containerStyle={[
-                            buttonContainerStyle,
-                            { marginTop: getHP(0.3) },
-                            //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
-                        ]}
-                    />
-
                     {verificationDetails.isVerified ? (
                         <TextButton
                             onPress={() => {
@@ -197,6 +186,41 @@ const Verification: React.SFC<VerificationProps> = ({
                         <View />
                     )}
                 </ScrollView>
+                <View
+                    style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        left: '5%',
+                        right: '5%',
+                    }}
+                >
+                    <TextButton
+                        onPress={() => {
+                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                screen: NavigationKey.ADDDUKANMEMBERS,
+                                ownerDetails,
+                            });
+                        }}
+                        textProps={componentProps.buttonTextProps}
+                        text={'Add dukan members'}
+                        containerStyle={[
+                            buttonContainerStyle,
+                            { marginTop: getHP(0.3) },
+                            //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
+                        ]}
+                    />
+                    <TextButton
+                        onPress={() => {
+                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                screen: NavigationKey.ADDDUKANMEMBERS,
+                                ownerDetails,
+                            });
+                        }}
+                        textProps={componentProps.buttonTextProps}
+                        text={'Delete shop'}
+                        containerStyle={[buttonContainerStyle, { marginTop: getHP(0.12) }]}
+                    />
+                </View>
             </View>
         </View>
     );

@@ -11,7 +11,7 @@ import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
-import { FLEX, provideShadow } from '../../common/styles';
+import { BGCOLOR, FLEX, provideShadow } from '../../common/styles';
 import { Right } from '../../navigation/NavigationEffect';
 import StatusBar from '../component/StatusBar';
 import Address from './Address';
@@ -37,13 +37,13 @@ class AuthNavigation extends React.Component<Props, {}> {
         }
 
         return (
-            <View style={[FLEX(1)]}>
+            <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
                 <StatusBar />
-                <HeaderBar
+                {/* <HeaderBar
                     statusBarColor={'#ffffff'}
                     headerBackgroundColor={'#ffffff'}
                     containerStyle={[provideShadow(2)]}
-                />
+                /> */}
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}

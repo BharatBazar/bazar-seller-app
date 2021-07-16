@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { colorCode, messageColor } from '../../common/color';
 import { AIC, PH, PV, FDR, MT, FLEX, BGCOLOR, provideShadow } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import WrappedText from '../component/WrappedText';

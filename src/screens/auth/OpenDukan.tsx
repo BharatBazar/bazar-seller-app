@@ -17,6 +17,7 @@ import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import WrappedText from '../component/WrappedText';
 import WrappedTextInput from '../component/WrappedTextInput';
 import ServerErrorText from './component/errorText';
+import Loader from '../component/Loader';
 
 export interface OpenDukanProps extends NavigationProps {}
 
@@ -44,24 +45,37 @@ interface FormData {
 const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     const [formData, setFormData] = React.useState<FormData>({ password: '', phoneNumber: '' });
     const [error, setError] = React.useState<Error>({});
+    const [loader, setLoader] = React.useState(false);
 
     const setField = (data: Partial<FormData>) => {
         setFormData({ ...formData, ...data });
     };
 
     const navigateTo = (screen: string, params: IshopMemberPopulated) => {
-        navigation.replace(NavigationKey.AUTHNAVIGATOR, {
-            ownerDetails: { ...params, shop: params.shop._id },
-            screen: screen,
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: NavigationKey.AUTHNAVIGATOR,
+                    params: {
+                        ownerDetails: { ...params, shop: params.shop._id },
+                        screen: screen,
+                    },
+                },
+            ],
         });
     };
 
-    const resetTo = (screen: string) => {
+    const resetTo = (screen: string, params: IshopMemberPopulated) => {
         navigation.reset({
             index: 0,
             routes: [
                 {
                     name: screen,
+                    params: {
+                        ownerDetails: { ...params, shop: params.shop._id },
+                        screen: screen,
+                    },
                 },
             ],
         });
@@ -69,40 +83,43 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
 
     const submitDetails = async () => {
         try {
+            setLoader(true);
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
+            setLoader(false);
             if (response.status == 1) {
-                const state = response.payload;
+                const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'toker exist');
-                await Storage.setItem(StorageItemKeys.userDetail, state.data);
+                await Storage.setItem(StorageItemKeys.userDetail, currentAccountState.data);
                 let screen = '';
-                if (state.passwordAvailable) {
+                if (currentAccountState.passwordAvailable) {
                     screen = NavigationKey.SETPASSWORD;
-                } else if (state.shopNameAvailable) {
+                } else if (currentAccountState.shopNameAvailable) {
                     screen = NavigationKey.SHOPDETAILS;
-                } else if (state.addressAvailable) {
+                } else if (currentAccountState.addressAvailable) {
                     screen = NavigationKey.ADDRESS;
-                } else if (state.memberDetails) {
+                } else if (currentAccountState.memberDetails) {
                     screen = NavigationKey.ADDDUKANMEMBERS;
-                } else if (state.shopVerification) {
+                } else if (currentAccountState.shopVerification) {
                     screen = NavigationKey.VERIFICATION;
-                } else if (state.category) {
+                } else if (currentAccountState.category) {
                     screen = NavigationKey.PRODUCTDETAILS;
-                } else if (state.subCategory) {
+                } else if (currentAccountState.subCategory) {
                     screen = NavigationKey.PRODUCTSUBCATEGORY;
                 } else {
                     await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
                     screen = NavigationKey.HOME;
                 }
-                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) resetTo(screen);
+                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME)
+                    resetTo(screen, currentAccountState.data);
                 else {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
-                    navigateTo(screen, state.data);
+                    navigateTo(screen, currentAccountState.data);
                 }
             } else {
                 setError({ error: response.message });
             }
         } catch (error) {
-            console.log(error, 'error');
+            setLoader(false);
             setError({ error: error.message });
         }
     };
@@ -151,7 +168,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 {error['error'] && <ServerErrorText errorText={error['error']} />}
                 {/* <ShadowWrapperHOC containerStyle={{ marginTop: getHP(0.3) }}> */}
                 <TextButton
-                    text={'Forgot password?'}
+                    text={'Reset password?'}
                     onPress={() => {
                         navigation.replace(NavigationKey.FORGETPASSWORD);
                     }}
@@ -219,6 +236,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     />
                 </View>
             </View>
+            {loader && <Loader />}
         </View>
     );
 };
