@@ -113,7 +113,7 @@ const Verification: React.SFC<VerificationProps> = ({
                 <ScrollView style={[{ marginBottom: getHP(1.5) }]} showsVerticalScrollIndicator={false}>
                     <WrappedText
                         text={
-                            'Hurrray! You have successfull completed all the process to get you started in your journey of growth and success.'
+                            'Hurrray!! You have successfull completed all the process to get you started in your journey of growth and success.'
                         }
                         textStyle={{ marginTop: getHP(0.3) }}
                     />
