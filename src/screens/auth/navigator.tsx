@@ -28,9 +28,12 @@ interface Props extends NavigationProps {
 }
 class AuthNavigation extends React.Component<Props, {}> {
     render() {
+        let params = {};
+
         if (this.props.route.params) {
             console.log(this.props.route.params);
             var { ownerDetails, screen } = this.props.route.params;
+            params = this.props.route.params;
         } else {
             var ownerDetails = undefined;
             var screen = undefined;
@@ -60,7 +63,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.SETPASSWORD}
                         component={SetPassword}
-                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -68,7 +71,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.SHOPDETAILS}
                         component={ShopDetails}
-                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -76,7 +79,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.ADDRESS}
                         component={Address}
-                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -84,7 +87,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.ADDDUKANMEMBERS}
                         component={AddDukanMembers}
-                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -92,7 +95,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.PRODUCTDETAILS}
                         component={ProductDetails}
-                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -100,7 +103,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.PRODUCTSUBCATEGORY}
                         component={ProductSubCategory}
-                        initialParams={(ownerDetails && { ownerDetails }) || {}}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
                         }}

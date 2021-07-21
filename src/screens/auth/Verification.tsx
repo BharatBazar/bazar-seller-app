@@ -1,15 +1,14 @@
 import * as React from 'react';
-import { View, ScrollView } from 'react-native';
-import { FontFamily, fs12, fs16, fs20, fs28, NavigationProps } from '../../common';
+import { View, ScrollView, Alert } from 'react-native';
+import { FontFamily, fs12, fs20, fs28, NavigationProps } from '../../common';
 import { getHP } from '../../common/dimension';
-import { BC, BGCOLOR, BR, BW, colorTransparency, FLEX, HP, MT, PH, provideShadow, PV } from '../../common/styles';
+import { BC, BGCOLOR, BR, BW, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import StepIndicator from 'react-native-step-indicator';
 import { mainColor } from '../../common/color';
-import { IRShopVerification, verificationStatus } from '../../server/apis/shop/shop.interface';
-import { getShopVerificationDetails } from '../../server/apis/shop/shop.api';
+import { IRGetShop, IRShopVerification, verificationStatus } from '../../server/apis/shop/shop.interface';
+import { getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
 import TextButton from '../component/TextButton';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
@@ -87,8 +86,20 @@ const Verification: React.SFC<VerificationProps> = ({
         }
     }
 
+    async function getShopDetailsFromServer() {
+        try {
+            const response: IRGetShop = await getShop({
+                _id: ownerDetails.shop,
+            });
+            console.log(response.payload);
+        } catch (error) {
+            ToastHOC.errorAlert(error.message);
+        }
+    }
+
     React.useEffect(() => {
         loadVerificationDetail();
+        getShopDetailsFromServer();
     }, []);
 
     React.useEffect(() => {
@@ -189,7 +200,7 @@ const Verification: React.SFC<VerificationProps> = ({
                 <View
                     style={{
                         position: 'absolute',
-                        bottom: 0,
+                        bottom: '5%',
                         left: '5%',
                         right: '5%',
                     }}
@@ -199,6 +210,7 @@ const Verification: React.SFC<VerificationProps> = ({
                             navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
                                 screen: NavigationKey.ADDDUKANMEMBERS,
                                 ownerDetails,
+                                update: true,
                             });
                         }}
                         textProps={componentProps.buttonTextProps}
@@ -211,13 +223,25 @@ const Verification: React.SFC<VerificationProps> = ({
                     />
                     <TextButton
                         onPress={() => {
-                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                screen: NavigationKey.ADDDUKANMEMBERS,
-                                ownerDetails,
-                            });
+                            // navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                            //     screen: NavigationKey.ADDDUKANMEMBERS,
+                            //     ownerDetails,
+                            // });
+                            Alert.alert(
+                                'Warning!',
+                                'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
+                                [
+                                    {
+                                        text: 'Remove my dukan from market',
+                                    },
+                                    {
+                                        text: 'Cancel',
+                                    },
+                                ],
+                            );
                         }}
                         textProps={componentProps.buttonTextProps}
-                        text={'Delete shop'}
+                        text={'Remove my dukan from market'}
                         containerStyle={[buttonContainerStyle, { marginTop: getHP(0.12) }]}
                     />
                 </View>

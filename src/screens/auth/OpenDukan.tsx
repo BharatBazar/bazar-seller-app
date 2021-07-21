@@ -109,9 +109,10 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
                     screen = NavigationKey.HOME;
                 }
-                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME)
+                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) {
+                    await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     resetTo(screen, currentAccountState.data);
-                else {
+                } else {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     navigateTo(screen, currentAccountState.data);
                 }

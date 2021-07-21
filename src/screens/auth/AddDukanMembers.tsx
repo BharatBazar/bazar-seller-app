@@ -20,11 +20,12 @@ import {
     IshopMember,
 } from '../../server/apis/shopMember/shopMember.interface';
 import { createShopMember, deleteShopMember } from '../../server/apis/shopMember/shopMember.api';
-import { updateShop } from '../../server/apis/shop/shop.api';
-import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
+import { getShop, updateShop } from '../../server/apis/shop/shop.api';
+import { IRGetShop, IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { NavigationKey } from '../../labels';
 import { border } from '../app/edit/product/component/generalConfig';
 import { Storage, StorageItemKeys } from '../../storage';
+import { ToastHOC } from '../hoc/ToastHOC';
 
 const componentProps = {
     buttonTextProps: {
@@ -115,7 +116,9 @@ const AddMember = ({
                         ]}
                         key={item.key}
                     >
-                        {item.error['error'] && <ServerErrorText errorText={item.error['error']} marginTop={0} />}
+                        {item.error && item.error['error'] && (
+                            <ServerErrorText errorText={item.error['error']} marginTop={0} />
+                        )}
                         <View style={[FDR()]}>
                             <View style={[FLEX(1)]}>
                                 <WrappedTextInput
@@ -185,6 +188,7 @@ export interface AddDukanMembersProps extends NavigationProps {
     route: {
         params: {
             ownerDetails: IshopMember;
+            update?: boolean;
         };
     };
 }
@@ -222,7 +226,7 @@ const getDefaultValue = (role: 'Co-owner' | 'worker') => {
 const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     navigation,
     route: {
-        params: { ownerDetails },
+        params: { ownerDetails, update },
     },
 }) => {
     const [coOwner, setcoOwner] = useState<member[]>([getDefaultValue('Co-owner')]);
@@ -237,6 +241,26 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     const addWorker = () => {
         setWorker([...worker, getDefaultValue('worker')]);
     };
+
+    const fetchShopDetails = async () => {
+        try {
+            const response: IRGetShop = await getShop({
+                _id: ownerDetails.shop,
+            });
+
+            console.log(response.payload.coOwner);
+            if (response.payload.coOwner.length != 0) setcoOwner(response.payload.coOwner);
+            if (response.payload.worker.length != 0) setWorker(response.payload.worker);
+        } catch (error) {
+            ToastHOC.errorAlert(error.message);
+        }
+    };
+
+    React.useEffect(() => {
+        if (update) {
+            fetchShopDetails();
+        }
+    }, []);
 
     const setField = (value: string | Object, role: 'Co-owner' | 'worker', index: number, field: keyof member) => {
         let data = role == 'Co-owner' ? [...coOwner] : [...worker];
@@ -338,7 +362,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                     />
                     {error.length > 0 && <ServerErrorText errorText={error} />}
 
-                    {submittedCount == 0 && (
+                    {!update && submittedCount == 0 ? (
                         <TextButton
                             onPress={() => {
                                 ifSkipped();
@@ -351,6 +375,8 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
                             ]}
                         />
+                    ) : (
+                        <View />
                     )}
                     <TextButton
                         onPress={() => {
