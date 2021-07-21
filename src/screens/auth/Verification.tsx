@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { FontFamily, fs12, fs20, fs28, NavigationProps } from '../../common';
+import { FontFamily, fs12, fs14, fs16, fs18, fs20, fs28, NavigationProps } from '../../common';
 import { getHP } from '../../common/dimension';
-import { BC, BGCOLOR, BR, BW, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
+import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MT, MV, PH, provideShadow, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
-import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import { mainColor } from '../../common/color';
+import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
+import { colorCode, mainColor } from '../../common/color';
 import { IRGetShop, IRShopVerification, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
 import TextButton from '../component/TextButton';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { NavigationKey } from '../../labels';
-
+import { border } from '../app/edit/product/component/generalConfig';
+import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -50,6 +51,32 @@ const customStyles = {
     currentStepLabelColor: mainColor,
 };
 
+const Section = (propertyName: string, value: string) => (
+    <View style={[FDR(), JCC('space-between'), MV()]}>
+        <WrappedText text={propertyName} fontSize={fs14} />
+
+        <WrappedText text={value} textColor={'#8a8a8a'} fontSize={fs14} />
+    </View>
+);
+
+const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanName: string) => {
+    if (details.length == 0) {
+        return <WrappedText text={'There is no ' + role + ' in your shop.'} />;
+    } else {
+        return details.map((item) => (
+            <View style={[border, PV(), MV(), PH(), BR(0.1)]}>
+                <View style={[FDR(), JCC('space-between'), AIC()]}>
+                    <WrappedText text={dukanName + ' ' + role} textColor={mainColor} fontSize={fs18} />
+                    <WrappedFeatherIcon iconName={'edit'} onPress={() => {}} />
+                </View>
+                {Section('First Name', item.firstName)}
+                {Section('Last Name', item.lastName)}
+                {Section('Phone Number', item.phoneNumber)}
+            </View>
+        ));
+    }
+};
+
 const Verification: React.SFC<VerificationProps> = ({
     navigation,
     route: {
@@ -59,6 +86,10 @@ const Verification: React.SFC<VerificationProps> = ({
     const [verificationDetails, setVerificationDetails] = React.useState<
         Partial<{ isVerified: boolean; shopVerificationStatus?: verificationStatus; remarks: string }>
     >({ shopVerificationStatus: undefined, isVerified: false });
+    const [owner, setOwnerDetails] = React.useState<IshopMember[]>([]);
+    const [coOwner, setcoOwner] = React.useState<IshopMember[]>([]);
+    const [worker, setWorker] = React.useState<IshopMember[]>([]);
+    const [dukanName, setDukanName] = React.useState<string>('');
 
     const [currentPosition, setCurrentPosition] = React.useState<number>(0);
     const [indicatorLabel, setLabels] = React.useState(labels);
@@ -91,7 +122,17 @@ const Verification: React.SFC<VerificationProps> = ({
             const response: IRGetShop = await getShop({
                 _id: ownerDetails.shop,
             });
-            console.log(response.payload);
+            const shop = response.payload;
+            if (shop.owner) {
+                setOwnerDetails([{ ...shop.owner }]);
+            }
+            if (shop.coOwner.length > 0) {
+                setcoOwner(shop.coOwner);
+            }
+            if (shop.worker.length > 0) {
+                setWorker(shop.worker);
+            }
+            setDukanName(shop.shopName);
         } catch (error) {
             ToastHOC.errorAlert(error.message);
         }
@@ -155,31 +196,33 @@ const Verification: React.SFC<VerificationProps> = ({
                             direction={'vertical'}
                         />
                     </View> */}
-                    <View
-                        style={[
-                            BW(1),
-                            MT(0.4),
-                            BC(mainColor),
-                            provideShadow(10),
-                            { shadowColor: mainColor, shadowOffset: { width: 10, height: 10 }, shadowRadius: 2 },
-
-                            PH(0.2),
-                            PV(0.1),
-                            BR(0.1),
-                        ]}
-                    >
+                    <View style={[BW(1), MV(0.2), BC(mainColor), PH(0.2), PV(0.1), BR(0.1)]}>
                         <WrappedText
-                            text={'Message'}
+                            text={'Verificaiton message'}
                             fontSize={fs20}
                             fontFamily={FontFamily.RobotoMedium}
                             textColor={mainColor}
                         />
                         <WrappedText
-                            text={verificationDetails.remarks ? verificationDetails.remarks : 'No message provided'}
+                            text={
+                                verificationDetails.remarks
+                                    ? verificationDetails.remarks
+                                    : 'Our organization will contact you soon..'
+                            }
                             fontSize={fs12}
                             containerStyle={[MT(0.05)]}
                         />
                     </View>
+                    <WrappedText
+                        text={'Shop member details'}
+                        fontSize={fs20}
+                        textColor={mainColor}
+                        textStyle={[MV(0.1)]}
+                    />
+                    {showMemberDetails(owner, shopMemberRole.Owner, dukanName)}
+                    {showMemberDetails(coOwner, shopMemberRole.coOwner, dukanName)}
+                    {showMemberDetails(worker, shopMemberRole.worker, dukanName)}
+
                     {verificationDetails.isVerified ? (
                         <TextButton
                             onPress={() => {
@@ -214,7 +257,7 @@ const Verification: React.SFC<VerificationProps> = ({
                             });
                         }}
                         textProps={componentProps.buttonTextProps}
-                        text={'Add dukan members'}
+                        text={'Edit dukan member details'}
                         containerStyle={[
                             buttonContainerStyle,
                             { marginTop: getHP(0.3) },

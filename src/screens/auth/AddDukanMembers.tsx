@@ -249,8 +249,18 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
             });
 
             console.log(response.payload.coOwner);
-            if (response.payload.coOwner.length != 0) setcoOwner(response.payload.coOwner);
-            if (response.payload.worker.length != 0) setWorker(response.payload.worker);
+            if (response.payload.coOwner.length != 0) {
+                const coOwner = response.payload.coOwner.map((item) => {
+                    return { ...item, error: {}, added: true };
+                });
+                setcoOwner(coOwner);
+            }
+            if (response.payload.worker.length != 0) {
+                const worker = response.payload.worker.map((item) => {
+                    return { ...item, error: {}, added: true };
+                });
+                setWorker(worker);
+            }
         } catch (error) {
             ToastHOC.errorAlert(error.message);
         }
