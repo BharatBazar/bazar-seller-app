@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { FontFamily, fs12, fs14, fs16, fs18, fs20, fs28, NavigationProps } from '../../common';
+import { FontFamily, fs12, fs14, fs18, fs20, fs28, NavigationProps } from '../../common';
 import { getHP } from '../../common/dimension';
-import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MT, MV, PH, provideShadow, PV } from '../../common/styles';
+import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, HP, JCC, MT, MV, PH, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
-import { colorCode, mainColor } from '../../common/color';
+import { mainColor } from '../../common/color';
 import { IRGetShop, IRShopVerification, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
@@ -15,6 +15,7 @@ import { buttonContainerStyle, componentProps } from '../../common/containerStyl
 import { NavigationKey } from '../../labels';
 import { border } from '../app/edit/product/component/generalConfig';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
+import StepIndicator from 'react-native-step-indicator';
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -23,10 +24,7 @@ export interface VerificationProps extends NavigationProps {
     };
 }
 
-const labels = [
-    'Your dukan is registered with us. Our executive\nwill be contacting you soon and will start\nprocess for verification of your dukan.',
-    'Your dukan is verified.',
-];
+const labels = ['Your dukan is registered with us.', 'Dukan verification in process.', 'Dukan is verified.'];
 const customStyles = {
     stepIndicatorSize: getHP(0.5),
     currentStepIndicatorSize: getHP(0.7),
@@ -66,7 +64,7 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
         return details.map((item) => (
             <View style={[border, PV(), MV(), PH(), BR(0.1)]}>
                 <View style={[FDR(), JCC('space-between'), AIC()]}>
-                    <WrappedText text={dukanName + ' ' + role} textColor={mainColor} fontSize={fs18} />
+                    <WrappedText text={dukanName + ' ' + role + ' details'} textColor={mainColor} fontSize={fs18} />
                     <WrappedFeatherIcon iconName={'edit'} onPress={() => {}} />
                 </View>
                 {Section('First Name', item.firstName)}
@@ -181,7 +179,7 @@ const Verification: React.SFC<VerificationProps> = ({
                         }
                         textStyle={{ marginTop: getHP(0.2) }}
                     />
-                    {/* <WrappedText
+                    <WrappedText
                         text={'Dukan Verification Status'}
                         fontSize={fs20}
                         containerStyle={[MT(0.4)]}
@@ -192,10 +190,10 @@ const Verification: React.SFC<VerificationProps> = ({
                             customStyles={customStyles}
                             currentPosition={currentPosition}
                             labels={labels}
-                            stepCount={2}
+                            stepCount={3}
                             direction={'vertical'}
                         />
-                    </View> */}
+                    </View>
                     <View style={[BW(1), MV(0.2), BC(mainColor), PH(0.2), PV(0.1), BR(0.1)]}>
                         <WrappedText
                             text={'Verificaiton message'}
