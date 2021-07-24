@@ -30,9 +30,9 @@ export function initializeAxios() {
             }
             return response;
         },
-        async function (error) {
+        function (error) {
             console.log('Error =>', error);
-            return await handleError(error);
+            return handleError(error);
         },
     );
 }

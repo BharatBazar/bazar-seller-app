@@ -12,7 +12,6 @@ import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedText from '../component/WrappedText';
-import { initializeAxios } from '../../server';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
@@ -120,9 +119,6 @@ const Address: React.FC<AddressProps> = ({
             submitDetails();
         }
     };
-    React.useEffect(() => {
-        initializeAxios();
-    }, []);
 
     return (
         <View style={[FLEX(1), PH(0.4), PV(0.2)]}>

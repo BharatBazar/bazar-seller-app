@@ -41,7 +41,6 @@ class AuthNavigation extends React.Component<Props, {}> {
 
         return (
             <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
-                <StatusBar />
                 {/* <HeaderBar
                     statusBarColor={'#ffffff'}
                     headerBackgroundColor={'#ffffff'}

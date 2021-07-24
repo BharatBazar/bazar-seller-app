@@ -8,7 +8,7 @@ import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
 import { mainColor } from '../../common/color';
 import { IRGetShop, IRShopVerification, verificationStatus } from '../../server/apis/shop/shop.interface';
-import { getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
+import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
 import TextButton from '../component/TextButton';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
@@ -16,6 +16,9 @@ import { NavigationKey } from '../../labels';
 import { border } from '../app/edit/product/component/generalConfig';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import StepIndicator from 'react-native-step-indicator';
+import { CommonApiResponse } from '../../server/apis/common.interface';
+import { Storage, StorageItemKeys } from '../../storage';
+import Loader from '../component/Loader';
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -88,7 +91,7 @@ const Verification: React.SFC<VerificationProps> = ({
     const [coOwner, setcoOwner] = React.useState<IshopMember[]>([]);
     const [worker, setWorker] = React.useState<IshopMember[]>([]);
     const [dukanName, setDukanName] = React.useState<string>('');
-
+    const [loader, setLoader] = React.useState<boolean>(false);
     const [currentPosition, setCurrentPosition] = React.useState<number>(0);
     const [indicatorLabel, setLabels] = React.useState(labels);
     const findCurrentPosition = async () => {
@@ -111,6 +114,32 @@ const Verification: React.SFC<VerificationProps> = ({
             });
             setVerificationDetails(response.payload);
         } catch (error) {
+            ToastHOC.errorAlert(error.message);
+        }
+    }
+
+    async function deleteShopFromServerStorage() {
+        try {
+            setLoader(true);
+            const response: CommonApiResponse = await deleteShop({
+                _id: ownerDetails.shop,
+            });
+            setLoader(false);
+            if (response.status == 1) {
+                Object.keys(StorageItemKeys).forEach(async (item) => {
+                    await Storage.removeItem(item);
+                });
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: NavigationKey.SPLASH,
+                        },
+                    ],
+                });
+            }
+        } catch (error) {
+            setLoader(false);
             ToastHOC.errorAlert(error.message);
         }
     }
@@ -264,16 +293,13 @@ const Verification: React.SFC<VerificationProps> = ({
                     />
                     <TextButton
                         onPress={() => {
-                            // navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                            //     screen: NavigationKey.ADDDUKANMEMBERS,
-                            //     ownerDetails,
-                            // });
                             Alert.alert(
                                 'Warning!',
                                 'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
                                 [
                                     {
                                         text: 'Remove my dukan from market',
+                                        onPress: deleteShopFromServerStorage,
                                     },
                                     {
                                         text: 'Cancel',
@@ -287,6 +313,7 @@ const Verification: React.SFC<VerificationProps> = ({
                     />
                 </View>
             </View>
+            {loader && <Loader />}
         </View>
     );
 };

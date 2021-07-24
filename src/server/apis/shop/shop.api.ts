@@ -9,6 +9,9 @@ export async function updateShop(data: Partial<updateShopData>): Promise<IRShopU
 export async function getShop(data: { _id: string }): Promise<Shop> {
     return axios.post('/shop/get', data);
 }
+export async function deleteShop(data: { _id: string }): Promise<Shop> {
+    return axios.delete('/shop/delete?_id=' + data._id);
+}
 
 export async function getShopVerificationDetails(data: { _id: string }): Promise<IRShopVerification> {
     return axios.post('/shop/verificationDetails', data);

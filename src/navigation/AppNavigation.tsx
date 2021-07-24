@@ -17,7 +17,6 @@ import CreateProduct from '../screens/app/edit/Edit';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import { Easing } from 'react-native-reanimated';
 import { NavigationProps } from '../common';
-import { initializeAxios } from '../server';
 import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
@@ -40,10 +39,6 @@ const config: TransitionSpec = {
     },
 };
 class AppNavigation extends React.Component {
-    constructor(props) {
-        super(props);
-        initializeAxios();
-    }
     render() {
         return (
             <NavigationContainer>
