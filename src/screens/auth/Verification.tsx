@@ -115,7 +115,24 @@ const Verification: React.SFC<VerificationProps> = ({
             setVerificationDetails(response.payload);
         } catch (error) {
             ToastHOC.errorAlert(error.message);
+            if (error.message.includes('not exist')) {
+                logout();
+            }
         }
+    }
+
+    function logout() {
+        Object.keys(StorageItemKeys).forEach(async (item) => {
+            await Storage.removeItem(item);
+        });
+        navigation.reset({
+            index: 0,
+            routes: [
+                {
+                    name: NavigationKey.SPLASH,
+                },
+            ],
+        });
     }
 
     async function deleteShopFromServerStorage() {
@@ -126,17 +143,7 @@ const Verification: React.SFC<VerificationProps> = ({
             });
             setLoader(false);
             if (response.status == 1) {
-                Object.keys(StorageItemKeys).forEach(async (item) => {
-                    await Storage.removeItem(item);
-                });
-                navigation.reset({
-                    index: 0,
-                    routes: [
-                        {
-                            name: NavigationKey.SPLASH,
-                        },
-                    ],
-                });
+                logout();
             }
         } catch (error) {
             setLoader(false);
