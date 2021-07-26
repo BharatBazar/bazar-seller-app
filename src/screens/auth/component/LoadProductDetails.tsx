@@ -5,7 +5,7 @@ import { getHP } from '../../../common/dimension';
 import { AIC, JCC, MH, ML, WP } from '../../../common/styles';
 import { getProductCatalogueAPI } from '../../../server/apis/productCatalogue/productCatalogue.api';
 import { IRGetProductCatalogue, product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
-import { productData } from '../ProductDetails';
+import { productData } from '../ProductCategory';
 import ProductCategory from './DukanProductCategory';
 import ServerErrorText from './errorText';
 

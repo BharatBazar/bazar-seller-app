@@ -68,8 +68,9 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
             _id: ownerDetails.shop,
         });
         if (response.status == 1) {
-            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.VERIFICATION);
-            navigation.replace(NavigationKey.VERIFICATION);
+            await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.PRODUCTSUBCATEGORY);
+            navigation.replace(NavigationKey.BHARATBAZARHOME);
         } else {
             setError(response.message);
         }

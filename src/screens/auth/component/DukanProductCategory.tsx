@@ -2,7 +2,7 @@ import * as React from 'react';
 import { colorCode } from '../../../common/color';
 import { AIC, PH, provideShadow, PV } from '../../../common/styles';
 import WrappedRectangleButton from '../../component/WrappedRectangleButton';
-import { productData } from '../ProductDetails';
+import { productData } from '../ProductCategory';
 import Icon from 'react-native-vector-icons/Feather';
 import { View, ViewStyle } from 'react-native';
 import { getHP, getWP } from '../../../common/dimension';

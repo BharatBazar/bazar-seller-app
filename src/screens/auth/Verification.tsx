@@ -283,7 +283,9 @@ const Verification: React.SFC<VerificationProps> = ({
                     {verificationDetails.isVerified ? (
                         <TextButton
                             onPress={() => {
-                                console.log('Continue pressed!!');
+                                navigation.replace(NavigationKey.PRODUCTCATEGORY, {
+                                    ownerDetails,
+                                });
                             }}
                             textProps={componentProps.buttonTextProps}
                             text={'Continue'}
