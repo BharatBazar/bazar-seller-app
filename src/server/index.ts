@@ -24,14 +24,9 @@ export function initializeAxios() {
 
     axios.interceptors.response.use(
         (response) => {
-            console.log('SErver response', response);
-            if (response.data) {
-                return response.data;
-            }
-            return response;
+            return response.data;
         },
         function (error) {
-            console.log('Error =>', error);
             return handleError(error);
         },
     );

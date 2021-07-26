@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { FontFamily, fs12, fs14, fs18, fs20, fs28, NavigationProps } from '../../common';
-import { getHP } from '../../common/dimension';
+import { getHP, getWP } from '../../common/dimension';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, HP, JCC, MT, MV, PH, PV } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
@@ -65,11 +65,21 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
         return <WrappedText text={'There is no ' + role + ' in your shop.'} />;
     } else {
         return details.map((item) => (
-            <View style={[border, PV(), MV(), PH(), BR(0.1)]}>
-                <View style={[FDR(), JCC('space-between'), AIC()]}>
-                    <WrappedText text={dukanName + ' ' + role + ' details'} textColor={mainColor} fontSize={fs18} />
-                    <WrappedFeatherIcon iconName={'edit'} onPress={() => {}} />
+            <View style={[border, PV(), MV(), PH(), BR(0.1)]} key={item.phoneNumber}>
+                <View style={[FDR(), JCC('space-between')]}>
+                    <WrappedText
+                        text={dukanName + ' ' + role + ' details'}
+                        textColor={mainColor}
+                        fontSize={fs18}
+                        containerStyle={{ flex: 1 }}
+                    />
+                    <WrappedFeatherIcon
+                        iconName={'edit'}
+                        onPress={() => {}}
+                        containerStyle={{ marginTop: 0, marginHorizontal: getWP(0.2) }}
+                    />
                 </View>
+                <View style={[MT(0.1)]} />
                 {Section('First Name', item.firstName)}
                 {Section('Last Name', item.lastName)}
                 {Section('Phone Number', item.phoneNumber)}
@@ -87,6 +97,7 @@ const Verification: React.SFC<VerificationProps> = ({
     const [verificationDetails, setVerificationDetails] = React.useState<
         Partial<{ isVerified: boolean; shopVerificationStatus?: verificationStatus; remarks: string }>
     >({ shopVerificationStatus: undefined, isVerified: false });
+
     const [owner, setOwnerDetails] = React.useState<IshopMember[]>([]);
     const [coOwner, setcoOwner] = React.useState<IshopMember[]>([]);
     const [worker, setWorker] = React.useState<IshopMember[]>([]);
@@ -94,17 +105,32 @@ const Verification: React.SFC<VerificationProps> = ({
     const [loader, setLoader] = React.useState<boolean>(false);
     const [currentPosition, setCurrentPosition] = React.useState<number>(0);
     const [indicatorLabel, setLabels] = React.useState(labels);
+
     const findCurrentPosition = async () => {
         const requestStatuss = verificationDetails.shopVerificationStatus;
         let position;
         if (requestStatuss === verificationStatus.registered) {
             position = 0;
-        } else if (requestStatuss == verificationStatus.verified || requestStatuss == verificationStatus.rejected) {
+        } else if (requestStatuss == verificationStatus.processing) {
             position = 1;
+        } else if (requestStatuss == verificationStatus.verified || requestStatuss == verificationStatus.rejected) {
+            position = 2;
         } else {
             position = 0;
         }
         setCurrentPosition(position);
+    };
+    const findVerificationIndex = () => {
+        findCurrentPosition();
+        if (verificationDetails.shopVerificationStatus === verificationStatus.rejected) {
+            let labelsi = [...indicatorLabel];
+            labelsi[2] = 'Your dukan request to register bharat bazar is rejected.';
+            setLabels(labelsi);
+        } else {
+            let labelsi = [...indicatorLabel];
+            labelsi[2] = 'Your dukan is verified.';
+            setLabels(labelsi);
+        }
     };
 
     async function loadVerificationDetail() {
@@ -113,6 +139,7 @@ const Verification: React.SFC<VerificationProps> = ({
                 _id: ownerDetails.shop,
             });
             setVerificationDetails(response.payload);
+            findVerificationIndex();
         } catch (error) {
             ToastHOC.errorAlert(error.message);
             if (error.message.includes('not exist')) {
@@ -177,19 +204,6 @@ const Verification: React.SFC<VerificationProps> = ({
         getShopDetailsFromServer();
     }, []);
 
-    React.useEffect(() => {
-        findCurrentPosition();
-        if (verificationDetails.shopVerificationStatus === verificationStatus.rejected) {
-            let labelsi = [...indicatorLabel];
-            labelsi[1] = 'Your request is rejected';
-            setLabels(labelsi);
-        } else {
-            let labelsi = [...indicatorLabel];
-            labelsi[1] = 'Your request is accepted';
-            setLabels(labelsi);
-        }
-    }, [verificationDetails.shopVerificationStatus]);
-
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
             <StatusBar />
@@ -225,7 +239,7 @@ const Verification: React.SFC<VerificationProps> = ({
                         <StepIndicator
                             customStyles={customStyles}
                             currentPosition={currentPosition}
-                            labels={labels}
+                            labels={indicatorLabel}
                             stepCount={3}
                             direction={'vertical'}
                         />
@@ -256,7 +270,16 @@ const Verification: React.SFC<VerificationProps> = ({
                     {showMemberDetails(owner, shopMemberRole.Owner, dukanName)}
                     {showMemberDetails(coOwner, shopMemberRole.coOwner, dukanName)}
                     {showMemberDetails(worker, shopMemberRole.worker, dukanName)}
+                </ScrollView>
+                <View
+                    style={{
+                        position: 'absolute',
+                        bottom: '3%',
 
+                        left: '5%',
+                        right: '5%',
+                    }}
+                >
                     {verificationDetails.isVerified ? (
                         <TextButton
                             onPress={() => {
@@ -271,53 +294,45 @@ const Verification: React.SFC<VerificationProps> = ({
                             ]}
                         />
                     ) : (
-                        <View />
+                        <View>
+                            <TextButton
+                                onPress={() => {
+                                    navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                        screen: NavigationKey.ADDDUKANMEMBERS,
+                                        ownerDetails,
+                                        update: true,
+                                    });
+                                }}
+                                textProps={componentProps.buttonTextProps}
+                                text={'Edit dukan member details'}
+                                containerStyle={[
+                                    buttonContainerStyle,
+                                    { marginTop: getHP(0) },
+                                    //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
+                                ]}
+                            />
+                            <TextButton
+                                onPress={() => {
+                                    Alert.alert(
+                                        'Warning!',
+                                        'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
+                                        [
+                                            {
+                                                text: 'Remove my dukan from market',
+                                                onPress: deleteShopFromServerStorage,
+                                            },
+                                            {
+                                                text: 'Cancel',
+                                            },
+                                        ],
+                                    );
+                                }}
+                                textProps={componentProps.buttonTextProps}
+                                text={'Remove my dukan from market'}
+                                containerStyle={[buttonContainerStyle, { marginTop: getHP(0.12) }]}
+                            />
+                        </View>
                     )}
-                </ScrollView>
-                <View
-                    style={{
-                        position: 'absolute',
-                        bottom: '5%',
-                        left: '5%',
-                        right: '5%',
-                    }}
-                >
-                    <TextButton
-                        onPress={() => {
-                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                screen: NavigationKey.ADDDUKANMEMBERS,
-                                ownerDetails,
-                                update: true,
-                            });
-                        }}
-                        textProps={componentProps.buttonTextProps}
-                        text={'Edit dukan member details'}
-                        containerStyle={[
-                            buttonContainerStyle,
-                            { marginTop: getHP(0.3) },
-                            //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
-                        ]}
-                    />
-                    <TextButton
-                        onPress={() => {
-                            Alert.alert(
-                                'Warning!',
-                                'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
-                                [
-                                    {
-                                        text: 'Remove my dukan from market',
-                                        onPress: deleteShopFromServerStorage,
-                                    },
-                                    {
-                                        text: 'Cancel',
-                                    },
-                                ],
-                            );
-                        }}
-                        textProps={componentProps.buttonTextProps}
-                        text={'Remove my dukan from market'}
-                        containerStyle={[buttonContainerStyle, { marginTop: getHP(0.12) }]}
-                    />
                 </View>
             </View>
             {loader && <Loader />}

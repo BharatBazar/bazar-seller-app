@@ -49,6 +49,7 @@ export interface IRGetShop extends CommonApiResponse {
 
 export enum verificationStatus {
     registered = 'Registered',
+    processing = 'Processing',
     rejected = 'Rejected',
     verified = 'Verified',
 }

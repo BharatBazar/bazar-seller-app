@@ -20,8 +20,8 @@ export const textInputContainerStyle: ViewStyle = {
 };
 
 export const buttonContainerStyle: ViewStyle = {
-    ...PH(),
-    ...PV(),
+    // ...PH(0.1),
+    // ...PV(0.1),
 
     ...BR(),
     height: getHP(0.4),
