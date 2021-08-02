@@ -6,14 +6,12 @@ import AddDukanMembers from './AddDukanMembers';
 import { NavigationKey } from '../../labels';
 import React from 'react';
 import { View } from 'react-native';
-import HeaderBar from '../component/HeaderBar';
 import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import ProductDetails from './ProductCategory';
+import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
-import { BGCOLOR, FLEX, provideShadow } from '../../common/styles';
+import { BGCOLOR, FLEX } from '../../common/styles';
 import { Right } from '../../navigation/NavigationEffect';
-import StatusBar from '../component/StatusBar';
 import Address from './Address';
 
 const Stack = createStackNavigator();

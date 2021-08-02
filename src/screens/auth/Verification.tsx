@@ -95,8 +95,8 @@ const Verification: React.SFC<VerificationProps> = ({
     },
 }) => {
     const [verificationDetails, setVerificationDetails] = React.useState<
-        Partial<{ isVerified: boolean; shopVerificationStatus?: verificationStatus; remarks: string }>
-    >({ shopVerificationStatus: undefined, isVerified: false });
+        Partial<{ isVerified: boolean; verificationStatus?: verificationStatus; remarks: string }>
+    >({ verificationStatus: undefined, isVerified: false });
 
     const [owner, setOwnerDetails] = React.useState<IshopMember[]>([]);
     const [coOwner, setcoOwner] = React.useState<IshopMember[]>([]);
@@ -107,8 +107,9 @@ const Verification: React.SFC<VerificationProps> = ({
     const [indicatorLabel, setLabels] = React.useState(labels);
 
     const findCurrentPosition = async () => {
-        const requestStatuss = verificationDetails.shopVerificationStatus;
+        const requestStatuss = verificationDetails.verificationStatus;
         let position;
+        console.log('registeration status =>', requestStatuss);
         if (requestStatuss === verificationStatus.registered) {
             position = 0;
         } else if (requestStatuss == verificationStatus.processing) {
