@@ -7,7 +7,7 @@ import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
 import { mainColor } from '../../common/color';
-import { IRGetShop, IRShopVerification, verificationStatus } from '../../server/apis/shop/shop.interface';
+import { IRGetShop, IRShopVerification, Shop, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
 import TextButton from '../component/TextButton';
@@ -60,7 +60,15 @@ const Section = (propertyName: string, value: string) => (
     </View>
 );
 
-const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanName: string) => {
+const SectionHorizontal = (propertyName: string, value: string) => (
+    <View style={[FDR(), JCC('space-between'), MV(0.1)]}>
+        <WrappedText text={propertyName} fontSize={fs14} />
+
+        <WrappedText text={value} textColor={'#8a8a8a'} fontSize={fs14} />
+    </View>
+);
+
+const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanName: string, onPressEdit: Function) => {
     if (details.length == 0) {
         return <WrappedText text={'There is no ' + role + ' in your shop.'} />;
     } else {
@@ -75,7 +83,9 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
                     />
                     <WrappedFeatherIcon
                         iconName={'edit'}
-                        onPress={() => {}}
+                        onPress={() => {
+                            onPressEdit();
+                        }}
                         containerStyle={{ marginTop: 0, marginHorizontal: getWP(0.2) }}
                     />
                 </View>
@@ -86,6 +96,30 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
             </View>
         ));
     }
+};
+
+const shopDetails = (shop: Partial<Shop>) => {
+    return (
+        <View style={[PV(0.2), MT(0.1), PH(), BGCOLOR('#FFFFFF')]}>
+            <View style={[]}>
+                <WrappedText text={shop.shopName + ' address details'} textColor={mainColor} fontSize={fs18} />
+                <WrappedText text={shop.localAddress} textColor={'#8a8a8a'} fontSize={fs14} />
+            </View>
+            <View style={[MT(0.1)]} />
+            {SectionHorizontal('State', shop.state.name || 'NA')}
+            {SectionHorizontal('City', shop.city.name || 'NA')}
+            {SectionHorizontal('Area', shop.area.name || 'NA')}
+            {SectionHorizontal('Pincode', shop.pincode || 'NA')}
+
+            <WrappedText
+                text={'About ' + shop.shopName}
+                textColor={mainColor}
+                fontSize={fs18}
+                containerStyle={[MT(0.2)]}
+            />
+            <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} fontSize={fs14} />
+        </View>
+    );
 };
 
 const Verification: React.SFC<VerificationProps> = ({
@@ -105,6 +139,7 @@ const Verification: React.SFC<VerificationProps> = ({
     const [loader, setLoader] = React.useState<boolean>(false);
     const [currentPosition, setCurrentPosition] = React.useState<number>(0);
     const [indicatorLabel, setLabels] = React.useState(labels);
+    const [shop, setShop] = React.useState({});
 
     const findCurrentPosition = async () => {
         const requestStatuss = verificationDetails.verificationStatus;
@@ -140,7 +175,6 @@ const Verification: React.SFC<VerificationProps> = ({
                 _id: ownerDetails.shop,
             });
             setVerificationDetails(response.payload);
-            findVerificationIndex();
         } catch (error) {
             ToastHOC.errorAlert(error.message);
             if (error.message.includes('not exist')) {
@@ -148,6 +182,11 @@ const Verification: React.SFC<VerificationProps> = ({
             }
         }
     }
+
+    React.useEffect(() => {
+        findVerificationIndex();
+        return () => {};
+    }, [shop]);
 
     function logout() {
         Object.keys(StorageItemKeys).forEach(async (item) => {
@@ -194,6 +233,8 @@ const Verification: React.SFC<VerificationProps> = ({
             if (shop.worker.length > 0) {
                 setWorker(shop.worker);
             }
+            setShop(shop);
+            console.log(shop);
             setDukanName(shop.shopName);
         } catch (error) {
             ToastHOC.errorAlert(error.message);
@@ -262,15 +303,34 @@ const Verification: React.SFC<VerificationProps> = ({
                             containerStyle={[MT(0.05)]}
                         />
                     </View>
+                    <View>{shop.state ? shopDetails(shop) : <View />}</View>
                     <WrappedText
                         text={'Shop member details'}
                         fontSize={fs20}
                         textColor={mainColor}
                         textStyle={[MV(0.1)]}
                     />
-                    {showMemberDetails(owner, shopMemberRole.Owner, dukanName)}
-                    {showMemberDetails(coOwner, shopMemberRole.coOwner, dukanName)}
-                    {showMemberDetails(worker, shopMemberRole.worker, dukanName)}
+                    {showMemberDetails(owner, shopMemberRole.Owner, dukanName, () => {
+                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                            screen: NavigationKey.CREATEDUKAN,
+                            ownerDetails,
+                            update: true,
+                        });
+                    })}
+                    {showMemberDetails(coOwner, shopMemberRole.coOwner, dukanName, () => {
+                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                            screen: NavigationKey.ADDDUKANMEMBERS,
+                            ownerDetails,
+                            update: true,
+                        });
+                    })}
+                    {showMemberDetails(worker, shopMemberRole.worker, dukanName, () => {
+                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                            screen: NavigationKey.ADDDUKANMEMBERS,
+                            ownerDetails,
+                            update: true,
+                        });
+                    })}
                 </ScrollView>
                 <View
                     style={{
