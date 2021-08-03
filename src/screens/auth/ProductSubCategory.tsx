@@ -290,7 +290,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
                                                     />
                                                 </View>
                                                 <LoadProductDetails
-                                                    query={{ subCategoryRef: newSubCategory._id }}
+                                                    query={{ parent: newSubCategory._id, active: true }}
                                                     data={subCategory[newSubCategory._id]}
                                                     setData={(data: productData[]) => {
                                                         updateSubCategory(data, newSubCategory._id);
