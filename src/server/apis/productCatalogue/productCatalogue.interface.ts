@@ -6,17 +6,18 @@ export enum categoryType {
     SubCategory1 = 'SubCategory1',
 }
 
-export interface product {
+export interface IProductCatalogue {
     name: string;
     description: string;
     image: string;
     categoryType: categoryType;
     subCategoryExist: boolean;
     parent: string;
-    chil: string;
+    active: boolean;
+    child: string;
     _id: string;
 }
 
 export interface IRGetProductCatalogue extends CommonApiResponse {
-    payload: [product];
+    payload: [IProductCatalogue];
 }

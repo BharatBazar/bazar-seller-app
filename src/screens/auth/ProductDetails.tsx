@@ -3,7 +3,12 @@ import { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { AIC, BGCOLOR, BR, FLEX, JCC, MT, PH } from '../../common/styles';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
-import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
+import {
+    categoryType,
+    IProductCatalogue,
+    IRGetProductCatalogue,
+    product,
+} from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
 import HeaderText from './component/HeaderText';
 import { getHP } from '../../common/dimension';
@@ -54,7 +59,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         }
     };
 
-    const fetchProductDetails = async (data: Object) => {
+    const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
         const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
         if (response.status == 1) {
             const data: productData[] = response.payload.map((item) => {
@@ -67,7 +72,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     };
 
     useEffect(() => {
-        fetchProductDetails({ categoryType: 'Category' });
+        fetchProductDetails({ categoryType: categoryType.Category, active: true });
         //getShopDetails();
 
         return () => {};

@@ -100,18 +100,20 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
         if (response.status == 1) {
             setShop(response.payload);
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
+                active: true,
                 parent: { $in: response.payload.category.map((item) => item._id) },
                 categoryType: categoryType.SubCategory,
             });
-
+            console.log('response', response1.payload);
             let data: [productData[]] = [];
             response.payload.category.forEach((item, index) => {
                 let data1: productData[] = response1.payload
-                    .filter((subCateogry) => subCateogry.parent == item._id)
+                    .filter((subCateogry) => subCateogry.parent._id == item._id)
                     .map((item) => {
                         return { ...item, selected: false };
                     });
                 data.push(data1);
+                console.log(data, data1);
                 if (index == response.payload.category.length - 1) {
                     setCategory(data);
                 }
@@ -216,7 +218,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
                                 <WrappedText
                                     text={
                                         item.subCategoryExist
-                                            ? 'Sell ' + item.name + ' for '
+                                            ? 'Choose item you sell under ' + item.name + ' category.'
                                             : 'Choose product category you sell under ' + item.name + ''
                                     }
                                     textColor={colorCode.CHAKRALOW(90)}

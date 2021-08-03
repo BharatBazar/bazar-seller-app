@@ -1,6 +1,7 @@
 import { IapiEndPOint } from './../common.interface';
 import { makeRequest } from '../common.interface';
-import { IRGetProductCatalogue, categoryType } from './productCatalogue.interface';
+import { IRGetProductCatalogue, categoryType, IProductCatalogue } from './productCatalogue.interface';
+import axios from 'axios';
 
 const apiEndPointProductCatalogue: IapiEndPOint = {
     getProductCatalogue: {
@@ -9,11 +10,6 @@ const apiEndPointProductCatalogue: IapiEndPOint = {
     },
 };
 
-export async function getProductCatalogueAPI(data: { categoryType: categoryType }): Promise<IRGetProductCatalogue> {
-    const options = {
-        ...apiEndPointProductCatalogue.getProductCatalogue,
-        data,
-    };
-
-    return makeRequest(options);
+export async function getProductCatalogueAPI(data: Partial<IProductCatalogue>): Promise<IRGetProductCatalogue> {
+    return axios.post('/catalogue/get', data);
 }
