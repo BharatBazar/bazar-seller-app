@@ -344,7 +344,8 @@ const Verification: React.SFC<VerificationProps> = ({
                     {verificationDetails.isVerified ? (
                         <TextButton
                             onPress={() => {
-                                navigation.replace(NavigationKey.PRODUCTCATEGORY, {
+                                navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                    screen: NavigationKey.PRODUCTDETAILS,
                                     ownerDetails,
                                 });
                             }}

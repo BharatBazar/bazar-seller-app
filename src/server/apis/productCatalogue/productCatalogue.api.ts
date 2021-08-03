@@ -4,7 +4,7 @@ import { IRGetProductCatalogue, categoryType } from './productCatalogue.interfac
 
 const apiEndPointProductCatalogue: IapiEndPOint = {
     getProductCatalogue: {
-        url: '/productCatalogue/getProducts',
+        url: '/catalogue/get',
         method: 'post',
     },
 };

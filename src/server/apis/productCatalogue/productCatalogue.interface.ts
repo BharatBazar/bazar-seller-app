@@ -12,7 +12,8 @@ export interface product {
     image: string;
     categoryType: categoryType;
     subCategoryExist: boolean;
-    subCategoryRef: String;
+    parent: string;
+    chil: string;
     _id: string;
 }
 

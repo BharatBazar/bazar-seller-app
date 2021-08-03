@@ -17,7 +17,11 @@ import {
     PV,
     W,
 } from '../../common/styles';
-import { IRGetProductCatalogue, product } from '../../server/apis/productCatalogue/productCatalogue.interface';
+import {
+    categoryType,
+    IRGetProductCatalogue,
+    product,
+} from '../../server/apis/productCatalogue/productCatalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
@@ -92,16 +96,18 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
         let response: IRGetShop = await getShop({
             _id: ownerDetails.shop,
         });
+        console.log(response.payload.category);
         if (response.status == 1) {
             setShop(response.payload);
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
-                subCategoryRef: { $in: response.payload.category.map((item) => item._id) },
+                parent: { $in: response.payload.category.map((item) => item._id) },
+                categoryType: categoryType.SubCategory,
             });
 
             let data: [productData[]] = [];
             response.payload.category.forEach((item, index) => {
                 let data1: productData[] = response1.payload
-                    .filter((subCateogry) => subCateogry.subCategoryRef == item._id)
+                    .filter((subCateogry) => subCateogry.parent == item._id)
                     .map((item) => {
                         return { ...item, selected: false };
                     });
