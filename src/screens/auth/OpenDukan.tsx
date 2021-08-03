@@ -67,6 +67,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     };
 
     const resetTo = (screen: string, params: IshopMemberPopulated) => {
+        console.log('screen => ', screen);
         navigation.reset({
             index: 0,
             routes: [
@@ -107,9 +108,9 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     screen = NavigationKey.PRODUCTSUBCATEGORY;
                 } else {
                     await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
-                    screen = NavigationKey.HOME;
+                    screen = NavigationKey.BHARATBAZARHOME;
                 }
-                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.HOME) {
+                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.BHARATBAZARHOME) {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     resetTo(screen, currentAccountState.data);
                 } else {
