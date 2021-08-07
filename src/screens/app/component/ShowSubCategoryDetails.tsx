@@ -6,7 +6,7 @@ import { getHP } from '../../../common/dimension';
 import WrappedText from '../../component/WrappedText';
 import Icon from 'react-native-vector-icons/Feather';
 import { fs20 } from '../../../common';
-import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
+import { product } from '../../../server/apis/catalogue/catalogue.interface';
 import { FastImageWrapper } from '../../component/FastImage';
 import { AIC, BGCOLOR, BR, FDR, H, HP, ML, provideShadow, W } from '../../../common/styles';
 import * as Animatable from 'react-native-animatable';

@@ -10,7 +10,7 @@ import { getShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
-import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
+import { product } from '../../../server/apis/catalogue/catalogue.interface';
 import AccordionHOC from './component/Accordion';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../../storage';

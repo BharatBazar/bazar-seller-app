@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BC, BGCOLOR, BR, BW, FDR, JCC, ML, MT, PV } from '../../../../common/styles';
+import { BC, BGCOLOR, BR, BW, JCC, MT, PV } from '../../../../common/styles';
 import { IFilter, IPostDataToServer } from './component/generalConfig';
 import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
@@ -8,7 +8,6 @@ import ProductContainer from './component/productContainerHOC';
 import ShowFilterModal, { ShowFilter } from './component/ShowFilter';
 import { fs12, fs18 } from '../../../../common';
 import { getHP } from '../../../../common/dimension';
-import ProductButton from './component/ProductButton';
 import TextButton from '../../../component/TextButton';
 import { borderColor, mainColor } from '../../../../common/color';
 import { IClassifier, IProduct } from '../../../../server/apis/product/product.interface';

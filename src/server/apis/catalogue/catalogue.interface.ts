@@ -1,4 +1,4 @@
-import { CommonApiResponse, IapiEndPOint } from './../common.interface';
+import { CommonApiResponse, IapiEndPOint } from '../common.interface';
 
 export enum categoryType {
     Category = 'Category',

@@ -1,4 +1,4 @@
-import { product } from './../productCatalogue/productCatalogue.interface';
+import { product } from '../catalogue/catalogue.interface';
 import { commonApiHandler } from './../../index';
 import { CommonApiResponse, IapiEndPOint } from './../common.interface';
 import { IshopMember } from '../shopMember/shopMember.interface';

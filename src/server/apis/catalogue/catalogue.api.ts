@@ -1,6 +1,6 @@
-import { IapiEndPOint } from './../common.interface';
+import { IapiEndPOint } from '../common.interface';
 import { makeRequest } from '../common.interface';
-import { IRGetProductCatalogue, categoryType, IProductCatalogue } from './productCatalogue.interface';
+import { IRGetProductCatalogue, categoryType, IProductCatalogue } from './catalogue.interface';
 import axios from 'axios';
 
 const apiEndPointProductCatalogue: IapiEndPOint = {

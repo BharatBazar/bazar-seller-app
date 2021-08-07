@@ -8,8 +8,8 @@ import {
     IProductCatalogue,
     IRGetProductCatalogue,
     product,
-} from '../../server/apis/productCatalogue/productCatalogue.interface';
-import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
+} from '../../server/apis/catalogue/catalogue.interface';
+import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 import HeaderText from './component/HeaderText';
 import { getHP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';

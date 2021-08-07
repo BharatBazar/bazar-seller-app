@@ -5,7 +5,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import { fs14, fs16, fs22, NavigationProps } from '../../../../common';
 import { NavigationKey } from '../../../../labels';
 import { ShowSubCategory } from '../../component';
-import { product } from '../../../../server/apis/productCatalogue/productCatalogue.interface';
+import { product } from '../../../../server/apis/catalogue/catalogue.interface';
 import { getHP, getWP } from '../../../../common/dimension';
 
 interface ISection {

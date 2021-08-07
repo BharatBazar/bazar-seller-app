@@ -27,9 +27,18 @@ const Product: React.FC<ProductProps> = ({
 }) => {
     const [searchedText, setSearchedText] = React.useState('');
 
+    const setBaseUrl = () => {
+        if (subCategory1) {
+            axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory1.toLowerCase()}`;
+        } else if (subCategory) {
+            axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory.toLowerCase()}`;
+        } else if (category) {
+            axios.defaults.baseURL = apiEndPoint + `/catalogue/${category.toLowerCase()}`;
+        }
+    };
+
     React.useEffect(() => {
-        console.log(apiEndPoint + `/catalogue/${'mens'}/${'clothes'}/${'jeans'}`);
-        axios.defaults.baseURL = apiEndPoint + `/catalogue/${'mens'}/${'clothes'}/${'jeans'}`;
+        setBaseUrl();
         return () => {
             axios.defaults.baseURL = apiEndPoint;
         };

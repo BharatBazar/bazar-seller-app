@@ -9,7 +9,7 @@ import { AIC, BGCOLOR, FLEX, JCC } from '../../../common/styles';
 
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
-import { product } from '../../../server/apis/productCatalogue/productCatalogue.interface';
+import { product } from '../../../server/apis/catalogue/catalogue.interface';
 
 export interface CategoryProps extends NavigationProps {
     route: {

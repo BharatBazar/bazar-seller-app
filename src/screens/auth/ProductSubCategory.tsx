@@ -17,12 +17,8 @@ import {
     PV,
     W,
 } from '../../common/styles';
-import {
-    categoryType,
-    IRGetProductCatalogue,
-    product,
-} from '../../server/apis/productCatalogue/productCatalogue.interface';
-import { getProductCatalogueAPI } from '../../server/apis/productCatalogue/productCatalogue.api';
+import { categoryType, IRGetProductCatalogue, product } from '../../server/apis/catalogue/catalogue.interface';
+import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
