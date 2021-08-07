@@ -1,6 +1,5 @@
-import { CommonApiResponse } from '../../common.interface';
-import { classifierTypes } from '../category/category.interface';
-
+import { CommonApiResponse } from '../common.interface';
+import { classifierTypes } from '../product/product.interface';
 export interface IFilter {
     _id: string;
     name: string; // Filter name Like waist size
@@ -14,4 +13,11 @@ export interface IFilter {
 
 export interface IRGetFilter extends CommonApiResponse {
     payload: IFilter[];
+}
+
+export interface IRGetFilterWithValue extends CommonApiResponse {
+    payload: {
+        filter: IFilter[];
+        distribution: IFilter[];
+    };
 }

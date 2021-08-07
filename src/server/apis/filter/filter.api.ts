@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import { CommonApiResponse } from '../common.interface';
-import { IFilter, IRGetFilter } from './filter.interface';
+import { IFilter, IRGetFilter, IRGetFilterWithValue } from './filter.interface';
 
 export function createFilter(data: Partial<IFilter>): Promise<CommonApiResponse> {
     return axios.post('/filter/create', data);
@@ -19,7 +19,7 @@ export function getFilter(data: Partial<IFilter>): Promise<IRGetFilter> {
     return axios.post('/filter/getAll', data);
 }
 
-export function getFilterWithValue(data: Partial<IFilter>): Promise<IRGetFilter> {
+export function getFilterWithValue(data: Partial<IFilter>): Promise<IRGetFilterWithValue> {
     return axios.post('/filter/getAllWithValue', data);
 }
 
