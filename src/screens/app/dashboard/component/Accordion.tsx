@@ -75,7 +75,7 @@ export default class AccordionHOC extends React.Component<Props, State> {
             >
                 {section.category.subCategoryExist ? (
                     section.subCategory.map((item, index) => (
-                        <Animatable.View>
+                        <Animatable.View key={item.name + index.toString()}>
                             <ShowSubCategory
                                 item={item}
                                 touch={!item.subCategoryExist}

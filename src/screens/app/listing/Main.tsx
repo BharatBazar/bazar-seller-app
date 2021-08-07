@@ -3,7 +3,7 @@ import * as React from 'react';
 import { View, TextInput } from 'react-native';
 import { fs18, NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
-import { getHP } from '../../../common/dimension';
+import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, PH, PV } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import { apiEndPoint } from '../../../server';
@@ -39,16 +39,16 @@ const Product: React.FC<ProductProps> = ({
 
     React.useEffect(() => {
         setBaseUrl();
-        return () => {
-            axios.defaults.baseURL = apiEndPoint;
-        };
+        // return () => {
+        //     axios.defaults.baseURL = apiEndPoint;
+        // };
     }, []);
 
     return (
         <View style={{ flex: 1, backgroundColor: colorCode.WHITELOW(20) }}>
             <StatusBar statusBarColor={colorCode.CHAKRALOW(70)} />
-            <View style={[PH(0.3), PV(0.1), BGCOLOR(mainColor)]}>
-                <View style={[FDR(), JCC('space-between'), AIC('center')]}>
+            <View style={[PV(0.1), BGCOLOR(mainColor)]}>
+                <View style={[FDR(), JCC('space-between'), AIC('center'), PH(0.3)]}>
                     <View style={[FDR()]}>
                         <WrappedFeatherIcon
                             onPress={() => {
@@ -79,7 +79,16 @@ const Product: React.FC<ProductProps> = ({
                         />
                     </View>
                 </View>
-                <View style={[{ height: getHP(0.5), justifyContent: 'center', paddingTop: getHP(0.1) }]}>
+                <View
+                    style={[
+                        {
+                            height: getHP(0.5),
+                            justifyContent: 'center',
+                            paddingTop: getHP(0.1),
+                            paddingHorizontal: getWP(0.5),
+                        },
+                    ]}
+                >
                     <TextInput
                         style={[
                             {
@@ -96,7 +105,7 @@ const Product: React.FC<ProductProps> = ({
                     />
                 </View>
             </View>
-            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), PH(0.3), { flexWrap: 'wrap' }]}>
+            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
                 {/* <Status
                     name={'Incomplete'}
                     count={10}

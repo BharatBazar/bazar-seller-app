@@ -51,12 +51,12 @@ const ProductList: React.SFC<ProductListProps> = ({
         fetchProducts();
     }, []);
 
-    console.log(category, subCategory, subCategory1);
     return (
         <ScrollView style={{ flex: 1 }}>
             {loading && <ActivityIndicator />}
-            {product.map((item) => (
+            {product.map((item, index) => (
                 <ProductIdentifierView
+                    key={index}
                     product={item}
                     onPress={() => {
                         navigation.navigate(NavigationKey.CREATEPRODUCT, {

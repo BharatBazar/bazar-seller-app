@@ -44,24 +44,28 @@ export default class Home extends React.Component<Props, State> {
     };
 
     getShopDetails = async () => {
-        const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
-        console.log(userDetails);
-        this.setState({ userDetails });
-        let response: IRGetShop = await getShop({
-            _id: userDetails.shop,
-        });
-        if (response.status == 1) {
-            this.setState({
-                shop: response.payload,
-                section: response.payload.category.map((cat, index) => {
-                    return {
-                        category: cat,
-                        subCategory: response.payload.subCategory[index],
-                        subCategory1: response.payload.subCategory1[index],
-                    };
-                }),
+        try {
+            const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
+
+            this.setState({ userDetails });
+            let response: IRGetShop = await getShop({
+                _id: userDetails.shop,
             });
-        } else {
+            if (response.status == 1) {
+                this.setState({
+                    shop: response.payload,
+                    section: response.payload.category.map((cat, index) => {
+                        return {
+                            category: cat,
+                            subCategory: response.payload.subCategory[index],
+                            subCategory1: response.payload.subCategory1[index],
+                        };
+                    }),
+                });
+            } else {
+            }
+        } catch (error) {
+            console.log('error =>', error);
         }
     };
 

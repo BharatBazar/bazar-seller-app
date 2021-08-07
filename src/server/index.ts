@@ -19,10 +19,17 @@ function isNetworkError(err: { isAxiosError: any; response: { data: any } }) {
 
 export function initializeAxios() {
     axios.defaults.baseURL = apiEndPoint;
+    console.log(axios.interceptors.response.handlers, axios.interceptors.request.handlers);
+    // if (axios.interceptors.request.handlers.length == 0) {
+    //     axios.interceptors.request.use((value) => {
+    //         console.log('Starting Request', value.baseURL + value.url);
+    //     });
+    // }
 
     if (axios.interceptors.response.handlers.length == 0) {
         axios.interceptors.response.use(
             (response) => {
+                console.log('Request completed');
                 return response.data;
             },
             (error) => {
