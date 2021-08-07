@@ -83,8 +83,9 @@ export interface IFilter {
     image: string; // Image url
     type: classifierTypes; // It will refer to the type to which the filter belongs
     multiple: boolean; // Multiple values can selected or not
-    distributionLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
+    filterLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
     values: IClassifier[];
+    active: boolean;
 }
 
 export enum classifierTypes {

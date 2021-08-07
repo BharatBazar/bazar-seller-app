@@ -112,6 +112,8 @@ const Sections: React.FC<SectionsProps> = ({
             />
             {distribution.length == 0 ? (
                 <View />
+            ) : distribution[0].filterLevel != 1 ? (
+                <View />
             ) : (
                 <Colors
                     errorValue={error['colors']}
