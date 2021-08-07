@@ -184,9 +184,10 @@ const renderFilter = (
                 }}
             />
             {selectedTags &&
-                Object.values(selectedTags).map((classifier: IClassifier) => {
+                Object.values(selectedTags).map((classifier: IClassifier, index: number) => {
                     return (
                         <ShowFilter
+                            key={index}
                             item={classifier}
                             onPress={(data) => {
                                 onSelect(data);
