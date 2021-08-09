@@ -222,12 +222,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         if (errorValue == 1 && childError.length > 0) {
             if (childError.every((item) => item == 2)) {
                 //All checks passed
-                console.log('All checks passed!');
                 setAllErrorToParticularValue(0);
                 setError(2);
             } else if (childError.every((item) => item == 3 || item == 2)) {
                 //Not All check passed
-                console.log(childError, 'Not all checks passed!');
+
                 setAllErrorToParticularValue(0);
                 setError(3);
             }

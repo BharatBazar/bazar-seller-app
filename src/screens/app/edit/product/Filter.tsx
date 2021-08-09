@@ -31,7 +31,6 @@ const renderFilter = (
     postDataToServer: IPostDataToServer,
     productId: string,
 ) => {
-    console.log(fitlerValues);
     const [showPopup, setPopup] = React.useState<boolean>(false);
     const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
     const [loading, setLoader] = React.useState(false);
@@ -53,7 +52,6 @@ const renderFilter = (
         let exist: IClassifier | undefined | IClassifier[] = fitlerValues || undefined;
         if (exist) {
             var isArr = exist instanceof Array;
-            console.log('exist  =>', isArr);
 
             if (!isArr) {
                 let data = {};
@@ -61,12 +59,9 @@ const renderFilter = (
                 setSelected(data);
             } else {
                 let data = {};
-                console.log('type details', exist);
 
                 if (exist.length > 0) {
-                    console.log(exist);
                     exist.forEach((element, index) => {
-                        console.log(element);
                         data[element._id] = element;
                         if (exist.length - 1 == index) {
                             setSelected(data);
@@ -155,7 +150,6 @@ const renderFilter = (
         return () => {};
     }, [fitlerValues]);
 
-    console.log(selectedTags);
     return (
         <View
             key={index}
@@ -220,8 +214,6 @@ interface FilterProps {
 }
 
 const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails, productId }) => {
-    console.log('productDetails', productDetails);
-
     return (
         <ProductContainer>
             <ProductDetailsHeading
