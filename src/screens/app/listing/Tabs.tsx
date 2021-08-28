@@ -22,8 +22,8 @@ interface ProductTabProps extends NavigationProps {
 const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, subCategory1, subCategory }) => {
     const layout = useWindowDimensions();
 
-    const [index, setIndex] = React.useState(0);
-    const [routes] = React.useState([
+    const [index, setIndex] = React.useState(4);
+    const [routes, serRoutes] = React.useState([
         { key: 'first', title: 'Active' },
         { key: 'second', title: 'Waiting for approval' },
         { key: 'third', title: 'Pending' },
@@ -66,20 +66,6 @@ const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, s
             renderTabBar={(props) => (
                 <TabBar
                     {...props}
-                    indicatorStyle={{
-                        height: 0,
-                        width: 150,
-                        borderBottomColor: mainColor,
-                        backgroundColor: 'transparent',
-                        borderBottomWidth: 3,
-                        borderLeftWidth: 4,
-                        borderRightWidth: 4,
-                        borderRightColor: 'transparent',
-                        borderLeftColor: 'transparent',
-                    }}
-                    renderLabel={({ route }) => {
-                        return <WrappedText text={route.title} textColor={mainColor} />;
-                    }}
                     // renderIndicator={({ getTabWidth, position }) => (
                     //     <View
                     //         style={{
@@ -101,6 +87,20 @@ const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, s
                     //         <WrappedText text={route.title} />
                     //     </View>
                     // )}
+                    indicatorStyle={{
+                        height: 0,
+                        width: 150,
+                        borderBottomColor: mainColor,
+                        backgroundColor: 'transparent',
+                        borderBottomWidth: 3,
+                        borderLeftWidth: 4,
+                        borderRightWidth: 4,
+                        borderRightColor: 'transparent',
+                        borderLeftColor: 'transparent',
+                    }}
+                    renderLabel={({ route }) => {
+                        return <WrappedText text={route.title} textColor={mainColor} />;
+                    }}
                     tabStyle={{ width: 150, height: getHP(0.7) }}
                     style={{ backgroundColor: colorCode.WHITE }}
                     labelStyle={{ color: mainColor }}

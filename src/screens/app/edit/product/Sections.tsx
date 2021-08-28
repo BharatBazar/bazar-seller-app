@@ -44,7 +44,6 @@ const Sections: React.FC<SectionsProps> = ({
     filter,
     distribution,
 }) => {
-    console.log(filter, distribution);
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
     const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0 });
 

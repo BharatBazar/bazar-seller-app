@@ -274,8 +274,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
         >
             <View style={[marHor, marTop]}>
                 <ProductDetailsHeading
-                    heading={'Select Color'}
-                    subHeading={'Select color variant for product by clicking on add color.'}
+                    heading={distribution[0].name}
+                    subHeading={distribution[0].description}
                     error={error['generalError']}
                 />
 

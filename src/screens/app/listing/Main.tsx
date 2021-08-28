@@ -105,7 +105,7 @@ const Product: React.FC<ProductProps> = ({
                     />
                 </View>
             </View>
-            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
+            <View style={[FLEX(1), PH(0.3), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
                 {/* <Status
                     name={'Incomplete'}
                     count={10}
