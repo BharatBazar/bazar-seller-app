@@ -24,6 +24,7 @@ import { ToastHOC } from '../../hoc/ToastHOC';
 import Loader from '../../component/Loader';
 import { IRGetFilterWithValue } from '../../../server/apis/filter/filter.interface';
 import { getFilterWithValue } from '../../../server/apis/filter/filter.api';
+import { returnEmptyStringOrValue } from '../../../common/helper';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -183,7 +184,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             />
             <View style={[border, FDR(), padHor, PR(0.1), PV(0.1)]}>
                 <WrappedText
-                    text={'This product is under ' + category + ' ' + subCategory + ' ' + subCategory1 + ' category.'}
+                    text={`This product is under ${returnEmptyStringOrValue(category)} ${returnEmptyStringOrValue(
+                        subCategory,
+                    )} ${returnEmptyStringOrValue(subCategory1)} category.`}
                     containerStyle={[FLEX(1)]}
                     textColor={colorCode.BLACKLOW(40)}
                 />
