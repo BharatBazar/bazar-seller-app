@@ -51,6 +51,20 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>Scan QR to pay via UPI</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Allow Contact Access to share app invite or trnasfer money to other users</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Enabling Face ID allows you quick and secure access to your account.</string>
+	<key>NSFileProviderDomainUsageDescription</key>
+	<string></string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow Location Acess to fetch the user address</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Scan QR to play via UPI</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Add QR to play via UPI</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

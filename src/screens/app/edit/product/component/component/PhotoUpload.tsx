@@ -5,7 +5,7 @@ import { MT } from '../../../../../../common/styles';
 import WrappedFeatherIcon from '../../../../../component/WrappedFeatherIcon';
 import { fs13, fs28 } from '../../../../../../common';
 import { mainColor } from '../../../../../../common/color';
-
+import ImagePicker from 'react-native-image-crop-picker';
 import { getHP } from '../../../../../../common/dimension';
 
 export interface PhotoUploadProps {}
@@ -14,7 +14,20 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
     return (
         <View>
             <View style={[styles.photoContainer, MT(0.1)]}>
-                <WrappedFeatherIcon iconName={'camera'} iconSize={fs28} iconColor={mainColor} onPress={() => {}} />
+                <WrappedFeatherIcon
+                    iconName={'camera'}
+                    iconSize={fs28}
+                    iconColor={mainColor}
+                    onPress={() => {
+                        ImagePicker.openPicker({
+                            width: 300,
+                            height: 400,
+                            cropping: true,
+                        }).then((image) => {
+                            console.log(image);
+                        });
+                    }}
+                />
                 <WrappedText
                     text={'Add Photos'}
                     textColor={'#707070'}
