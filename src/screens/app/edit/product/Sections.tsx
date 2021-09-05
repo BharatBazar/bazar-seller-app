@@ -5,7 +5,7 @@ import ShowPrice from '../component/ShowPrice';
 import Title from './Title';
 import Description from './Description';
 import Colors from './Colors';
-import { IProduct, IProductColor } from '../../../../server/apis/product/product.interface';
+import { IProduct, IProductColor, productStatus } from '../../../../server/apis/product/product.interface';
 import { IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
 
@@ -75,34 +75,38 @@ const Sections: React.FC<SectionsProps> = ({
         }
     }, [error]);
 
+    const incomplete = productDetails.status == productStatus.NOTCOMPLETED;
+
     return (
         <View>
-            <Title
-                title={productDetails['title'] || ''}
-                subTitle={productDetails['subTitle'] || ''}
-                update={update}
-                errorValue={error['title']}
-                setError={(value: number) => {
-                    console.log('SEt particular error title', value);
-                    setParticularError('title', value);
-                }}
-                postDataToServer={postDataToServer}
-            />
-
-            <Description
-                description={productDetails['description'] || ''}
-                update={productDetails['productDescription'] ? true : false}
-                postDataToServer={postDataToServer}
-                errorValue={error['description']}
-                setError={(value: number) => {
-                    setTimeout(() => {
-                        setParticularError('description', value);
-                    }, 10);
-                }}
-            />
-
-            <ShowPrice showPrice={productDetails['showPrice'] || false} />
-            <NewProduct />
+            {!incomplete && (
+                <>
+                    <Title
+                        title={productDetails['title'] || ''}
+                        subTitle={productDetails['subTitle'] || ''}
+                        update={update}
+                        errorValue={error['title']}
+                        setError={(value: number) => {
+                            console.log('SEt particular error title', value);
+                            setParticularError('title', value);
+                        }}
+                        postDataToServer={postDataToServer}
+                    />
+                    <Description
+                        description={productDetails['description'] || ''}
+                        update={productDetails['productDescription'] ? true : false}
+                        postDataToServer={postDataToServer}
+                        errorValue={error['description']}
+                        setError={(value: number) => {
+                            setTimeout(() => {
+                                setParticularError('description', value);
+                            }, 10);
+                        }}
+                    />
+                    <ShowPrice showPrice={productDetails['showPrice'] || false} />
+                    <NewProduct />
+                </>
+            )}
             <Filter
                 filters={filter}
                 postDataToServer={postDataToServer}

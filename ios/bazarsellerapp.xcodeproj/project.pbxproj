@@ -9,17 +9,17 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* bazarsellerappTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* bazarsellerappTests.m */; };
 		0C0E8F437FE64411AE6AF80D /* Roboto-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 852D74259DE14749897964EC /* Roboto-Regular.ttf */; };
+		0EAB992ADB1EF530B8F3759F /* libPods-bazarsellerapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FB91D75FD65A060F7EA296A3 /* libPods-bazarsellerapp.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1A83A4F2CC55D0A7A808C5F6 /* libPods-bazarsellerapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 639FBC94FA03889A7F13B2D5 /* libPods-bazarsellerapp.a */; };
 		25DB4FFC5073487C834DFD16 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BEAB022B2FA431A9AA651EE /* Roboto-Black.ttf */; };
 		2F3D6DAA1BCC44BB921992A8 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EC67BBB8C3E407DA308FCDC /* Roboto-Bold.ttf */; };
+		58853929DE6D2FDE8D30361F /* libPods-bazarsellerapp-bazarsellerappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D37EA88A90615BB9CC2977AC /* libPods-bazarsellerapp-bazarsellerappTests.a */; };
 		5B0E754856A54A879D1197F8 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7FB0A4AEB8CC4B66A5442155 /* Roboto-Thin.ttf */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		8F3C7427A0E84AF4A5690D7C /* FontsFree-Net-SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BC3B19AD2F79450A942870D7 /* FontsFree-Net-SFProDisplay-Regular.ttf */; };
 		8FBCC85BFA6E48938ED44D84 /* Helvetica.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E87249E384544568741F3EC /* Helvetica.ttf */; };
-		A99C5569F64BA3455F8BC198 /* libPods-bazarsellerapp-bazarsellerappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 60EBB018821E32710E95AA29 /* libPods-bazarsellerapp-bazarsellerappTests.a */; };
 		B3858581619A436290EAB946 /* Roboto-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E1955C14CB4C43DDB8D25831 /* Roboto-Light.ttf */; };
 		BF9CEA9060DF4E7AA0478C37 /* Roboto-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 294F53062DC74C7F85E320CB /* Roboto-Medium.ttf */; };
 		C2339E7E9DA9466B9B67BB44 /* FontsFree-Net-SFProDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F336516EDD44491DB1BE0AD0 /* FontsFree-Net-SFProDisplay-Bold.ttf */; };
@@ -40,6 +40,7 @@
 		00E356EE1AD99517003FC87E /* bazarsellerappTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bazarsellerappTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* bazarsellerappTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = bazarsellerappTests.m; sourceTree = "<group>"; };
+		06BECB714190E30B66F75D8B /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig"; sourceTree = "<group>"; };
 		078FDE1242DC4DF6B2066F64 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		08FD5C9EFD0540C9BBC20030 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		09960BB6E6004E7388BCE513 /* FontsFree-Net-SFProDisplay-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FontsFree-Net-SFProDisplay-Medium.ttf"; path = "../assets/fonts/FontsFree-Net-SFProDisplay-Medium.ttf"; sourceTree = "<group>"; };
@@ -54,12 +55,10 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bazarsellerapp/main.m; sourceTree = "<group>"; };
 		1E87249E384544568741F3EC /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
 		294F53062DC74C7F85E320CB /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
-		37BA5CD7B47F70965C91A110 /* Pods-bazarsellerapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp.release.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp.release.xcconfig"; sourceTree = "<group>"; };
+		30EAD21BA4B9EA3F49260486 /* Pods-bazarsellerapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp.debug.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp.debug.xcconfig"; sourceTree = "<group>"; };
 		3AB1821499FD4F44A6CFA385 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		53569EBE752D42FB938DB69C /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		5EEFD2DA86024010AA5394B4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
-		60EBB018821E32710E95AA29 /* libPods-bazarsellerapp-bazarsellerappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bazarsellerapp-bazarsellerappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		639FBC94FA03889A7F13B2D5 /* libPods-bazarsellerapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bazarsellerapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6BDC2AAE104C43B9B9D13A98 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		7FB0A4AEB8CC4B66A5442155 /* Roboto-Thin.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Thin.ttf"; path = "../assets/fonts/Roboto-Thin.ttf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = bazarsellerapp/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,13 +72,14 @@
 		B78645FFC3A2452688B8C80B /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		BC3B19AD2F79450A942870D7 /* FontsFree-Net-SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FontsFree-Net-SFProDisplay-Regular.ttf"; path = "../assets/fonts/FontsFree-Net-SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		CBBC37903EEA4240A919BBF4 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		CBC45E064FAE48865318B19F /* Pods-bazarsellerapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp.debug.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp.debug.xcconfig"; sourceTree = "<group>"; };
+		D37EA88A90615BB9CC2977AC /* libPods-bazarsellerapp-bazarsellerappTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bazarsellerapp-bazarsellerappTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3D24C1273E1D90E1AF81638 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig"; sourceTree = "<group>"; };
 		DB4AD113EE4E4556B3FB91BA /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
+		DC6CB8B223D695C9FEA63134 /* Pods-bazarsellerapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp.release.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp.release.xcconfig"; sourceTree = "<group>"; };
 		E1955C14CB4C43DDB8D25831 /* Roboto-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Light.ttf"; path = "../assets/fonts/Roboto-Light.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F336516EDD44491DB1BE0AD0 /* FontsFree-Net-SFProDisplay-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "FontsFree-Net-SFProDisplay-Bold.ttf"; path = "../assets/fonts/FontsFree-Net-SFProDisplay-Bold.ttf"; sourceTree = "<group>"; };
-		F46B6AE2862EECC8B67C15AF /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig"; sourceTree = "<group>"; };
-		FE94A9766E271C1CD2F1D2C8 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig"; sourceTree = "<group>"; };
+		FB91D75FD65A060F7EA296A3 /* libPods-bazarsellerapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bazarsellerapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A99C5569F64BA3455F8BC198 /* libPods-bazarsellerapp-bazarsellerappTests.a in Frameworks */,
+				58853929DE6D2FDE8D30361F /* libPods-bazarsellerapp-bazarsellerappTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -95,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1A83A4F2CC55D0A7A808C5F6 /* libPods-bazarsellerapp.a in Frameworks */,
+				0EAB992ADB1EF530B8F3759F /* libPods-bazarsellerapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,8 +136,8 @@
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				639FBC94FA03889A7F13B2D5 /* libPods-bazarsellerapp.a */,
-				60EBB018821E32710E95AA29 /* libPods-bazarsellerapp-bazarsellerappTests.a */,
+				FB91D75FD65A060F7EA296A3 /* libPods-bazarsellerapp.a */,
+				D37EA88A90615BB9CC2977AC /* libPods-bazarsellerapp-bazarsellerappTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -145,10 +145,10 @@
 		517785269A8EFA4F2B2E4BF4 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CBC45E064FAE48865318B19F /* Pods-bazarsellerapp.debug.xcconfig */,
-				37BA5CD7B47F70965C91A110 /* Pods-bazarsellerapp.release.xcconfig */,
-				F46B6AE2862EECC8B67C15AF /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */,
-				FE94A9766E271C1CD2F1D2C8 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */,
+				30EAD21BA4B9EA3F49260486 /* Pods-bazarsellerapp.debug.xcconfig */,
+				DC6CB8B223D695C9FEA63134 /* Pods-bazarsellerapp.release.xcconfig */,
+				06BECB714190E30B66F75D8B /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */,
+				D3D24C1273E1D90E1AF81638 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -225,12 +225,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "bazarsellerappTests" */;
 			buildPhases = (
-				201B0A8E72BC77499D7DA76C /* [CP] Check Pods Manifest.lock */,
+				A18239BE346B226515FCFA49 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
-				F153BE8D3A429B94A014D879 /* [CP] Embed Pods Frameworks */,
-				DCC01761DD233B265E894F24 /* [CP] Copy Pods Resources */,
+				B5239C97885035DD49BC1A31 /* [CP] Embed Pods Frameworks */,
+				003D5B8B66B7BA6911CF1CFD /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -246,14 +246,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "bazarsellerapp" */;
 			buildPhases = (
-				4883533CB65FF4084C67A748 /* [CP] Check Pods Manifest.lock */,
+				39D092ACF6FA673E49B7FD62 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
-				3AEDA6FF5979163A93ECEDB9 /* [CP] Embed Pods Frameworks */,
-				5D586ED1C38A7DD44FB0A33A /* [CP] Copy Pods Resources */,
+				D513B80D6A844C13AB42CCD4 /* [CP] Embed Pods Frameworks */,
+				071CDCD889DF3CBDC68B5DC7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -330,6 +330,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		003D5B8B66B7BA6911CF1CFD /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -344,46 +361,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nexport NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n";
 		};
-		201B0A8E72BC77499D7DA76C /* [CP] Check Pods Manifest.lock */ = {
+		071CDCD889DF3CBDC68B5DC7 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
+			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-bazarsellerapp-bazarsellerappTests-checkManifestLockResult.txt",
+				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		3AEDA6FF5979163A93ECEDB9 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		4883533CB65FF4084C67A748 /* [CP] Check Pods Manifest.lock */ = {
+		39D092ACF6FA673E49B7FD62 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -405,41 +400,29 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5D586ED1C38A7DD44FB0A33A /* [CP] Copy Pods Resources */ = {
+		A18239BE346B226515FCFA49 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			name = "[CP] Copy Pods Resources";
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-bazarsellerapp-bazarsellerappTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-resources.sh\"\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DCC01761DD233B265E894F24 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		F153BE8D3A429B94A014D879 /* [CP] Embed Pods Frameworks */ = {
+		B5239C97885035DD49BC1A31 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -454,6 +437,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D513B80D6A844C13AB42CCD4 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bazarsellerapp/Pods-bazarsellerapp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -508,7 +508,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F46B6AE2862EECC8B67C15AF /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */;
+			baseConfigurationReference = 06BECB714190E30B66F75D8B /* Pods-bazarsellerapp-bazarsellerappTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -535,7 +535,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FE94A9766E271C1CD2F1D2C8 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */;
+			baseConfigurationReference = D3D24C1273E1D90E1AF81638 /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
@@ -559,7 +559,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CBC45E064FAE48865318B19F /* Pods-bazarsellerapp.debug.xcconfig */;
+			baseConfigurationReference = 30EAD21BA4B9EA3F49260486 /* Pods-bazarsellerapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -585,7 +585,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 37BA5CD7B47F70965C91A110 /* Pods-bazarsellerapp.release.xcconfig */;
+			baseConfigurationReference = DC6CB8B223D695C9FEA63134 /* Pods-bazarsellerapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
