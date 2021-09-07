@@ -5,12 +5,15 @@ import { MT } from '../../../../../../common/styles';
 import WrappedFeatherIcon from '../../../../../component/WrappedFeatherIcon';
 import { fs13, fs28 } from '../../../../../../common';
 import { mainColor } from '../../../../../../common/color';
-import ImagePicker from 'react-native-image-crop-picker';
+import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import { getHP } from '../../../../../../common/dimension';
+import { FastImageWrapper } from 'screens/component/FastImage';
 
 export interface PhotoUploadProps {}
 
 const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
+    const [photos, setPhotos] = React.useState<ImageOrVideo[]>([]);
+
     return (
         <View>
             <View style={[styles.photoContainer, MT(0.1)]}>
@@ -19,13 +22,20 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                     iconSize={fs28}
                     iconColor={mainColor}
                     onPress={() => {
-                        ImagePicker.openPicker({
+                        ImagePicker.openCamera({
                             width: 300,
                             height: 400,
                             cropping: true,
-                        }).then((image) => {
-                            console.log(image);
-                        });
+                            multiple: true,
+                        })
+                            .then((image) => {
+                                let images = photos;
+                                images.push(...image);
+                                setPhotos(images);
+                            })
+                            .catch((error) => {
+                                console.log(error);
+                            });
                     }}
                 />
                 <WrappedText
@@ -37,6 +47,15 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                     }}
                 />
             </View>
+            {photos.map((item) => {
+                return (
+                    <FastImageWrapper
+                        source={{ uri: item.path }}
+                        imageStyle={styles.photoContainer}
+                        resizeMode={'cover'}
+                    />
+                );
+            })}
         </View>
     );
 };
