@@ -104,7 +104,12 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 numColumns={3}
                 keyExtractor={(item, index) => index.toString()}
             />
-            <DragSort data={photos} />
+            <DragSort
+                data={photos}
+                setPhotosArrayAfterReordering={(images) => {
+                    setPhotos(images);
+                }}
+            />
             <DeleteImagePopup
                 isVisible={selectedIndex ? true : false}
                 setPopup={() => {
@@ -121,15 +126,6 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 question={'Do you want to delete the below image?'}
                 image={selectedIndex ? photos[(selectedIndex - 1) as number] : undefined}
             />
-            {/* {photos.map((item) => {
-                return (
-                    <FastImageWrapper
-                        source={{ uri: item.sourceURL }}
-                        imageStyle={{ height: getHP(1), width: getHP(1), borderRadius: getHP(0.1) }}
-                        resizeMode={'cover'}
-                    />
-                );
-            })} */}
         </View>
     );
 };
