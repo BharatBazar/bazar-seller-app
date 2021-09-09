@@ -90,7 +90,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                                 iconName={'trash-2'}
                                 iconColor={mainColor}
                                 onPress={() => {
-                                    setSelectedIndex(index);
+                                    setSelectedIndex(index + 1);
                                 }}
                                 containerHeight={fs20}
                                 iconSize={fs15}
@@ -116,10 +116,10 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                     setSelectedIndex(undefined);
                 }}
                 onPressLeftButton={() => {
-                    deleteImage(selectedIndex as number);
+                    deleteImage((selectedIndex as number) - 1);
                 }}
-                question={'Do you want to delete the above image?'}
-                image={selectedIndex ? photos[selectedIndex as number] : undefined}
+                question={'Do you want to delete the below image?'}
+                image={selectedIndex ? photos[(selectedIndex - 1) as number] : undefined}
             />
             {/* {photos.map((item) => {
                 return (
