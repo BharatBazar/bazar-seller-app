@@ -22,6 +22,7 @@
         "react-native": "0.64.0",
         "react-native-collapsible": "^1.6.0",
         "react-native-date-picker": "^3.2.10",
+        "react-native-drag-sort": "^2.4.4",
         "react-native-dropdown-picker": "^4.0.9",
         "react-native-fast-image": "^8.3.7",
         "react-native-gesture-handler": "^1.10.3",
@@ -51,6 +52,7 @@
         "@typescript-eslint/eslint-plugin": "^4.19.0",
         "@typescript-eslint/parser": "^4.19.0",
         "babel-jest": "^26.6.3",
+        "babel-plugin-module-resolver": "^4.1.0",
         "eslint": "^7.23.0",
         "eslint-config-prettier": "^8.1.0",
         "eslint-plugin-prettier": "^3.3.1",
@@ -63,16 +65,5 @@
     },
     "jest": {
         "preset": "react-native"
-    },
-    "compilerOptions": {
-        "baseUrl": "",
-        "paths": {
-            "@components/*": [
-                "src/screens/components/*"
-            ],
-            "@": [
-                "src/*"
-            ]
-        }
     }
 }
