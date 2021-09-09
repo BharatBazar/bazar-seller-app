@@ -1,6 +1,6 @@
 import { fs13, fs15, fs18, fs28, fs3 } from '@app/common';
 import { mainColor } from '@app/common/color';
-import { getHP } from '@app/common/dimension';
+import { getHP, getWP } from '@app/common/dimension';
 import { AIC, BGCOLOR, BR, BW, FDR, JCC, ML, PH, PV } from '@app/common/styles';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -62,16 +62,9 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                 onPressOut={() => this.sortableViewRef.current.onPressOut()}
             >
                 <View style={[styles.item_wrap, { opacity: movedKey === item.modificationDate && !isMoved ? 1 : 1 }]}>
-                    {
-                        <View style={styles.item_clear_wrap}>
-                            <TouchableOpacity onPress={() => this.onDeleteItem(item, index)}>
-                                <WrappedText text={'X'} />
-                            </TouchableOpacity>
-                        </View>
-                    }
                     <FastImageWrapper
                         source={{ uri: item.sourceURL }}
-                        //  imageStyle={{ height: getHP(1), width: getHP(1), borderRadius: getHP(0.1) }}
+                        imageStyle={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
                         resizeMode={'cover'}
                     />
                 </View>
@@ -123,12 +116,20 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                 >
                     <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
                         <View style={styles.header}>
-                            <Text style={styles.header_title}>AnySize</Text>
+                            <Text
+                                style={styles.header_title}
+                                onPress={() => {
+                                    this.setState({ isVisible: false });
+                                }}
+                            >
+                                Reorder images by holding and dragging them around
+                            </Text>
                         </View>
+
                         <AnySizeDragSortableView
                             ref={this.sortableViewRef}
                             dataSource={items}
-                            keyExtractor={(item) => item.text}
+                            keyExtractor={(item: ImageOrVideo) => item.path}
                             renderItem={this._renderItem}
                             onDataChange={(data, callback) => {
                                 this.setState({ items: data }, () => {
@@ -137,7 +138,7 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                             }}
                             // headerViewHeight={headerViewHeight}
                             // bottomViewHeight={bottomViewHeight}
-                            // movedWrapStyle={styles.item_moved}
+                            movedWrapStyle={styles.item_moved}
                             onDragEnd={() => {
                                 this.setState({
                                     movedKey: undefined,
@@ -190,6 +191,8 @@ const styles = StyleSheet.create({
     item_moved: {
         opacity: 0.95,
         borderRadius: 4,
+        marginTop: getHP(0.1),
+        marginLeft: getHP(0.1),
     },
     item_icon_swipe: {
         width: 50,
