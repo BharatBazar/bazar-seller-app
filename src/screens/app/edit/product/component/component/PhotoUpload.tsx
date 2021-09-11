@@ -38,11 +38,11 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 let images = [...photos];
 
                 images = [...images, ...image];
-                //console.log(images.length, images);
+                ////console.log(images.length, images);
                 setPhotos(images);
             })
             .catch((error) => {
-                console.log(error);
+                //console.log(error);
             });
     };
 
@@ -54,11 +54,50 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
     };
 
     const updateImageArrary = (index: number, file: ImageOrVideo) => {
-        console.log('UPDATE IMAGE =>', index, file);
+        //console.log('UPDATE IMAGE =>', index, file);
         const photo = [...photos];
         photo[index] = file;
         setPhotos(photo);
     };
+
+    const imageViewerHeader = (currentIndex: number) => (
+        <View
+            style={[
+                // { position: 'absolute', top: getStatusBarHeight(), left: 0, right: 0 },
+                FDR(),
+                JCC('space-between'),
+                BGCOLOR('#000000'),
+
+                { paddingTop: getStatusBarHeight() },
+                padHor,
+            ]}
+        >
+            <WrappedFeatherIcon
+                iconName={'x'}
+                iconColor={'#FFFFFF'}
+                onPress={() => {
+                    setShowImageViewer(false);
+                    setCurrentViewIndex(0);
+                }}
+                iconSize={fs28}
+            />
+            <WrappedFeatherIcon
+                iconName={'crop'}
+                iconColor={'#FFFFFF'}
+                onPress={() => {
+                    ImagePicker.openCropper({ path: photos[currentIndex].path })
+                        .then((image) => {
+                            //console.log('image cropper =>', image);
+                            updateImageArrary(currentIndex, image);
+                        })
+                        .catch((error) => {
+                            //console.log(error);
+                        });
+                }}
+                iconSize={fs20}
+            />
+        </View>
+    );
 
     return (
         <View>
@@ -145,62 +184,26 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 question={'Do you want to delete the below image?'}
                 image={selectedIndex ? photos[(selectedIndex - 1) as number] : undefined}
             />
-            <Modal isVisible={showImageViewer} style={{ margin: 0 }}>
-                <ImageViewer
-                    imageUrls={photos.map((item) => {
-                        return { url: item.path };
-                    })}
-                    index={currentViewIndex}
-                    renderImage={(item) => {
-                        console.log(item);
-                        return <Image {...item} />;
-                    }}
-                    // renderArrowRight={() => (
-                    //     <WrappedFeatherIcon
-                    //         iconName={'chevron-left'}
-                    //         onPress={() => {
-                    //             setShowImageViewer(false);
-                    //         }}
-                    //     />
-                    // )}
-                    renderIndicator={() => <View />}
-                    renderHeader={(currentIndex: number) => (
-                        <View
-                            style={[
-                                FDR(),
-                                JCC('space-between'),
-                                BGCOLOR('#000000'),
-                                { marginTop: getStatusBarHeight() },
-                                padHor,
-                            ]}
-                        >
-                            <WrappedFeatherIcon
-                                iconName={'x'}
-                                iconColor={'#FFFFFF'}
-                                onPress={() => {
-                                    setShowImageViewer(false);
-                                    setCurrentViewIndex(0);
-                                }}
-                                iconSize={fs20}
-                            />
-                            <WrappedFeatherIcon
-                                iconName={'crop'}
-                                iconColor={'#FFFFFF'}
-                                onPress={() => {
-                                    ImagePicker.openCropper({ path: photos[currentIndex].path })
-                                        .then((image) => {
-                                            console.log('image cropper =>', image);
-                                            updateImageArrary(currentIndex, image);
-                                        })
-                                        .catch((error) => {
-                                            console.log(error);
-                                        });
-                                }}
-                                iconSize={fs20}
-                            />
-                        </View>
-                    )}
-                />
+            <Modal
+                isVisible={showImageViewer}
+                style={{ margin: 0 }}
+                onBackdropPress={() => {
+                    setShowImageViewer(false);
+                }}
+            >
+                <View style={{ flex: 1 }}>
+                    {imageViewerHeader()}
+                    <ImageViewer
+                        imageUrls={photos.map((item) => {
+                            return { url: item.path };
+                        })}
+                        backgroundColor={'#000000'}
+                        style={{ height: getHP(10), width: getWP(10) }}
+                        index={currentViewIndex}
+                        renderIndicator={() => <View />}
+                        // renderHeader={imageViewerHeader}
+                    />
+                </View>
             </Modal>
         </View>
     );
