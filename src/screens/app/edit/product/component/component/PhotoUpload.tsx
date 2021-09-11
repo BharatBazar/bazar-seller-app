@@ -1,23 +1,18 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
-import WrappedText from '../../../../../component/WrappedText';
-import { BGCOLOR, FDR, JCC, MT, P, provideShadow } from '../../../../../../common/styles';
-import WrappedFeatherIcon from '../../../../../component/WrappedFeatherIcon';
-import { fs13, fs15, fs20, fs28 } from '../../../../../../common';
-import { mainColor } from '../../../../../../common/color';
+import WrappedText from '@app/screens/component/WrappedText';
+import { FDR, MT } from '@app/common/styles';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import { fs13, fs15, fs20, fs28 } from '@app/common';
+import { mainColor } from '@app/common/color';
 import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
-import { getHP, getWP } from '../../../../../../common/dimension';
-import { FastImageWrapper } from '../../../../../component/FastImage';
+import { getHP, getWP } from '@app/common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
 import DragSort from '@app/screens/app/edit/product/component/component/DragSort';
-import { absoluteBottomWrapper } from '@app/common/containerStyles';
-import ModalHOC from '@app/screens/hoc/ModalHOC';
 import DeleteImagePopup from './DeleteImage';
-import ImageViewer from 'react-native-image-zoom-viewer';
 import Ripple from 'react-native-material-ripple';
-import Modal from 'react-native-modal';
-import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { padHor } from '../generalConfig';
+
+import ImageZoomViewer from './ImageViewer';
 
 export interface PhotoUploadProps {}
 
@@ -59,45 +54,6 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
         photo[index] = file;
         setPhotos(photo);
     };
-
-    const imageViewerHeader = (currentIndex: number) => (
-        <View
-            style={[
-                // { position: 'absolute', top: getStatusBarHeight(), left: 0, right: 0 },
-                FDR(),
-                JCC('space-between'),
-                BGCOLOR('#000000'),
-
-                { paddingTop: getStatusBarHeight() },
-                padHor,
-            ]}
-        >
-            <WrappedFeatherIcon
-                iconName={'x'}
-                iconColor={'#FFFFFF'}
-                onPress={() => {
-                    setShowImageViewer(false);
-                    setCurrentViewIndex(0);
-                }}
-                iconSize={fs28}
-            />
-            <WrappedFeatherIcon
-                iconName={'crop'}
-                iconColor={'#FFFFFF'}
-                onPress={() => {
-                    ImagePicker.openCropper({ path: photos[currentIndex].path })
-                        .then((image) => {
-                            //console.log('image cropper =>', image);
-                            updateImageArrary(currentIndex, image);
-                        })
-                        .catch((error) => {
-                            //console.log(error);
-                        });
-                }}
-                iconSize={fs20}
-            />
-        </View>
-    );
 
     return (
         <View>
@@ -184,27 +140,15 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 question={'Do you want to delete the below image?'}
                 image={selectedIndex ? photos[(selectedIndex - 1) as number] : undefined}
             />
-            <Modal
+            <ImageZoomViewer
                 isVisible={showImageViewer}
-                style={{ margin: 0 }}
-                onBackdropPress={() => {
-                    setShowImageViewer(false);
-                }}
-            >
-                <View style={{ flex: 1 }}>
-                    {imageViewerHeader()}
-                    <ImageViewer
-                        imageUrls={photos.map((item) => {
-                            return { url: item.path };
-                        })}
-                        backgroundColor={'#000000'}
-                        style={{ height: getHP(10), width: getWP(10) }}
-                        index={currentViewIndex}
-                        renderIndicator={() => <View />}
-                        // renderHeader={imageViewerHeader}
-                    />
-                </View>
-            </Modal>
+                setPopup={setShowImageViewer}
+                data={photos.map((item) => {
+                    return { url: item.path };
+                })}
+                currentViewIndex={currentViewIndex}
+                updateImageArrayWhenImageIsCropped={updateImageArrary}
+            />
         </View>
     );
 };
