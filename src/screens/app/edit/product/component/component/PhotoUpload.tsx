@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import WrappedText from '../../../../../component/WrappedText';
-import { FDR, MT, P, provideShadow } from '../../../../../../common/styles';
+import { BGCOLOR, FDR, JCC, MT, P, provideShadow } from '../../../../../../common/styles';
 import WrappedFeatherIcon from '../../../../../component/WrappedFeatherIcon';
 import { fs13, fs15, fs20, fs28 } from '../../../../../../common';
 import { mainColor } from '../../../../../../common/color';
@@ -13,12 +13,19 @@ import DragSort from '@app/screens/app/edit/product/component/component/DragSort
 import { absoluteBottomWrapper } from '@app/common/containerStyles';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
 import DeleteImagePopup from './DeleteImage';
+import ImageViewer from 'react-native-image-zoom-viewer';
+import Ripple from 'react-native-material-ripple';
+import Modal from 'react-native-modal';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+import { padHor } from '../generalConfig';
 
 export interface PhotoUploadProps {}
 
 const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
     const [photos, setPhotos] = React.useState<ImageOrVideo[]>([]);
+    const [showImageViewer, setShowImageViewer] = React.useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
+    const [currentViewIndex, setCurrentViewIndex] = React.useState(0);
 
     const openCamera = () => {
         ImagePicker.openPicker({
@@ -45,6 +52,14 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
         setPhotos(photo);
         setSelectedIndex(undefined);
     };
+
+    const updateImageArrary = (index: number, file: ImageOrVideo) => {
+        console.log('UPDATE IMAGE =>', index, file);
+        const photo = [...photos];
+        photo[index] = file;
+        setPhotos(photo);
+    };
+
     return (
         <View>
             <View style={[FDR(), MT(0.1)]}>
@@ -73,7 +88,11 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 data={photos}
                 renderItem={({ item, index }) => {
                     return (
-                        <View
+                        <Ripple
+                            onPress={() => {
+                                setShowImageViewer(true);
+                                setCurrentViewIndex(index);
+                            }}
                             style={{
                                 height: getWP(2.5),
                                 width: getWP(2.5),
@@ -82,7 +101,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                             }}
                         >
                             <Image
-                                source={{ uri: item.sourceURL }}
+                                source={{ uri: item.path }}
                                 style={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
                                 resizeMode={'cover'}
                             />
@@ -96,7 +115,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                                 iconSize={fs15}
                                 containerStyle={[{ position: 'absolute', top: getWP(0.1), right: getWP(0.1) }]}
                             />
-                        </View>
+                        </Ripple>
                     );
                 }}
                 columnWrapperStyle={{ marginVertical: '2%' }}
@@ -126,6 +145,63 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 question={'Do you want to delete the below image?'}
                 image={selectedIndex ? photos[(selectedIndex - 1) as number] : undefined}
             />
+            <Modal isVisible={showImageViewer} style={{ margin: 0 }}>
+                <ImageViewer
+                    imageUrls={photos.map((item) => {
+                        return { url: item.path };
+                    })}
+                    index={currentViewIndex}
+                    renderImage={(item) => {
+                        console.log(item);
+                        return <Image {...item} />;
+                    }}
+                    // renderArrowRight={() => (
+                    //     <WrappedFeatherIcon
+                    //         iconName={'chevron-left'}
+                    //         onPress={() => {
+                    //             setShowImageViewer(false);
+                    //         }}
+                    //     />
+                    // )}
+                    renderIndicator={() => <View />}
+                    renderHeader={(currentIndex: number) => (
+                        <View
+                            style={[
+                                FDR(),
+                                JCC('space-between'),
+                                BGCOLOR('#000000'),
+                                { marginTop: getStatusBarHeight() },
+                                padHor,
+                            ]}
+                        >
+                            <WrappedFeatherIcon
+                                iconName={'x'}
+                                iconColor={'#FFFFFF'}
+                                onPress={() => {
+                                    setShowImageViewer(false);
+                                    setCurrentViewIndex(0);
+                                }}
+                                iconSize={fs20}
+                            />
+                            <WrappedFeatherIcon
+                                iconName={'crop'}
+                                iconColor={'#FFFFFF'}
+                                onPress={() => {
+                                    ImagePicker.openCropper({ path: photos[currentIndex].path })
+                                        .then((image) => {
+                                            console.log('image cropper =>', image);
+                                            updateImageArrary(currentIndex, image);
+                                        })
+                                        .catch((error) => {
+                                            console.log(error);
+                                        });
+                                }}
+                                iconSize={fs20}
+                            />
+                        </View>
+                    )}
+                />
+            </Modal>
         </View>
     );
 };
