@@ -7,7 +7,7 @@ import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './component/component/Counter';
 import { fs10, fs12, fs15 } from '../../../../common';
-import { colorCode } from '../../../../common/color';
+import { colorCode, errorColor } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
@@ -59,7 +59,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
 
     const checkError = (byPass?: boolean) => {
         if (sp.length == 0 || mrp.length == 0) {
-            setErrors('For creating size for product your need to provide mrp and sp.');
+            setErrors('Please provide mrp (maximum retail price) and sp (selling price).');
             return true;
         } else if (!byPass && sizeId.length == 0) {
             setErrors('Please save size or delete it.');
@@ -122,8 +122,10 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     const generateId = async () => {
         try {
             const id = await generateProductId({ shopId });
+            console.log(id);
             if (id) {
                 setId(id.payload);
+                setShowIdPopup(true);
             }
         } catch (error) {
             ToastHOC.errorAlert(error.message, 'Error in generating product id');
@@ -181,7 +183,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             {error.length > 0 && (
                 <WrappedText
                     text={error}
-                    textColor={colorCode.RED}
+                    textColor={errorColor}
                     fontSize={fs10}
                     containerStyle={[FLEX(1), MH(0.4), MV(0.05)]}
                 />
@@ -191,9 +193,16 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     <TextButton
                         text={sizeId.length == 0 ? 'Create' : 'Save'}
                         onPress={() => {
-                            if (sizeId.length == 0) {
-                                setShowIdPopup(true);
-                            } else postProductSizeDataToServer();
+                            if (checkError(true)) {
+                            } else {
+                                if (sizeId.length == 0) {
+                                    if (!id) {
+                                        generateId();
+                                    } else {
+                                        setShowIdPopup(true);
+                                    }
+                                } else postProductSizeDataToServer();
+                            }
                         }}
                         textProps={{ textColor: colorCode.WHITE, fontSize: fs12 }}
                         containerStyle={[PH(0.4), PV(0.03)]}

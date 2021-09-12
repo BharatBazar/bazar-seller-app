@@ -1,3 +1,4 @@
+import { apiEndPoint } from './../../index';
 import axios from 'axios';
 
 import { IRShopUpdate, updateShopData, Shop, IRShopVerification, IRProductId } from './shop.interface';
@@ -18,5 +19,16 @@ export async function getShopVerificationDetails(data: { _id: string }): Promise
 }
 
 export async function generateProductId(data: { shopId: string }): Promise<IRProductId> {
-    return axios.post('/productId/generate', data);
+    return fetch(apiEndPoint + '/productId/generate', {
+        method: 'post',
+        body: JSON.stringify(data),
+    })
+        .then((r) => r.json())
+        .then((r) => {
+            console.log(r);
+            return Promise.resolve(r.data);
+        })
+        .catch((e) => {
+            return Promise.reject(e);
+        });
 }
