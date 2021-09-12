@@ -25,10 +25,9 @@ export async function generateProductId(data: { shopId: string }): Promise<IRPro
     })
         .then((r) => r.json())
         .then((r) => {
-            console.log(r);
-            return Promise.resolve(r.data);
+            return r;
         })
         .catch((e) => {
-            return Promise.reject(e);
+            return e;
         });
 }

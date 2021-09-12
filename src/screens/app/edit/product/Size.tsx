@@ -123,11 +123,14 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         try {
             const id = await generateProductId({ shopId });
             console.log(id);
-            if (id) {
+            if (id && id.status == 1) {
                 setId(id.payload);
                 setShowIdPopup(true);
+            } else {
+                throw new Error(id.message);
             }
         } catch (error) {
+            console.log(error);
             ToastHOC.errorAlert(error.message, 'Error in generating product id');
         }
     };
