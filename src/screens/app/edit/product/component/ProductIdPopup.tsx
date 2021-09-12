@@ -27,6 +27,7 @@ import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButto
 import { mainColor } from '@app/common/color';
 import { fs11, fs13, fs15, fs20 } from '@app/common';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import TextButton from '@app/screens/component/TextButton';
 
 interface ProductIdPopupProps {
     isVisible: boolean;
@@ -51,7 +52,7 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
 
     return (
         <Modal
-            isVisible={isVisible}
+            isVisible={!isVisible}
             style={[MH(0.5), JCC('center')]}
             onBackdropPress={() => {
                 setPopup(false);
@@ -83,7 +84,7 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
                     style={[BW(1), BC('#EEEEEE'), BR(0.06), HP(0.4), BGCOLOR('#FFFFFF'), MT(0.1), PL(0.2)]}
                 />
 
-                <View style={[MT(0.2)]}>
+                <View style={[MT(0.3)]}>
                     <WrappedRectangleButton
                         onPress={() => {
                             if (id == generatedId) {
@@ -92,11 +93,9 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
                                 ToastHOC.errorAlert('Entered id is not same as given id');
                             }
                         }}
-                        containerStyle={[FDR(), JCC(), AIC(), BGCOLOR(mainColor), PH(0.5), PV(0.2), BR(0.05), FLEX(1)]}
+                        containerStyle={[FDR(), JCC(), AIC(), BGCOLOR(mainColor), PH(0.5), PV(0.12), BR(0.05)]}
                     >
-                        <View>
-                            <WrappedText text={'Create product'} textColor={'#FFFFFF'} fontSize={fs13} />
-                        </View>
+                        <WrappedText text={'Create product'} textColor={'#FFFFFF'} fontSize={fs13} />
                     </WrappedRectangleButton>
                 </View>
             </View>
