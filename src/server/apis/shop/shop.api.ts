@@ -19,8 +19,13 @@ export async function getShopVerificationDetails(data: { _id: string }): Promise
 }
 
 export async function generateProductId(data: { shopId: string }): Promise<IRProductId> {
+    console.log(data);
     return fetch(apiEndPoint + '/productId/generate', {
-        method: 'post',
+        method: 'POST',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
         body: JSON.stringify(data),
     })
         .then((r) => r.json())

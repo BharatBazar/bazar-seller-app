@@ -35,6 +35,7 @@ import {
 // }]
 export interface ProductColorProps {
     update: boolean; //If it is first time or else true means not first time
+    shopId: string;
     distribution: IFilter[]; //distribution gives data about the colors and sizes
     postDataToServer: IPostDataToServer; // To post data to the main prodcut schema for updating color in it mainly
     productId?: string; // productId is main product schema product id
@@ -71,6 +72,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     errorValue,
     setError,
     distribution,
+    shopId,
 }) => {
     //Function to set color schema for the component so that it is easily updatable
     const getProductColor = () => {
@@ -300,6 +302,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     //this function provides default size
                     //Default size is to set size for all the other sizes it will be always equal to size at index 0
                     {...colorProps(index)}
+                    shopId={shopId}
                     productTypeDetails={productTypeDetails}
                     productColorId={color.new ? '' : color._id}
                     postDataToServer={postDataToServer}

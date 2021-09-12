@@ -125,6 +125,7 @@ const Sections: React.FC<SectionsProps> = ({
                             setParticularError('colors', value);
                         }, 20);
                     }}
+                    shopId={productDetails['shopId']}
                     distribution={distribution}
                     setProductId={setProductId}
                     update={update}

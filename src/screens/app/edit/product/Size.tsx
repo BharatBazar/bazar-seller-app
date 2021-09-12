@@ -120,8 +120,9 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     };
 
     const generateId = async () => {
+        console.log(shopId);
         try {
-            const id = await generateProductId({ shopId });
+            const id = await generateProductId({ shopId: shopId });
             console.log(id);
             if (id && id.status == 1) {
                 setId(id.payload);

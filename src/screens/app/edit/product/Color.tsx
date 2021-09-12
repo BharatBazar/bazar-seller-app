@@ -48,6 +48,7 @@ export interface ProductDetailsProps {
     //Provides detail about the product color at particular index
     productColor: IColorApp & { size: IClassifier };
 
+    shopId: string;
     color: IColorApp;
 
     // Color id is basically id of color in the backend collection
@@ -132,6 +133,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     setDeafultSize,
     errorValue,
     setError,
+    shopId,
 }) => {
     //parse size array to object in order to satisfy fast access
 
@@ -501,6 +503,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     onDelete={() => deleteSize(size.sizeId)}
                                     setParentId={setParentId}
                                     neww={neww}
+                                    shopId={shopId}
                                     setNew={setProductNew}
                                     errorValue={childError[index]}
                                     setError={(value: possibleValue) => {
