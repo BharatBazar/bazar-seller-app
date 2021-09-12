@@ -11,6 +11,9 @@ import { colorCode } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
+import { generateProductId } from '@app/server/apis/shop/shop.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import ProductIdPopup from './component/ProductIdPopup';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -24,6 +27,7 @@ export interface ProductPriceProps {
     neww: boolean;
     errorValue: number;
     setError: (value: number) => void;
+    shopId: string;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -34,16 +38,18 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     parentId,
     neww,
     setNew,
-
     postDataToServer,
     errorValue,
     setError,
     setDefaultSize,
+    shopId,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
     const [sp, setSp] = React.useState<string>(productSize.sp);
     const [sizeId, setSizeId] = React.useState<string>(productSize._id);
+    const [id, setId] = React.useState<undefined | string>(undefined);
+    const [showIdPopup, setShowIdPopup] = React.useState<boolean>(false);
     const [lastState, setLastState] = React.useState<{ lastQuantity: number; lastMrp: string; lastSp: string }>({
         lastQuantity: productSize.quantity,
         lastMrp: mrp,
@@ -75,7 +81,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         }
     }, [errorValue]);
 
-    const postProductSizeDataToServer = async () => {
+    const postProductSizeDataToServer = async (id?: string) => {
         let data: Partial<IProductSize> = { quantity: quantity, sp: sp, mrp: mrp, size: productSize.sizeId };
         const isError = checkError(true);
 
@@ -84,6 +90,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 if (sizeId.length == 0) {
                     const response: IRProductSize = await createProductSize({
                         ...data,
+                        itemId: id,
                         parentId,
                     });
                     if (response.status == 1) {
@@ -109,6 +116,17 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             } catch (error) {
                 console.log(error);
             }
+        }
+    };
+
+    const generateId = async () => {
+        try {
+            const id = await generateProductId({ shopId });
+            if (id) {
+                setId(id.payload);
+            }
+        } catch (error) {
+            ToastHOC.errorAlert(error.message, 'Error in generating product id');
         }
     };
 
@@ -173,13 +191,25 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     <TextButton
                         text={sizeId.length == 0 ? 'Create' : 'Save'}
                         onPress={() => {
-                            postProductSizeDataToServer();
+                            if (sizeId.length == 0) {
+                                setShowIdPopup(true);
+                            } else postProductSizeDataToServer();
                         }}
                         textProps={{ textColor: colorCode.WHITE, fontSize: fs12 }}
                         containerStyle={[PH(0.4), PV(0.03)]}
                     />
                 </View>
             )}
+            <ProductIdPopup
+                isVisible={showIdPopup}
+                setPopup={setShowIdPopup}
+                rightButtonText={'Create product'}
+                onPressRightButton={(id) => {
+                    postProductSizeDataToServer(id);
+                    setShowIdPopup(false);
+                }}
+                generatedId={id}
+            />
         </View>
     );
 };
