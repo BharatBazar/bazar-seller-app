@@ -82,6 +82,7 @@ export interface IProductSize {
     quantity: number;
     sp: string;
     parentId: string;
+    itemId: string;
 }
 
 export interface ISizeApp {

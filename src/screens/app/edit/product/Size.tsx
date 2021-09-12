@@ -7,10 +7,13 @@ import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './component/component/Counter';
 import { fs10, fs12, fs15 } from '../../../../common';
-import { colorCode } from '../../../../common/color';
+import { colorCode, errorColor } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
+import { generateProductId } from '@app/server/apis/shop/shop.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import ProductIdPopup from './component/ProductIdPopup';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -24,6 +27,7 @@ export interface ProductPriceProps {
     neww: boolean;
     errorValue: number;
     setError: (value: number) => void;
+    shopId: string;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -34,16 +38,18 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     parentId,
     neww,
     setNew,
-
     postDataToServer,
     errorValue,
     setError,
     setDefaultSize,
+    shopId,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
     const [sp, setSp] = React.useState<string>(productSize.sp);
     const [sizeId, setSizeId] = React.useState<string>(productSize._id);
+    const [id, setId] = React.useState<undefined | string>(undefined);
+    const [showIdPopup, setShowIdPopup] = React.useState<boolean>(false);
     const [lastState, setLastState] = React.useState<{ lastQuantity: number; lastMrp: string; lastSp: string }>({
         lastQuantity: productSize.quantity,
         lastMrp: mrp,
@@ -53,7 +59,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
 
     const checkError = (byPass?: boolean) => {
         if (sp.length == 0 || mrp.length == 0) {
-            setErrors('For creating size for product your need to provide mrp and sp.');
+            setErrors('Please provide mrp (maximum retail price) and sp (selling price).');
             return true;
         } else if (!byPass && sizeId.length == 0) {
             setErrors('Please save size or delete it.');
@@ -75,7 +81,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         }
     }, [errorValue]);
 
-    const postProductSizeDataToServer = async () => {
+    const postProductSizeDataToServer = async (id?: string) => {
         let data: Partial<IProductSize> = { quantity: quantity, sp: sp, mrp: mrp, size: productSize.sizeId };
         const isError = checkError(true);
 
@@ -84,9 +90,11 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 if (sizeId.length == 0) {
                     const response: IRProductSize = await createProductSize({
                         ...data,
+                        itemId: id,
                         parentId,
                     });
                     if (response.status == 1) {
+                        ToastHOC.successAlert('Item size created!');
                         if (neww) {
                             setNew(false);
                         }
@@ -103,12 +111,30 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 } else {
                     const response = await updateProductSize({ ...data, _id: sizeId });
                     if (response.status == 1) {
+                        ToastHOC.successAlert('Item size updated!');
                         setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
                     }
                 }
             } catch (error) {
                 console.log(error);
             }
+        }
+    };
+
+    const generateId = async () => {
+        console.log(shopId);
+        try {
+            const id = await generateProductId({ shopId: shopId });
+            console.log(id);
+            if (id && id.status == 1) {
+                setId(id.payload);
+                setShowIdPopup(true);
+            } else {
+                throw new Error(id.message);
+            }
+        } catch (error) {
+            console.log(error);
+            ToastHOC.errorAlert(error.message, 'Error in generating product id');
         }
     };
 
@@ -163,7 +189,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             {error.length > 0 && (
                 <WrappedText
                     text={error}
-                    textColor={colorCode.RED}
+                    textColor={errorColor}
                     fontSize={fs10}
                     containerStyle={[FLEX(1), MH(0.4), MV(0.05)]}
                 />
@@ -173,13 +199,32 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     <TextButton
                         text={sizeId.length == 0 ? 'Create' : 'Save'}
                         onPress={() => {
-                            postProductSizeDataToServer();
+                            if (checkError(true)) {
+                            } else {
+                                if (sizeId.length == 0) {
+                                    if (!id) {
+                                        generateId();
+                                    } else {
+                                        setShowIdPopup(true);
+                                    }
+                                } else postProductSizeDataToServer();
+                            }
                         }}
                         textProps={{ textColor: colorCode.WHITE, fontSize: fs12 }}
                         containerStyle={[PH(0.4), PV(0.03)]}
                     />
                 </View>
             )}
+            <ProductIdPopup
+                isVisible={showIdPopup}
+                setPopup={setShowIdPopup}
+                rightButtonText={'Create product'}
+                onPressRightButton={(id) => {
+                    postProductSizeDataToServer(id);
+                    setShowIdPopup(false);
+                }}
+                generatedId={id}
+            />
         </View>
     );
 };
