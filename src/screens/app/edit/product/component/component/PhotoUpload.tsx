@@ -95,11 +95,6 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                                 marginLeft: (index + 1) % 3 == 1 ? 0 : getWP(0.3),
                             }}
                         >
-                            <Image
-                                source={{ uri: item.path }}
-                                style={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
-                                resizeMode={'cover'}
-                            />
                             <WrappedFeatherIcon
                                 iconName={'trash-2'}
                                 iconColor={mainColor}
@@ -108,7 +103,14 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                                 }}
                                 containerHeight={fs20}
                                 iconSize={fs15}
-                                containerStyle={[{ position: 'absolute', top: getWP(0.1), right: getWP(0.1) }]}
+                                containerStyle={[
+                                    { position: 'absolute', top: getWP(0.1), right: getWP(0.1), zIndex: 100 },
+                                ]}
+                            />
+                            <Image
+                                source={{ uri: item.path }}
+                                style={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
+                                resizeMode={'cover'}
                             />
                         </Ripple>
                     );
@@ -123,6 +125,17 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 setPhotosArrayAfterReordering={(images) => {
                     setPhotos(images);
                 }}
+            />
+
+            <ImageZoomViewer
+                isVisible={showImageViewer}
+                setPopup={setShowImageViewer}
+                data={photos.map((item) => {
+                    return { url: item.path };
+                })}
+                setSelectedIndex={setSelectedIndex}
+                currentViewIndex={currentViewIndex}
+                updateImageArrayWhenImageIsCropped={updateImageArrary}
             />
             <DeleteImagePopup
                 isVisible={selectedIndex ? true : false}
@@ -139,15 +152,6 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
                 }}
                 question={'Do you want to delete the below image?'}
                 image={selectedIndex ? photos[(selectedIndex - 1) as number] : undefined}
-            />
-            <ImageZoomViewer
-                isVisible={showImageViewer}
-                setPopup={setShowImageViewer}
-                data={photos.map((item) => {
-                    return { url: item.path };
-                })}
-                currentViewIndex={currentViewIndex}
-                updateImageArrayWhenImageIsCropped={updateImageArrary}
             />
         </View>
     );

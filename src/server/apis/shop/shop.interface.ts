@@ -91,3 +91,7 @@ export interface IRShopUpdate extends CommonApiResponse {
 export interface IRShopVerification extends CommonApiResponse {
     payload: { isVerified: boolean; shopVerificationStatus: verificationStatus; remarks: string };
 }
+
+export interface IRProductId extends CommonApiResponse {
+    payload: number;
+}
