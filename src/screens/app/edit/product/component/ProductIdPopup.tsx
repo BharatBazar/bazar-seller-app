@@ -52,7 +52,7 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
 
     return (
         <Modal
-            isVisible={!isVisible}
+            isVisible={isVisible}
             style={[MH(0.5), JCC('center')]}
             onBackdropPress={() => {
                 setPopup(false);
