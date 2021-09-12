@@ -47,7 +47,7 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
     rightButtonText,
     generatedId,
 }) => {
-    const [id, setId] = React.useState('');
+    const [id, setId] = React.useState<string>('');
 
     return (
         <Modal
@@ -76,7 +76,7 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
                 />
                 <TextInput
                     value={id}
-                    onChange={(id) => {
+                    onChangeText={(id: string) => {
                         setId(id);
                     }}
                     placeholder={'enter item Id here'}
