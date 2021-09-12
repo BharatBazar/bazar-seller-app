@@ -94,6 +94,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                         parentId,
                     });
                     if (response.status == 1) {
+                        ToastHOC.successAlert('Item size created!');
                         if (neww) {
                             setNew(false);
                         }
@@ -110,6 +111,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 } else {
                     const response = await updateProductSize({ ...data, _id: sizeId });
                     if (response.status == 1) {
+                        ToastHOC.successAlert('Item size updated!');
                         setLastState({ lastSp: sp, lastMrp: mrp, lastQuantity: quantity });
                     }
                 }
