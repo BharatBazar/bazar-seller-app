@@ -172,7 +172,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             if (isError) {
                 setError(3);
             } else {
-                photoError(1);
+                setPhotoError(1);
                 setAllErrorToParticularValue(1);
             }
         }
@@ -219,18 +219,27 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     React.useEffect(() => {
         if (errorValue == 1 && childError.length > 0) {
-            if (childError.every((item) => item == 2)) {
+            if (childError.every((item) => item == 2) && photoError == ErrorState.PASSED) {
                 //All checks passed
                 setAllErrorToParticularValue(0);
+                setPhotoError(ErrorState.NEUTRAL);
                 setError(2);
-            } else if (childError.every((item) => item == 3 || item == 2)) {
+
+                //This condition that every element should be from either passed or failed is because
+                //It confirms that all the error function are executed
+                //and we can pass error state now to higher function
+            } else if (
+                childError.every((item) => item == 3 || item == 2) &&
+                (photoError == ErrorState.PASSED || photoError == ErrorState.FAILED)
+            ) {
                 //Not All check passed
 
                 setAllErrorToParticularValue(0);
+                setPhotoError(ErrorState.NEUTRAL);
                 setError(3);
             }
         }
-    }, [childError]);
+    }, [childError, photoError]);
 
     React.useEffect(() => {
         if (errorValue == 1) {
@@ -432,7 +441,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     />
                 </View>
                 {Heading('Upload product image', color.description)}
-                <PhotoUpload />
+                <PhotoUpload photoError={photoError} setPhotoError={setPhotoError} />
                 {Heading('Provide size for product', color.description)}
                 {error['generalError'] ? (
                     <WrappedText text={error['generalError']} fontSize={fs10} textColor={colorCode.RED} />

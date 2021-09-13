@@ -63,10 +63,6 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError })
         }
     }, [photoError]);
 
-    /**
-     * Check error in component
-     */
-
     const checkError = () => {
         if (photos.length !== 1) {
             setError('Please add atleast one photo for identification.');
@@ -75,6 +71,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError })
             return true;
         }
     };
+
     /**
      * End
      */
@@ -82,7 +79,9 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError })
     return (
         <View>
             <AddPhoto addImage={addImageInArray} />
-            {error.length > 0 && photos.length == 0 && <WrappedText text={error} textColor={errorColor} />}
+            {error.length > 0 && photos.length == 0 && (
+                <WrappedText text={error} textColor={errorColor} containerStyle={[MT(0.1)]} />
+            )}
             <View style={[MT(0.1)]} />
             <FlatList
                 data={photos}
