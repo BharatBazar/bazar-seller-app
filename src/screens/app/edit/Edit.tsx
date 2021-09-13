@@ -13,7 +13,7 @@ import {
     padHor,
     updateProduct,
 } from './product/component/generalConfig';
-import { AIC, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/styles';
+import { AIC, BR, BW, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/styles';
 import { IFilter, IProduct, IRProduct } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/product.api';
@@ -163,14 +163,6 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         }
     };
 
-    if (loading) {
-        return (
-            <View style={[FLEX(1), JCC(), AIC()]}>
-                <ActivityIndicator />
-            </View>
-        );
-    }
-
     return (
         <View style={{ flex: 1 }}>
             <StatusBar statusBarColor={mainColor} />
@@ -188,15 +180,15 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                         subCategory,
                     )} ${returnEmptyStringOrValue(subCategory1)} category.`}
                     containerStyle={[FLEX(1)]}
-                    textColor={colorCode.BLACKLOW(40)}
+                    textColor={'#646464'}
                 />
                 <TextButton
-                    text={'Mark as complete'}
+                    text={'Add to inventory'}
                     onPress={() => {
                         setCheckAllError(1);
                     }}
                     textProps={{ textColor: colorCode.WHITE }}
-                    containerStyle={[AIC(), PH(0.5), WP(4)]}
+                    containerStyle={[AIC(), PH(0.5), BR(0.05)]}
                 />
             </View>
             <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
@@ -215,7 +207,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     />
                 )}
             </ScrollView>
-            {/* <Loader /> */}
+            {loading && <Loader />}
         </View>
     );
 };

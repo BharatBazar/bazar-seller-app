@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { fs18 } from '../../../../common';
-import { colorCode } from '../../../../common/color';
+import { colorCode, mainColor } from '../../../../common/color';
 import { AIC, BGCOLOR, FDR, JCC, provideShadow, PV } from '../../../../common/styles';
 
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
@@ -17,7 +17,7 @@ export interface HeaderProps {
 
 const Header: React.SFC<HeaderProps> = ({ headerTitle, onPressBack, onPressCorrect, onPressDelete }) => {
     return (
-        <View style={[padHor, PV(0.1), BGCOLOR(colorCode.CHAKRALOW(70)), provideShadow()]}>
+        <View style={[padHor, PV(0.1), BGCOLOR(mainColor)]}>
             <View style={[FDR(), AIC(), JCC('space-between')]}>
                 <View style={[FDR()]}>
                     <WrappedFeatherIcon
