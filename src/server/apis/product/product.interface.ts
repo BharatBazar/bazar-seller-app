@@ -1,11 +1,12 @@
 import { CommonApiResponse } from '../common.interface';
 
 export enum productStatus {
-    NOTCOMPLETED = 'Incomplete',
-    READYTOROLLOUT = 'Rollout',
-    OUTOFSTOCK = 'Out of stock',
-    WAITINGFORAPPROVAL = 'Waiting for approval',
-    LIVE = 'Live',
+    NOTCOMPLETED = 0,
+    INVENTORY = 1,
+    REJECTED = 2,
+    OUTOFSTOCK = 3,
+    WAITINGFORAPPROVAL = 4,
+    LIVE = 5,
 }
 
 export interface IFilter {
@@ -94,6 +95,7 @@ export interface ISizeApp {
     quantity: number;
     sp: string;
     parentId: string;
+    itemId: string;
 }
 
 export interface IRProduct extends CommonApiResponse {
