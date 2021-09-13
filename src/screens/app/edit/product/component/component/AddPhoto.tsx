@@ -4,6 +4,7 @@ import { getHP } from '@app/common/dimension';
 import { AIC, BGCOLOR, BR, FDR, FLEX, HP, JCC, ML, PH, PV } from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import * as React from 'react';
 import { Image, View, StyleSheet } from 'react-native';
 import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
@@ -54,30 +55,40 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
             });
     };
 
-    const openPicker = async () => {
+    const openImageSelector = async (selector: 'file' | 'camera') => {
         try {
-            const images = await ImageCropPicker.openPicker({
-                compressImageMaxWidth: 1000,
-                compressImageMaxHeight: 1000,
-                multiple: true,
-                mediaType: 'photo',
-            }).then(async (images) => {
-                const result = [];
-                for (const image of images) {
-                    let data = {
-                        path: image.path,
-                        width: 1000,
-                        height: 1000,
-                    };
-                    result.push(await ImageCropPicker.openCropper(data));
-                }
-                return result;
-            });
+            let images = [];
+            if (selector == 'file') {
+                images = await ImageCropPicker.openPicker({
+                    compressImageMaxWidth: 1000,
+                    compressImageMaxHeight: 1000,
+                    multiple: true,
+                    mediaType: 'photo',
+                });
+            } else {
+                images = await ImageCropPicker.openCamera({
+                    compressImageMaxWidth: 1000,
+                    compressImageMaxHeight: 1000,
+                    multiple: true,
+                    mediaType: 'photo',
+                });
+            }
 
-            addImage(images);
+            const result = [];
+            for (const image of images) {
+                let data = {
+                    path: image.path,
+                    width: 1000,
+                    height: 1000,
+                };
+                result.push(await ImageCropPicker.openCropper(data));
+            }
+
+            addImage(result);
             setShowImageSelect(false);
-        } catch (error) {
-            console.log('error =>', error);
+        } catch (error: Error) {
+            setShowImageSelect(false);
+            ToastHOC.errorAlert(error.message);
         }
     };
 
@@ -109,14 +120,14 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
                     <IconTextButton
                         iconName={'file'}
                         onPress={() => {
-                            openPicker();
+                            openImageSelector('file');
                         }}
                         buttonText={'Upload from internal storage'}
                     />
                     <IconTextButton
                         iconName={'camera'}
                         onPress={() => {
-                            openCamera();
+                            openImageSelector('camera');
                         }}
                         buttonText={'Open camera'}
                     />
