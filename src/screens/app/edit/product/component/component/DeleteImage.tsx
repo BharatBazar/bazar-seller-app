@@ -36,6 +36,7 @@ const DeleteImagePopup: React.FunctionComponent<DeleteImagePopupProps> = ({
 }) => {
     return (
         <Modal
+            useNativeDriverForBackdrop
             isVisible={isVisible}
             style={{ margin: 0, alignItems: 'center' }}
             onBackdropPress={() => {
@@ -53,7 +54,7 @@ const DeleteImagePopup: React.FunctionComponent<DeleteImagePopupProps> = ({
                 />
                 {image && (
                     <FastImageWrapper
-                        source={{ uri: image.sourceURL }}
+                        source={{ uri: image.path }}
                         imageStyle={{ height: getHP(3), width: '100%' }}
                         resizeMode={'cover'}
                     />

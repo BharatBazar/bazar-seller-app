@@ -65,7 +65,7 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
             >
                 <View style={[styles.item_wrap, { opacity: movedKey === item.modificationDate && !isMoved ? 1 : 1 }]}>
                     <FastImageWrapper
-                        source={{ uri: item.sourceURL }}
+                        source={{ uri: item.path }}
                         imageStyle={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
                         resizeMode={'cover'}
                     />

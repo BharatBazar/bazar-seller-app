@@ -116,6 +116,7 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
                 onBackdropPress={() => {
                     setShowImageSelect(false);
                 }}
+                useNativeDriverForBackdrop
             >
                 <View style={[BGCOLOR('#FFFFFF'), BR(0.1), PV(0.1)]}>
                     <IconTextButton
