@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { getHP } from '../../../../common/dimension';
-import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV, MH, MT } from '../../../../common/styles';
+import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV, MH, MT, BW } from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
 import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './component/component/Counter';
-import { fs10, fs12, fs14, fs15 } from '../../../../common';
+import { FontFamily, fs10, fs12, fs14, fs15 } from '../../../../common';
 import { colorCode, errorColor } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
@@ -153,7 +153,13 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
 
     return (
         <View>
-            <WrappedText text={'Item-Id : ' + productSize.itemId} containerStyle={[MT(0.1)]} />
+            <WrappedText
+                text={'Item-Id : ' + productSize.itemId}
+                containerStyle={[MT(0.1)]}
+                fontFamily={FontFamily.RobotBold}
+                fontWeight={'600'}
+                fontSize={fs12}
+            />
             <View style={[FDR(), MV(0.05)]}>
                 <View style={[FLEX(flex[0]), JCC(), AIC()]}>
                     <Icon
