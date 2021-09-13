@@ -153,6 +153,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: '2%',
         paddingVertical: '4%',
         backgroundColor: undefined,
+        marginTop: getHP(0.2),
     },
     colorStyle: {
         height: getHP(0.2),

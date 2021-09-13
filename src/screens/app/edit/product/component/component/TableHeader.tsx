@@ -13,7 +13,7 @@ const TableHeader: React.FC<TableHeaderProps> = ({ headerTitle, flex }) => {
     return (
         <View style={[FDR(), AIC(), FLEX(1), MT(0.2)]}>
             {headerTitle.map((item, index) => (
-                <WrappedText text={item.title} containerStyle={[FLEX(flex[index]), AIC(), JCC()]} />
+                <WrappedText text={item.title} containerStyle={[FLEX(flex[index]), AIC(), JCC()]} fontWeight={'600'} />
             ))}
         </View>
     );

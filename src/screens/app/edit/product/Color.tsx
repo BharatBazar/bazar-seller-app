@@ -457,7 +457,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                         }}
                     />
                 )}
-                <ScrollView horizontal={true} contentContainerStyle={[MV(0.2)]}>
+                <ScrollView horizontal={true} contentContainerStyle={[MV(0.1)]}>
                     {sizes.map((size: IClassifier, index: number) => (
                         <WrappedSize
                             key={size.name}
