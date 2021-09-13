@@ -75,6 +75,7 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
             }
 
             const result = [];
+
             for (const image of images) {
                 let data = {
                     path: image.path,
@@ -83,7 +84,7 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
                 };
                 result.push(await ImageCropPicker.openCropper(data));
             }
-
+            console.log(result);
             addImage(result);
             setShowImageSelect(false);
         } catch (error: Error) {
