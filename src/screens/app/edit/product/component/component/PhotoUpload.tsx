@@ -13,6 +13,7 @@ import DeleteImagePopup from './DeleteImage';
 import Ripple from 'react-native-material-ripple';
 
 import ImageZoomViewer from './ImageViewer';
+import AddPhoto from './AddPhoto';
 
 export interface PhotoUploadProps {}
 
@@ -48,6 +49,12 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
         setSelectedIndex(undefined);
     };
 
+    const addImageInArray = (image: ImageOrVideo[]) => {
+        let images = [...photos];
+        images = [...images, ...image];
+        setPhotos(images);
+    };
+
     const updateImageArrary = (index: number, file: ImageOrVideo) => {
         //console.log('UPDATE IMAGE =>', index, file);
         const photo = [...photos];
@@ -57,27 +64,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
 
     return (
         <View>
-            <View style={[FDR(), MT(0.1)]}>
-                <View style={[styles.photoContainer]}>
-                    <WrappedFeatherIcon
-                        iconName={'camera'}
-                        iconSize={fs28}
-                        iconColor={mainColor}
-                        onPress={() => {
-                            openCamera();
-                        }}
-                    />
-                    <WrappedText
-                        text={'Add Photos'}
-                        textColor={'#707070'}
-                        textStyle={{
-                            color: '#707070',
-                            fontSize: fs13,
-                        }}
-                    />
-                </View>
-            </View>
-
+            <AddPhoto addImage={addImageInArray} />
             <View style={[MT(0.1)]} />
             <FlatList
                 data={photos}
