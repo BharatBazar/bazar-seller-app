@@ -1,13 +1,29 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { getHP } from '../../../../common/dimension';
-import { AIC, ML, FDR, FLEX, JCC, MV, PH, PV, MH, MT, BW, BGCOLOR, provideShadow } from '../../../../common/styles';
+import {
+    AIC,
+    ML,
+    FDR,
+    FLEX,
+    JCC,
+    MV,
+    PH,
+    PV,
+    MH,
+    MT,
+    BW,
+    BGCOLOR,
+    provideShadow,
+    BBW,
+    BC,
+} from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
 import WrappedTextInput from '../../../component/WrappedTextInput';
 import Icon from 'react-native-vector-icons/Feather';
 import CounterComponent from './component/component/Counter';
 import { FontFamily, fs10, fs12, fs14, fs15 } from '../../../../common';
-import { colorCode, errorColor, mainColor } from '../../../../common/color';
+import { borderColor, colorCode, errorColor, mainColor } from '../../../../common/color';
 import TextButton from '../../../component/TextButton';
 import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/product/product.interface';
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
@@ -160,17 +176,27 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     const { lastMrp, lastQuantity, lastSp } = lastState;
 
     return (
-        <View>
-            <View style={[AIC('flex-start'), JCC(), MT(0.1)]}>
-                <WrappedText
-                    text={'Unique Id - ' + productSize.itemId}
-                    containerStyle={[MV(0.1), PV(0.05), PH(0.4), provideShadow(), BGCOLOR('#FFFFFF')]}
-                    fontFamily={FontFamily.RobotBold}
-                    fontWeight={'600'}
-                    textColor={'#161616'}
-                    fontSize={fs12}
-                />
-            </View>
+        <View style={[{ borderBottomWidth: 1 }, BC(borderColor), PV(0.2)]}>
+            {productSize.itemId || id ? (
+                <View style={[AIC('flex-start'), JCC(), MT(0.1)]}>
+                    <WrappedText
+                        text={'Unique Id - ' + (productSize.itemId || id)}
+                        containerStyle={[
+                            PV(0.05),
+                            PH(0.4),
+                            provideShadow(),
+                            BGCOLOR('#FFFFFF'),
+                            { marginBottom: getHP(0.2) },
+                        ]}
+                        fontFamily={FontFamily.RobotBold}
+                        fontWeight={'600'}
+                        textColor={'#161616'}
+                        fontSize={fs12}
+                    />
+                </View>
+            ) : (
+                <View />
+            )}
 
             <View style={[FDR(), MV(0.05)]}>
                 <View style={[FLEX(flex[0]), JCC(), AIC()]}>

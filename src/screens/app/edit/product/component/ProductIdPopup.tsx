@@ -58,9 +58,10 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
                 setPopup(false);
                 //ToastHOC.errorAlert('Please click on create product.');
             }}
+            useNativeDriverForBackdrop
         >
             <View style={[BGCOLOR('#FFFFFF'), BR(0.1), PH(0.5), PV(0.2)]}>
-                <WrappedText text={'Item Id is'} fontSize={fs20} />
+                <WrappedText text={'Unique identification code is'} fontSize={fs20} />
                 <WrappedText text={'Provide this id to the product.'} fontSize={fs11} textColor={'#8a8a8a'} />
                 <WrappedText
                     text={generatedId}
