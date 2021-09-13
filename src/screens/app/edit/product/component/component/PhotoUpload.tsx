@@ -13,6 +13,7 @@ import DeleteImagePopup from './DeleteImage';
 import Ripple from 'react-native-material-ripple';
 
 import ImageZoomViewer from './ImageViewer';
+import AddPhoto from './AddPhoto';
 
 export interface PhotoUploadProps {}
 
@@ -22,25 +23,6 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
     const [currentViewIndex, setCurrentViewIndex] = React.useState(0);
 
-    const openCamera = () => {
-        ImagePicker.openPicker({
-            width: 300,
-            height: 400,
-            cropping: true,
-            multiple: true,
-        })
-            .then((image) => {
-                let images = [...photos];
-
-                images = [...images, ...image];
-                ////console.log(images.length, images);
-                setPhotos(images);
-            })
-            .catch((error) => {
-                //console.log(error);
-            });
-    };
-
     const deleteImage = (index: number) => {
         const photo = [...photos];
         photo.splice(index, 1);
@@ -48,8 +30,13 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
         setSelectedIndex(undefined);
     };
 
+    const addImageInArray = (image: ImageOrVideo[]) => {
+        let images = [...photos];
+        images = [...images, ...image];
+        setPhotos(images);
+    };
+
     const updateImageArrary = (index: number, file: ImageOrVideo) => {
-        //console.log('UPDATE IMAGE =>', index, file);
         const photo = [...photos];
         photo[index] = file;
         setPhotos(photo);
@@ -57,62 +44,56 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
 
     return (
         <View>
-            <View style={[FDR(), MT(0.1)]}>
-                <View style={[styles.photoContainer]}>
-                    <WrappedFeatherIcon
-                        iconName={'camera'}
-                        iconSize={fs28}
-                        iconColor={mainColor}
-                        onPress={() => {
-                            openCamera();
-                        }}
-                    />
-                    <WrappedText
-                        text={'Add Photos'}
-                        textColor={'#707070'}
-                        textStyle={{
-                            color: '#707070',
-                            fontSize: fs13,
-                        }}
-                    />
-                </View>
-            </View>
-
+            <AddPhoto addImage={addImageInArray} />
             <View style={[MT(0.1)]} />
             <FlatList
                 data={photos}
                 renderItem={({ item, index }) => {
                     return (
-                        <Ripple
-                            onPress={() => {
-                                setShowImageViewer(true);
-                                setCurrentViewIndex(index);
-                            }}
+                        <View
                             style={{
                                 height: getWP(2.5),
                                 width: getWP(2.5),
                                 borderRadius: getHP(0.1),
+
                                 marginLeft: (index + 1) % 3 == 1 ? 0 : getWP(0.3),
                             }}
                         >
+                            <Ripple
+                                onPress={() => {
+                                    setShowImageViewer(true);
+                                    setCurrentViewIndex(index);
+                                }}
+                                style={{
+                                    height: '100%',
+                                    width: '100%',
+                                }}
+                            >
+                                <Image
+                                    source={{ uri: item.path }}
+                                    style={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
+                                    resizeMode={'cover'}
+                                />
+                            </Ripple>
                             <WrappedFeatherIcon
                                 iconName={'trash-2'}
-                                iconColor={mainColor}
+                                iconColor={'#FFFFFF'}
                                 onPress={() => {
                                     setSelectedIndex(index + 1);
                                 }}
                                 containerHeight={fs20}
                                 iconSize={fs15}
                                 containerStyle={[
-                                    { position: 'absolute', top: getWP(0.1), right: getWP(0.1), zIndex: 100 },
+                                    {
+                                        position: 'absolute',
+                                        top: getWP(0.1),
+                                        right: getWP(0.1),
+                                        zIndex: 10000,
+                                        backgroundColor: '#00000066',
+                                    },
                                 ]}
                             />
-                            <Image
-                                source={{ uri: item.path }}
-                                style={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
-                                resizeMode={'cover'}
-                            />
-                        </Ripple>
+                        </View>
                     );
                 }}
                 columnWrapperStyle={{ marginVertical: '2%' }}

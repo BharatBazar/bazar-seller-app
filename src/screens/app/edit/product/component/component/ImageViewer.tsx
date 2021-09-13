@@ -61,18 +61,19 @@ const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
                     iconName={'crop'}
                     iconColor={'#FFFFFF'}
                     onPress={() => {
-                        ImagePicker.openCropper({ path: data[currentIndex].path })
+                        console.log(data[currentIndex].path, data);
+                        ImagePicker.openCropper({ path: data[currentIndex].url })
                             .then((image) => {
                                 updateImageArrayWhenImageIsCropped(currentIndex, image);
                             })
                             .catch((error) => {
-                                ToastHOC.errorAlert(error, 'Cannot crop image');
+                                ToastHOC.errorAlert(error.message, 'Cannot crop image');
                             });
                     }}
                     containerStyle={[MH(0.2)]}
                     iconSize={fs20}
                 />
-                <WrappedFeatherIcon
+                {/* <WrappedFeatherIcon
                     iconName={'trash-2'}
                     iconColor={'#FFFFFF'}
                     onPress={() => {
@@ -81,7 +82,7 @@ const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
                     containerStyle={[MH(0.2)]}
                     containerHeight={fs20}
                     iconSize={fs20}
-                />
+                /> */}
             </View>
         </View>
     );
@@ -92,6 +93,7 @@ const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
             onBackdropPress={() => {
                 setPopup(false);
             }}
+            useNativeDriverForBackdrop
         >
             <View style={{ flex: 1 }}>
                 {imageViewerHeader(currentIndex)}
