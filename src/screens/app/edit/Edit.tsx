@@ -48,7 +48,11 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const [productId, setProductId] = useState<string | undefined>(_id);
     const [productDetails, setProductDetails] = useState<Partial<IProduct>>(generalProductSchema);
     const [loading, setLoading] = useState(true);
-    //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
+    //Here for every error 3 state are possible
+    //0 means neutral,
+    //1 means start checking,
+    //2 means passed,
+    //3 means failed
     const [checkAllError, setCheckAllError] = useState<number>(0);
     const [filter, setFilter] = useState<IFilter[]>([]);
     const [distribution, setDistribution] = useState<IFilter[]>([]);

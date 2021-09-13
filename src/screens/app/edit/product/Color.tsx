@@ -23,6 +23,7 @@ import {
 import {
     createProductColor,
     deleteProductColor,
+    ErrorState,
     generalProductSizeSchema,
     IPostDataToServer,
     updateProductColor,
@@ -160,14 +161,22 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const [neww, setProductNew] = useState(false);
     const [error, setErrors] = useState<Error>({});
     const [childError, setChildError] = React.useState<possibleValue[]>([]);
+    const [photoError, setPhotoError] = React.useState<ErrorState>(ErrorState.NEUTRAL);
 
+    // Error flow related function explained in file Colors.tsx. Same flow is used //
+
+    //Error checking trigger
     React.useEffect(() => {
-        // const error = productColor.productSize.map((item) => 0);
-        // setChildError(error);
-        // return () => {};
-    }, []);
-
-    // Error flow related function explained in Colors.tsx //
+        if (errorValue == 1) {
+            const isError = checkError();
+            if (isError) {
+                setError(3);
+            } else {
+                photoError(1);
+                setAllErrorToParticularValue(1);
+            }
+        }
+    }, [errorValue]);
 
     const checkError = () => {
         let error: Error = {};
@@ -207,18 +216,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         error = error.map((item) => value);
         setChildError(error);
     }
-
-    React.useEffect(() => {
-        if (errorValue == 1) {
-            console.log('check error called in color');
-            const isError = checkError();
-            if (isError) {
-                setError(3);
-            } else {
-                setAllErrorToParticularValue(1);
-            }
-        }
-    }, [errorValue]);
 
     React.useEffect(() => {
         if (errorValue == 1 && childError.length > 0) {

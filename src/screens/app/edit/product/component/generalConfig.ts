@@ -102,6 +102,14 @@ export interface IClassifier {
     image: string; // Can be provided for pattern or brand etc..
     type: classifierTypes; //type is the classifier to which the document belongs
 }
+
+export enum ErrorState {
+    NEUTRAL = 0,
+    STARTCHECKING = 1,
+    PASSED = 2,
+    FAILED = 3,
+}
+
 export async function createProduct(data: Partial<IProduct>) {
     return await APIcreateProduct(data);
 }
