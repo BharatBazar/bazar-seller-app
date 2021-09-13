@@ -14,6 +14,7 @@ import { createProductSize, updateProductSize, deleteProductSize } from './compo
 import { generateProductId } from '@app/server/apis/shop/shop.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductIdPopup from './component/ProductIdPopup';
+import { provideAlert } from '@app/common/helper';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -122,7 +123,6 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     };
 
     const generateId = async () => {
-        console.log(shopId);
         try {
             const id = await generateProductId({ shopId: shopId });
             console.log(id);
@@ -139,14 +139,22 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     };
 
     const deleteProductSizeFromServer = async () => {
-        if (sizeId.length > 0) {
-            const response: IRProductSize = await deleteProductSize({ _id: sizeId, parentId: parentId });
-            if (response.status == 1) {
-                onDelete();
-            }
-        } else {
-            onDelete();
-        }
+        provideAlert({
+            heading: 'Warning',
+            subHeading: 'Do you want to delete this size?',
+            buttonText1: 'Yes',
+            onPressFirstButton: async () => {
+                if (sizeId.length > 0) {
+                    const response: IRProductSize = await deleteProductSize({ _id: sizeId, parentId: parentId });
+                    if (response.status == 1) {
+                        onDelete();
+                    }
+                } else {
+                    onDelete();
+                }
+            },
+            buttonText2: 'No',
+        });
     };
 
     const { lastMrp, lastQuantity, lastSp } = lastState;
