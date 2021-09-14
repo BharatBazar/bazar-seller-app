@@ -161,9 +161,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     React.useEffect(() => {
-        productColor.sizes.forEach((item) => {
-            pushErrorKey();
-        });
+        let error = productColor.sizes.map((item) => ErrorState.NEUTRAL);
+        setChildError(error);
     }, [productColor.sizes]);
 
     const [sizes, setSizes] = useState<IClassifier[]>(size); //All available size
