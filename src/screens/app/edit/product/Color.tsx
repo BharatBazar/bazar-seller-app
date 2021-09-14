@@ -256,7 +256,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     // If user want to delete color directly from server
     const deleteColorFromServer = async () => {
         Alert.alert('Warning', 'Do you really want to delete color it will delete all your progress?', [
-            { text: 'Cancel', style: 'cancel' },
             {
                 text: 'Yes',
                 onPress: async () => {
@@ -275,6 +274,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 },
                 style: 'default',
             },
+            { text: 'No' },
         ]);
     };
 
@@ -384,14 +384,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         console.log(defaultSize);
         defaultSize.forEach((size, index) => {
             if (!selectedSizes[size.sizeId]) {
-                selectedSizes[size.sizeId] = size;
-                if (index == defaultSize.length - 1) {
-                    setSelectedSize(selectedSizes);
-                }
-            } else {
-                if (index == defaultSize.length - 1) {
-                    setSelectedSize(selectedSizes);
-                }
+                selectedSizes[size.sizeId] = { ...size, _id: '' };
+            }
+            if (index == defaultSize.length - 1) {
+                setSelectedSize(selectedSizes);
             }
         });
     };

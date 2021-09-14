@@ -239,7 +239,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
         if (update && productColors.length > 0) {
             //If update flow then by default size exist so need to add error key
             productColors.forEach((item) => pushErrorKey());
-
+            console.log('child error length', productColors.length);
             //updating default size with existing sizes
             const data: ISizeApp[] = productColors[0].sizes.map((size) => {
                 return {
@@ -263,6 +263,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 defaultSize,
             };
     };
+
+    console.log(childError);
 
     return (
         <View

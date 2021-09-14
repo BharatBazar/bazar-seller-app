@@ -117,6 +117,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     }, []);
 
     React.useEffect(() => {
+        console.log('checkAllError', checkAllError);
         if (checkAllError == 2) {
             ToastHOC.successAlert("All check's passed");
             setCheckAllError(0);
@@ -166,7 +167,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             errroCallBack(error.message);
         }
     };
-
+    if (loading) {
+        return <Loader />;
+    }
     return (
         <View style={{ flex: 1 }}>
             <StatusBar statusBarColor={mainColor} />
@@ -211,7 +214,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     />
                 )}
             </ScrollView>
-            {loading && <Loader />}
+            {/* {loading && <Loader />} */}
         </View>
     );
 };

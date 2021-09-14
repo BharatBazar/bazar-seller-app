@@ -46,9 +46,9 @@ const Sections: React.FC<SectionsProps> = ({
 }) => {
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
     const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0 });
-
+    const incomplete = productDetails.status == productStatus.NOTCOMPLETED;
     const setAllError = (value: number) => {
-        setError({ title: value, description: value, colors: value });
+        setError({ title: incomplete ? 2 : value, description: incomplete ? 2 : value, colors: value });
     };
 
     const setParticularError = (key: keyof AllError, value: number) => {
@@ -74,8 +74,6 @@ const Sections: React.FC<SectionsProps> = ({
             setCheckAllError(3);
         }
     }, [error]);
-
-    const incomplete = productDetails.status == productStatus.NOTCOMPLETED;
 
     return (
         <View>
