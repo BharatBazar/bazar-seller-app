@@ -4,7 +4,7 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { FDR, MT } from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { fs13, fs15, fs20, fs28 } from '@app/common';
-import { mainColor } from '@app/common/color';
+import { errorColor, mainColor } from '@app/common/color';
 import ImagePicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import { getHP, getWP } from '@app/common/dimension';
 import { FlatList } from 'react-native-gesture-handler';
@@ -14,14 +14,20 @@ import Ripple from 'react-native-material-ripple';
 
 import ImageZoomViewer from './ImageViewer';
 import AddPhoto from './AddPhoto';
+import { ErrorState } from '../generalConfig';
+import { ErrorText } from '@app/common/customScreenText';
 
-export interface PhotoUploadProps {}
+export interface PhotoUploadProps {
+    photoError: ErrorState;
+    setPhotoError: (e: ErrorState) => void;
+}
 
-const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
+const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError }) => {
     const [photos, setPhotos] = React.useState<ImageOrVideo[]>([]);
     const [showImageViewer, setShowImageViewer] = React.useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
     const [currentViewIndex, setCurrentViewIndex] = React.useState(0);
+    const [error, setError] = React.useState('');
 
     const deleteImage = (index: number) => {
         const photo = [...photos];
@@ -42,9 +48,40 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = () => {
         setPhotos(photo);
     };
 
+    /**
+     * Error Checking Flow Start
+     */
+
+    React.useEffect(() => {
+        if (photoError == 1) {
+            const isError = checkError();
+            if (isError) {
+                setPhotoError(ErrorState.FAILED);
+            } else {
+                setPhotoError(ErrorState.PASSED);
+            }
+        }
+    }, [photoError]);
+
+    const checkError = () => {
+        if (photos.length == 0) {
+            setError('Please add atleast one photo for identification.');
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    /**
+     * End
+     */
+
     return (
         <View>
             <AddPhoto addImage={addImageInArray} />
+            {error.length > 0 && photos.length == 0 && (
+                <WrappedText text={error} textColor={errorColor} containerStyle={[MT(0.1)]} />
+            )}
             <View style={[MT(0.1)]} />
             <FlatList
                 data={photos}

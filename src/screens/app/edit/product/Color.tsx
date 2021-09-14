@@ -7,7 +7,7 @@ import { AIC, BGCOLOR, FDR, FLEX, HP, JCC, MH, ML, MT, MV, W, provideShadow } fr
 import { getHP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs10, fs13, fs20, fs40 } from '../../../../common';
-import { colorCode } from '../../../../common/color';
+import { colorCode, errorColor } from '../../../../common/color';
 import Size from './Size';
 import TableHeader from './component/component/TableHeader';
 import ProductContainer from './component/productContainerHOC';
@@ -23,6 +23,7 @@ import {
 import {
     createProductColor,
     deleteProductColor,
+    ErrorState,
     generalProductSizeSchema,
     IPostDataToServer,
     updateProductColor,
@@ -160,14 +161,25 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const [neww, setProductNew] = useState(false);
     const [error, setErrors] = useState<Error>({});
     const [childError, setChildError] = React.useState<possibleValue[]>([]);
+    const [photoError, setPhotoError] = React.useState<ErrorState>(ErrorState.NEUTRAL);
 
+    // Error flow related function explained in file Colors.tsx. Same flow is used //
+
+    //Error checking trigger
     React.useEffect(() => {
-        // const error = productColor.productSize.map((item) => 0);
-        // setChildError(error);
-        // return () => {};
-    }, []);
+        if (errorValue == ErrorState.STARTCHECKING) {
+            const isError = checkError();
+            const photoError = setPhotoError(ErrorState.STARTCHECKING);
 
-    // Error flow related function explained in Colors.tsx //
+            if (isError) {
+                setError(ErrorState.FAILED);
+            } else {
+                console.log('error');
+
+                setAllErrorToParticularValue(ErrorState.STARTCHECKING);
+            }
+        }
+    }, [errorValue]);
 
     const checkError = () => {
         let error: Error = {};
@@ -186,6 +198,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     function pushErrorKey() {
         let error = [...childError];
         error.push(0);
+        childError.splice(0);
         setChildError(error);
     }
 
@@ -209,48 +222,43 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     }
 
     React.useEffect(() => {
-        if (errorValue == 1) {
-            console.log('check error called in color');
-            const isError = checkError();
-            if (isError) {
-                setError(3);
+        console.log('color error trigger', index, childError, errorValue, photoError);
+        if (errorValue == 1 && childError.length == 0 && photoError > 1) {
+            if (photoError == 2) {
+                setPhotoError(ErrorState.NEUTRAL);
+                setError(ErrorState.PASSED);
             } else {
-                setAllErrorToParticularValue(1);
+                setPhotoError(ErrorState.NEUTRAL);
+                setError(ErrorState.FAILED);
             }
         }
-    }, [errorValue]);
-
-    React.useEffect(() => {
         if (errorValue == 1 && childError.length > 0) {
-            if (childError.every((item) => item == 2)) {
+            if (childError.every((item) => item == ErrorState.PASSED) && photoError == ErrorState.PASSED) {
                 //All checks passed
-                setAllErrorToParticularValue(0);
-                setError(2);
-            } else if (childError.every((item) => item == 3 || item == 2)) {
+                setAllErrorToParticularValue(ErrorState.NEUTRAL);
+                setPhotoError(ErrorState.NEUTRAL);
+                setError(ErrorState.PASSED);
+
+                //This condition that every element should be from either passed or failed is because
+                //It confirms that all the error function are executed
+                //and we can pass error state now to higher function
+            } else if (
+                childError.every((item) => item == ErrorState.FAILED || item == ErrorState.PASSED) &&
+                (photoError == ErrorState.PASSED || photoError == ErrorState.FAILED)
+            ) {
                 //Not All check passed
-
-                setAllErrorToParticularValue(0);
-                setError(3);
+                setAllErrorToParticularValue(ErrorState.NEUTRAL);
+                setPhotoError(ErrorState.NEUTRAL);
+                setError(ErrorState.FAILED);
             }
         }
-    }, [childError]);
-
-    React.useEffect(() => {
-        if (errorValue == 1) {
-            if (index % 2 == 0) {
-                setError(3);
-            } else {
-                setError(2);
-            }
-        }
-    }, [errorValue]);
+    }, [childError, photoError]);
 
     // Close //
 
     // If user want to delete color directly from server
     const deleteColorFromServer = async () => {
         Alert.alert('Warning', 'Do you really want to delete color it will delete all your progress?', [
-            { text: 'Cancel', style: 'cancel' },
             {
                 text: 'Yes',
                 onPress: async () => {
@@ -269,6 +277,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 },
                 style: 'default',
             },
+            { text: 'No' },
         ]);
     };
 
@@ -378,14 +387,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         console.log(defaultSize);
         defaultSize.forEach((size, index) => {
             if (!selectedSizes[size.sizeId]) {
-                selectedSizes[size.sizeId] = size;
-                if (index == defaultSize.length - 1) {
-                    setSelectedSize(selectedSizes);
-                }
-            } else {
-                if (index == defaultSize.length - 1) {
-                    setSelectedSize(selectedSizes);
-                }
+                selectedSizes[size.sizeId] = { ...size, _id: '' };
+            }
+            if (index == defaultSize.length - 1) {
+                setSelectedSize(selectedSizes);
             }
         });
     };
@@ -435,13 +440,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                     />
                 </View>
                 {Heading('Upload product image', color.description)}
-                <PhotoUpload />
+                <PhotoUpload photoError={photoError} setPhotoError={setPhotoError} />
                 {Heading('Provide size for product', color.description)}
-                {error['generalError'] ? (
-                    <WrappedText text={error['generalError']} fontSize={fs10} textColor={colorCode.RED} />
-                ) : (
-                    <View />
-                )}
+                {error['generalError'] ? <WrappedText text={error['generalError']} textColor={errorColor} /> : <View />}
                 {neww && index != 0 && (
                     <WrappedCheckBox
                         placeholder={'Auto fill size as first size added and update manually.'}
@@ -505,11 +506,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     neww={neww}
                                     shopId={shopId}
                                     setNew={setProductNew}
-                                    errorValue={childError[index]}
+                                    errorValue={childError[sizeIndex]}
                                     setError={(value: possibleValue) => {
                                         setTimeout(() => {
-                                            changeErrorValueAtIndex(index, value);
-                                        }, 10 + index * 10);
+                                            changeErrorValueAtIndex(sizeIndex, value);
+                                        }, 5 + sizeIndex * 5);
                                     }}
                                 />
                             </View>

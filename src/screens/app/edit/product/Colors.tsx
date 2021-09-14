@@ -9,6 +9,7 @@ import TextButton from '../../../component/TextButton';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import Color from './Color';
 import {
+    ErrorState,
     generalProductColorSchema,
     generalSpacing,
     IPostDataToServer,
@@ -108,7 +109,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     const [error, setErrors] = React.useState<Error>({});
 
     // Child error is basically a flag for running error handling in the Color Component
-    const [childError, setChildError] = React.useState<possibleValue[]>([]);
+    const [childError, setChildError] = React.useState<ErrorState[]>([]);
 
     // Adding item to selected colors or chosen colors object
     const addItem = (data: IColorApp) => {
@@ -166,7 +167,9 @@ const ProductColor: React.FC<ProductColorProps> = ({
     // push error or add new error as color is added
     function pushErrorKey() {
         let error = [...childError];
+        childError.splice(0);
         error.push(0);
+
         setChildError(error);
     }
 
@@ -235,21 +238,25 @@ const ProductColor: React.FC<ProductColorProps> = ({
     // when product colors changes it means new color has arrived or the state has to be updated
     // Sometimes the default or if it is update flow then product color data comes after render
     React.useEffect(() => {
-        setChosenColor(getProductColor());
+        console.log('child error length', productColors.length, update);
+        if (productColors.length > 0) {
+            setChosenColor(getProductColor());
+        }
         if (update && productColors.length > 0) {
             //If update flow then by default size exist so need to add error key
-            productColors.forEach((item) => pushErrorKey());
-
+            const errorArray: ErrorState[] = productColors.map((item) => ErrorState.NEUTRAL);
+            setChildError(errorArray);
+            console.log('child error length', productColors.length, update, childError);
             //updating default size with existing sizes
             const data: ISizeApp[] = productColors[0].sizes.map((size) => {
                 return {
                     ...size,
-                    sizeId: size.size,
+                    sizeId: size.size._id,
                 };
             });
             setDefaultSize(data);
         }
-    }, [productColors]);
+    }, [productColors.length]);
 
     // return props to child component
     // pass setDefaultSize to index 0 as only
@@ -263,6 +270,8 @@ const ProductColor: React.FC<ProductColorProps> = ({
                 defaultSize,
             };
     };
+
+    console.log(childError);
 
     return (
         <View
@@ -322,7 +331,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     setError={(value: possibleValue) => {
                         setTimeout(() => {
                             changeErrorValueAtIndex(index, value);
-                        }, 10 + index * 10);
+                        }, 5 + index * 5);
                     }}
                 />
             ))}

@@ -48,7 +48,11 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const [productId, setProductId] = useState<string | undefined>(_id);
     const [productDetails, setProductDetails] = useState<Partial<IProduct>>(generalProductSchema);
     const [loading, setLoading] = useState(true);
-    //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
+    //Here for every error 3 state are possible
+    //0 means neutral,
+    //1 means start checking,
+    //2 means passed,
+    //3 means failed
     const [checkAllError, setCheckAllError] = useState<number>(0);
     const [filter, setFilter] = useState<IFilter[]>([]);
     const [distribution, setDistribution] = useState<IFilter[]>([]);
@@ -113,6 +117,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     }, []);
 
     React.useEffect(() => {
+        console.log('checkAllError', checkAllError);
         if (checkAllError == 2) {
             ToastHOC.successAlert("All check's passed");
             setCheckAllError(0);
@@ -162,7 +167,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             errroCallBack(error.message);
         }
     };
-
+    if (loading) {
+        return <Loader />;
+    }
     return (
         <View style={{ flex: 1 }}>
             <StatusBar statusBarColor={mainColor} />
@@ -207,7 +214,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     />
                 )}
             </ScrollView>
-            {loading && <Loader />}
+            {/* {loading && <Loader />} */}
         </View>
     );
 };
