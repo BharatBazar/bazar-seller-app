@@ -31,6 +31,7 @@ import { generateProductId } from '@app/server/apis/shop/shop.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductIdPopup from './component/ProductIdPopup';
 import { provideAlert } from '@app/common/helper';
+import WrappedCheckBox from '@app/screens/component/WrappedCheckBox';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -45,6 +46,8 @@ export interface ProductPriceProps {
     errorValue: number;
     setError: (value: number) => void;
     shopId: string;
+    firstSize: ISizeApp;
+    index: number;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -60,6 +63,8 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setError,
     setDefaultSize,
     shopId,
+    firstSize,
+    index,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
@@ -173,6 +178,12 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         });
     };
 
+    const setAccordingToFirstSize = () => {
+        setMrp(firstSize.mrp);
+        setSp(firstSize.sp);
+        setQuantity(firstSize.quantity);
+    };
+
     const { lastMrp, lastQuantity, lastSp } = lastState;
 
     return (
@@ -196,6 +207,19 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 </View>
             ) : (
                 <View />
+            )}
+
+            {sizeId.length == 0 && index != 0 && (
+                <WrappedCheckBox
+                    placeholder={'Auto fill MRP, SP and Quantity according to first size.'}
+                    value={false}
+                    containerStyle={[MV(0)]}
+                    setValue={(value) => {
+                        if (value) {
+                            setAccordingToFirstSize();
+                        }
+                    }}
+                />
             )}
 
             <View style={[FDR(), MV(0.05)]}>
@@ -232,12 +256,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 </View>
             </View>
             {error.length > 0 && (
-                <WrappedText
-                    text={error}
-                    textColor={errorColor}
-                    fontSize={fs10}
-                    containerStyle={[FLEX(1), MH(0.4), MV(0.05)]}
-                />
+                <WrappedText text={error} textColor={errorColor} containerStyle={[FLEX(1), MH(0.4), MV(0.05)]} />
             )}
             {(lastSp != sp || lastMrp != mrp || lastQuantity != quantity || sizeId.length == 0) && (
                 <View style={[FDR(), JCC('flex-end'), MV(0.1)]}>

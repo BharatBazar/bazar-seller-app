@@ -149,7 +149,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     // while _id in object will be id of the color in color table or product color table..
     const getProductSize = () => {
         let data: { [key: string]: ISizeApp } = {};
-        productColor.sizes.forEach((size) => {
+        productColor.sizes.forEach((size, index) => {
             data[size.size._id] = {
                 ...size,
                 name: size.size.name,
@@ -175,6 +175,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const [error, setErrors] = useState<Error>({});
     const [childError, setChildError] = React.useState<ErrorState[]>([]);
     const [photoError, setPhotoError] = React.useState<ErrorState>(ErrorState.NEUTRAL);
+    const [firstSize, setFirstSize] = React.useState<ISizeApp | undefined>(undefined);
 
     // Error flow related function explained in file Colors.tsx. Same flow is used //
 
@@ -494,19 +495,15 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                             'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
                             color.description,
                         )}
-                        {index == 0 && (
-                            <WrappedCheckBox
-                                placeholder={'Auto fill MRP, SP for each size and update manually.'}
-                                value={true}
-                                setValue={() => {}}
-                            />
-                        )}
+
                         <TableHeader headerTitle={headerTitle} flex={columnFlex} />
 
                         {Object.values(selectedSize).map((size: ISizeApp, sizeIndex: number) => (
                             <View key={size.name + colorId}>
                                 <Size
                                     {...sizeProps}
+                                    index={sizeIndex}
+                                    firstSize={selectedSize[Object.keys(selectedSize)[0]]}
                                     productSize={size}
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}
