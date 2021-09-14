@@ -324,7 +324,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
                     setError={(value: possibleValue) => {
                         setTimeout(() => {
                             changeErrorValueAtIndex(index, value);
-                        }, 10 + index * 10);
+                        }, 5 + index * 5);
                     }}
                 />
             ))}

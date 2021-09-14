@@ -7,7 +7,7 @@ import { AIC, BGCOLOR, FDR, FLEX, HP, JCC, MH, ML, MT, MV, W, provideShadow } fr
 import { getHP } from '../../../../common/dimension';
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import { fs10, fs13, fs20, fs40 } from '../../../../common';
-import { colorCode } from '../../../../common/color';
+import { colorCode, errorColor } from '../../../../common/color';
 import Size from './Size';
 import TableHeader from './component/component/TableHeader';
 import ProductContainer from './component/productContainerHOC';
@@ -167,13 +167,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
 
     //Error checking trigger
     React.useEffect(() => {
-        if (errorValue == 1) {
+        if (errorValue == ErrorState.STARTCHECKING) {
             const isError = checkError();
+            const photoError = setPhotoError(ErrorState.STARTCHECKING);
+
             if (isError) {
-                setError(3);
+                setError(ErrorState.FAILED);
             } else {
-                setPhotoError(1);
-                setAllErrorToParticularValue(1);
+                console.log('error');
+
+                setAllErrorToParticularValue(ErrorState.STARTCHECKING);
             }
         }
     }, [errorValue]);
@@ -240,16 +243,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             }
         }
     }, [childError, photoError]);
-
-    React.useEffect(() => {
-        if (errorValue == 1) {
-            if (index % 2 == 0) {
-                setError(3);
-            } else {
-                setError(2);
-            }
-        }
-    }, [errorValue]);
 
     // Close //
 
@@ -439,11 +432,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 {Heading('Upload product image', color.description)}
                 <PhotoUpload photoError={photoError} setPhotoError={setPhotoError} />
                 {Heading('Provide size for product', color.description)}
-                {error['generalError'] ? (
-                    <WrappedText text={error['generalError']} fontSize={fs10} textColor={colorCode.RED} />
-                ) : (
-                    <View />
-                )}
+                {error['generalError'] ? <WrappedText text={error['generalError']} textColor={errorColor} /> : <View />}
                 {neww && index != 0 && (
                     <WrappedCheckBox
                         placeholder={'Auto fill size as first size added and update manually.'}

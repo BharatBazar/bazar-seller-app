@@ -66,9 +66,9 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError })
     const checkError = () => {
         if (photos.length !== 1) {
             setError('Please add atleast one photo for identification.');
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     };
 
