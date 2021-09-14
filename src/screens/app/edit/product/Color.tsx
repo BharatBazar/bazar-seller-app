@@ -198,6 +198,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     function pushErrorKey() {
         let error = [...childError];
         error.push(0);
+
         setChildError(error);
     }
 
@@ -221,25 +222,34 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     }
 
     React.useEffect(() => {
-        if (errorValue == 1 && childError.length > 0) {
-            if (childError.every((item) => item == 2) && photoError == ErrorState.PASSED) {
-                //All checks passed
-                setAllErrorToParticularValue(0);
+        console.log('color error trigger', index, childError, errorValue, photoError);
+        if (errorValue == 1 && childError.length == 0 && photoError > 1) {
+            if (photoError == 2) {
                 setPhotoError(ErrorState.NEUTRAL);
-                setError(2);
+                setError(ErrorState.PASSED);
+            } else {
+                setPhotoError(ErrorState.NEUTRAL);
+                setError(ErrorState.FAILED);
+            }
+        }
+        if (errorValue == 1 && childError.length > 0) {
+            if (childError.every((item) => item == ErrorState.PASSED) && photoError == ErrorState.PASSED) {
+                //All checks passed
+                setAllErrorToParticularValue(ErrorState.NEUTRAL);
+                setPhotoError(ErrorState.NEUTRAL);
+                setError(ErrorState.PASSED);
 
                 //This condition that every element should be from either passed or failed is because
                 //It confirms that all the error function are executed
                 //and we can pass error state now to higher function
             } else if (
-                childError.every((item) => item == 3 || item == 2) &&
+                childError.every((item) => item == ErrorState.FAILED || item == ErrorState.PASSED) &&
                 (photoError == ErrorState.PASSED || photoError == ErrorState.FAILED)
             ) {
                 //Not All check passed
-
-                setAllErrorToParticularValue(0);
+                setAllErrorToParticularValue(ErrorState.NEUTRAL);
                 setPhotoError(ErrorState.NEUTRAL);
-                setError(3);
+                setError(ErrorState.FAILED);
             }
         }
     }, [childError, photoError]);
