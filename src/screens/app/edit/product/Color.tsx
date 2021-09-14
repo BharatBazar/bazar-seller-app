@@ -391,13 +391,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const setDefaultSize = () => {
         //selectedSize.slice(0);
         let selectedSizes = { ...selectedSize };
-
+        let error: ErrorState[] = [];
         defaultSize.forEach((size, index) => {
-            pushErrorKey();
             if (!selectedSizes[size.sizeId]) {
+                error.push(ErrorState.NEUTRAL);
                 selectedSizes[size.sizeId] = { ...size, _id: '' };
             }
             if (index == defaultSize.length - 1) {
+                setChildError(error);
                 setSelectedSize(selectedSizes);
             }
         });
