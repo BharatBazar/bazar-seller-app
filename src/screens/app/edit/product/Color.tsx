@@ -136,6 +136,13 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     setError,
     shopId,
 }) => {
+    const pushErrorKey = () => {
+        let error = [...childError];
+        error.push(0);
+        childError.splice(0);
+        setChildError(error);
+    };
+
     //parse size array to object in order to satisfy fast access
 
     // so this is very important that _id that is key will be id of the classifier
@@ -153,6 +160,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
         return data;
     };
 
+    React.useEffect(() => {
+        productColor.sizes.forEach((item) => {
+            pushErrorKey();
+        });
+    }, [productColor.sizes]);
+
     const [sizes, setSizes] = useState<IClassifier[]>(size); //All available size
     const [selectedSize, setSelectedSize] = useState<{ [key: string]: ISizeApp }>(getProductSize()); //Selected size
 
@@ -160,7 +173,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const [autoFillDefaultSize, setAutoFillDefaultSize] = useState(false);
     const [neww, setProductNew] = useState(false);
     const [error, setErrors] = useState<Error>({});
-    const [childError, setChildError] = React.useState<possibleValue[]>([]);
+    const [childError, setChildError] = React.useState<ErrorState[]>([]);
     const [photoError, setPhotoError] = React.useState<ErrorState>(ErrorState.NEUTRAL);
 
     // Error flow related function explained in file Colors.tsx. Same flow is used //
@@ -194,13 +207,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
             return true;
         }
     };
-
-    function pushErrorKey() {
-        let error = [...childError];
-        error.push(0);
-        childError.splice(0);
-        setChildError(error);
-    }
 
     function removeErrorKey(index: number) {
         let error = [...childError];
@@ -508,6 +514,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     setNew={setProductNew}
                                     errorValue={childError[sizeIndex]}
                                     setError={(value: possibleValue) => {
+                                        console.log(sizeIndex, value, childError);
                                         setTimeout(() => {
                                             changeErrorValueAtIndex(sizeIndex, value);
                                         }, 5 + sizeIndex * 5);
