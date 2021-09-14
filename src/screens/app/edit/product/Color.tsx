@@ -198,7 +198,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     function pushErrorKey() {
         let error = [...childError];
         error.push(0);
-
+        childError.splice(0);
         setChildError(error);
     }
 
@@ -506,11 +506,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                     neww={neww}
                                     shopId={shopId}
                                     setNew={setProductNew}
-                                    errorValue={childError[index]}
+                                    errorValue={childError[sizeIndex]}
                                     setError={(value: possibleValue) => {
                                         setTimeout(() => {
-                                            changeErrorValueAtIndex(index, value);
-                                        }, 10 + index * 10);
+                                            changeErrorValueAtIndex(sizeIndex, value);
+                                        }, 5 + sizeIndex * 5);
                                     }}
                                 />
                             </View>
