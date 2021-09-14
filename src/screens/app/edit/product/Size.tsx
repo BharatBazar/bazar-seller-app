@@ -231,7 +231,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                         onPress={() => deleteProductSizeFromServer()}
                     />
                 </View>
-                <WrappedText text={productSize.name} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
+                <WrappedText text={productSize.name} containerStyle={[FLEX(flex[1]), AIC('flex-end'), JCC()]} />
                 <CounterComponent
                     counter={quantity}
                     setCounter={setQuantity}
@@ -241,17 +241,34 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     <WrappedTextInput
                         value={mrp}
                         onChangeText={(value) => setMrp(value)}
-                        containerStyle={{ height: getHP(0.35), borderWidth: 0.5, width: '100%' }}
+                        containerStyle={{
+                            height: getHP(0.35),
+
+                            width: '100%',
+                            borderColor: borderColor,
+                            borderWidth: 2,
+                            borderRadius: 5,
+                        }}
                         textInputStyle={{ fontSize: fs15, textAlign: 'center' }}
-                        multiline={true}
+                        placeholder={'mrp'}
+                        placeholderTextColor={'#8a8a8a'}
                     />
                 </View>
                 <View style={[FLEX(flex[4]), JCC(), ML(0.2)]}>
                     <WrappedTextInput
                         value={sp}
                         onChangeText={(sp) => setSp(sp)}
-                        containerStyle={{ height: getHP(0.35), borderWidth: 0.5, width: '100%' }}
+                        containerStyle={{
+                            height: getHP(0.35),
+
+                            width: '100%',
+                            borderColor: borderColor,
+                            borderWidth: 2,
+                            borderRadius: 5,
+                        }}
                         textInputStyle={{ fontSize: fs15, textAlign: 'center' }}
+                        placeholder={'sp'}
+                        placeholderTextColor={'#8a8a8a'}
                     />
                 </View>
             </View>
