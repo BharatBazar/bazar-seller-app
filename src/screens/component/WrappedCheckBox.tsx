@@ -29,7 +29,9 @@ class WrappedCheckBox extends React.Component<WrappedCheckBoxProps, WrappedCheck
                     onTintColor={mainColor}
                     style={{ height: fs16 }}
                 />
-                {placeholder && <WrappedText textStyle={styles.placeholderStyle} text={placeholder} />}
+                {placeholder && (
+                    <WrappedText textStyle={styles.placeholderStyle} containerStyle={{ flex: 1 }} text={placeholder} />
+                )}
             </View>
         );
     }

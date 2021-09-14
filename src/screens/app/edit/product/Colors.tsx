@@ -251,6 +251,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
             const data: ISizeApp[] = productColors[0].sizes.map((size) => {
                 return {
                     ...size,
+                    name: size.size.name,
                     sizeId: size.size._id,
                 };
             });

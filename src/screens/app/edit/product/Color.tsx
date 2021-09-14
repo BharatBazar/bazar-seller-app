@@ -390,8 +390,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const setDefaultSize = () => {
         //selectedSize.slice(0);
         let selectedSizes = { ...selectedSize };
-        console.log(defaultSize);
+
         defaultSize.forEach((size, index) => {
+            pushErrorKey();
             if (!selectedSizes[size.sizeId]) {
                 selectedSizes[size.sizeId] = { ...size, _id: '' };
             }
@@ -449,9 +450,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <PhotoUpload photoError={photoError} setPhotoError={setPhotoError} />
                 {Heading('Provide size for product', color.description)}
                 {error['generalError'] ? <WrappedText text={error['generalError']} textColor={errorColor} /> : <View />}
-                {neww && index != 0 && (
+                {((neww && index != 0) || Object.values(selectedSize).length == 0) && (
                     <WrappedCheckBox
-                        placeholder={'Auto fill size as first size added and update manually.'}
+                        placeholder={
+                            'On checking this box all the sizes of the first choosen color will be automatically filled.'
+                        }
+                        containerStyle={[MV(0.1)]}
                         value={autoFillDefaultSize}
                         setValue={(value) => {
                             if (value) {
