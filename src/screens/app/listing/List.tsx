@@ -1,19 +1,21 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { ActivityIndicator, Alert, ScrollView } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, View } from 'react-native';
 import { sub } from 'react-native-reanimated';
 import { NavigationProps } from '../../../common';
 import { NavigationKey } from '../../../labels';
 import { IProduct, IProducts, productStatus } from '../../../server/apis/product/product.interface';
 import { APIgetAllProduct } from '../../../server/apis/product/product.api';
 import ProductIdentifierView from './component/ProductIdentifierView';
+import { AIC, FLEX, JCC, M } from '@app/common/styles';
+import WrappedText from '@app/screens/component/WrappedText';
 
 export interface ProductListProps extends NavigationProps {
     shopId: string;
     category: string;
     subCategory: string;
     subCategory1: string;
-    productStatus: productStatus;
+    status: productStatus;
 }
 
 const ProductList: React.SFC<ProductListProps> = ({
@@ -22,7 +24,7 @@ const ProductList: React.SFC<ProductListProps> = ({
     category,
     subCategory,
     subCategory1,
-    productStatus,
+    status,
 }) => {
     const [loading, setLoader] = useState(false);
     const [product, setProduct] = useState<IProduct[]>([]);
@@ -32,10 +34,11 @@ const ProductList: React.SFC<ProductListProps> = ({
             setLoader(true);
             const response: IProducts = await APIgetAllProduct({
                 query: {
-                    status: productStatus,
+                    status: status,
                     shopId: shopId,
                 },
             });
+
             if (response.status == 1) {
                 setProduct(response.payload.payload);
                 setLoader(false);
@@ -53,22 +56,30 @@ const ProductList: React.SFC<ProductListProps> = ({
 
     return (
         <ScrollView style={{ flex: 1 }}>
-            {loading && <ActivityIndicator />}
-            {product.map((item, index) => (
-                <ProductIdentifierView
-                    key={index}
-                    product={item}
-                    onPress={() => {
-                        navigation.navigate(NavigationKey.CREATEPRODUCT, {
-                            update: true,
-                            _id: item._id,
-                            category: category,
-                            subCategory: subCategory,
-                            subCategory1: subCategory1,
-                        });
-                    }}
+            {loading ? (
+                <ActivityIndicator />
+            ) : product.length == 0 ? (
+                <WrappedText
+                    containerStyle={[M(0), AIC(), JCC()]}
+                    text={'No item in ' + productStatus[status] + ' category.'}
                 />
-            ))}
+            ) : (
+                product.map((item, index) => (
+                    <ProductIdentifierView
+                        key={index}
+                        product={item}
+                        onPress={() => {
+                            navigation.navigate(NavigationKey.CREATEPRODUCT, {
+                                update: true,
+                                _id: item._id,
+                                category: category,
+                                subCategory: subCategory,
+                                subCategory1: subCategory1,
+                            });
+                        }}
+                    />
+                ))
+            )}
         </ScrollView>
     );
 };

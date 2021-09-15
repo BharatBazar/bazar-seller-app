@@ -21,78 +21,32 @@ interface ProductTabProps extends NavigationProps {
 
 const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, subCategory1, subCategory }) => {
     const layout = useWindowDimensions();
-
+    console.log(productStatus);
     const [index, setIndex] = React.useState(4);
     const [routes, serRoutes] = React.useState([
-        { key: productStatus.LIVE, title: 'Live' },
-        { key: productStatus.WAITINGFORAPPROVAL, title: 'Waiting for approval' },
-        { key: productStatus.REJECTED, title: 'Rejected' },
-        { key: productStatus.INVENTORY, title: 'Local inventory' },
-        { key: productStatus.NOTCOMPLETED, title: 'Not completed' },
-        { key: productStatus.OUTOFSTOCK, title: 'Out of stock' },
+        { key: 0, title: 'Live' },
+        { key: 1, title: 'Waiting for approval' },
+        { key: 2, title: 'Rejected' },
+        { key: 3, title: 'Local inventory' },
+        { key: 4, title: 'Not completed' },
+        { key: 5, title: 'Out of stock' },
     ]);
 
+    const basicProps = {
+        navigation: navigation,
+        shopId: shopId,
+        category: category,
+        subCategory: subCategory,
+        subCategory1: subCategory1,
+    };
+
     const renderScene = SceneMap({
-        0: () => (
-            <ProductList
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                productStatus={productStatus.LIVE}
-            />
-        ),
-        1: () => (
-            <ProductList
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                productStatus={productStatus.WAITINGFORAPPROVAL}
-            />
-        ),
-        2: () => (
-            <ProductList
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                productStatus={productStatus.REJECTED}
-            />
-        ),
-        3: () => (
-            <ProductList
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                productStatus={productStatus.INVENTORY}
-            />
-        ),
-        4: () => (
-            <ProductList
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                productStatus={productStatus.NOTCOMPLETED}
-            />
-        ),
-        5: () => (
-            <ProductList
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                productStatus={productStatus.OUTOFSTOCK}
-            />
-        ),
+        0: () => <ProductList key={0} {...basicProps} status={productStatus.LIVE} />,
+        1: () => <ProductList key={1} {...basicProps} status={productStatus.WAITINGFORAPPROVAL} />,
+        2: () => <ProductList key={2} {...basicProps} status={productStatus.REJECTED} />,
+        3: () => <ProductList key={3} {...basicProps} status={productStatus.INVENTORY} />,
+        4: () => <ProductList key={4} {...basicProps} status={productStatus.NOTCOMPLETED} />,
+        5: () => <ProductList key={5} {...basicProps} status={productStatus.OUTOFSTOCK} />,
     });
 
     return (
