@@ -24,17 +24,55 @@ const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, s
 
     const [index, setIndex] = React.useState(4);
     const [routes, serRoutes] = React.useState([
-        { key: 'first', title: 'Active' },
-        { key: 'second', title: 'Waiting for approval' },
-        { key: 'third', title: 'Pending' },
-        { key: '4', title: 'Just Created' },
-        { key: '5', title: 'Not completed' },
+        { key: productStatus.LIVE, title: 'Live' },
+        { key: productStatus.WAITINGFORAPPROVAL, title: 'Waiting for approval' },
+        { key: productStatus.REJECTED, title: 'Rejected' },
+        { key: productStatus.INVENTORY, title: 'Local inventory' },
+        { key: productStatus.NOTCOMPLETED, title: 'Not completed' },
+        { key: productStatus.OUTOFSTOCK, title: 'Out of stock' },
     ]);
 
     const renderScene = SceneMap({
-        first: FirstRoute,
-        second: SecondRoute,
-        third: FirstRoute,
+        0: () => (
+            <ProductList
+                navigation={navigation}
+                shopId={shopId}
+                category={category}
+                subCategory={subCategory}
+                subCategory1={subCategory1}
+                productStatus={productStatus.LIVE}
+            />
+        ),
+        1: () => (
+            <ProductList
+                navigation={navigation}
+                shopId={shopId}
+                category={category}
+                subCategory={subCategory}
+                subCategory1={subCategory1}
+                productStatus={productStatus.WAITINGFORAPPROVAL}
+            />
+        ),
+        2: () => (
+            <ProductList
+                navigation={navigation}
+                shopId={shopId}
+                category={category}
+                subCategory={subCategory}
+                subCategory1={subCategory1}
+                productStatus={productStatus.REJECTED}
+            />
+        ),
+        3: () => (
+            <ProductList
+                navigation={navigation}
+                shopId={shopId}
+                category={category}
+                subCategory={subCategory}
+                subCategory1={subCategory1}
+                productStatus={productStatus.INVENTORY}
+            />
+        ),
         4: () => (
             <ProductList
                 navigation={navigation}
@@ -42,7 +80,7 @@ const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, s
                 category={category}
                 subCategory={subCategory}
                 subCategory1={subCategory1}
-                productStatus={productStatus.READYTOROLLOUT}
+                productStatus={productStatus.NOTCOMPLETED}
             />
         ),
         5: () => (
@@ -52,7 +90,7 @@ const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, s
                 category={category}
                 subCategory={subCategory}
                 subCategory1={subCategory1}
-                productStatus={productStatus.NOTCOMPLETED}
+                productStatus={productStatus.OUTOFSTOCK}
             />
         ),
     });
