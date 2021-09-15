@@ -10,7 +10,7 @@ import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfi
 import Filter from './Filter';
 
 export interface SectionsProps {
-    productDetails: Partial<IProduct>;
+    productDetails: IProduct;
     update: boolean;
     postDataToServer: IPostDataToServer;
     setProductId: (productId: string) => void;
@@ -135,7 +135,7 @@ const Sections: React.FC<SectionsProps> = ({
                             setParticularError('colors', value);
                         }, 20);
                     }}
-                    shopId={productDetails['shopId']}
+                    shopId={productDetails['shopId'] as string}
                     distribution={distribution}
                     setProductId={setProductId}
                     update={update}
@@ -143,6 +143,9 @@ const Sections: React.FC<SectionsProps> = ({
                     productId={productId}
                     productColors={productDetails['colors'] as IProductColor[]}
                     productTypeDetails={productTypeDetails}
+                    //sending product status
+
+                    status={productDetails.status}
                 />
             )}
         </View>

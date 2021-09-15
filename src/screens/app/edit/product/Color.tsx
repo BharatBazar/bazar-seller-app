@@ -19,6 +19,7 @@ import {
     IProductSize,
     IRProductColor,
     ISizeApp,
+    productStatus,
 } from '../../../../server/apis/product/product.interface';
 import {
     createProductColor,
@@ -88,6 +89,8 @@ export interface ProductDetailsProps {
 
     errorValue: number;
     setError: (value: number) => void;
+
+    status: productStatus;
 }
 export interface headerTitleI {
     title: string;
@@ -136,6 +139,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     errorValue,
     setError,
     shopId,
+    status,
 }) => {
     const pushErrorKey = () => {
         let error = [...childError];
