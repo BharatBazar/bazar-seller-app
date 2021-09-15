@@ -168,9 +168,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             errroCallBack(error.message);
         }
     };
-    if (loading) {
-        return <Loader />;
-    }
+
     return (
         <View style={{ flex: 1 }}>
             <StatusBar statusBarColor={mainColor} />
@@ -182,39 +180,47 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     deleteProduct();
                 }}
             />
-            <View style={[border, FDR(), padHor, PR(0.1), PV(0.1)]}>
-                <WrappedText
-                    text={`This product is under ${returnEmptyStringOrValue(category)} ${returnEmptyStringOrValue(
-                        subCategory,
-                    )} ${returnEmptyStringOrValue(subCategory1)} category.`}
-                    containerStyle={[FLEX(1)]}
-                    textColor={'#646464'}
-                />
-                <TextButton
-                    text={'Add to inventory'}
-                    onPress={() => {
-                        setCheckAllError(1);
-                    }}
-                    textProps={{ textColor: colorCode.WHITE }}
-                    containerStyle={[AIC(), PH(0.5), BR(0.05)]}
-                />
-            </View>
-            <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                {!loading && (
-                    <Sections
-                        filter={filter}
-                        distribution={distribution}
-                        checkAllError={checkAllError}
-                        setCheckAllError={setCheckAllError}
-                        productDetails={productDetails}
-                        update={update}
-                        postDataToServer={postProductDataToServer}
-                        setProductId={setProductId}
-                        productId={productId}
-                        productTypeDetails={{ category, subCategory, subCategory1 }}
-                    />
-                )}
-            </ScrollView>
+            {loading ? (
+                <Loader />
+            ) : (
+                <>
+                    <View style={[border, FDR(), padHor, PR(0.1), PV(0.1)]}>
+                        <WrappedText
+                            text={`This product is under ${returnEmptyStringOrValue(
+                                category,
+                            )} ${returnEmptyStringOrValue(subCategory)} ${returnEmptyStringOrValue(
+                                subCategory1,
+                            )} category.`}
+                            containerStyle={[FLEX(1)]}
+                            textColor={'#646464'}
+                        />
+                        <TextButton
+                            text={'Add to inventory'}
+                            onPress={() => {
+                                setCheckAllError(1);
+                            }}
+                            textProps={{ textColor: colorCode.WHITE }}
+                            containerStyle={[AIC(), PH(0.5), BR(0.05)]}
+                        />
+                    </View>
+                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+                        {!loading && (
+                            <Sections
+                                filter={filter}
+                                distribution={distribution}
+                                checkAllError={checkAllError}
+                                setCheckAllError={setCheckAllError}
+                                productDetails={productDetails}
+                                update={update}
+                                postDataToServer={postProductDataToServer}
+                                setProductId={setProductId}
+                                productId={productId}
+                                productTypeDetails={{ category, subCategory, subCategory1 }}
+                            />
+                        )}
+                    </ScrollView>
+                </>
+            )}
             {/* {loading && <Loader />} */}
         </View>
     );
