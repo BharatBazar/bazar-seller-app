@@ -39,7 +39,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
     console.log(title, subTitle);
     return (
         <Ripple
-            style={[border, FDR(), WP(10), AIC(), MT(0.1), HP(2)]}
+            style={[border, FDR(), WP(10), AIC(), MT(0.1), HP(2), BGCOLOR('#FFFFFF')]}
             onPress={() => {
                 onPress();
             }}

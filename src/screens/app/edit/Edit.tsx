@@ -120,6 +120,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         console.log('checkAllError', checkAllError);
         if (checkAllError == 2) {
             ToastHOC.successAlert("All check's passed");
+
             setCheckAllError(0);
         } else if (checkAllError == 3) {
             ToastHOC.errorAlert("Please clear all error's");
