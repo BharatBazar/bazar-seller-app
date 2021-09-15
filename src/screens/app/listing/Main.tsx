@@ -37,7 +37,7 @@ const Product: React.FC<ProductProps> = ({
         }
     };
 
-    React.useEffect(() => {
+    React.useMemo(() => {
         setBaseUrl();
         // return () => {
         //     axios.defaults.baseURL = apiEndPoint;
@@ -92,9 +92,10 @@ const Product: React.FC<ProductProps> = ({
                     <TextInput
                         style={[
                             {
-                                paddingHorizontal: '3%',
                                 backgroundColor: colorCode.WHITE,
                                 flex: 1,
+                                padding: 0,
+                                paddingLeft: getWP(0.2),
                                 height: getHP(0.5),
                                 borderRadius: getHP(0.05),
                             },
@@ -105,7 +106,7 @@ const Product: React.FC<ProductProps> = ({
                     />
                 </View>
             </View>
-            <View style={[FLEX(1), PH(0.3), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
+            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
                 {/* <Status
                     name={'Incomplete'}
                     count={10}
