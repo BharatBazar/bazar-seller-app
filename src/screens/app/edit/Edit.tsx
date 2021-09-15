@@ -14,7 +14,7 @@ import {
     updateProduct,
 } from './product/component/generalConfig';
 import { AIC, BR, BW, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/styles';
-import { IFilter, IProduct, IRProduct } from '../../../server/apis/product/product.interface';
+import { IFilter, IProduct, IRProduct, productStatus } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/product.api';
 import { colorCode, mainColor } from '../../../common/color';
@@ -48,6 +48,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const [productId, setProductId] = useState<string | undefined>(_id);
     const [productDetails, setProductDetails] = useState<Partial<IProduct>>(generalProductSchema);
     const [loading, setLoading] = useState(true);
+    const [generalLoader, setGeneralLoader] = useState(false);
     //Here for every error 3 state are possible
     //0 means neutral,
     //1 means start checking,
@@ -80,7 +81,10 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             if (response.status == 1) {
                 setProductDetails(response.payload);
             }
-        } catch (error) {}
+        } catch (error) {
+            ToastHOC.errorAlert(error.message, 'Error loading product details');
+            setLoading(false);
+        }
     };
 
     const deleteProduct = async () => {
@@ -90,14 +94,19 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                 onPress: async () => {
                     try {
                         if (productId) {
+                            setGeneralLoader(true);
                             const response: IRProduct = await deleteProductFromServer({ _id: productId });
+                            setGeneralLoader(false);
                             if (response.status == 1) {
                                 navigation.goBack();
                             }
                         } else {
                             navigation.goBack();
                         }
-                    } catch (error) {}
+                    } catch (error) {
+                        setGeneralLoader(false);
+                        ToastHOC.errorAlert(error.message, 'Problem deleting product');
+                    }
                 },
             },
             {
@@ -117,14 +126,17 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     }, []);
 
     React.useEffect(() => {
-        console.log('checkAllError', checkAllError);
         if (checkAllError == 2) {
             ToastHOC.successAlert("All check's passed");
-
+            postProductDataToServer({ status: productStatus.INVENTORY, _id: productDetails._id }, () => {
+                setProductDetails({ ...productDetails, status: productStatus.INVENTORY });
+            });
             setCheckAllError(0);
+            setGeneralLoader(false);
         } else if (checkAllError == 3) {
             ToastHOC.errorAlert("Please clear all error's");
             setCheckAllError(0);
+            setGeneralLoader(false);
         }
     }, [checkAllError]);
 
@@ -144,7 +156,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         }
     };
 
-    const postProductDataToServer = async (data: IProduct, successCallBack: Function, errroCallBack: Function) => {
+    const postProductDataToServer = async (data: IProduct, successCallBack?: Function, errroCallBack?: Function) => {
         try {
             if (productId) {
                 //Call update product function
@@ -152,20 +164,23 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     ...data,
                     _id: productId,
                 };
+                setGeneralLoader(true);
                 const response: IRProduct = await updateProduct(product);
+                setGeneralLoader(false);
                 if (response.status == 1) {
-                    successCallBack();
+                    successCallBack && successCallBack();
                     //setProductDetails(response.payload);
                     SimpleToast.show('Saved', SimpleToast.SHORT);
                 } else {
-                    errroCallBack(response.message);
+                    errroCallBack && errroCallBack(response.message);
                 }
             } else {
                 //Call create product function with some data
                 createProduct(data);
             }
         } catch (error) {
-            errroCallBack(error.message);
+            setGeneralLoader(false);
+            errroCallBack && errroCallBack(error.message);
         }
     };
 
@@ -195,8 +210,13 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                             textColor={'#646464'}
                         />
                         <TextButton
-                            text={'Add to inventory'}
+                            text={
+                                productDetails.status == productStatus.NOTCOMPLETED
+                                    ? 'Add to inventory'
+                                    : 'Send for approval'
+                            }
                             onPress={() => {
+                                setGeneralLoader(true);
                                 setCheckAllError(1);
                             }}
                             textProps={{ textColor: colorCode.WHITE }}
@@ -221,7 +241,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     </ScrollView>
                 </>
             )}
-            {/* {loading && <Loader />} */}
+            {generalLoader && <Loader />}
         </View>
     );
 };
