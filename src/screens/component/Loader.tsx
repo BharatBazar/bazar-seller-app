@@ -18,7 +18,7 @@ export default class Loader extends React.Component {
                     bottom: 0,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#FFFFFF' + colorTransparency[20],
+                    backgroundColor: '#FFFFFF' + colorTransparency[10],
                 }}
             >
                 {this.props.showCancelButton ? (
