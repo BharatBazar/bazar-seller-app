@@ -456,24 +456,24 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <PhotoUpload photoError={photoError} setPhotoError={setPhotoError} />
                 {Heading('Provide size for product', color.description)}
                 {error['generalError'] ? <WrappedText text={error['generalError']} textColor={errorColor} /> : <View />}
-                {/* {((neww && index != 0) || Object.values(selectedSize).length == 0) && ( */}
-                <WrappedCheckBox
-                    placeholder={
-                        'On checking this box all the sizes of the first choosen color will be automatically filled.'
-                    }
-                    containerStyle={[MV(0.1)]}
-                    value={autoFillDefaultSize}
-                    setValue={(value) => {
-                        if (value) {
-                            setDefaultSize();
-                        } else {
-                            ToastHOC.infoAlert(
-                                'If you select the option again then whole size data for this color will be replaced by the first color size data.',
-                            );
+                {((neww && index != 0) || Object.values(selectedSize).length == 0) && (
+                    <WrappedCheckBox
+                        placeholder={
+                            'On checking this box all the sizes of the first choosen color will be automatically filled.'
                         }
-                    }}
-                />
-                {/* )} */}
+                        containerStyle={[MV(0.1)]}
+                        value={autoFillDefaultSize}
+                        setValue={(value) => {
+                            if (value) {
+                                setDefaultSize();
+                            } else {
+                                ToastHOC.infoAlert(
+                                    'If you select the option again then whole size data for this color will be replaced by the first color size data.',
+                                );
+                            }
+                        }}
+                    />
+                )}
                 <ScrollView horizontal={true} contentContainerStyle={[MV(0.1)]}>
                     {sizes.map((size: IClassifier, index: number) => (
                         <WrappedSize
