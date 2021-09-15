@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { BC, BGCOLOR, BR, BW, JCC, MT, PV } from '../../../../common/styles';
-import { IFilter, IPostDataToServer } from './component/generalConfig';
+import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
 import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
@@ -24,13 +24,20 @@ interface Error {
     generalError: string;
 }
 
-const renderFilter = (
-    filter: IFilter,
-    index: number,
-    fitlerValues: IClassifier | IClassifier[],
-    postDataToServer: IPostDataToServer,
-    productId: string,
-) => {
+interface renderFilterProps {
+    filter: IFilter;
+    index: number;
+    fitlerValues: IClassifier | IClassifier[];
+    postDataToServer: IPostDataToServer;
+    productId: string;
+}
+const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
+    filter,
+    fitlerValues,
+    index,
+    postDataToServer,
+    productId,
+}) => {
     const [showPopup, setPopup] = React.useState<boolean>(false);
     const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
     const [loading, setLoader] = React.useState(false);
@@ -211,9 +218,26 @@ interface FilterProps {
     postDataToServer: IPostDataToServer;
     productDetails: Partial<IProduct>;
     productId: string;
+    errorValue: number;
+    setError: (value: number) => void;
 }
 
-const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDetails, productId }) => {
+const Filter: React.SFC<FilterProps> = ({
+    filters,
+    postDataToServer,
+    productDetails,
+    productId,
+    errorValue,
+    setError,
+}) => {
+    // Child error is basically a flag for running error handling in the Color Component
+    const [childError, setChildError] = React.useState<ErrorState[]>([]);
+
+    React.useEffect(() => {
+        let error = filters.map((item) => ErrorState.NEUTRAL);
+        setChildError(error);
+    }, [filters.length]);
+
     return (
         <ProductContainer>
             <ProductDetailsHeading
@@ -224,9 +248,15 @@ const Filter: React.SFC<FilterProps> = ({ filters, postDataToServer, productDeta
                 error={''}
             />
             <View style={[{ borderBottomWidth: 1, borderColor: '#E5E5E5', paddingBottom: getHP(0.2) }]} />
-            {filters.map((item, index) =>
-                renderFilter(item, index, productDetails[item.type], postDataToServer, productId),
-            )}
+            {filters.map((item, index) => (
+                <RenderFilter
+                    filter={item}
+                    index={index}
+                    fitlerValues={productDetails[item.type]}
+                    postDataToServer={postDataToServer}
+                    productId={productId}
+                />
+            ))}
         </ProductContainer>
     );
 };

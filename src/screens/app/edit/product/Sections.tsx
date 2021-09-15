@@ -6,7 +6,7 @@ import Title from './Title';
 import Description from './Description';
 import Colors from './Colors';
 import { IProduct, IProductColor, productStatus } from '../../../../server/apis/product/product.interface';
-import { IFilter, IPostDataToServer } from './component/generalConfig';
+import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
 
 export interface SectionsProps {
@@ -22,14 +22,15 @@ export interface SectionsProps {
     };
     filter: IFilter[];
     distribution: IFilter[];
-    checkAllError: number;
-    setCheckAllError: (a: number) => void;
+    checkAllError: ErrorState;
+    setCheckAllError: (a: ErrorState) => void;
 }
 
 interface AllError {
-    title: number;
-    description: number;
-    colors: number;
+    title: ErrorState;
+    description: ErrorState;
+    colors: ErrorState;
+    filters: ErrorState;
 }
 
 const Sections: React.FC<SectionsProps> = ({
@@ -45,10 +46,15 @@ const Sections: React.FC<SectionsProps> = ({
     distribution,
 }) => {
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
-    const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0 });
+    const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0, filters: 0 });
     const incomplete = productDetails.status == productStatus.NOTCOMPLETED;
     const setAllError = (value: number) => {
-        setError({ title: incomplete ? 2 : value, description: incomplete ? 2 : value, colors: value });
+        setError({
+            title: incomplete ? ErrorState.PASSED : value,
+            description: incomplete ? ErrorState.PASSED : value,
+            colors: value,
+            filters: incomplete ? ErrorState.PASSED : value,
+        });
     };
 
     const setParticularError = (key: keyof AllError, value: number) => {
