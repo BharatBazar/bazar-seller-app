@@ -181,7 +181,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     }
 
     //change error value at particular index
-    function changeErrorValueAtIndex(index: number, value: possibleValue) {
+    function changeErrorValueAtIndex(index: number, value: ErrorState) {
         let error = [...childError];
         error[index] = value;
         setChildError(error);
@@ -189,7 +189,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
 
     // set all error to particular value so that error check can be triggered
     // into the component where this particular index value is passed
-    function setAllErrorToParticularValue(value: possibleValue) {
+    function setAllErrorToParticularValue(value: ErrorState) {
         var error = [...childError];
         childError.splice(0);
         error = error.map((item) => value);

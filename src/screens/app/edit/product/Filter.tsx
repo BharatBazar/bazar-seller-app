@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BC, BGCOLOR, BR, BW, JCC, MT, PV } from '../../../../common/styles';
+import { BC, BGCOLOR, BR, BW, JCC, MT, MV, PV } from '../../../../common/styles';
 import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
 import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
@@ -9,7 +9,7 @@ import ShowFilterModal, { ShowFilter } from './component/ShowFilter';
 import { fs12, fs18 } from '../../../../common';
 import { getHP } from '../../../../common/dimension';
 import TextButton from '../../../component/TextButton';
-import { borderColor, mainColor } from '../../../../common/color';
+import { borderColor, errorColor, mainColor } from '../../../../common/color';
 import { IClassifier, IProduct } from '../../../../server/apis/product/product.interface';
 import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
 import { ToastHOC } from '../../../hoc/ToastHOC';
@@ -30,6 +30,8 @@ interface renderFilterProps {
     fitlerValues: IClassifier | IClassifier[];
     postDataToServer: IPostDataToServer;
     productId: string;
+    errorValue: ErrorState;
+    setErrorValue: Function;
 }
 const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
     filter,
@@ -37,6 +39,8 @@ const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
     index,
     postDataToServer,
     productId,
+    errorValue,
+    setErrorValue,
 }) => {
     const [showPopup, setPopup] = React.useState<boolean>(false);
     const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
@@ -157,6 +161,28 @@ const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
         return () => {};
     }, [fitlerValues]);
 
+    const checkError = () => {
+        if (Object.keys(selectedTags).length == 0) {
+            setErrors({ generalError: 'Please select atleast one filter value.' });
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    React.useEffect(() => {
+        if (errorValue == ErrorState.STARTCHECKING) {
+            const isError = checkError();
+            setErrorValue(isError ? ErrorState.FAILED : ErrorState.PASSED);
+        }
+    }, [errorValue]);
+
+    React.useEffect(() => {
+        if (Object.keys(selectedTags).length > 0) {
+            setErrors({});
+        }
+    }, [Object.keys(selectedTags).length]);
+
     return (
         <View
             key={index}
@@ -164,7 +190,9 @@ const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
         >
             <WrappedText text={filter.name} fontSize={fs18} />
             <WrappedText text={filter.description} textColor={'#8A8A8A'} />
-            <WrappedText text={error.generalError || ''} fontSize={fs12} />
+            {error['generalError'] && (
+                <WrappedText text={error.generalError || ''} textColor={errorColor} containerStyle={[MV(0.1)]} />
+            )}
             <View style={[MT(0.1)]} />
 
             <TextButton
@@ -173,7 +201,7 @@ const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
                     PV(0.1),
                     BR(0.1),
                     JCC('center'),
-                    MT(0.2),
+                    MT(0.1),
                     BW(1.5),
                     BC(selectedTags && Object.keys(selectedTags).length > 0 ? mainColor : borderColor),
                     BGCOLOR('#FFFFFF'),
@@ -236,7 +264,46 @@ const Filter: React.SFC<FilterProps> = ({
     React.useEffect(() => {
         let error = filters.map((item) => ErrorState.NEUTRAL);
         setChildError(error);
-    }, [filters.length]);
+    }, [filters]);
+
+    //change error value at particular index
+    function changeErrorValueAtIndex(index: number, value: ErrorState) {
+        let error = [...childError];
+        error[index] = value;
+        childError.splice(0);
+        setChildError(error);
+    }
+
+    // set all error to particular value so that error check can be triggered
+    // into the component where this particular index value is passed
+    function setAllErrorToParticularValue(value: ErrorState) {
+        var error = [...childError];
+        childError.splice(0);
+        error = error.map((item) => value);
+        setChildError(error);
+    }
+
+    React.useEffect(() => {
+        if (errorValue == 1 && childError.length > 0) {
+            if (childError.every((item) => item == 2)) {
+                //All checks passed
+                setAllErrorToParticularValue(0);
+                setError(2);
+            } else if (childError.every((item) => item == 3 || item == 2)) {
+                //Not All check passed
+                setAllErrorToParticularValue(0);
+                setError(3);
+            }
+        }
+    }, [childError]);
+
+    React.useEffect(() => {
+        if (errorValue == ErrorState.STARTCHECKING) {
+            setAllErrorToParticularValue(ErrorState.STARTCHECKING);
+        }
+    }, [errorValue]);
+
+    console.log('filter child array error', childError);
 
     return (
         <ProductContainer>
@@ -255,6 +322,10 @@ const Filter: React.SFC<FilterProps> = ({
                     fitlerValues={productDetails[item.type]}
                     postDataToServer={postDataToServer}
                     productId={productId}
+                    errorValue={childError[index]}
+                    setErrorValue={(value: ErrorState) => {
+                        changeErrorValueAtIndex(index, value);
+                    }}
                 />
             ))}
         </ProductContainer>

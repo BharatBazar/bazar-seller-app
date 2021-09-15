@@ -64,8 +64,8 @@ const Sections: React.FC<SectionsProps> = ({
     };
 
     React.useEffect(() => {
-        if (checkAllError == 1) {
-            setAllError(1);
+        if (checkAllError == ErrorState.STARTCHECKING) {
+            setAllError(ErrorState.STARTCHECKING);
         }
     }, [checkAllError]);
 
@@ -91,7 +91,7 @@ const Sections: React.FC<SectionsProps> = ({
                         update={update}
                         errorValue={error['title']}
                         setError={(value: number) => {
-                            console.log('SEt particular error title', value);
+                            console.log('Set particular error title', value);
                             setParticularError('title', value);
                         }}
                         postDataToServer={postDataToServer}
@@ -113,6 +113,12 @@ const Sections: React.FC<SectionsProps> = ({
             )}
             <Filter
                 filters={filter}
+                errorValue={error['filters']}
+                setError={(value: number) => {
+                    // setTimeout(() => {
+                    setParticularError('filters', value);
+                    //}, 10);
+                }}
                 postDataToServer={postDataToServer}
                 productDetails={productDetails}
                 productId={productId}
