@@ -31,6 +31,7 @@ import { generateProductId } from '@app/server/apis/shop/shop.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductIdPopup from './component/ProductIdPopup';
 import { provideAlert } from '@app/common/helper';
+import WrappedCheckBox from '@app/screens/component/WrappedCheckBox';
 
 export interface ProductPriceProps {
     flex: number[];
@@ -45,6 +46,9 @@ export interface ProductPriceProps {
     errorValue: number;
     setError: (value: number) => void;
     shopId: string;
+    firstSize: Partial<ISizeApp>;
+    setFirstSize?: Function;
+    index: number;
 }
 
 const ProductPrice: React.FC<ProductPriceProps> = ({
@@ -60,6 +64,9 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setError,
     setDefaultSize,
     shopId,
+    firstSize,
+    setFirstSize,
+    index,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
     const [mrp, setMrp] = React.useState<string>(productSize.mrp);
@@ -97,6 +104,13 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             }
         }
     }, [errorValue]);
+
+    React.useEffect(() => {
+        console.log(sp, mrp, quantity, index, setFirstSize);
+        if (index == 0) {
+            setFirstSize && setFirstSize({ mrp, sp, quantity });
+        }
+    }, [sp, mrp, quantity]);
 
     const postProductSizeDataToServer = async (id?: string) => {
         let data: Partial<IProductSize> = { quantity: quantity, sp: sp, mrp: mrp, size: productSize.sizeId };
@@ -173,11 +187,17 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
         });
     };
 
+    const setAccordingToFirstSize = () => {
+        setMrp(firstSize.mrp as string);
+        setSp(firstSize.sp as string);
+        setQuantity(firstSize.quantity as number);
+    };
+
     const { lastMrp, lastQuantity, lastSp } = lastState;
 
     return (
         <View style={[{ borderBottomWidth: 1 }, BC(borderColor), PV(0.2)]}>
-            {productSize.itemId || id ? (
+            {(productSize.itemId || id) && sizeId.length != 0 ? (
                 <View style={[AIC('flex-start'), JCC(), MT(0.1)]}>
                     <WrappedText
                         text={'Unique Id - ' + (productSize.itemId || id)}
@@ -198,6 +218,19 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                 <View />
             )}
 
+            {sizeId.length == 0 && index != 0 && (
+                <WrappedCheckBox
+                    placeholder={'Auto fill MRP, SP and Quantity according to first size.'}
+                    value={false}
+                    containerStyle={[MV(0)]}
+                    setValue={(value) => {
+                        if (value) {
+                            setAccordingToFirstSize();
+                        }
+                    }}
+                />
+            )}
+
             <View style={[FDR(), MV(0.05)]}>
                 <View style={[FLEX(flex[0]), JCC(), AIC()]}>
                     <Icon
@@ -207,7 +240,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                         onPress={() => deleteProductSizeFromServer()}
                     />
                 </View>
-                <WrappedText text={productSize.name} containerStyle={[FLEX(flex[1]), AIC(), JCC()]} />
+                <WrappedText text={productSize.name} containerStyle={[FLEX(flex[1]), AIC('flex-end'), JCC()]} />
                 <CounterComponent
                     counter={quantity}
                     setCounter={setQuantity}
@@ -217,27 +250,39 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                     <WrappedTextInput
                         value={mrp}
                         onChangeText={(value) => setMrp(value)}
-                        containerStyle={{ height: getHP(0.35), borderWidth: 0.5, width: '100%' }}
+                        containerStyle={{
+                            height: getHP(0.35),
+
+                            width: '100%',
+                            borderColor: borderColor,
+                            borderWidth: 2,
+                            borderRadius: 5,
+                        }}
                         textInputStyle={{ fontSize: fs15, textAlign: 'center' }}
-                        multiline={true}
+                        placeholder={'mrp'}
+                        placeholderTextColor={'#8a8a8a'}
                     />
                 </View>
                 <View style={[FLEX(flex[4]), JCC(), ML(0.2)]}>
                     <WrappedTextInput
                         value={sp}
                         onChangeText={(sp) => setSp(sp)}
-                        containerStyle={{ height: getHP(0.35), borderWidth: 0.5, width: '100%' }}
+                        containerStyle={{
+                            height: getHP(0.35),
+
+                            width: '100%',
+                            borderColor: borderColor,
+                            borderWidth: 2,
+                            borderRadius: 5,
+                        }}
                         textInputStyle={{ fontSize: fs15, textAlign: 'center' }}
+                        placeholder={'sp'}
+                        placeholderTextColor={'#8a8a8a'}
                     />
                 </View>
             </View>
             {error.length > 0 && (
-                <WrappedText
-                    text={error}
-                    textColor={errorColor}
-                    fontSize={fs10}
-                    containerStyle={[FLEX(1), MH(0.4), MV(0.05)]}
-                />
+                <WrappedText text={error} textColor={errorColor} containerStyle={[FLEX(1), MH(0.4), MV(0.05)]} />
             )}
             {(lastSp != sp || lastMrp != mrp || lastQuantity != quantity || sizeId.length == 0) && (
                 <View style={[FDR(), JCC('flex-end'), MV(0.1)]}>

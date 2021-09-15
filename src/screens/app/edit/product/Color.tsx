@@ -111,7 +111,8 @@ const headerTitle: headerTitleI[] = [
     },
 ];
 
-const columnFlex = [1.5, 1.5, 3, 2.5, 2.5];
+const tableFlex = [1.3, 1, 2.5, 2.5, 2.5];
+const columnFlex = [0.5, 1, 3, 2.7, 2.7];
 
 interface Error {
     generalError?: string;
@@ -149,7 +150,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     // while _id in object will be id of the color in color table or product color table..
     const getProductSize = () => {
         let data: { [key: string]: ISizeApp } = {};
-        productColor.sizes.forEach((size) => {
+        productColor.sizes.forEach((size, index) => {
             data[size.size._id] = {
                 ...size,
                 name: size.size.name,
@@ -161,9 +162,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     };
 
     React.useEffect(() => {
-        productColor.sizes.forEach((item) => {
-            pushErrorKey();
-        });
+        let error = productColor.sizes.map((item) => ErrorState.NEUTRAL);
+        setChildError(error);
+        if (productColor.sizes.length > 0) {
+            const size = productColor.sizes[0];
+            setFirstSize({ mrp: size.mrp, sp: size.sp, quantity: size.quantity });
+        }
     }, [productColor.sizes]);
 
     const [sizes, setSizes] = useState<IClassifier[]>(size); //All available size
@@ -175,6 +179,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const [error, setErrors] = useState<Error>({});
     const [childError, setChildError] = React.useState<ErrorState[]>([]);
     const [photoError, setPhotoError] = React.useState<ErrorState>(ErrorState.NEUTRAL);
+    const [firstSize, setFirstSize] = React.useState<Partial<ISizeApp>>({});
 
     // Error flow related function explained in file Colors.tsx. Same flow is used //
 
@@ -390,13 +395,14 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const setDefaultSize = () => {
         //selectedSize.slice(0);
         let selectedSizes = { ...selectedSize };
-
+        let error: ErrorState[] = [];
         defaultSize.forEach((size, index) => {
-            pushErrorKey();
             if (!selectedSizes[size.sizeId]) {
+                error.push(ErrorState.NEUTRAL);
                 selectedSizes[size.sizeId] = { ...size, _id: '' };
             }
             if (index == defaultSize.length - 1) {
+                setChildError(error);
                 setSelectedSize(selectedSizes);
             }
         });
@@ -494,19 +500,16 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                             'Provide quantity, MRP(Maximum Retail Price), SP(Selling Price) for each size.',
                             color.description,
                         )}
-                        {index == 0 && (
-                            <WrappedCheckBox
-                                placeholder={'Auto fill MRP, SP for each size and update manually.'}
-                                value={true}
-                                setValue={() => {}}
-                            />
-                        )}
-                        <TableHeader headerTitle={headerTitle} flex={columnFlex} />
+
+                        <TableHeader headerTitle={headerTitle} flex={tableFlex} />
 
                         {Object.values(selectedSize).map((size: ISizeApp, sizeIndex: number) => (
                             <View key={size.name + colorId}>
                                 <Size
                                     {...sizeProps}
+                                    index={sizeIndex}
+                                    firstSize={firstSize}
+                                    setFirstSize={sizeIndex == 0 ? setFirstSize : () => {}}
                                     productSize={size}
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}
