@@ -16,13 +16,15 @@ import ImageZoomViewer from './ImageViewer';
 import AddPhoto from './AddPhoto';
 import { ErrorState } from '../generalConfig';
 import { ErrorText } from '@app/common/customScreenText';
+import { productStatus } from '@app/server/apis/product/product.interface';
 
 export interface PhotoUploadProps {
     photoError: ErrorState;
     setPhotoError: (e: ErrorState) => void;
+    status: productStatus;
 }
 
-const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError }) => {
+const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError, status }) => {
     const [photos, setPhotos] = React.useState<ImageOrVideo[]>([]);
     const [showImageViewer, setShowImageViewer] = React.useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
@@ -64,8 +66,11 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError })
     }, [photoError]);
 
     const checkError = () => {
-        if (photos.length == 0) {
-            setError('Please add atleast one photo for identification.');
+        if (status == productStatus.NOTCOMPLETED && photos.length == 0) {
+            setError('Please add atleast 1 photo for identification.');
+            return true;
+        } else if (photos.length != 8) {
+            setError("Please add atleast 8 photo's for better product recognition.");
             return true;
         } else {
             return false;

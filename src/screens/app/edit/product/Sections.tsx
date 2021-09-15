@@ -6,11 +6,11 @@ import Title from './Title';
 import Description from './Description';
 import Colors from './Colors';
 import { IProduct, IProductColor, productStatus } from '../../../../server/apis/product/product.interface';
-import { IFilter, IPostDataToServer } from './component/generalConfig';
+import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
 
 export interface SectionsProps {
-    productDetails: Partial<IProduct>;
+    productDetails: IProduct;
     update: boolean;
     postDataToServer: IPostDataToServer;
     setProductId: (productId: string) => void;
@@ -22,14 +22,15 @@ export interface SectionsProps {
     };
     filter: IFilter[];
     distribution: IFilter[];
-    checkAllError: number;
-    setCheckAllError: (a: number) => void;
+    checkAllError: ErrorState;
+    setCheckAllError: (a: ErrorState) => void;
 }
 
 interface AllError {
-    title: number;
-    description: number;
-    colors: number;
+    title: ErrorState;
+    description: ErrorState;
+    colors: ErrorState;
+    filters: ErrorState;
 }
 
 const Sections: React.FC<SectionsProps> = ({
@@ -45,10 +46,15 @@ const Sections: React.FC<SectionsProps> = ({
     distribution,
 }) => {
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
-    const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0 });
+    const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0, filters: 0 });
     const incomplete = productDetails.status == productStatus.NOTCOMPLETED;
     const setAllError = (value: number) => {
-        setError({ title: incomplete ? 2 : value, description: incomplete ? 2 : value, colors: value });
+        setError({
+            title: incomplete ? ErrorState.PASSED : value,
+            description: incomplete ? ErrorState.PASSED : value,
+            colors: value,
+            filters: incomplete ? ErrorState.PASSED : value,
+        });
     };
 
     const setParticularError = (key: keyof AllError, value: number) => {
@@ -58,8 +64,8 @@ const Sections: React.FC<SectionsProps> = ({
     };
 
     React.useEffect(() => {
-        if (checkAllError == 1) {
-            setAllError(1);
+        if (checkAllError == ErrorState.STARTCHECKING) {
+            setAllError(ErrorState.STARTCHECKING);
         }
     }, [checkAllError]);
 
@@ -85,7 +91,7 @@ const Sections: React.FC<SectionsProps> = ({
                         update={update}
                         errorValue={error['title']}
                         setError={(value: number) => {
-                            console.log('SEt particular error title', value);
+                            console.log('Set particular error title', value);
                             setParticularError('title', value);
                         }}
                         postDataToServer={postDataToServer}
@@ -107,6 +113,12 @@ const Sections: React.FC<SectionsProps> = ({
             )}
             <Filter
                 filters={filter}
+                errorValue={error['filters']}
+                setError={(value: number) => {
+                    // setTimeout(() => {
+                    setParticularError('filters', value);
+                    //}, 10);
+                }}
                 postDataToServer={postDataToServer}
                 productDetails={productDetails}
                 productId={productId}
@@ -123,7 +135,7 @@ const Sections: React.FC<SectionsProps> = ({
                             setParticularError('colors', value);
                         }, 20);
                     }}
-                    shopId={productDetails['shopId']}
+                    shopId={productDetails['shopId'] as string}
                     distribution={distribution}
                     setProductId={setProductId}
                     update={update}
@@ -131,6 +143,9 @@ const Sections: React.FC<SectionsProps> = ({
                     productId={productId}
                     productColors={productDetails['colors'] as IProductColor[]}
                     productTypeDetails={productTypeDetails}
+                    //sending product status
+
+                    status={productDetails.status}
                 />
             )}
         </View>

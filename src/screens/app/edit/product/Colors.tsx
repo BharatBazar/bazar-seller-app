@@ -23,6 +23,7 @@ import {
     IProductColor,
     IProductSize,
     ISizeApp,
+    productStatus,
 } from '../../../../server/apis/product/product.interface';
 
 // Format of productColors data
@@ -52,6 +53,8 @@ export interface ProductColorProps {
     errorValue: number; //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
     // It basically trigers the error checking in this component
     setError: (value: number) => void; // If error checking has started then it set value of errorNumber that it is passed or failed
+
+    status: productStatus;
 }
 
 interface Error {
@@ -74,6 +77,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     setError,
     distribution,
     shopId,
+    status,
 }) => {
     //Function to set color schema for the component so that it is easily updatable
     const getProductColor = () => {
@@ -181,7 +185,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
     }
 
     //change error value at particular index
-    function changeErrorValueAtIndex(index: number, value: possibleValue) {
+    function changeErrorValueAtIndex(index: number, value: ErrorState) {
         let error = [...childError];
         error[index] = value;
         setChildError(error);
@@ -189,7 +193,7 @@ const ProductColor: React.FC<ProductColorProps> = ({
 
     // set all error to particular value so that error check can be triggered
     // into the component where this particular index value is passed
-    function setAllErrorToParticularValue(value: possibleValue) {
+    function setAllErrorToParticularValue(value: ErrorState) {
         var error = [...childError];
         childError.splice(0);
         error = error.map((item) => value);
