@@ -164,6 +164,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     React.useEffect(() => {
         let error = productColor.sizes.map((item) => ErrorState.NEUTRAL);
         setChildError(error);
+        if (productColor.sizes.length > 0) {
+            const size = productColor.sizes[0];
+            setFirstSize({ mrp: size.mrp, sp: size.sp, quantity: size.quantity });
+        }
     }, [productColor.sizes]);
 
     const [sizes, setSizes] = useState<IClassifier[]>(size); //All available size
@@ -175,7 +179,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
     const [error, setErrors] = useState<Error>({});
     const [childError, setChildError] = React.useState<ErrorState[]>([]);
     const [photoError, setPhotoError] = React.useState<ErrorState>(ErrorState.NEUTRAL);
-    const [firstSize, setFirstSize] = React.useState<ISizeApp | undefined>(undefined);
+    const [firstSize, setFirstSize] = React.useState<Partial<ISizeApp>>({});
 
     // Error flow related function explained in file Colors.tsx. Same flow is used //
 
@@ -452,24 +456,24 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                 <PhotoUpload photoError={photoError} setPhotoError={setPhotoError} />
                 {Heading('Provide size for product', color.description)}
                 {error['generalError'] ? <WrappedText text={error['generalError']} textColor={errorColor} /> : <View />}
-                {((neww && index != 0) || Object.values(selectedSize).length == 0) && (
-                    <WrappedCheckBox
-                        placeholder={
-                            'On checking this box all the sizes of the first choosen color will be automatically filled.'
+                {/* {((neww && index != 0) || Object.values(selectedSize).length == 0) && ( */}
+                <WrappedCheckBox
+                    placeholder={
+                        'On checking this box all the sizes of the first choosen color will be automatically filled.'
+                    }
+                    containerStyle={[MV(0.1)]}
+                    value={autoFillDefaultSize}
+                    setValue={(value) => {
+                        if (value) {
+                            setDefaultSize();
+                        } else {
+                            ToastHOC.infoAlert(
+                                'If you select the option again then whole size data for this color will be replaced by the first color size data.',
+                            );
                         }
-                        containerStyle={[MV(0.1)]}
-                        value={autoFillDefaultSize}
-                        setValue={(value) => {
-                            if (value) {
-                                setDefaultSize();
-                            } else {
-                                ToastHOC.infoAlert(
-                                    'If you select the option again then whole size data for this color will be replaced by the first color size data.',
-                                );
-                            }
-                        }}
-                    />
-                )}
+                    }}
+                />
+                {/* )} */}
                 <ScrollView horizontal={true} contentContainerStyle={[MV(0.1)]}>
                     {sizes.map((size: IClassifier, index: number) => (
                         <WrappedSize
@@ -504,7 +508,8 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({
                                 <Size
                                     {...sizeProps}
                                     index={sizeIndex}
-                                    firstSize={selectedSize[Object.keys(selectedSize)[0]]}
+                                    firstSize={firstSize}
+                                    setFirstSize={sizeIndex == 0 ? setFirstSize : () => {}}
                                     productSize={size}
                                     parentId={colorId}
                                     postDataToServer={postProductColorDataToServer}

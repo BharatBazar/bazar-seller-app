@@ -46,7 +46,8 @@ export interface ProductPriceProps {
     errorValue: number;
     setError: (value: number) => void;
     shopId: string;
-    firstSize: ISizeApp;
+    firstSize: Partial<ISizeApp>;
+    setFirstSize?: Function;
     index: number;
 }
 
@@ -64,6 +65,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     setDefaultSize,
     shopId,
     firstSize,
+    setFirstSize,
     index,
 }) => {
     const [quantity, setQuantity] = React.useState<number>(productSize.quantity || 1);
@@ -102,6 +104,13 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
             }
         }
     }, [errorValue]);
+
+    React.useEffect(() => {
+        console.log(sp, mrp, quantity, index, setFirstSize);
+        if (index == 0) {
+            setFirstSize && setFirstSize({ mrp, sp, quantity });
+        }
+    }, [sp, mrp, quantity]);
 
     const postProductSizeDataToServer = async (id?: string) => {
         let data: Partial<IProductSize> = { quantity: quantity, sp: sp, mrp: mrp, size: productSize.sizeId };
@@ -179,16 +188,16 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
     };
 
     const setAccordingToFirstSize = () => {
-        setMrp(firstSize.mrp);
-        setSp(firstSize.sp);
-        setQuantity(firstSize.quantity);
+        setMrp(firstSize.mrp as string);
+        setSp(firstSize.sp as string);
+        setQuantity(firstSize.quantity as number);
     };
 
     const { lastMrp, lastQuantity, lastSp } = lastState;
 
     return (
         <View style={[{ borderBottomWidth: 1 }, BC(borderColor), PV(0.2)]}>
-            {productSize.itemId || id ? (
+            {(productSize.itemId || id) && sizeId.length != 0 ? (
                 <View style={[AIC('flex-start'), JCC(), MT(0.1)]}>
                     <WrappedText
                         text={'Unique Id - ' + (productSize.itemId || id)}
