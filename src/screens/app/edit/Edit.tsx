@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { View, ScrollView, ActivityIndicator, ToastAndroid, Alert } from 'react-native';
+import { View, ScrollView, Alert } from 'react-native';
 import { NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';

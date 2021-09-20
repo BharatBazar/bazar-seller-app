@@ -2,10 +2,11 @@ import * as React from 'react';
 import { View, Pressable, Text, SafeAreaView } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { fs12, fs16 } from '../../../../common';
-import { colorCode } from '../../../../common/color';
+import { borderProductColor, colorCode } from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import {
     AIC,
+    BC,
     BGCOLOR,
     BR,
     colorTransparency,
@@ -33,50 +34,35 @@ export interface ProductIdentifierViewProps {
 }
 
 const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
-    product: { _id, productColor, title, subTitle },
+    product: { _id, title, subTitle, ...rest },
     onPress,
 }) => {
-    console.log(title, subTitle);
     return (
         <Ripple
-            style={[border, FDR(), WP(10), AIC(), MT(0.1), HP(2), BGCOLOR('#FFFFFF')]}
+            style={[AIC(), BGCOLOR('#FFFFFF'), WP(4), HP(3), PV(0.1)]}
             onPress={() => {
                 onPress();
             }}
         >
-            <View style={[FDR(), FLEX(1)]}>
-                <View style={[FLEX(2), JCC()]}>
-                    <FastImageWrapper
-                        source={{
-                            uri:
-                                'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
-                        }}
-                        resizeMode={'cover'}
-                        imageStyle={{ height: getHP(1.5), width: '95%', alignSelf: 'center' }}
-                    />
-                </View>
-                <View style={[FLEX(4), PH(0.5)]}>
-                    <View style={[FLEX(1)]}>
-                        <WrappedText
-                            text={title.length == 0 ? 'Product title will come here' : title?.toUpperCase()}
-                            fontSize={fs16}
-                            textColor={title?.length == 0 ? '#000000' + colorTransparency[60] : '#000000'}
+            <View style={[FLEX(0.7)]}>
+                <FastImageWrapper
+                    source={{
+                        uri:
+                            'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
+                    }}
+                    resizeMode={'cover'}
+                    imageStyle={[{ height: '100%', width: getWP(4) }]}
+                />
+            </View>
+
+            <View style={[FDR(), FLEX(0.3), JCC('center'), AIC('center')]}>
+                {rest.colors.map((color) => {
+                    return (
+                        <View
+                            style={[HP(0.2), W(getHP(0.2)), BR(0.1), BGCOLOR(color.color.description), MR(0.1), border]}
                         />
-                    </View>
-                    <View style={[FLEX(2)]}>
-                        <WrappedText
-                            text={subTitle?.length == 0 ? 'Product subtitle will come here' : subTitle}
-                            textColor={colorCode.BLACKLOW(subTitle?.length == 0 ? 40 : 70)}
-                            fontSize={fs12}
-                            ellipsizeMode={'middle'}
-                        />
-                    </View>
-                    <View style={[FDR(), FLEX(1), AIC()]}>
-                        <View style={[HP(0.2), W(getHP(0.2)), BR(1), BGCOLOR('#cdeaff'), MR(0.1), border]} />
-                        <View style={[HP(0.2), W(getHP(0.2)), BR(1), BGCOLOR('#ddddaa'), MR(0.1), border]} />
-                        <View style={[HP(0.2), W(getHP(0.2)), BR(1), BGCOLOR('#eeeeaa'), MR(0.1), border]} />
-                    </View>
-                </View>
+                    );
+                })}
             </View>
         </Ripple>
     );
