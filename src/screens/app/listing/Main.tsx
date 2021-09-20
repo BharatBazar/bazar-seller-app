@@ -1,7 +1,7 @@
 import axios from 'axios';
 import * as React from 'react';
 import { View, TextInput } from 'react-native';
-import { fs18, NavigationProps } from '../../../common';
+import { fs18, fs24, NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
 import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, PH, PV } from '../../../common/styles';
@@ -12,6 +12,8 @@ import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
 import Status from './component/Status';
 import ProductTab from './Tabs';
+import IconIcons from 'react-native-vector-icons/MaterialIcons';
+import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 
 export interface ProductProps extends NavigationProps {
     route: {
@@ -60,7 +62,15 @@ const Product: React.FC<ProductProps> = ({
                         <WrappedText text={itemType} textColor={colorCode.WHITE} fontSize={fs18} />
                     </View>
 
-                    <View style={[FDR()]}>
+                    <View style={[FDR(), AIC()]}>
+                        <WrappedRoundButton onPress={() => {}}>
+                            <IconIcons
+                                name={'search'}
+                                size={fs24}
+                                color={'#FFFFFF'}
+                                style={{ height: fs24, width: fs24 }}
+                            />
+                        </WrappedRoundButton>
                         <WrappedFeatherIcon
                             onPress={() => {
                                 navigation.navigate(NavigationKey.CREATEPRODUCT, {
@@ -71,15 +81,15 @@ const Product: React.FC<ProductProps> = ({
                                     subCategory,
                                 });
                             }}
-                            containerStyle={{ backgroundColor: colorCode.WHITE }}
+                            // containerStyle={{ backgroundColor: colorCode.WHITE }}
                             iconName={'plus'}
                             containerHeight={getHP(0.3)}
-                            iconSize={fs18}
-                            iconColor={colorCode.CHAKRALOW(50)}
+                            iconSize={fs24}
+                            iconColor={'#FFFFFF'}
                         />
                     </View>
                 </View>
-                <View
+                {/* <View
                     style={[
                         {
                             height: getHP(0.5),
@@ -104,7 +114,7 @@ const Product: React.FC<ProductProps> = ({
                         onChangeText={(searchedText: string) => setSearchedText(searchedText)}
                         placeholder={'Search listing with PID or title'}
                     />
-                </View>
+                </View> */}
             </View>
             <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
                 {/* <Status

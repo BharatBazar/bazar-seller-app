@@ -64,6 +64,7 @@ export const Zoom: ({
 export const Right = ({ current, layouts }: StackCardInterpolationProps) => {
     return {
         cardStyle: {
+            opacity: current.progress,
             transform: [
                 {
                     translateX: current.progress.interpolate({
@@ -79,6 +80,7 @@ export const Right = ({ current, layouts }: StackCardInterpolationProps) => {
 export const Bottom = ({ current, layouts }: StackCardInterpolationProps) => {
     return {
         cardStyle: {
+            opacity: current.progress,
             transform: [
                 {
                     translateY: current.progress.interpolate({

@@ -51,7 +51,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                             'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
                     }}
                     resizeMode={'cover'}
-                    imageStyle={[{ height: '100%', width: getWP(4) }]}
+                    imageStyle={[{ height: '100%', width: getWP(4), borderRadius: getHP(0.1) }]}
                 />
             </View>
 
@@ -63,6 +63,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                         />
                     );
                 })}
+                {rest.colors.length == 0 && <WrappedText text={'No color added'} textColor={'#646464'} />}
             </View>
         </Ripple>
     );
