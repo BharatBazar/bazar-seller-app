@@ -27,7 +27,6 @@ export interface SectionsProps {
 }
 
 interface AllError {
-    title: ErrorState;
     description: ErrorState;
     colors: ErrorState;
     filters: ErrorState;
@@ -46,11 +45,14 @@ const Sections: React.FC<SectionsProps> = ({
     distribution,
 }) => {
     //Here for every error 3 state arr possible 0 meanse neutral, 1 means start checking, 2 means passed, 3 means failed
-    const [error, setError] = React.useState<AllError>({ title: 0, description: 0, colors: 0, filters: 0 });
+    const [error, setError] = React.useState<AllError>({
+        description: 0,
+        colors: 0,
+        filters: 0,
+    });
     const incomplete = productDetails.status == productStatus.NOTCOMPLETED;
     const setAllError = (value: number) => {
         setError({
-            title: incomplete ? ErrorState.PASSED : value,
             description: incomplete ? ErrorState.PASSED : value,
             colors: value,
             filters: incomplete ? ErrorState.PASSED : value,
@@ -85,7 +87,7 @@ const Sections: React.FC<SectionsProps> = ({
         <View>
             {!incomplete && (
                 <>
-                    <Title
+                    {/* <Title
                         title={productDetails['title'] || ''}
                         subTitle={productDetails['subTitle'] || ''}
                         update={update}
@@ -95,7 +97,7 @@ const Sections: React.FC<SectionsProps> = ({
                             setParticularError('title', value);
                         }}
                         postDataToServer={postDataToServer}
-                    />
+                    /> */}
                     <Description
                         description={productDetails['description'] || ''}
                         update={productDetails['productDescription'] ? true : false}
