@@ -44,6 +44,7 @@ export interface IProduct {
     subTitle: string;
     colors: [IProductColor] | [string] | [];
     showPrice: boolean; //Whether dukandar wants to show price to customer or not
+    returnAllowed: boolean;
     status: productStatus;
     rating: number;
     new: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products

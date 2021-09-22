@@ -8,6 +8,7 @@ import Colors from './Colors';
 import { IProduct, IProductColor, productStatus } from '../../../../server/apis/product/product.interface';
 import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
 import Filter from './Filter';
+import ProductSettings from './Settings';
 
 export interface SectionsProps {
     productDetails: IProduct;
@@ -87,17 +88,6 @@ const Sections: React.FC<SectionsProps> = ({
         <View>
             {!incomplete && (
                 <>
-                    {/* <Title
-                        title={productDetails['title'] || ''}
-                        subTitle={productDetails['subTitle'] || ''}
-                        update={update}
-                        errorValue={error['title']}
-                        setError={(value: number) => {
-                            console.log('Set particular error title', value);
-                            setParticularError('title', value);
-                        }}
-                        postDataToServer={postDataToServer}
-                    /> */}
                     <Description
                         description={productDetails['description'] || ''}
                         update={productDetails['productDescription'] ? true : false}
@@ -109,8 +99,9 @@ const Sections: React.FC<SectionsProps> = ({
                             }, 10);
                         }}
                     />
-                    <ShowPrice showPrice={productDetails['showPrice'] || false} />
-                    <NewProduct />
+                    {/* <ShowPrice showPrice={productDetails['showPrice'] || false} />
+                    <NewProduct /> */}
+                    <ProductSettings />
                 </>
             )}
             <Filter
