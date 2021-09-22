@@ -35,11 +35,12 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
 
     return (
         <ProductContainer>
-            <ProductDetailsHeading heading={'Product settings'} subHeading={'This are product settings'} />
+            <ProductDetailsHeading heading={'Product Settings'} subHeading={'This are product settings'} />
             <TextSwitch
                 heading={'Show NEW tag'}
                 subHeading={"New tag tell's grahak that the product is new and has arrived recently."}
                 onToggle={(show: boolean) => {
+                    setValues('new', show);
                     if (show) {
                         setPopup(true);
                         setTag(true);
@@ -66,19 +67,34 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
                         }}
                     />
                 )}
-                <DeadlineContainer isVisible={isVisible} setPopup={setPopup} onSubmit={setDeadline} />
+                <DeadlineContainer
+                    isVisible={isVisible}
+                    setPopup={(value: boolean) => {
+                        setPopup(value);
+                        if (!newDeadline) {
+                        }
+                    }}
+                    onSubmit={(value1: string, value2: Date) => {
+                        setDeadline(value1);
+                        setValues(value2);
+                    }}
+                />
             </TextSwitch>
             <TextSwitch
                 heading={'Show Product price'}
                 subHeading={
                     'Show product price to your customer when product goes live in the market. If no then they can query product price in chat.'
                 }
-                onToggle={() => {}}
+                onToggle={(isOn: boolean) => {
+                    setValues('showPrice', isOn);
+                }}
             />
             <TextSwitch
                 heading={'Return allowed for product'}
                 subHeading={'Customer can return the product with a certain days to shop again.'}
-                onToggle={() => {}}
+                onToggle={(isOn: boolean) => {
+                    setValues('returnAllowed', isOn);
+                }}
             />
         </ProductContainer>
     );

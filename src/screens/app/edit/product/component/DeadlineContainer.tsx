@@ -25,6 +25,15 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
     const [date, setDate] = useState(new Date());
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
+    const parseDays = (data: string) => {
+        const [count, denotion] = data.split(' ');
+        if (denotion[0] == 'w') {
+            return (+count * 7).toString();
+        } else {
+            return (+count).toString();
+        }
+    };
+
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View style={styles.containerStyle}>
@@ -87,8 +96,11 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                     textProps={componentProps.buttonTextProps}
                     onPress={() => {
                         if (selectedIndex !== -1) {
-                            onSubmit('Up to ' + data[selectedIndex] + ' from product release.');
-                        } else onSubmit('Up to ' + date.toDateString() + ' from product release.');
+                            onSubmit(
+                                'Up to ' + data[selectedIndex] + ' after product goes live.',
+                                parseDays(data[selectedIndex]),
+                            );
+                        } else onSubmit('Up to ' + date.toDateString() + ' after product goes live.');
                         setPopup(false);
                     }}
                 />
