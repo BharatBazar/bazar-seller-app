@@ -101,7 +101,14 @@ const Sections: React.FC<SectionsProps> = ({
                     />
                     {/* <ShowPrice showPrice={productDetails['showPrice'] || false} />
                     <NewProduct /> */}
-                    <ProductSettings />
+                    <ProductSettings
+                        data={{
+                            showPrice: productDetails.showPrice,
+                            returnAllowed: productDetails.returnAllowed,
+                            new: productDetails.new,
+                            newDeadline: productDetails.newDeadline,
+                        }}
+                    />
                 </>
             )}
             <Filter

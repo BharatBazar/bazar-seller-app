@@ -13,12 +13,23 @@ interface TextSwitchProps {
     subHeading: string;
     children?: any;
     onToggle: Function;
+    initialValue: boolean;
 }
 
 const offColor = mainColor + '33';
 
-const TextSwitch: React.FunctionComponent<TextSwitchProps> = ({ heading, subHeading, children, onToggle }) => {
+const TextSwitch: React.FunctionComponent<TextSwitchProps> = ({
+    heading,
+    subHeading,
+    children,
+    onToggle,
+    initialValue,
+}) => {
     const [isOn, setOn] = React.useState(false);
+
+    React.useEffect(() => {
+        setOn(initialValue);
+    }, [initialValue]);
 
     return (
         <View style={[PV(0.2)]}>

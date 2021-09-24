@@ -14,29 +14,68 @@ import ProductButton from './component/ProductButton';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import { marTop, padVer } from './component/generalConfig';
 import { IProduct } from '@app/server/apis/product/product.interface';
+import { compareObjects } from '@app/common/helper';
 
-interface ProductSettingsProps {}
+interface IProductSetting {
+    showPrice: boolean;
+    new: boolean;
+    newDeadline?: string;
+    returnAllowed: boolean;
+}
+interface ProductSettingsProps {
+    data: IProductSetting;
+}
 
-const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
+const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }) => {
     const [isVisible, setPopup] = React.useState(false);
-    const [newDeadline, setDeadline] = React.useState(null);
+    const [deadline, setDeadline] = React.useState(null);
     const [showTag, setTag] = React.useState(false);
+    const [showButton, setShowButton] = React.useState(false);
 
-    const values: Partial<IProduct> = {
+    React.useEffect(() => {
+        if (data) {
+            values = data;
+        }
+    }, [data]);
+
+    var lastValues: IProductSetting = {
         showPrice: false,
         returnAllowed: false,
         new: false,
         newDeadline: undefined,
     };
 
-    const setValues = (property: keyof Partial<IProduct>, value: boolean | Date) => {
+    React.useEffect(() => {
+        console.log('data => ', data);
+        values = { ...data };
+        setDeadline(data.newDeadline);
+    }, [data]);
+
+    var values: IProductSetting = {
+        showPrice: false,
+        returnAllowed: false,
+        new: false,
+        newDeadline: '',
+    };
+
+    const setValues = (property: keyof IProductSetting, value: boolean | Date) => {
         values[property] = value;
+
+        // console.log(compareObjects(values, data), values, data);
+        if (!compareObjects(values, data)) {
+            setShowButton(true);
+        } else {
+            if (showButton) {
+                setShowButton(false);
+            }
+        }
     };
 
     return (
         <ProductContainer>
             <ProductDetailsHeading heading={'Product Settings'} subHeading={'This are product settings'} />
             <TextSwitch
+                initialValue={data['new']}
                 heading={'Show NEW tag'}
                 subHeading={"New tag tell's grahak that the product is new and has arrived recently."}
                 onToggle={(show: boolean) => {
@@ -45,23 +84,24 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
                         setPopup(true);
                         setTag(true);
                     } else {
+                        setValues('newDeadline', '');
                         setTag(false);
                     }
                 }}
             >
                 {showTag && (
                     <TextButton
-                        text={newDeadline || 'Select for how much time you want to show new tag.'}
+                        text={deadline || 'Select for how much time you want to show new tag.'}
                         containerStyle={[
                             PV(0.1),
                             BR(0.1),
                             JCC('center'),
                             MT(0.2),
                             BW(1.5),
-                            BC(newDeadline ? mainColor : borderColor),
+                            BC(deadline ? mainColor : borderColor),
                             BGCOLOR(colorCode.WHITE),
                         ]}
-                        textProps={{ textColor: newDeadline ? mainColor : colorCode.BLACKLOW(40) }}
+                        textProps={{ textColor: deadline ? mainColor : colorCode.BLACKLOW(40) }}
                         onPress={() => {
                             setPopup(true);
                         }}
@@ -71,7 +111,7 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
                     isVisible={isVisible}
                     setPopup={(value: boolean) => {
                         setPopup(value);
-                        if (!newDeadline) {
+                        if (!deadline) {
                         }
                     }}
                     onSubmit={(value1: string, value2: Date) => {
@@ -81,6 +121,7 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
                 />
             </TextSwitch>
             <TextSwitch
+                initialValue={data['showPrice']}
                 heading={'Show Product price'}
                 subHeading={
                     'Show product price to your customer when product goes live in the market. If no then they can query product price in chat.'
@@ -90,12 +131,21 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = () => {
                 }}
             />
             <TextSwitch
+                initialValue={data['returnAllowed']}
                 heading={'Return allowed for product'}
                 subHeading={'Customer can return the product with a certain days to shop again.'}
                 onToggle={(isOn: boolean) => {
                     setValues('returnAllowed', isOn);
                 }}
             />
+            {showButton && (
+                <ProductButton
+                    buttonText={'Update'}
+                    onPress={() => {
+                        //submitData();
+                    }}
+                />
+            )}
         </ProductContainer>
     );
 };

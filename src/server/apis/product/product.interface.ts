@@ -48,7 +48,7 @@ export interface IProduct {
     status: productStatus;
     rating: number;
     new: boolean; // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    newDeadline: Date;
+    newDeadline: string;
     description: string; // Will be a audio as audio is better to understand in common language
     discount: [number]; // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
     discountDeadline: [Date];
