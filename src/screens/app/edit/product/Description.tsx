@@ -6,6 +6,9 @@ import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
 import ProductButton from './component/ProductButton';
 import { IPostDataToServer, marTop } from './component/generalConfig';
+import AddPhoto from './component/component/AddPhoto';
+import { TextInput } from 'react-native-gesture-handler';
+import { PT } from '@app/common/styles';
 
 export interface DescriptionProps {
     description: string;
@@ -99,10 +102,13 @@ const ProductDescription: React.SFC<DescriptionProps> = ({
                     value={productDescription}
                     onChangeText={setProductDescription}
                     multiline={true}
-                    height={1}
+                    textAlignVertical={'top'}
+                    height={2}
                     error={error['description']}
+                    containerStyle={[PT(0.1)]}
                 />
 
+                <AddPhoto addImage={() => {}} />
                 {lastDes !== productDescription && (
                     <ProductButton
                         buttonText={update ? 'Update' : 'Save'}

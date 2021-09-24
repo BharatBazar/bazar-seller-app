@@ -54,6 +54,10 @@ export const FLEX = (FLEX: number) => {
     return { flex: FLEX };
 };
 
+export const FLEXWRAP = (flexWrap: 'nowrap' | 'wrap' | 'wrap-reverse' | undefined): ViewStyle => {
+    return { flexWrap: flexWrap || 'nowrap' };
+};
+
 export const MT = (percentage: number): ViewStyle => {
     return { marginTop: getHP(percentage || 0.2) };
 };

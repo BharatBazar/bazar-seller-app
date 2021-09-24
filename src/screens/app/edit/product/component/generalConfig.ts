@@ -43,8 +43,9 @@ export const generalProductSchema: Partial<IProduct> = {
     showPrice: false, //Whether dukandar wants to show price to customer or not
     productStatus: productStatus.NOTCOMPLETED,
     rating: undefined,
+    returnAllowed: false,
     new: false, // Sometimes customer comes to shop asking what is new in the shop so this will show all the new available products
-    newDeadline: undefined,
+    newDeadline: '',
     description: '', // Will be a audio as audio is better to understand in common language
     discount: undefined, // If a dukandar has decided that he wants to give special discount on particular product so discount will for each color
     iscountDeadline: undefined,
