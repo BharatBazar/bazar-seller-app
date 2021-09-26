@@ -1,28 +1,27 @@
 import React, { useState } from 'react';
-
 import { View, StyleSheet, FlatList } from 'react-native';
 import { getHP } from '../../../../../common/dimension';
 import ModalHeader from '../../../../component/ModalHeader';
 import ModalHOC from '../../../../hoc/ModalHOC';
-import DatePicker from 'react-native-date-picker';
 import WrappedText from '../../../../component/WrappedText';
-import LineHeading from '../../../../component/LineHeading';
 import TextButton from '../../../../component/TextButton';
-import { AIC, BGCOLOR, BR, FC, FS, JCC, MT, MV, PV } from '../../../../../common/styles';
+import { AIC, BGCOLOR, BR, FC, FS, JCC, MT, MV, PV, W } from '../../../../../common/styles';
 import { fs15, fs20, fs28 } from '../../../../../common';
-import { borderColor, colorCode, mainColor } from '../../../../../common/color';
+import { borderColor, colorCode, errorColor, mainColor } from '../../../../../common/color';
 import { componentProps } from '../../../../../common/containerStyles';
 
 export interface DeadlineContainerProps {
     isVisible: boolean;
     setPopup: Function;
     onSubmit: Function;
+    initialValue: string;
 }
 
 const data = ['1 day', '2 days', '3 days', '4 days', '5 days', '6 days', '1 week', '2 weeks', '3 weeks', '4 weeks'];
 
-const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPopup, onSubmit }) => {
+const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPopup, onSubmit, initialValue }) => {
     const [date, setDate] = useState(new Date());
+    const [error, setError] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
     const parseDays = (data: string) => {
@@ -34,6 +33,19 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
         }
     };
 
+    const setValue = () => {
+        const a = +initialValue;
+        if (a > 6) {
+            setSelectedIndex(6 + a / 7);
+        } else {
+            setSelectedIndex(a - 1);
+        }
+    };
+
+    React.useEffect(() => {
+        setValue();
+    }, [initialValue]);
+
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View style={styles.containerStyle}>
@@ -42,6 +54,7 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                     subHeading={'Select for how much time you want to show \nnew flag on product after release.'}
                     setPopup={() => setPopup(false)}
                 />
+                {error.length > 0 && <WrappedText text={error} textColor={errorColor} />}
                 <WrappedText text={'Up to'} textStyle={[MT(0.3), FS(fs28), FC(colorCode.BLACKLOW(50))]} />
 
                 <View
@@ -96,12 +109,14 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                     textProps={componentProps.buttonTextProps}
                     onPress={() => {
                         if (selectedIndex !== -1) {
+                            setError('');
                             onSubmit(
                                 'Up to ' + data[selectedIndex] + ' after product goes live.',
                                 parseDays(data[selectedIndex]),
                             );
-                        } else onSubmit('Up to ' + date.toDateString() + ' after product goes live.');
-                        setPopup(false);
+                        } else {
+                            setError('Please select option');
+                        }
                     }}
                 />
             </View>

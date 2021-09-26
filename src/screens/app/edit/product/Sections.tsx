@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import NewProduct from './NewProduct';
-import ShowPrice from '../component/ShowPrice';
-import Title from './Title';
 import Description from './Description';
 import Colors from './Colors';
 import { IProduct, IProductColor, productStatus } from '../../../../server/apis/product/product.interface';
@@ -108,6 +105,7 @@ const Sections: React.FC<SectionsProps> = ({
                             new: productDetails.new,
                             newDeadline: productDetails.newDeadline,
                         }}
+                        postDataToServer={postDataToServer}
                     />
                 </>
             )}

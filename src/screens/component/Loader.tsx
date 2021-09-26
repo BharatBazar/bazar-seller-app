@@ -1,10 +1,14 @@
+import { mainColor } from '@app/common/color';
 import React from 'react';
-import { ActivityIndicator, Platform, StatusBar, TouchableOpacity, View } from 'react-native';
-import { PlatformType } from '@app/constants';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
 import { colorTransparency } from '../../common/styles';
 //import {Bars} from "react-native-loader";
 
-export default class Loader extends React.Component {
+interface LoaderProps {
+    backgroundColor?: string;
+}
+
+export default class Loader extends React.Component<LoaderProps, {}> {
     render() {
         return (
             <View
@@ -18,7 +22,7 @@ export default class Loader extends React.Component {
                     bottom: 0,
                     alignItems: 'center',
                     justifyContent: 'center',
-                    backgroundColor: '#FFFFFF' + colorTransparency[10],
+                    backgroundColor: this.props.backgroundColor || '#FFFFFF' + colorTransparency[10],
                 }}
             >
                 {this.props.showCancelButton ? (
@@ -59,7 +63,7 @@ export default class Loader extends React.Component {
                         overflow: 'hidden',
                     }}
                 > */}
-                <ActivityIndicator size={20} color="white" />
+                <ActivityIndicator color={mainColor} />
                 {/* </View> */}
                 {/* <Title>{"Loading Conversation"}</Title> */}
             </View>
