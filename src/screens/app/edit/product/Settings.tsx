@@ -2,19 +2,15 @@ import TextSwitch from './component/TextSwitch';
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { BC, BGCOLOR, BR, BW, JCC, MT, PV } from '../../../../common/styles';
-import WrappedCheckBox from '../../../component/WrappedCheckBox';
-import { getHP } from '../../../../common/dimension';
-import { fs13, fs17 } from '../../../../common';
+
 import { borderColor, colorCode, mainColor } from '../../../../common/color';
 import DeadlineContainer from './component/DeadlineContainer';
 import TextButton from '../../../component/TextButton';
 import ProductContainer from './component/productContainerHOC';
-import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
 import ProductButton from './component/ProductButton';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
-import { marTop, padVer } from './component/generalConfig';
-import { IProduct } from '@app/server/apis/product/product.interface';
 import { compareObjects } from '@app/common/helper';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 interface IProductSetting {
     showPrice: boolean;
@@ -24,17 +20,21 @@ interface IProductSetting {
 }
 interface ProductSettingsProps {
     data: IProductSetting;
+    postDataToServer: Function;
 }
 
-const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }) => {
+const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data, postDataToServer }) => {
     const [isVisible, setPopup] = React.useState(false);
     const [deadline, setDeadline] = React.useState(null);
     const [showTag, setTag] = React.useState(false);
     const [showButton, setShowButton] = React.useState(false);
+    const [loader, setLoader] = React.useState(false);
+    const newRef = React.useRef(null);
 
     React.useEffect(() => {
         if (data) {
-            values = data;
+            values = { ...data };
+            lastValues = { ...data };
         }
     }, [data]);
 
@@ -42,11 +42,26 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }
         showPrice: false,
         returnAllowed: false,
         new: false,
-        newDeadline: undefined,
+        newDeadline: '',
+    };
+
+    const submitData = () => {
+        setLoader(true);
+        console.log('values =>', values);
+        postDataToServer(
+            values,
+            () => {
+                lastValues = { ...values };
+                setLoader(false);
+            },
+            (error) => {
+                ToastHOC.errorAlert(error.message);
+                setLoader(false);
+            },
+        );
     };
 
     React.useEffect(() => {
-        console.log('data => ', data);
         values = { ...data };
         setDeadline(data.newDeadline);
     }, [data]);
@@ -60,8 +75,6 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }
 
     const setValues = (property: keyof IProductSetting, value: boolean | Date) => {
         values[property] = value;
-
-        // console.log(compareObjects(values, data), values, data);
         if (!compareObjects(values, data)) {
             setShowButton(true);
         } else {
@@ -72,7 +85,7 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }
     };
 
     return (
-        <ProductContainer>
+        <ProductContainer loader={loader}>
             <ProductDetailsHeading heading={'Product Settings'} subHeading={'This are product settings'} />
             <TextSwitch
                 initialValue={data['new']}
@@ -82,14 +95,15 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }
                     setValues('new', show);
                     if (show) {
                         setPopup(true);
-                        setTag(true);
                     } else {
+                        setDeadline('');
                         setValues('newDeadline', '');
                         setTag(false);
                     }
                 }}
+                ref={newRef}
             >
-                {showTag && (
+                {(deadline !== '' || deadline != null) && (
                     <TextButton
                         text={deadline || 'Select for how much time you want to show new tag.'}
                         containerStyle={[
@@ -108,15 +122,21 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }
                     />
                 )}
                 <DeadlineContainer
+                    initialValue={deadline}
                     isVisible={isVisible}
-                    setPopup={(value: boolean) => {
+                    setPopup={(value: boolean, deadline?: string) => {
                         setPopup(value);
-                        if (!deadline) {
+                        if (deadline) {
+                            setDeadline('');
+
+                            newRef.current.setOn(false);
                         }
                     }}
                     onSubmit={(value1: string, value2: Date) => {
                         setDeadline(value1);
-                        setValues(value2);
+                        setValues('newDeadline', value2);
+                        setValues('new', true);
+                        setPopup(false);
                     }}
                 />
             </TextSwitch>
@@ -142,7 +162,7 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data }
                 <ProductButton
                     buttonText={'Update'}
                     onPress={() => {
-                        //submitData();
+                        submitData();
                     }}
                 />
             )}

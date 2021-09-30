@@ -19,7 +19,7 @@ export const compareObjects = (object1: Object, object2: Object) => {
             return false;
         }
     });
-    console.log('a', a);
+
     return a;
 };
 
