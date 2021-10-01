@@ -77,9 +77,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         try {
             const response: IRProduct = await APIgetProduct({ _id: productId, shopId: shopId });
 
-            setLoading(false);
             if (response.status == 1) {
                 setProductDetails(response.payload);
+                setLoading(false);
             }
         } catch (error) {
             ToastHOC.errorAlert(error.message, 'Error loading product details');
@@ -148,10 +148,10 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         };
         const response: IRProduct = await createProduct(product);
 
-        setLoading(false);
         if (response.status == 1) {
             setProductId(response.payload._id);
             setProductDetails({ ...response.payload, ...productDetails });
+            setLoading(false);
         } else {
         }
     };
