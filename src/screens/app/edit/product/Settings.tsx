@@ -30,29 +30,39 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data, 
     const [showButton, setShowButton] = React.useState(false);
     const [loader, setLoader] = React.useState(false);
     const newRef = React.useRef(null);
-
-    React.useEffect(() => {
-        if (data) {
-            values = { ...data };
-            lastValues = { ...data };
-        }
-    }, [data]);
-
-    var lastValues: IProductSetting = {
+    const lastValues = React.useRef<IProductSetting>({
         showPrice: false,
         returnAllowed: false,
         new: false,
         newDeadline: '',
-    };
+    });
+    const values = React.useRef<IProductSetting>({
+        showPrice: false,
+        returnAllowed: false,
+        new: false,
+        newDeadline: '',
+    });
+
+    React.useEffect(() => {
+        if (data) {
+            console.log('data is initializing', data);
+            values.current = { ...data };
+            lastValues.current = { ...data };
+            setDeadline(data.newDeadline);
+        }
+    }, [data.returnAllowed, data.new, data.showPrice]);
 
     const submitData = () => {
         setLoader(true);
-        console.log('values =>', values);
+
         postDataToServer(
-            values,
+            values.current,
             () => {
-                lastValues = { ...values };
+                console.log(lastValues, values);
+                lastValues.current = { ...values.current };
+                console.log(lastValues);
                 setLoader(false);
+                setShowButton(false);
             },
             (error) => {
                 ToastHOC.errorAlert(error.message);
@@ -61,21 +71,16 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data, 
         );
     };
 
-    React.useEffect(() => {
-        values = { ...data };
-        setDeadline(data.newDeadline);
-    }, [data]);
-
-    var values: IProductSetting = {
-        showPrice: false,
-        returnAllowed: false,
-        new: false,
-        newDeadline: '',
-    };
+    // React.useEffect(() => {
+    //     values.current = { ...data };
+    //     setDeadline(data.newDeadline);
+    // }, [data]);
 
     const setValues = (property: keyof IProductSetting, value: boolean | Date) => {
-        values[property] = value;
-        if (!compareObjects(values, data)) {
+        console.log('1 =>', values);
+        values.current[property] = value;
+        console.log('2 =>', values);
+        if (!compareObjects(values.current, lastValues.current)) {
             setShowButton(true);
         } else {
             if (showButton) {

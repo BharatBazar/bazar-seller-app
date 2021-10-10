@@ -2,12 +2,11 @@ import * as React from 'react';
 import { View } from 'react-native';
 import ProductTextInput from './component/ProductTextInput';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
-
 import ProductContainer from './component/productContainerHOC';
 import ProductButton from './component/ProductButton';
 import { IPostDataToServer, marTop } from './component/generalConfig';
 import AddPhoto from './component/component/AddPhoto';
-import { TextInput } from 'react-native-gesture-handler';
+//import { TextInput } from 'react-native-gesture-handler';
 import { PT } from '@app/common/styles';
 
 export interface DescriptionProps {
