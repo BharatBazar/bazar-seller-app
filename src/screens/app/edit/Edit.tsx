@@ -78,6 +78,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             const response: IRProduct = await APIgetProduct({ _id: productId, shopId: shopId });
 
             if (response.status == 1) {
+                console.log('response set ', response.payload);
                 setProductDetails(response.payload);
                 setLoading(false);
             }
@@ -166,21 +167,24 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                 };
                 setGeneralLoader(true);
                 const response: IRProduct = await updateProduct(product);
-                setGeneralLoader(false);
+
                 if (response.status == 1) {
                     successCallBack && successCallBack();
                     //setProductDetails(response.payload);
                     SimpleToast.show('Saved', SimpleToast.SHORT);
+                    setGeneralLoader(false);
                 } else {
                     errroCallBack && errroCallBack(response.message);
+                    setGeneralLoader(false);
                 }
             } else {
                 //Call create product function with some data
                 createProduct(data);
+                setGeneralLoader(false);
             }
         } catch (error) {
-            setGeneralLoader(false);
             errroCallBack && errroCallBack(error.message);
+            setGeneralLoader(false);
         }
     };
 

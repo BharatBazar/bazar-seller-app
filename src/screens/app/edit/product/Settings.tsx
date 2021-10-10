@@ -43,28 +43,26 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data, 
         newDeadline: '',
     });
 
-    // var lastValues = {
-    //     showPrice: false,
-    //     returnAllowed: false,
-    //     new: false,
-    //     newDeadline: '',
-    // };
-
     React.useEffect(() => {
         if (data) {
+            console.log('data is initializing', data);
             values.current = { ...data };
             lastValues.current = { ...data };
+            setDeadline(data.newDeadline);
         }
-    }, [data]);
+    }, [data.returnAllowed, data.new, data.showPrice]);
 
     const submitData = () => {
         setLoader(true);
-        console.log('values =>', values);
+
         postDataToServer(
-            values,
+            values.current,
             () => {
+                console.log(lastValues, values);
                 lastValues.current = { ...values.current };
+                console.log(lastValues);
                 setLoader(false);
+                setShowButton(false);
             },
             (error) => {
                 ToastHOC.errorAlert(error.message);
@@ -73,10 +71,10 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data, 
         );
     };
 
-    React.useEffect(() => {
-        values.current = { ...data };
-        setDeadline(data.newDeadline);
-    }, [data]);
+    // React.useEffect(() => {
+    //     values.current = { ...data };
+    //     setDeadline(data.newDeadline);
+    // }, [data]);
 
     const setValues = (property: keyof IProductSetting, value: boolean | Date) => {
         console.log('1 =>', values);

@@ -150,4 +150,4 @@ const Sections: React.FC<SectionsProps> = ({
     );
 };
 
-export default Sections;
+export default React.memo(Sections);
