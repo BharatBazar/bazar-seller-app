@@ -5,11 +5,11 @@ import ModalHeader from '../../../../component/ModalHeader';
 import ModalHOC from '../../../../hoc/ModalHOC';
 import WrappedText from '../../../../component/WrappedText';
 import TextButton from '../../../../component/TextButton';
-import { AIC, BGCOLOR, BR, FC, FS, JCC, MT, MV, PV, W } from '../../../../../common/styles';
+import { AIC, BGCOLOR, BR, FC, FS, HP, JCC, MT, MV, PV, W } from '../../../../../common/styles';
 import { fs15, fs20, fs28 } from '../../../../../common';
 import { borderColor, colorCode, errorColor, mainColor } from '../../../../../common/color';
 import { componentProps } from '../../../../../common/containerStyles';
-import { timeLine } from '@app/common/helper';
+import { provideIndex, timeLine } from '@app/common/helper';
 
 export interface DeadlineContainerProps {
     isVisible: boolean;
@@ -23,17 +23,8 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
     const [error, setError] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(-1);
 
-    const setValue = () => {
-        const a = +initialValue;
-        if (a > 6) {
-            setSelectedIndex(6 + a / 7);
-        } else {
-            setSelectedIndex(a - 1);
-        }
-    };
-
     React.useEffect(() => {
-        setValue();
+        setSelectedIndex(provideIndex(initialValue));
     }, [initialValue]);
 
     return (
@@ -52,11 +43,7 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                 >
                     <FlatList
                         data={timeLine}
-                        style={{
-                            height: getHP(2),
-                            backgroundColor: colorCode.WHITELOW(20),
-                        }}
-                        // contentContainerStyle={[PV(0.3)]}
+                        style={[HP(2), BGCOLOR(colorCode.WHITELOW(20))]}
                         renderItem={({ item, index }) => (
                             <TextButton
                                 text={item}
@@ -100,7 +87,7 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                     onPress={() => {
                         if (selectedIndex !== -1) {
                             setError('');
-                            onSubmit(data[selectedIndex]);
+                            onSubmit(timeLine[selectedIndex]);
                         } else {
                             setError('Please select option');
                         }
