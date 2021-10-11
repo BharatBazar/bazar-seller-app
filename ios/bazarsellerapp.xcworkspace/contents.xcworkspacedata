@@ -2,6 +2,12 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:bazarsellerapp-Bridging-Header.h">
+   </FileRef>
+   <FileRef
+      location = "group:void.swift">
+   </FileRef>
+   <FileRef
       location = "group:bazarsellerapp.xcodeproj">
    </FileRef>
    <FileRef

@@ -9,7 +9,7 @@ import TextButton from '../../../component/TextButton';
 import ProductContainer from './component/productContainerHOC';
 import ProductButton from './component/ProductButton';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
-import { compareObjects } from '@app/common/helper';
+import { compareObjects, parseDays } from '@app/common/helper';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 interface IProductSetting {
@@ -110,7 +110,10 @@ const ProductSettings: React.FunctionComponent<ProductSettingsProps> = ({ data, 
             >
                 {(deadline !== '' || deadline != null) && (
                     <TextButton
-                        text={deadline || 'Select for how much time you want to show new tag.'}
+                        text={
+                            'Up to ' + parseDays(deadline) + ' from the product lauch' ||
+                            'Select for how much time you want to show new tag.'
+                        }
                         containerStyle={[
                             PV(0.1),
                             BR(0.1),

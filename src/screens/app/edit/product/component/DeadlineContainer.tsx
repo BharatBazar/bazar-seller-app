@@ -9,6 +9,7 @@ import { AIC, BGCOLOR, BR, FC, FS, JCC, MT, MV, PV, W } from '../../../../../com
 import { fs15, fs20, fs28 } from '../../../../../common';
 import { borderColor, colorCode, errorColor, mainColor } from '../../../../../common/color';
 import { componentProps } from '../../../../../common/containerStyles';
+import { timeLine } from '@app/common/helper';
 
 export interface DeadlineContainerProps {
     isVisible: boolean;
@@ -17,21 +18,10 @@ export interface DeadlineContainerProps {
     initialValue: string;
 }
 
-const data = ['1 day', '2 days', '3 days', '4 days', '5 days', '6 days', '1 week', '2 weeks', '3 weeks', '4 weeks'];
-
 const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPopup, onSubmit, initialValue }) => {
     const [date, setDate] = useState(new Date());
     const [error, setError] = useState('');
     const [selectedIndex, setSelectedIndex] = useState(-1);
-
-    const parseDays = (data: string) => {
-        const [count, denotion] = data.split(' ');
-        if (denotion[0] == 'w') {
-            return (+count * 7).toString();
-        } else {
-            return (+count).toString();
-        }
-    };
 
     const setValue = () => {
         const a = +initialValue;
@@ -61,7 +51,7 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                     style={{ borderBottomWidth: 2, borderTopWidth: 2, borderColor: borderColor, marginTop: getHP(0.2) }}
                 >
                     <FlatList
-                        data={data}
+                        data={timeLine}
                         style={{
                             height: getHP(2),
                             backgroundColor: colorCode.WHITELOW(20),
@@ -110,10 +100,7 @@ const DeadlineContainer: React.FC<DeadlineContainerProps> = ({ isVisible, setPop
                     onPress={() => {
                         if (selectedIndex !== -1) {
                             setError('');
-                            onSubmit(
-                                'Up to ' + data[selectedIndex] + ' after product goes live.',
-                                parseDays(data[selectedIndex]),
-                            );
+                            onSubmit(data[selectedIndex]);
                         } else {
                             setError('Please select option');
                         }

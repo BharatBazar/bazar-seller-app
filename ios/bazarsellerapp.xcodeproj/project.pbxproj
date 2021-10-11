@@ -15,6 +15,7 @@
 		25DB4FFC5073487C834DFD16 /* Roboto-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0BEAB022B2FA431A9AA651EE /* Roboto-Black.ttf */; };
 		2F3D6DAA1BCC44BB921992A8 /* Roboto-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 8EC67BBB8C3E407DA308FCDC /* Roboto-Bold.ttf */; };
 		31758767B82BE2595CD1E772 /* libPods-bazarsellerapp-bazarsellerappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F9A15F537FA3F461EC0BAD76 /* libPods-bazarsellerapp-bazarsellerappTests.a */; };
+		387047E12712B259007DD754 /* libswiftWebKit.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 387047E02712B259007DD754 /* libswiftWebKit.tbd */; };
 		5B0E754856A54A879D1197F8 /* Roboto-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7FB0A4AEB8CC4B66A5442155 /* Roboto-Thin.ttf */; };
 		5E00D0F603C1127DA040FA6B /* libPods-bazarsellerapp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1A864FA3A081B02E577C2675 /* libPods-bazarsellerapp.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -55,6 +56,7 @@
 		1A864FA3A081B02E577C2675 /* libPods-bazarsellerapp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-bazarsellerapp.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E87249E384544568741F3EC /* Helvetica.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Helvetica.ttf; path = ../assets/fonts/Helvetica.ttf; sourceTree = "<group>"; };
 		294F53062DC74C7F85E320CB /* Roboto-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Roboto-Medium.ttf"; path = "../assets/fonts/Roboto-Medium.ttf"; sourceTree = "<group>"; };
+		387047E02712B259007DD754 /* libswiftWebKit.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libswiftWebKit.tbd; path = usr/lib/swift/libswiftWebKit.tbd; sourceTree = SDKROOT; };
 		3AB1821499FD4F44A6CFA385 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		51F48FDFC54C2489F357A72D /* Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig"; path = "Target Support Files/Pods-bazarsellerapp-bazarsellerappTests/Pods-bazarsellerapp-bazarsellerappTests.release.xcconfig"; sourceTree = "<group>"; };
 		53569EBE752D42FB938DB69C /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
@@ -95,6 +97,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				387047E12712B259007DD754 /* libswiftWebKit.tbd in Frameworks */,
 				5E00D0F603C1127DA040FA6B /* libPods-bazarsellerapp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +138,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				387047E02712B259007DD754 /* libswiftWebKit.tbd */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				1A864FA3A081B02E577C2675 /* libPods-bazarsellerapp.a */,
 				F9A15F537FA3F461EC0BAD76 /* libPods-bazarsellerapp-bazarsellerappTests.a */,
@@ -570,6 +574,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
+				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -594,6 +602,10 @@
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SDKROOT)/usr/lib/swift",
 				);
 				OTHER_LDFLAGS = (
 					"$(inherited)",
