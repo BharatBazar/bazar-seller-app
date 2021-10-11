@@ -87,6 +87,7 @@ export interface IFilter {
     filterLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
     values: IClassifier[];
     active: boolean;
+    mandatory: boolean;
 }
 
 export enum classifierTypes {

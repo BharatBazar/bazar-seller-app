@@ -6,14 +6,13 @@ import WrappedText from '../../../component/WrappedText';
 import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
 import ShowFilterModal, { ShowFilter } from './component/ShowFilter';
-import { fs12, fs18 } from '../../../../common';
+import { fs18 } from '../../../../common';
 import { getHP } from '../../../../common/dimension';
 import TextButton from '../../../component/TextButton';
 import { borderColor, errorColor, mainColor } from '../../../../common/color';
 import { IClassifier, IProduct } from '../../../../server/apis/product/product.interface';
 import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
 import { ToastHOC } from '../../../hoc/ToastHOC';
-import Loader from '../../../component/Loader';
 
 export enum selectAction {
     add = 'Add',
@@ -110,30 +109,32 @@ const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
         );
         //}
     };
-    const removeDataFromServer = async (filterValue: string) => {
+    const removeDataFromServer = async (filterValue: IClassifier) => {
         try {
+            console.log(filterValue);
             setLoader(true);
             setErrors({});
 
             const data = {};
-            data[filter.type] = filterValue;
+            data[filter.type] = filterValue._id;
 
-            const response = await APIDeleteFilter({ _id: productId, filter: data });
+            const response = await APIDeleteFilter({ _id: productId, filter: data, multiple: filter.multiple });
             setLoader(false);
             if (response.status == 1) {
-                ToastHOC.successAlert('Filter deleted from product!!');
+                ToastHOC.successAlert('Filter value deleted!!');
+                deleteData(filterValue);
             }
         } catch (error) {
             setLoader(false);
-            ToastHOC.errorAlert('Problem adding filter to product!!');
+            ToastHOC.errorAlert(error.message, 'Problem deleting filter value from product!!');
         }
     };
 
     const onSelect = (data: IClassifier) => {
+        //  console.log('filter =>', filter, !selectedTags[data._id]);
         if (!filter.multiple) {
             if (selectedTags[data._id]) {
-                removeDataFromServer(data._id);
-                deleteData(data);
+                removeDataFromServer(data);
             } else {
                 const array = {};
                 array[data._id] = data;
@@ -172,8 +173,13 @@ const RenderFilter: React.FunctionComponent<renderFilterProps> = ({
 
     React.useEffect(() => {
         if (errorValue == ErrorState.STARTCHECKING) {
-            const isError = checkError();
-            setErrorValue(isError ? ErrorState.FAILED : ErrorState.PASSED);
+            if (!filter.mandatory) {
+                setErrorValue(ErrorState.PASSED);
+            } else {
+                const isError = checkError();
+
+                setErrorValue(isError ? ErrorState.FAILED : ErrorState.PASSED);
+            }
         }
     }, [errorValue]);
 
