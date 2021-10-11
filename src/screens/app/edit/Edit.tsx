@@ -138,13 +138,14 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     _id: productDetails._id,
                 },
                 () => {
-                    // setProductDetails({
-                    //     status:
-                    //         productDetails.status == productStatus.NOTCOMPLETED
-                    //             ? productStatus.INVENTORY
-                    //             : productStatus.WAITINGFORAPPROVAL,
-                    // });
-                    navigation.goBack();
+                    setProductDetails({
+                        ...productDetails,
+                        status:
+                            productDetails.status == productStatus.NOTCOMPLETED
+                                ? productStatus.INVENTORY
+                                : productStatus.WAITINGFORAPPROVAL,
+                    });
+                    //navigation.goBack();
                 },
             );
             setCheckAllError(0);
