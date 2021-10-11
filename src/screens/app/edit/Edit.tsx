@@ -129,9 +129,25 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     React.useEffect(() => {
         if (checkAllError == 2) {
             ToastHOC.successAlert("All check's passed");
-            postProductDataToServer({ status: productStatus.INVENTORY, _id: productDetails._id }, () => {
-                setProductDetails({ ...productDetails, status: productStatus.INVENTORY });
-            });
+            postProductDataToServer(
+                {
+                    status:
+                        productDetails.status == productStatus.NOTCOMPLETED
+                            ? productStatus.INVENTORY
+                            : productStatus.WAITINGFORAPPROVAL,
+                    _id: productDetails._id,
+                },
+                () => {
+                    setProductDetails({
+                        ...productDetails,
+                        status:
+                            productDetails.status == productStatus.NOTCOMPLETED
+                                ? productStatus.INVENTORY
+                                : productStatus.WAITINGFORAPPROVAL,
+                    });
+                    //navigation.goBack();
+                },
+            );
             setCheckAllError(0);
             setGeneralLoader(false);
         } else if (checkAllError == 3) {
@@ -217,7 +233,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                             text={
                                 productDetails.status == productStatus.NOTCOMPLETED
                                     ? 'Add to inventory'
-                                    : 'Send for approval'
+                                    : productDetails.status == productStatus.INVENTORY
+                                    ? 'Send for approval'
+                                    : 'Waiting for approval'
                             }
                             onPress={() => {
                                 setGeneralLoader(true);

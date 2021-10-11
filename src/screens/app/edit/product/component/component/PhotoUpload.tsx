@@ -69,7 +69,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ photoError, setPhotoError, s
         if (status == productStatus.NOTCOMPLETED && photos.length == 0) {
             setError('Please add atleast 1 photo for identification.');
             return true;
-        } else if (photos.length != 8) {
+        } else if (status === productStatus.INVENTORY && photos.length != 0) {
             setError("Please add atleast 8 photo's for better product recognition.");
             return true;
         } else {
