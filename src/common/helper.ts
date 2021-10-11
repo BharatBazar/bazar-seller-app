@@ -23,6 +23,37 @@ export const compareObjects = (object1: Object, object2: Object) => {
     return a;
 };
 
+export const timeLine = [
+    '1 day',
+    '2 days',
+    '3 days',
+    '4 days',
+    '5 days',
+    '6 days',
+    '1 week',
+    '2 weeks',
+    '3 weeks',
+    '4 weeks',
+];
+
+export const provideIndex = (initialValue: string) => {
+    const a = +initialValue;
+    if (a > 6) {
+        return 6 + a / 7;
+    } else {
+        return a - 1;
+    }
+};
+
+export const parseDays = (data: string) => {
+    const [count, denotion] = data.split(' ');
+    if (denotion[0] == 'w') {
+        return (+count * 7).toString();
+    } else {
+        return (+count).toString();
+    }
+};
+
 export const provideAlert = ({
     heading,
     subHeading,
