@@ -1,15 +1,9 @@
+import { AlertBox } from '@app/common/containerStyles';
 import * as React from 'react';
-import { View, Pressable, Text, SafeAreaView } from 'react-native';
+import { View } from 'react-native';
 import Ripple from 'react-native-material-ripple';
-import { fs10, fs12, fs16, fs18, fs20 } from '../../../../common';
-import {
-    borderColor,
-    borderProductColor,
-    colorCode,
-    errorColor,
-    mainColor,
-    subHeadingColor,
-} from '../../../../common/color';
+import { fs10, fs16 } from '../../../../common';
+import { borderColor, errorColor, subHeadingColor } from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import {
     AIC,
@@ -84,17 +78,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 {rest.colors.length == 0 && <WrappedText text={'No color added'} textColor={'#646464'} />}
             </View>
             {rest.status == productStatus.REJECTED ? (
-                <View
-                    style={{
-                        borderWidth: 1,
-                        borderColor: errorColor,
-                        backgroundColor: errorColor + colorTransparency[10],
-                        borderRadius: 5,
-                        paddingHorizontal: '3%',
-                        paddingVertical: '3%',
-                        marginTop: getHP(0.1),
-                    }}
-                >
+                <View style={AlertBox()}>
                     <WrappedText text={'Rejection Note'} fontSize={fs16} textAlign={'center'} textColor={errorColor} />
                     <WrappedText
                         text={rest?.note}

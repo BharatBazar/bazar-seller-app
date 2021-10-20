@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { NavigationProps } from '../../../common';
+import { fs16, NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
 import Sections from './product/Sections';
@@ -10,6 +10,8 @@ import {
     createProduct,
     deleteProductFromServer,
     generalProductSchema,
+    marHor,
+    marTop,
     padHor,
     updateProduct,
 } from './product/component/generalConfig';
@@ -17,7 +19,7 @@ import { AIC, BR, BW, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/sty
 import { IFilter, IProduct, IRProduct, productStatus } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/product.api';
-import { colorCode, mainColor } from '../../../common/color';
+import { colorCode, errorColor, mainColor } from '../../../common/color';
 import WrappedText from '../../component/WrappedText';
 import TextButton from '../../component/TextButton';
 import { ToastHOC } from '../../hoc/ToastHOC';
@@ -25,6 +27,7 @@ import Loader from '../../component/Loader';
 import { IRGetFilterWithValue } from '../../../server/apis/filter/filter.interface';
 import { getFilterWithValue } from '../../../server/apis/filter/filter.api';
 import { returnEmptyStringOrValue } from '../../../common/helper';
+import HowToImprove from './component/HowToImprove';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -247,6 +250,8 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                             containerStyle={[AIC(), PH(0.5), BR(0.05)]}
                         />
                     </View>
+                    {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
+
                     <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
                         {!loading && (
                             <Sections

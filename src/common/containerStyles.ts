@@ -1,6 +1,6 @@
 import { fs13 } from './index';
 import { ViewStyle } from 'react-native';
-import { colorCode, black20, black50 } from './color';
+import { colorCode, black20, black50, errorColor } from './color';
 import { getHP, getWP } from './dimension';
 import { PH, PV, BR, colorTransparency } from './styles';
 
@@ -47,4 +47,16 @@ export const componentProps = {
         textInputStyle: { fontSize: fs13, color: black50 },
         paddingLeft: getWP(0.2),
     },
+};
+
+export const AlertBox = (color?: string): ViewStyle => {
+    return {
+        borderWidth: 1,
+        borderColor: errorColor || color,
+        backgroundColor: (errorColor || color) + colorTransparency[10],
+        borderRadius: 5,
+        paddingHorizontal: '3%',
+        paddingVertical: '3%',
+        marginTop: getHP(0.1),
+    };
 };
