@@ -235,6 +235,8 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                                     ? 'Add to inventory'
                                     : productDetails.status == productStatus.INVENTORY
                                     ? 'Send for approval'
+                                    : productDetails.status == productStatus.REJECTED
+                                    ? 'Send for approval again'
                                     : 'Waiting for approval'
                             }
                             onPress={() => {
