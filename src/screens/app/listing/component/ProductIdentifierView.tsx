@@ -1,14 +1,22 @@
 import * as React from 'react';
 import { View, Pressable, Text, SafeAreaView } from 'react-native';
 import Ripple from 'react-native-material-ripple';
-import { fs12, fs16 } from '../../../../common';
-import { borderProductColor, colorCode } from '../../../../common/color';
+import { fs10, fs12, fs16, fs18, fs20 } from '../../../../common';
+import {
+    borderColor,
+    borderProductColor,
+    colorCode,
+    errorColor,
+    mainColor,
+    subHeadingColor,
+} from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import {
     AIC,
     BC,
     BGCOLOR,
     BR,
+    BW,
     colorTransparency,
     FDR,
     FLEX,
@@ -24,7 +32,7 @@ import {
     W,
     WP,
 } from '../../../../common/styles';
-import { IProduct } from '../../../../server/apis/product/product.interface';
+import { IProduct, productStatus } from '../../../../server/apis/product/product.interface';
 import { FastImageWrapper } from '../../../component/FastImage';
 import WrappedText from '../../../component/WrappedText';
 import { border } from '../../edit/product/component/generalConfig';
@@ -39,23 +47,33 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
 }) => {
     return (
         <Ripple
-            style={[AIC(), BGCOLOR('#FFFFFF'), WP(4), HP(3), PV(0.1)]}
+            style={[
+                AIC(),
+                BGCOLOR('#FFFFFF'),
+                WP(4),
+                PV(0.1),
+                BW(1),
+                BC(borderColor),
+                { borderRadius: 5, marginTop: getHP(0.1) },
+            ]}
             onPress={() => {
                 onPress();
             }}
         >
-            <View style={[FLEX(0.7)]}>
+            <View style={[]}>
                 <FastImageWrapper
                     source={{
                         uri:
                             'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
                     }}
-                    resizeMode={'cover'}
-                    imageStyle={[{ height: '100%', width: getWP(4), borderRadius: getHP(0.1) }]}
+                    resizeMode={'contain'}
+                    imageStyle={[
+                        { width: getWP(4), height: getHP(1.5), borderRadius: getHP(0.1), resizeMode: 'contain' },
+                    ]}
                 />
             </View>
 
-            <View style={[FDR(), FLEX(0.3), JCC('center'), AIC('center')]}>
+            <View style={[FDR(), JCC('center'), AIC('center')]}>
                 {rest.colors.map((color) => {
                     return (
                         <View
@@ -65,6 +83,31 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 })}
                 {rest.colors.length == 0 && <WrappedText text={'No color added'} textColor={'#646464'} />}
             </View>
+            {rest.status == productStatus.REJECTED ? (
+                <View
+                    style={{
+                        borderWidth: 1,
+                        borderColor: errorColor,
+                        backgroundColor: errorColor + colorTransparency[10],
+                        borderRadius: 5,
+                        paddingHorizontal: '3%',
+                        paddingVertical: '3%',
+                        marginTop: getHP(0.1),
+                    }}
+                >
+                    <WrappedText text={'Rejection Note'} fontSize={fs16} textAlign={'center'} textColor={errorColor} />
+                    <WrappedText
+                        text={rest?.note}
+                        textColor={subHeadingColor}
+                        fontSize={fs10}
+                        textAlign={'center'}
+                        numberOfLines={2}
+                        containerStyle={[MT(0.05)]}
+                    />
+                </View>
+            ) : (
+                <View />
+            )}
         </Ripple>
     );
 };

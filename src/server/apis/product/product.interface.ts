@@ -55,6 +55,9 @@ export interface IProduct {
     brand: string | IClassifier;
     fit: string | IClassifier;
     pattern: [string] | [IClassifier];
+    note: string;
+    descriptionCustomer: string;
+    alreadyRejected: boolean;
 }
 
 export interface IProductColor {

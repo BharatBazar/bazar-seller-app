@@ -1,12 +1,12 @@
 import React from 'react';
-import { Image, Text, View, StyleSheet, SafeAreaView } from 'react-native';
+import { Image, Text, View, StyleSheet, SafeAreaView, TextStyle } from 'react-native';
 import { FontFamily, fs11, fs12, fs16 } from '../../common';
 import { getHP } from '../../common/dimension';
 
 function WrappedText(props: {
     fontFamily?: string;
 
-    textStyle?: any;
+    textStyle?: TextStyle;
     fontSize?: number;
 
     textColor?: string;
@@ -17,6 +17,7 @@ function WrappedText(props: {
     ellipsizeMode?: 'tail' | 'head' | 'middle' | 'clip' | undefined;
     numberOfLines?: number;
     containerStyle?: any;
+    textAlign?: 'center' | 'auto' | 'left' | 'right' | 'justify' | undefined;
 }) {
     const {
         fontFamily,
@@ -30,6 +31,7 @@ function WrappedText(props: {
         ellipsizeMode,
         numberOfLines,
         textStyle,
+        textAlign,
     } = props;
 
     return (
@@ -43,6 +45,7 @@ function WrappedText(props: {
                         fontWeight: fontWeight || 'normal',
                         color: textColor || '#000000',
                         flexWrap: 'wrap',
+                        textAlign: textAlign || 'auto',
                         flexShrink: 1,
                     },
                     textStyle,

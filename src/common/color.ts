@@ -22,6 +22,7 @@ export const borderColor = colorCode.BLACKLOW(10);
 export const messageColor = '#8A8A8A';
 export const errorColor = '#ed4337';
 export const borderProductColor = '#C8C7CC';
+export const subHeadingColor = '#646464';
 export const black10 = colorCode.BLACKLOW(10);
 export const black20 = colorCode.BLACKLOW(20);
 export const black30 = colorCode.BLACKLOW(30);
