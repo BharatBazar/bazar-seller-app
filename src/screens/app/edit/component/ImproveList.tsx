@@ -58,11 +58,11 @@ const ImproveList: React.FunctionComponent<ImproveListProps> = ({ notes, status,
                         ? 'Send for approval again'
                         : 'Waiting for approval'
                 }
-                marginTop={getHP(0.1)}
                 containerStyle={[PH(0.2), ML(0.1)]}
             />
             <Modal
                 useNativeDriver
+                backdropTransitionOutTiming={0}
                 isVisible={isVisible}
                 onBackdropPress={() => {
                     setVisible(false);
