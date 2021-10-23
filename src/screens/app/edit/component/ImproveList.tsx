@@ -1,6 +1,6 @@
 import { mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { AIC, BGCOLOR, BR, JCC, MT, MV, PH, PV } from '@app/common/styles';
+import { AIC, BGCOLOR, BR, JCC, ML, MT, MV, PH, PV } from '@app/common/styles';
 import ModalHeader from '@app/screens/component/ModalHeader';
 import NormalButton from '@app/screens/component/NormalButton';
 import TextButton from '@app/screens/component/TextButton';
@@ -43,8 +43,13 @@ const ImproveList: React.FunctionComponent<ImproveListProps> = ({ notes, status,
 
     return (
         <View>
-            <TextButton
-                text={
+            <NormalButton
+                onPress={() => {
+                    if (status == productStatus.REJECTED) {
+                        setVisible(true);
+                    } else onPress();
+                }}
+                buttonText={
                     status == productStatus.NOTCOMPLETED
                         ? 'Add to inventory'
                         : status == productStatus.INVENTORY
@@ -53,22 +58,16 @@ const ImproveList: React.FunctionComponent<ImproveListProps> = ({ notes, status,
                         ? 'Send for approval again'
                         : 'Waiting for approval'
                 }
-                onPress={() => {
-                    if (status == productStatus.REJECTED) {
-                        setVisible(true);
-                    } else onPress();
-                }}
-                textProps={{ textColor: '#FFFFFF' }}
-                containerStyle={[AIC(), PH(0.5), BR(0.05)]}
+                marginTop={getHP(0.1)}
+                containerStyle={[PH(0.2), ML(0.1)]}
             />
             <Modal
                 useNativeDriver
                 isVisible={isVisible}
-                setPopup={setVisible}
                 onBackdropPress={() => {
                     setVisible(false);
                 }}
-                style={{ justifyContent: 'flex-end', margin: 0 }}
+                style={{ justifyContent: 'center', marginHorizontal: '2%' }}
             >
                 <View style={styles.container}>
                     <ModalHeader
@@ -91,7 +90,13 @@ const ImproveList: React.FunctionComponent<ImproveListProps> = ({ notes, status,
                         />
                     ))}
                     {allChecked.every((item) => item) && (
-                        <NormalButton onPress={() => {}} buttonText={'Send for approval again'} />
+                        <NormalButton
+                            onPress={() => {
+                                setVisible(false);
+                            }}
+                            buttonText={'Send for approval again'}
+                            marginTop={getHP(0.1)}
+                        />
                     )}
                 </View>
             </Modal>

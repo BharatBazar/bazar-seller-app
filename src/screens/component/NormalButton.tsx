@@ -14,6 +14,8 @@ interface NormalButtonProps {
     fontSize?: number;
     textStyle?: TextStyle;
     textColor?: string;
+    marginTop?: number;
+    height?: number;
 }
 
 const NormalButton: React.FunctionComponent<NormalButtonProps> = ({
@@ -24,6 +26,8 @@ const NormalButton: React.FunctionComponent<NormalButtonProps> = ({
     fontSize,
     textStyle,
     textColor,
+    marginTop,
+    height,
 }) => {
     return (
         <Ripple
@@ -31,10 +35,11 @@ const NormalButton: React.FunctionComponent<NormalButtonProps> = ({
                 onPress();
             }}
             style={[
-                { height: 40, backgroundColor: backgroundColor || mainColor },
+                { height: height || 40, backgroundColor: backgroundColor || mainColor, marginTop },
                 AIC(),
                 JCC(),
                 BR(0.05),
+
                 containerStyle,
             ]}
         >

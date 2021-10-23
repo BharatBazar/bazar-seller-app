@@ -33,7 +33,7 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
                 <View style={[AlertBox()]}>
                     {note.map((item, index) => (
                         <WrappedText
-                            text={`[${index + 1}] ` + item + ' ' + item}
+                            text={`[${index + 1}] ` + item}
                             textColor={errorColor}
                             textStyle={{ lineHeight: fs18 }}
                             containerStyle={[MT(0.05)]}
