@@ -28,6 +28,7 @@ import { IRGetFilterWithValue } from '../../../server/apis/filter/filter.interfa
 import { getFilterWithValue } from '../../../server/apis/filter/filter.api';
 import { returnEmptyStringOrValue } from '../../../common/helper';
 import HowToImprove from './component/HowToImprove';
+import ImproveList from './component/ImproveList';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -232,7 +233,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                             containerStyle={[FLEX(1)]}
                             textColor={'#646464'}
                         />
-                        <TextButton
+                        {/* <TextButton
                             text={
                                 productDetails.status == productStatus.NOTCOMPLETED
                                     ? 'Add to inventory'
@@ -248,6 +249,14 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                             }}
                             textProps={{ textColor: colorCode.WHITE }}
                             containerStyle={[AIC(), PH(0.5), BR(0.05)]}
+                        /> */}
+                        <ImproveList
+                            notes={productDetails.note}
+                            status={productDetails.status}
+                            onPress={() => {
+                                setGeneralLoader(true);
+                                setCheckAllError(1);
+                            }}
                         />
                     </View>
                     {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}

@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "private": true,
     "scripts": {
-        "ios": "npx react-native run-ios --simulator='iPhone 8'",
+        "ios": "npx react-native run-ios --simulator='iPhone 11'",
         "start": "react-native start",
         "test": "jest",
         "android": "cd android && ./gradlew clean && cd .. && react-native run-android",

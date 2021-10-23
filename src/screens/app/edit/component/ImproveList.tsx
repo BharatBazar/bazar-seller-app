@@ -1,0 +1,110 @@
+import { mainColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
+import { AIC, BGCOLOR, BR, JCC, MT, MV, PH, PV } from '@app/common/styles';
+import ModalHeader from '@app/screens/component/ModalHeader';
+import NormalButton from '@app/screens/component/NormalButton';
+import TextButton from '@app/screens/component/TextButton';
+import WrappedCheckBox from '@app/screens/component/WrappedCheckBox';
+import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
+import WrappedText from '@app/screens/component/WrappedText';
+import ModalHOC from '@app/screens/hoc/ModalHOC';
+import { productStatus } from '@app/server/apis/product/product.interface';
+import * as React from 'react';
+import { View, StyleSheet } from 'react-native';
+import Ripple from 'react-native-material-ripple';
+import Modal from 'react-native-modal';
+import { border } from '../product/component/generalConfig';
+import ProductButton from '../product/component/ProductButton';
+
+interface ImproveListProps {
+    notes: [string];
+    status: productStatus;
+    onPress: Function;
+}
+
+const ImproveList: React.FunctionComponent<ImproveListProps> = ({ notes, status, onPress }) => {
+    const [isVisible, setVisible] = React.useState(false);
+
+    const [allChecked, setAllChecked] = React.useState<[boolean]>([]);
+
+    React.useEffect(() => {
+        if (notes && notes.length > 0) {
+            let allChecked: [boolean] = notes.map((item) => false);
+            setAllChecked(allChecked);
+        }
+        return () => {};
+    }, [notes]);
+
+    const setValue = (index: number, value: boolean) => {
+        let allCheckedI: [boolean] = [...allChecked];
+        allCheckedI[index] = value;
+        setAllChecked(allCheckedI);
+    };
+
+    return (
+        <View>
+            <TextButton
+                text={
+                    status == productStatus.NOTCOMPLETED
+                        ? 'Add to inventory'
+                        : status == productStatus.INVENTORY
+                        ? 'Send for approval'
+                        : status == productStatus.REJECTED
+                        ? 'Send for approval again'
+                        : 'Waiting for approval'
+                }
+                onPress={() => {
+                    if (status == productStatus.REJECTED) {
+                        setVisible(true);
+                    } else onPress();
+                }}
+                textProps={{ textColor: '#FFFFFF' }}
+                containerStyle={[AIC(), PH(0.5), BR(0.05)]}
+            />
+            <Modal
+                useNativeDriver
+                isVisible={isVisible}
+                setPopup={setVisible}
+                onBackdropPress={() => {
+                    setVisible(false);
+                }}
+                style={{ justifyContent: 'flex-end', margin: 0 }}
+            >
+                <View style={styles.container}>
+                    <ModalHeader
+                        heading={'How to improve'}
+                        subHeading={
+                            'Please check all the points you have completed\nso that you can request again for approval.'
+                        }
+                        setPopup={() => {
+                            setVisible(false);
+                        }}
+                    />
+                    <View style={[MT(0.1)]} />
+
+                    {allChecked.map((item, index) => (
+                        <WrappedCheckBox
+                            value={item}
+                            setValue={(value) => setValue(index, value)}
+                            containerStyle={[MV(0.1), PV(0.1), PH(0.2), BR(0.05), border]}
+                            placeholder={notes[index]}
+                        />
+                    ))}
+                    {allChecked.every((item) => item) && (
+                        <NormalButton onPress={() => {}} buttonText={'Send for approval again'} />
+                    )}
+                </View>
+            </Modal>
+        </View>
+    );
+};
+
+export default ImproveList;
+
+const styles = StyleSheet.create({
+    container: {
+        padding: '5%',
+        backgroundColor: '#FFFFFF',
+        borderRadius: getHP(0.1),
+    },
+});
