@@ -93,6 +93,7 @@ const ImproveList: React.FunctionComponent<ImproveListProps> = ({ notes, status,
                         <NormalButton
                             onPress={() => {
                                 setVisible(false);
+                                onPress();
                             }}
                             buttonText={'Send for approval again'}
                             marginTop={getHP(0.1)}

@@ -20,6 +20,15 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
     console.log(note);
     return (
         <View style={[marHor, MV(0.1), { backgroundColor: '#00000000' }]}>
+            <Ripple
+                style={[FDR(), JCC('space-between'), BW(1), PH(0.3), BR(0.05), BC(mainColor)]}
+                onPress={() => {
+                    setIsCollapsed(!isCollapsed);
+                }}
+            >
+                <WrappedText text={'How to improve'} textColor={mainColor} fontSize={fs14} />
+                <WrappedFeatherIcon iconName={isCollapsed ? 'chevron-up' : 'chevron-down'} iconColor={mainColor} />
+            </Ripple>
             <Collapsible collapsed={isCollapsed} style={[{ position: 'absolute', zIndex: 1000 }]}>
                 <View style={[AlertBox()]}>
                     {note.map((item, index) => (
@@ -32,15 +41,6 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
                     ))}
                 </View>
             </Collapsible>
-            <Ripple
-                style={[FDR(), JCC('space-between'), BW(1), PH(0.3), BR(0.05), BC(mainColor)]}
-                onPress={() => {
-                    setIsCollapsed(!isCollapsed);
-                }}
-            >
-                <WrappedText text={'How to improve'} textColor={mainColor} fontSize={fs14} />
-                <WrappedFeatherIcon iconName={isCollapsed ? 'chevron-up' : 'chevron-down'} iconColor={mainColor} />
-            </Ripple>
         </View>
     );
 };
