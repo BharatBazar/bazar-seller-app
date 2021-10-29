@@ -80,7 +80,7 @@ const ProductList: React.SFC<ProductListProps> = ({
                         />
                     );
                 }}
-                columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: '5%' }}
+                columnWrapperStyle={{ justifyContent: 'space-between', paddingHorizontal: '2%' }}
             />
         </View>
     );

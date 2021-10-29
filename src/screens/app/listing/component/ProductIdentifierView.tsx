@@ -44,7 +44,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
             style={[
                 AIC(),
                 BGCOLOR('#FFFFFF'),
-                WP(4.4),
+                WP(4.7),
                 PV(0.1),
                 BW(1),
                 BC(borderColor),
