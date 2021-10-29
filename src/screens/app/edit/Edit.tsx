@@ -133,12 +133,14 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     React.useEffect(() => {
         if (checkAllError == 2) {
             ToastHOC.successAlert("All check's passed");
+
             postProductDataToServer(
                 {
                     status:
                         productDetails.status == productStatus.NOTCOMPLETED
                             ? productStatus.INVENTORY
                             : productStatus.WAITINGFORAPPROVAL,
+                    note: [],
                     _id: productDetails._id,
                 },
                 () => {

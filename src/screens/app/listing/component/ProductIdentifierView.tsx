@@ -44,7 +44,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
             style={[
                 AIC(),
                 BGCOLOR('#FFFFFF'),
-                WP(4),
+                WP(4.7),
                 PV(0.1),
                 BW(1),
                 BC(borderColor),
@@ -60,14 +60,21 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                         uri:
                             'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
                     }}
-                    resizeMode={'contain'}
+                    resizeMode={'cover'}
                     imageStyle={[
-                        { width: getWP(4), height: getHP(1.5), borderRadius: getHP(0.1), resizeMode: 'contain' },
+                        {
+                            width: getWP(4),
+                            height: getHP(1.5),
+                            borderRadius: getHP(0.1),
+                            resizeMode: 'cover',
+                            borderWidth: 1.5,
+                            borderColor: '#000000' + colorTransparency[30],
+                        },
                     ]}
                 />
             </View>
 
-            <View style={[FDR(), JCC('center'), AIC('center')]}>
+            <View style={[FDR(), JCC('center'), AIC('center'), MT(0.1)]}>
                 {rest.colors.map((color) => {
                     return (
                         <View
@@ -81,7 +88,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 <View style={AlertBox()}>
                     <WrappedText text={'Rejection Note'} fontSize={fs16} textAlign={'center'} textColor={errorColor} />
                     <WrappedText
-                        text={rest?.note}
+                        text={rest?.note[0]}
                         textColor={subHeadingColor}
                         fontSize={fs10}
                         textAlign={'center'}
@@ -90,8 +97,23 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                     />
                 </View>
             ) : (
-                <View />
+                title.length > 0 && (
+                    <WrappedText
+                        text={title}
+                        numberOfLines={1}
+                        containerStyle={[MT(0.1)]}
+                        textStyle={[{ textAlign: 'center' }]}
+                        textColor={'#1f1f1f'}
+                    />
+                )
             )}
+
+            {/* <WrappedText
+                text={subTitle}
+                numberOfLines={2}
+                textStyle={[MT(0.1), { textAlign: 'center' }]}
+                textColor={'#646464'}
+            /> */}
         </Ripple>
     );
 };
