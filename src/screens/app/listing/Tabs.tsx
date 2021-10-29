@@ -17,12 +17,20 @@ interface ProductTabProps extends NavigationProps {
     category: string;
     subCategory: string;
     subCategory1: string;
+    initialIndex: number;
 }
 
-const ProductTab: React.FC<ProductTabProps> = ({ navigation, shopId, category, subCategory1, subCategory }) => {
+const ProductTab: React.FC<ProductTabProps> = ({
+    navigation,
+    shopId,
+    category,
+    subCategory1,
+    subCategory,
+    initialIndex,
+}) => {
     const layout = useWindowDimensions();
     console.log(productStatus);
-    const [index, setIndex] = React.useState(4);
+    const [index, setIndex] = React.useState(initialIndex);
     const [routes, serRoutes] = React.useState([
         { key: 0, title: 'Live' },
         { key: 1, title: 'Waiting for approval' },

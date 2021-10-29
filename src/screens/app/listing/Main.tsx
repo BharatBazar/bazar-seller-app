@@ -117,7 +117,7 @@ const Product: React.FC<ProductProps> = ({
                 </View> */}
             </View>
             <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
-                {/* <Status
+                <Status
                     name={'Incomplete'}
                     count={10}
                     onPress={() => {}}
@@ -150,15 +150,16 @@ const Product: React.FC<ProductProps> = ({
                     count={3}
                     onPress={() => {}}
                     message={'Items which are live in the market.Your grahak can check this items.'}
-                /> */}
-                <ProductTab
-                    navigation={navigation}
-                    shopId={shopId}
-                    category={category}
-                    subCategory={subCategory}
-                    subCategory1={subCategory1}
                 />
             </View>
+            {/* <ProductTab
+                initialIndex={3}
+                navigation={navigation}
+                shopId={shopId}
+                category={category}
+                subCategory={subCategory}
+                subCategory1={subCategory1}
+            /> */}
         </View>
     );
 };
