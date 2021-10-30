@@ -129,19 +129,19 @@ const Product: React.FC<ProductProps> = ({
                     />
                 </View> */}
             </View>
-            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }, PH(0.3)]}>
+            {/* <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }, PH(0.3)]}>
                 {status.map((item) => (
                     <Status name={item.name} count={item.count} onPress={() => {}} message={item.description} />
                 ))}
-            </View>
-            {/* <ProductTab
+            </View> */}
+            <ProductTab
                 initialIndex={3}
                 navigation={navigation}
                 shopId={shopId}
                 category={category}
                 subCategory={subCategory}
                 subCategory1={subCategory1}
-            /> */}
+            />
         </View>
     );
 };

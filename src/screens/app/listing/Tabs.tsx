@@ -29,7 +29,7 @@ const ProductTab: React.FC<ProductTabProps> = ({
     initialIndex,
 }) => {
     const layout = useWindowDimensions();
-    console.log(productStatus);
+    console.log(productStatus, initialIndex);
     const [index, setIndex] = React.useState(initialIndex);
     const [routes, serRoutes] = React.useState<Route[]>([
         { key: '0', title: 'Live' },
@@ -57,8 +57,15 @@ const ProductTab: React.FC<ProductTabProps> = ({
         5: () => <ProductList key={5} {...basicProps} status={productStatus.OUTOFSTOCK} />,
     });
 
+    React.useEffect(() => {
+        // setTimeout(() => {
+        //     setIndex(5);
+        // }, 2000);
+    }, []);
+
     return (
         <TabView
+            lazy
             navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
