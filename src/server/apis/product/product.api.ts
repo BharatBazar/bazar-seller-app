@@ -63,3 +63,7 @@ export async function APIUpdateProductSize(data: IProductSize): Promise<IRProduc
 export async function APIDeleteFilter(data: { _id: string; filter: {}; multiple: boolean }): Promise<IRProductSize> {
     return axios.patch('/delete/filter', data);
 }
+
+export async function APIProductStatus(data: { shopId: string }) {
+    return axios.post('/status', data);
+}

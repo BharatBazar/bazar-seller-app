@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, useWindowDimensions } from 'react-native';
-import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
+import { TabView, SceneMap, TabBar, Route } from 'react-native-tab-view';
 import { NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
@@ -31,13 +31,13 @@ const ProductTab: React.FC<ProductTabProps> = ({
     const layout = useWindowDimensions();
     console.log(productStatus);
     const [index, setIndex] = React.useState(initialIndex);
-    const [routes, serRoutes] = React.useState([
-        { key: 0, title: 'Live' },
-        { key: 1, title: 'Waiting for approval' },
-        { key: 2, title: 'Rejected' },
-        { key: 3, title: 'Local inventory' },
-        { key: 4, title: 'Not completed' },
-        { key: 5, title: 'Out of stock' },
+    const [routes, serRoutes] = React.useState<Route[]>([
+        { key: '0', title: 'Live' },
+        { key: '1', title: 'Waiting for approval' },
+        { key: '2', title: 'Rejected' },
+        { key: '3', title: 'Local inventory' },
+        { key: '4', title: 'Not completed' },
+        { key: '5', title: 'Out of stock' },
     ]);
 
     const basicProps = {

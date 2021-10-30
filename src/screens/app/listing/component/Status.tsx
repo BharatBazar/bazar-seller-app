@@ -1,3 +1,4 @@
+import { getHP } from '@app/common/dimension';
 import * as React from 'react';
 import { Pressable, View } from 'react-native';
 import Ripple from 'react-native-material-ripple';
@@ -20,7 +21,8 @@ const Status: React.SFC<StatusProps> = ({ name, count, onPress, message }) => {
             onPress={() => {
                 onPress();
             }}
-            style={[border, BR(0.1), WP(4.6), HP(1.8), padHor, padVer, marTop]}
+            rippleContainerBorderRadius={getHP(0.1)}
+            style={[border, BR(0.1), WP(4.6), padHor, padVer, marTop]}
         >
             <View>
                 <WrappedText text={name.toLocaleUpperCase()} fontSize={fs12} />

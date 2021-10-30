@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as React from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Alert } from 'react-native';
 import { fs18, fs24, NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
 import { getHP, getWP } from '../../../common/dimension';
@@ -14,6 +14,7 @@ import Status from './component/Status';
 import ProductTab from './Tabs';
 import IconIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
+import { APIProductStatus } from '@app/server/apis/product/product.api';
 
 export interface ProductProps extends NavigationProps {
     route: {
@@ -28,6 +29,7 @@ const Product: React.FC<ProductProps> = ({
     },
 }) => {
     const [searchedText, setSearchedText] = React.useState('');
+    const [status, setStatus] = React.useState<{ name: string; description: string; count: number }[]>([]);
 
     const setBaseUrl = () => {
         if (subCategory1) {
@@ -39,8 +41,19 @@ const Product: React.FC<ProductProps> = ({
         }
     };
 
+    const getCatalogueStatus = async (data: { shopId: string }) => {
+        try {
+            console.log(data);
+            const a = await APIProductStatus(data);
+            setStatus(a.payload);
+        } catch (error) {
+            Alert.alert(error.message);
+        }
+    };
+
     React.useMemo(() => {
         setBaseUrl();
+        getCatalogueStatus({ shopId: shopId._id });
         // return () => {
         //     axios.defaults.baseURL = apiEndPoint;
         // };
@@ -116,41 +129,10 @@ const Product: React.FC<ProductProps> = ({
                     />
                 </View> */}
             </View>
-            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }]}>
-                <Status
-                    name={'Incomplete'}
-                    count={10}
-                    onPress={() => {}}
-                    message={'In this section the item which you have not completed yet.'}
-                />
-                <Status
-                    name={'Completed'}
-                    count={5}
-                    onPress={() => {}}
-                    message={
-                        'Items which are completed and available in the inventory but not live. You can scan brcode and can do billing for them.'
-                    }
-                />
-                <Status
-                    name={'Waiting for approval'}
-                    count={5}
-                    onPress={() => {}}
-                    message={
-                        'Items which you have applied for going live in the market. Our authority will check the product and will inform you if there is any problem related to product.'
-                    }
-                />
-                <Status
-                    name={'Rejected from being live'}
-                    count={3}
-                    onPress={() => {}}
-                    message={'Items which are rejected from going live due to some problem.'}
-                />
-                <Status
-                    name={'Live in the bazar'}
-                    count={3}
-                    onPress={() => {}}
-                    message={'Items which are live in the market.Your grahak can check this items.'}
-                />
+            <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }, PH(0.3)]}>
+                {status.map((item) => (
+                    <Status name={item.name} count={item.count} onPress={() => {}} message={item.description} />
+                ))}
             </View>
             {/* <ProductTab
                 initialIndex={3}
