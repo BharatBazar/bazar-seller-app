@@ -44,6 +44,7 @@ const ProductList: React.SFC<ProductListProps> = ({
 
             if (response.status == 1) {
                 //    console.log(response.payload.payload);
+
                 setProduct(response.payload.payload);
                 setLoader(false);
             } else {
@@ -54,9 +55,22 @@ const ProductList: React.SFC<ProductListProps> = ({
             Alert.alert(error.message);
         }
     };
+    useEffect(() => {}, []);
+
     useEffect(() => {
-        fetchProducts();
-    }, []);
+        if (navigation) {
+            var _navListener = navigation.addListener('focus', (payload) => {
+                // update based on your requirements
+
+                if (status) {
+                    fetchProducts();
+                }
+            });
+        }
+        return () => {
+            _navListener();
+        };
+    }, [navigation]);
 
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>

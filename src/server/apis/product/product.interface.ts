@@ -120,3 +120,14 @@ export interface IRProductColor extends CommonApiResponse {
 export interface IRProductSize extends CommonApiResponse {
     payload: IProductSize;
 }
+
+export interface IProductStatus {
+    count: number;
+    name: string;
+    _id: number;
+    description: string;
+}
+
+export interface IRProductStatus extends CommonApiResponse {
+    payload: IProductStatus;
+}
