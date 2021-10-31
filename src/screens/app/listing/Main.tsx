@@ -15,6 +15,7 @@ import ProductTab from './Tabs';
 import IconIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import { APIProductStatus } from '@app/server/apis/product/product.api';
+import { IProductStatus } from '@app/server/apis/product/product.interface';
 
 export interface ProductProps extends NavigationProps {
     route: {
@@ -29,7 +30,7 @@ const Product: React.FC<ProductProps> = ({
     },
 }) => {
     const [searchedText, setSearchedText] = React.useState('');
-    const [status, setStatus] = React.useState<{ name: string; description: string; count: number }[]>([]);
+    const [status, setStatus] = React.useState<IProductStatus[]>([]);
 
     const setBaseUrl = () => {
         if (subCategory1) {
@@ -46,6 +47,7 @@ const Product: React.FC<ProductProps> = ({
             console.log(data);
             const a = await APIProductStatus(data);
             setStatus(a.payload);
+            console.log(a);
         } catch (error) {
             Alert.alert(error.message);
         }
@@ -135,6 +137,7 @@ const Product: React.FC<ProductProps> = ({
                 ))}
             </View> */}
             <ProductTab
+                tabs={status}
                 initialIndex={3}
                 navigation={navigation}
                 shopId={shopId}

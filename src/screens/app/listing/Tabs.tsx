@@ -4,10 +4,11 @@ import { TabView, SceneMap, TabBar, Route } from 'react-native-tab-view';
 import { FontFamily, fs10, fs12, NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
-import { productStatus } from '../../../server/apis/product/product.interface';
+import { IProductStatus, productStatus } from '../../../server/apis/product/product.interface';
 import WrappedText from '../../component/WrappedText';
 import ProductList from './List';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Loader from '@app/screens/component/Loader';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -36,6 +37,7 @@ interface ProductTabProps extends NavigationProps {
     subCategory: string;
     subCategory1: string;
     initialIndex: number;
+    tabs: IProductStatus[];
 }
 
 const ProductTab: React.FC<ProductTabProps> = ({
@@ -45,19 +47,8 @@ const ProductTab: React.FC<ProductTabProps> = ({
     subCategory1,
     subCategory,
     initialIndex,
+    tabs,
 }) => {
-    const layout = useWindowDimensions();
-    console.log(productStatus, initialIndex);
-    const [index, setIndex] = React.useState(initialIndex);
-    const [routes, serRoutes] = React.useState<Route[]>([
-        { key: '0', title: 'Live' },
-        { key: '1', title: 'Waiting for approval' },
-        { key: '2', title: 'Rejected' },
-        { key: '3', title: 'Local inventory' },
-        { key: '4', title: 'Not completed' },
-        { key: '5', title: 'Out of stock' },
-    ]);
-
     const basicProps = {
         navigation: navigation,
         shopId: shopId,
@@ -66,57 +57,40 @@ const ProductTab: React.FC<ProductTabProps> = ({
         subCategory1: subCategory1,
     };
 
-    const renderScene = SceneMap({
-        0: () => <ProductList key={0} {...basicProps} status={productStatus.LIVE} />,
-        1: () => <ProductList key={1} {...basicProps} status={productStatus.WAITINGFORAPPROVAL} />,
-        2: () => <ProductList key={2} {...basicProps} status={productStatus.REJECTED} />,
-        3: () => <ProductList key={3} {...basicProps} status={productStatus.INVENTORY} />,
-        4: () => <ProductList key={4} {...basicProps} status={productStatus.NOTCOMPLETED} />,
-        5: () => <ProductList key={5} {...basicProps} status={productStatus.OUTOFSTOCK} />,
-    });
+    React.useEffect(() => {}, []);
 
-    React.useEffect(() => {
-        // setTimeout(() => {
-        //     setIndex(5);
-        // }, 2000);
-    }, []);
+    if (tabs.length > 0) {
+        return (
+            <Tab.Navigator
+                style={{ backgroundColor: '#FFFFFF' }}
+                lazy={true}
+                tabBarOptions={{
+                    scrollEnabled: true,
+                    tabStyle: { width: 120 },
+                    labelStyle: { fontSize: fs10, fontFamily: FontFamily.RobotoMedium },
+                    indicatorStyle: { backgroundColor: mainColor },
+                    //labelStyle: { color: mainColor },
+                    activeTintColor: mainColor,
 
-    return (
-        <Tab.Navigator
-            style={{ backgroundColor: '#FFFFFF' }}
-            lazy={true}
-            tabBarOptions={{
-                scrollEnabled: true,
-                tabStyle: { width: 120 },
-                labelStyle: { fontSize: fs10, fontFamily: FontFamily.RobotoMedium },
-                indicatorStyle: { backgroundColor: mainColor },
-                //labelStyle: { color: mainColor },
-                activeTintColor: mainColor,
-
-                allowFontScaling: false,
-            }}
-            swipeEnabled={false}
-            initialRouteName={'Rejected'}
-        >
-            <Tab.Screen
-                name="Live"
-                options={{ tabBarLabel: 'Live', title: 'Live' }}
-                children={() => <ProductList key={0} {...basicProps} status={productStatus.LIVE} />}
-            />
-            <Tab.Screen
-                name="Waiting For Approval"
-                children={() => <ProductList key={1} {...basicProps} status={productStatus.WAITINGFORAPPROVAL} />}
-            />
-            <Tab.Screen
-                name={'Rejected'}
-                children={() => <ProductList key={2} {...basicProps} status={productStatus.REJECTED} />}
-            />
-            <Tab.Screen
-                name={'Inventory'}
-                children={() => <ProductList key={3} {...basicProps} status={productStatus.INVENTORY} />}
-            />
-        </Tab.Navigator>
-    );
+                    allowFontScaling: false,
+                }}
+                swipeEnabled={false}
+                initialRouteName={'Rejected'}
+            >
+                {tabs.map((item) => (
+                    <Tab.Screen
+                        name={item.name}
+                        // options={{ tabBarLabel: 'Live', title: 'Live' }}
+                        children={(props) => (
+                            <ProductList key={item._id} {...basicProps} {...props} status={item._id} />
+                        )}
+                    />
+                ))}
+            </Tab.Navigator>
+        );
+    } else {
+        return <Loader />;
+    }
 
     // return (
     //     <TabView
