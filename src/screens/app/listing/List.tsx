@@ -42,6 +42,8 @@ const ProductList: React.SFC<ProductListProps> = ({
                 },
             });
 
+            console.log(status, response);
+
             if (response.status == 1) {
                 //    console.log(response.payload.payload);
 
@@ -61,8 +63,8 @@ const ProductList: React.SFC<ProductListProps> = ({
         if (navigation) {
             var _navListener = navigation.addListener('focus', (payload) => {
                 // update based on your requirements
-
-                if (status) {
+                console.log(status);
+                if (status != undefined) {
                     fetchProducts();
                 }
             });
