@@ -2,7 +2,7 @@ import { AlertBox } from '@app/common/containerStyles';
 import * as React from 'react';
 import { View } from 'react-native';
 import Ripple from 'react-native-material-ripple';
-import { fs10, fs16 } from '../../../../common';
+import { fs10, fs16, fs9 } from '../../../../common';
 import { borderColor, errorColor, subHeadingColor } from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import {
@@ -17,6 +17,7 @@ import {
     H,
     HP,
     JCC,
+    MH,
     ML,
     MR,
     MT,
@@ -85,12 +86,12 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 {rest.colors.length == 0 && <WrappedText text={'No color added'} textColor={'#646464'} />}
             </View>
             {rest.status == productStatus.REJECTED ? (
-                <View style={AlertBox()}>
+                <View style={[AlertBox(), { width: '90%' }, MV(0.1), MH(0.1)]}>
                     <WrappedText text={'Rejection Note'} fontSize={fs16} textAlign={'center'} textColor={errorColor} />
                     <WrappedText
-                        text={rest?.note[0]}
+                        text={rest?.note[0] ? rest?.note[0] : 'No rejection note'}
                         textColor={subHeadingColor}
-                        fontSize={fs10}
+                        fontSize={fs9}
                         textAlign={'center'}
                         numberOfLines={2}
                         containerStyle={[MT(0.05)]}
