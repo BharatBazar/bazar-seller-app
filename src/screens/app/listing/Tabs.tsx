@@ -66,7 +66,7 @@ const ProductTab: React.FC<ProductTabProps> = ({
                 lazy={true}
                 tabBarOptions={{
                     scrollEnabled: true,
-                    tabStyle: { width: 140 },
+                    //   tabStyle: { width: 140 },
                     labelStyle: { fontSize: fs10, fontFamily: FontFamily.RobotoMedium },
                     indicatorStyle: { backgroundColor: mainColor },
                     //labelStyle: { color: mainColor },
