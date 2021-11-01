@@ -79,8 +79,8 @@ const ProductTab: React.FC<ProductTabProps> = ({
             >
                 {tabs.map((item) => (
                     <Tab.Screen
-                        name={item.name}
-                        // options={{ tabBarLabel: 'Live', title: 'Live' }}
+                        name={item.name.split(' (')[0]}
+                        options={{ tabBarLabel: item.name, title: item.name }}
                         children={(props) => (
                             <ProductList key={item._id} {...basicProps} {...props} status={item._id} />
                         )}
