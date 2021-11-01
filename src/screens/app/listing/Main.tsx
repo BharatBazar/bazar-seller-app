@@ -133,7 +133,21 @@ const Product: React.FC<ProductProps> = ({
             </View>
             {/* <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }, PH(0.3)]}>
                 {status.map((item) => (
-                    <Status name={item.name} count={item.count} onPress={() => {}} message={item.description} />
+                    <Status
+                        name={item.name}
+                        count={item.count}
+                        onPress={() => {
+                            navigation.replace(NavigationKey.PRODUCTSTATUS, {
+                                tabs: status,
+                                navigation: navigation,
+                                shopId: shopId,
+                                category: category,
+                                subCategory: subCategory,
+                                subCategory1: subCategory1,
+                            });
+                        }}
+                        message={item.description}
+                    />
                 ))}
             </View> */}
             <ProductTab

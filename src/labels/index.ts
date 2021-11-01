@@ -20,4 +20,5 @@ export const NavigationKey = {
     FORGETPASSWORD: 'ForgetPassword',
     VERIFYOTP: 'VerifyOTP',
     RESETPASSWORD: 'ResetPassword',
+    PRODUCTSTATUS: 'ProductStatus',
 };

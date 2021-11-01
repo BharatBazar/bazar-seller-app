@@ -28,6 +28,7 @@ import { getHP } from '../common/dimension';
 import ForgetPassword from '../screens/auth/SendOtp';
 import VerifyOTP from '../screens/auth/VerifyOTP';
 import ResetPassword from '../screens/auth/ResetPassword';
+import ProductTab from '@app/screens/app/listing/Tabs';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -83,6 +84,7 @@ class AppNavigation extends React.Component {
                             cardStyleInterpolator: Fade,
                         }}
                     />
+                    {/* <Stack.Screen name={NavigationKey.PRODUCTSTATUS} component={ProductTab} /> */}
                 </Stack.Navigator>
                 <Toast ref={(ref) => Toast.setRef(ref)} />
             </NavigationContainer>
