@@ -11,8 +11,9 @@ import { AIC, BGCOLOR, colorTransparency, FLEX, JCC, M, PH } from '@app/common/s
 import WrappedText from '@app/screens/component/WrappedText';
 import { FlatList } from 'react-native-gesture-handler';
 import Loader from '@app/screens/component/Loader';
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
-export interface ProductListProps extends NavigationProps {
+export interface ProductListProps extends MaterialTopTabNavigationProp {
     shopId: string;
     category: string;
     subCategory: string;
@@ -97,6 +98,9 @@ const ProductList: React.SFC<ProductListProps> = ({
                                         category: category,
                                         subCategory: subCategory,
                                         subCategory1: subCategory1,
+                                        changeTab: () => {
+                                            navigation.jumpTo('Waiting for approval');
+                                        },
                                     });
                                 }}
                             />

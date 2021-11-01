@@ -39,6 +39,7 @@ export interface CreateProductProps extends NavigationProps {
             category: string;
             subCategory: string;
             subCategory1: string;
+            changeTab: Function;
         };
     };
 }
@@ -46,7 +47,7 @@ export interface CreateProductProps extends NavigationProps {
 const CreateProduct: React.FC<CreateProductProps> = ({
     navigation,
     route: {
-        params: { update, _id, shopId, category, subCategory, subCategory1 },
+        params: { update, _id, shopId, category, subCategory, subCategory1, changeTab },
     },
 }) => {
     const [productId, setProductId] = useState<string | undefined>(_id);
@@ -144,6 +145,10 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                     _id: productDetails._id,
                 },
                 () => {
+                    if (productDetails.status == productStatus.REJECTED) {
+                        changeTab();
+                        navigation.goBack();
+                    }
                     setProductDetails({
                         ...productDetails,
                         status:
@@ -151,7 +156,6 @@ const CreateProduct: React.FC<CreateProductProps> = ({
                                 ? productStatus.INVENTORY
                                 : productStatus.WAITINGFORAPPROVAL,
                     });
-                    //navigation.goBack();
                 },
             );
             setCheckAllError(0);
@@ -216,6 +220,9 @@ const CreateProduct: React.FC<CreateProductProps> = ({
             <Header
                 headerTitle={update ? 'Update Product' : 'Create Product'}
                 onPressBack={navigation.goBack}
+                // onPressBack={() => {
+                //     //navigation.navigate('Waiting For Approval');
+                // }}
                 onPressCorrect={() => {}}
                 onPressDelete={() => {
                     deleteProduct();
