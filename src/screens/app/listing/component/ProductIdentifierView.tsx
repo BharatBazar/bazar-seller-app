@@ -56,6 +56,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
             }}
         >
             <View style={[]}>
+                {/* {rest.status != productStatus.NOTCOMPLETED && <WrappedText text={rest.itemId} />} */}
                 <FastImageWrapper
                     source={{
                         uri:
