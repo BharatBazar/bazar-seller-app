@@ -17,7 +17,7 @@ const WrappedRectangleButton: React.SFC<WrappedRectangleButtonProps> = ({
 }) => {
     return (
         <Ripple
-            android_ripple={{ color: '#00000033', radius: rippleRadius || 200 }}
+            //android_ripple={{ color: '#00000033', radius: rippleRadius || 200 }}
             onPress={() => {
                 onPress();
             }}

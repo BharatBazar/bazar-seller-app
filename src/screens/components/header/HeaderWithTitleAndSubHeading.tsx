@@ -1,0 +1,55 @@
+import {FontFamilies} from '@app/constants'
+import {fs16, fs18, fs30, MT} from '@app/constants/style/common'
+import {WrappedText} from '@app/screens/components'
+import * as React from 'react'
+import {View, StyleSheet, ViewStyle, TextStyle} from 'react-native'
+import {string} from 'react-native-redash'
+import Border from '../border/Border'
+
+interface HeaderWithTitleAndSubHeadingProps {
+    heading: string
+    subHeading?: string
+    headerStyle?: TextStyle
+    bottomBorderStyle?: ViewStyle | ViewStyle[]
+    headerContainerStyle?: ViewStyle | ViewStyle[]
+}
+
+const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSubHeadingProps> = ({
+    heading,
+    subHeading,
+    bottomBorderStyle,
+    headerStyle,
+    headerContainerStyle
+}) => {
+    return (
+        <View style={headerContainerStyle}>
+            <WrappedText
+                text={heading}
+                fontFamily={FontFamilies.IBMPSB}
+                fontSize={fs30}
+                textStyle={headerStyle}
+            />
+            {typeof subHeading === 'string' && (
+                <WrappedText
+                    text={subHeading}
+                    fontSize={fs16}
+                    textColor={'#8a8a8a'}
+                    fontFamily={FontFamilies.IBMPSB}
+                    containerStyle={[MT(0.05)]}
+                />
+            )}
+            <Border borderStyle={bottomBorderStyle} />
+        </View>
+    )
+}
+
+const styles = StyleSheet.create({
+    borderStyle: {
+        borderTopWidth: 2,
+        borderColor: '#500061',
+        opacity: 0.1,
+        marginTop: '4%'
+    }
+})
+
+export default HeaderWithTitleAndSubHeading

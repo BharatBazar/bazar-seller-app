@@ -35,5 +35,5 @@ export const ShopDetailsText = {
 export const GlobalText = {
     companyName: 'Bharat Bazar',
     companyMessage:
-        "Join bharat bazar and be part of nation's as well as\nyour growth. It's time to unit and protect our local market.",
+        "Join bharat bazar and be part of nation's as well as\nyour growth. It's time to unite and protect our local market.",
 };

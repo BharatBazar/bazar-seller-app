@@ -92,8 +92,8 @@ export const H = (value: number): ViewStyle => {
     return { height: value };
 };
 
-export const BW = (value: number): ViewStyle => {
-    return { borderWidth: value };
+export const BW = (value?: number): ViewStyle => {
+    return { borderWidth: value || 0 };
 };
 export const BSW = (value: number): ViewStyle => {
     return { borderRightWidth: value, borderLeftWidth: value };
@@ -104,7 +104,7 @@ export const BBW = (value: number): ViewStyle => {
 export const BTW = (value: number): ViewStyle => {
     return { borderBottomWidth: value };
 };
-export const BC = (color: string): ViewStyle => {
+export const BC = (color?: string): ViewStyle => {
     return { borderColor: color };
 };
 

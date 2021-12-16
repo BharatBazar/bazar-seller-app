@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View, StyleSheet, SafeAreaView, TextStyle } from 'react-native';
+import { Image, Text, StyleSheet, View, TextStyle } from 'react-native';
 import { FontFamily, fs11, fs12, fs16 } from '../../common';
 import { getHP } from '../../common/dimension';
 
@@ -35,7 +35,7 @@ function WrappedText(props: {
     } = props;
 
     return (
-        <SafeAreaView style={[styles.container, containerStyle]}>
+        <View style={[styles.container, containerStyle]}>
             <Text
                 style={[
                     {
@@ -55,7 +55,7 @@ function WrappedText(props: {
             >
                 {text}
             </Text>
-        </SafeAreaView>
+        </View>
     );
 }
 

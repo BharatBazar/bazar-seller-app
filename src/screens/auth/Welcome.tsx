@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode } from '../../common/color';
-import { AIC, BR, FLEX, JCC, MV, PH, PV } from '../../common/styles';
+import { AIC, BGCOLOR, BR, FLEX, JCC, MV, PH, PV } from '../../common/styles';
 import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
@@ -10,6 +10,7 @@ import { FontFamily, fs12, fs14, fs40, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
+import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 
 export interface WelcomeProps extends NavigationProps {}
 
@@ -17,14 +18,14 @@ export interface WelcomeState {}
 
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
     render() {
-        const componentProps = {
-            buttonProps: {
-                containerStyle: styles.buttonContainerStyle,
-            },
-            buttonTextProps: {
-                textColor: colorCode.WHITE,
-                fontSize: fs14,
-            },
+        const buttonProps = {
+            backgroundColor: colorCode.CHAKRALOW(70),
+            buttonTextColor: '#FFFFFF',
+            containerStyle: [AIC(), JCC()],
+            marginTop: 5,
+            borderRadius: 5,
+            borderWidth: 1,
+            borderColor: colorCode.SAFFRON,
         };
 
         return (
@@ -48,22 +49,20 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
                     </View>
 
                     <View style={styles.buttonsWrapper}>
-                        <WrappedRectangleButton
-                            {...componentProps.buttonProps}
+                        <RightComponentButtonWithLeftText
                             onPress={() => {
                                 this.props.navigation.navigate(NavigationKey.OPENDUKAN);
                             }}
-                        >
-                            <WrappedText text={WelcomeText.SHOP_EXIST} {...componentProps.buttonTextProps} />
-                        </WrappedRectangleButton>
-                        <WrappedRectangleButton
-                            {...componentProps.buttonProps}
+                            buttonText={WelcomeText.SHOP_EXIST}
+                            {...buttonProps}
+                        />
+                        <RightComponentButtonWithLeftText
                             onPress={() => {
                                 this.props.navigation.navigate(NavigationKey.AUTHNAVIGATOR);
                             }}
-                        >
-                            <WrappedText text={WelcomeText.SHOP_NOT_EXIST} {...componentProps.buttonTextProps} />
-                        </WrappedRectangleButton>
+                            {...buttonProps}
+                            buttonText={WelcomeText.SHOP_NOT_EXIST}
+                        />
                     </View>
                 </View>
             </ScreenHOC>
@@ -75,18 +74,19 @@ export default Welcome;
 
 const styles = StyleSheet.create({
     buttonContainerStyle: {
-        ...PH(),
-        ...PV(),
+        // ...PH(),
+        // ...PV(),
 
-        ...BR(),
-        ...MV(),
-        ...AIC(),
-        ...JCC(),
+        // ...BR(),
+        // ...MV(),
+        // ...AIC(),
+        // ...JCC(),
         borderWidth: 1,
         borderColor: colorCode.SAFFRON,
         backgroundColor: colorCode.CHAKRALOW(70),
     },
     buttonsWrapper: {
-        bottom: 0,
+        //bottom: 0,
+        marginBottom: 10,
     },
 });
