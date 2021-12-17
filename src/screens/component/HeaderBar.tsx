@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { fs13, fs28 } from '../../common';
+import { fs13, fs14, fs16, fs28 } from '../../common';
 import { colorCode, mainColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
 import { AIC, BGCOLOR, FDR, PH, PV } from '../../common/styles';
@@ -19,19 +19,20 @@ class HeaderBar extends Component<Props, {}> {
 
         return (
             <View style={[styles.container, containerStyle]}>
-                <View style={[BGCOLOR(headerBackgroundColor), AIC(), FDR(), PV(0.1)]}>
+                <View style={styles.statusbar} />
+                <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
                     <WrappedText
                         text={'Create your dukan'}
                         textColor={mainColor}
-                        fontSize={fs28}
-                        textStyle={{ marginLeft: getWP(0.5) }}
+                        fontSize={fs16}
+                        textStyle={{ marginLeft: getWP(0.5), alignSelf: 'center' }}
                     />
-                    <WrappedText
+                    {/* <WrappedText
                         text={'in 5 simple steps'}
                         textColor={colorCode.CHAKRALOW(60)}
                         fontSize={fs13}
                         textStyle={{ marginLeft: getWP(0.1) }}
-                    />
+                    /> */}
                 </View>
             </View>
         );

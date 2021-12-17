@@ -10,9 +10,10 @@ import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
-import { BGCOLOR, FLEX } from '../../common/styles';
+import { BGCOLOR, FLEX, HP, provideShadow, WP } from '../../common/styles';
 import { Right } from '../../navigation/NavigationEffect';
 import Address from './Address';
+import HeaderBar from '../component/HeaderBar';
 
 const Stack = createStackNavigator();
 
@@ -39,11 +40,11 @@ class AuthNavigation extends React.Component<Props, {}> {
 
         return (
             <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
-                {/* <HeaderBar
+                <HeaderBar
                     statusBarColor={'#ffffff'}
                     headerBackgroundColor={'#ffffff'}
                     containerStyle={[provideShadow(2)]}
-                /> */}
+                />
 
                 <Stack.Navigator
                     screenOptions={{ headerShown: false }}
@@ -106,6 +107,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                         }}
                     />
                 </Stack.Navigator>
+                <View style={[BGCOLOR('#FFFFFF'), HP(1), WP(10)]} />
             </View>
         );
     }
