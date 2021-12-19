@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { fs12, fs13, fs20, mobileValidation, NavigationProps } from '../../common';
-import { colorCode } from '../../common/color';
+import { fs12, fs13, fs14, fs20, mobileValidation, NavigationProps } from '../../common';
+import { colorCode, messageColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, FDR, FLEX, MH, ML, MV, PH, provideShadow, PV, WP } from '../../common/styles';
+import { BGCOLOR, FDR, FLEX, MH, ML, MT, MV, PH, provideShadow, PV, WP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import WrappedRoundButton from '../component/WrappedRoundButton';
 import WrappedText from '../component/WrappedText';
@@ -26,6 +26,8 @@ import { NavigationKey } from '../../labels';
 import { border } from '../app/edit/product/component/generalConfig';
 import { Storage, StorageItemKeys } from '../../storage';
 import { ToastHOC } from '../hoc/ToastHOC';
+import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
+import { commonButtonProps } from '../components/button';
 
 const componentProps = {
     buttonTextProps: {
@@ -46,7 +48,9 @@ const AddMember = ({
     data,
     setField,
     submitDetails,
+    message,
 }: {
+    message: string;
     onPressPlus: Function;
     onPressCross: Function;
     role: 'worker' | 'Co-owner';
@@ -91,8 +95,9 @@ const AddMember = ({
 
     return (
         <View style={[]}>
-            <View style={[FDR(), MV(0.2)]}>
+            <View style={[FDR(), MT(0.2)]}>
                 <WrappedText text={'Add ' + role + ' to your dukan'} fontSize={fs20} />
+
                 <WrappedRoundButton
                     height={getHP(0.3)}
                     onPress={() => {
@@ -103,6 +108,8 @@ const AddMember = ({
                     <Icons name={'plus'} />
                 </WrappedRoundButton>
             </View>
+            <WrappedText text={message} fontSize={fs12} containerStyle={[MT(0.1)]} textColor={messageColor} />
+            <View style={[MT(0.1)]} />
             {data.map((item: member, index: number) => {
                 return (
                     <View
@@ -152,16 +159,16 @@ const AddMember = ({
                             errorText={item.error['phoneNumber']}
                             {...componentProps.textInputProps}
                         />
-                        <View style={[FDR(), { justifyContent: 'flex-end' }]}>
-                            <TextButton
+                        <View style={[FDR(), { justifyContent: 'flex-end', marginTop: 5 }]}>
+                            <RightComponentButtonWithLeftText
                                 onPress={() => {
                                     validateField(index);
                                 }}
-                                textProps={componentProps.buttonTextProps}
-                                text={item.added ? 'Update' : 'Add'}
-                                containerStyle={[buttonContainerStyle, MH(0)]}
+                                buttonText={item.added ? 'Update' : 'Add'}
+                                {...commonButtonProps}
+                                borderWidth={0}
                             />
-                            <TextButton
+                            <RightComponentButtonWithLeftText
                                 onPress={() => {
                                     if (item.added) {
                                         deleteMember(item._id, index);
@@ -169,9 +176,10 @@ const AddMember = ({
                                         onPressCross(role, index);
                                     }
                                 }}
-                                textProps={componentProps.buttonTextProps}
-                                text={'Delete'}
-                                containerStyle={[buttonContainerStyle, { marginHorizontal: 10 }]}
+                                buttonText={'Delete'}
+                                {...commonButtonProps}
+                                borderWidth={0}
+                                marginLeft={10}
                             />
                         </View>
                     </View>
@@ -360,68 +368,68 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     }
 
     return (
-        <ScrollView style={[FLEX(1)]} contentContainerStyle={[PV(0.1), PH(0.3)]}>
-            <ShadowWrapperHOC>
-                <>
-                    <HeaderText
-                        step={'Step 5'}
-                        heading={'Add member to your dukan'}
-                        subHeading={
-                            'Add details related to Co-owner, worker. Co-owner are the person with whom you share ownership of your dukan also this name will be displayed to public with owner for better identification of your dukan. Please add active mobile number of the worker as their phone number will be used for login. you can change any of the details in the setting of the app. Currently their account is not active you can activate and no perission is given to them. You can activate their account once your shop is verified. After that you can anytime activate and deactivate their account.'
-                        }
-                    />
-                    {error.length > 0 && <ServerErrorText errorText={error} />}
-
-                    {!update && submittedCount == 0 ? (
-                        <TextButton
-                            onPress={() => {
-                                ifSkipped();
-                            }}
-                            textProps={componentProps.buttonTextProps}
-                            text={'Do this later'}
-                            containerStyle={[
-                                buttonContainerStyle,
-                                { marginTop: getHP(0.3) },
-                                //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
-                            ]}
+        <View style={[FLEX(1)]}>
+            <ScrollView style={[FLEX(1)]} contentContainerStyle={[PV(0.1), PH(0.3)]}>
+                <ShadowWrapperHOC>
+                    <>
+                        <HeaderText
+                            step={'Step 5'}
+                            heading={"Add dukan member's"}
+                            subHeading={'Dukan member are the one who handle dukan responsibility along side you. '}
                         />
-                    ) : (
-                        <View />
-                    )}
-                    <TextButton
+                        {error.length > 0 && <ServerErrorText errorText={error} />}
+
+                        <View style={{ marginTop: getHP(0.2) }}>
+                            <AddMember
+                                onPressPlus={addcoOwner}
+                                onPressCross={deleteMember}
+                                data={coOwner}
+                                role={'Co-owner'}
+                                setField={setField}
+                                submitDetails={submitDetails}
+                                message={
+                                    'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.'
+                                }
+                            />
+                            <AddMember
+                                onPressPlus={addWorker}
+                                onPressCross={deleteMember}
+                                data={worker}
+                                role={'worker'}
+                                setField={setField}
+                                submitDetails={submitDetails}
+                                message={'Worker is someone whom you hire to handle shop'}
+                            />
+                        </View>
+                    </>
+                </ShadowWrapperHOC>
+            </ScrollView>
+            <View style={[PH(0.3), BGCOLOR('#FFFFFF')]}>
+                {!update && submittedCount == 0 ? (
+                    <RightComponentButtonWithLeftText
+                        onPress={() => {
+                            ifSkipped();
+                        }}
+                        buttonText={'Do this later'}
+                        {...commonButtonProps}
+                        borderWidth={0}
+                    />
+                ) : (
+                    <View />
+                )}
+
+                {submittedCount != 0 && (
+                    <RightComponentButtonWithLeftText
                         onPress={() => {
                             goNext();
                         }}
-                        textProps={componentProps.buttonTextProps}
-                        text={'Submit'}
-                        containerStyle={[
-                            buttonContainerStyle,
-                            { marginTop: getHP(0.1) },
-                            //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
-                        ]}
+                        buttonText={'Submit'}
+                        {...commonButtonProps}
+                        borderWidth={0}
                     />
-
-                    <View style={{ marginTop: getHP(0.2) }}>
-                        <AddMember
-                            onPressPlus={addcoOwner}
-                            onPressCross={deleteMember}
-                            data={coOwner}
-                            role={'Co-owner'}
-                            setField={setField}
-                            submitDetails={submitDetails}
-                        />
-                        <AddMember
-                            onPressPlus={addWorker}
-                            onPressCross={deleteMember}
-                            data={worker}
-                            role={'worker'}
-                            setField={setField}
-                            submitDetails={submitDetails}
-                        />
-                    </View>
-                </>
-            </ShadowWrapperHOC>
-        </ScrollView>
+                )}
+            </View>
+        </View>
     );
 };
 

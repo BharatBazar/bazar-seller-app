@@ -16,6 +16,7 @@ interface RightComponentButtonWithLeftTextProps {
     borderRadius?: number;
     borderWidth?: number;
     marginTop?: number;
+    marginLeft?: number;
 }
 
 const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentButtonWithLeftTextProps> = ({
@@ -30,6 +31,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
     borderRadius,
     borderWidth,
     marginTop,
+    marginLeft,
 }) => {
     return (
         <Ripple
@@ -43,7 +45,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
                 BW(borderWidth),
                 BC(borderColor),
                 BGCOLOR(backgroundColor),
-                { paddingVertical: 8, borderRadius: borderRadius || 200, marginTop: marginTop },
+                { paddingVertical: 8, borderRadius: borderRadius || 200, marginTop: marginTop, marginLeft: marginLeft },
                 PH(0.4),
 
                 FDR(),

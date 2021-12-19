@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { fs13, fs14, fs16, fs28 } from '../../common';
-import { colorCode, mainColor } from '../../common/color';
+import { borderColor, colorCode, mainColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { AIC, BGCOLOR, FDR, PH, PV } from '../../common/styles';
+import { AIC, BGCOLOR, FDR, PH, provideShadow, PV } from '../../common/styles';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -18,7 +18,7 @@ class HeaderBar extends Component<Props, {}> {
         const { containerStyle, statusBarColor, headerBackgroundColor } = this.props;
 
         return (
-            <View style={[styles.container, containerStyle]}>
+            <View style={[styles.container, containerStyle, provideShadow(2)]}>
                 <View style={styles.statusbar} />
                 <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
                     <WrappedText
@@ -45,6 +45,8 @@ const styles = StyleSheet.create({
     container: {
         //height: getHP(0.5),
         backgroundColor: colorCode.WHITE,
+        borderBottomWidth: 1,
+        borderColor: borderColor,
     },
     statusbar: {
         height: getStatusBarHeight(),

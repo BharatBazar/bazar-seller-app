@@ -11,6 +11,7 @@ import { NavigationKey } from '../../labels';
 
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
+import { commonButtonProps } from '../components/button';
 
 export interface WelcomeProps extends NavigationProps {}
 
@@ -18,16 +19,6 @@ export interface WelcomeState {}
 
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
     render() {
-        const buttonProps = {
-            backgroundColor: colorCode.CHAKRALOW(70),
-            buttonTextColor: '#FFFFFF',
-            containerStyle: [AIC(), JCC()],
-            marginTop: 5,
-            borderRadius: 5,
-            borderWidth: 1,
-            borderColor: colorCode.SAFFRON,
-        };
-
         return (
             <ScreenHOC>
                 <View style={[PV(0.1), FLEX(1), PH(0.5), { paddingTop: STATUS_BAR_HEIGHT }]}>
@@ -54,13 +45,13 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
                                 this.props.navigation.navigate(NavigationKey.OPENDUKAN);
                             }}
                             buttonText={WelcomeText.SHOP_EXIST}
-                            {...buttonProps}
+                            {...commonButtonProps}
                         />
                         <RightComponentButtonWithLeftText
                             onPress={() => {
                                 this.props.navigation.navigate(NavigationKey.AUTHNAVIGATOR);
                             }}
-                            {...buttonProps}
+                            {...commonButtonProps}
                             buttonText={WelcomeText.SHOP_NOT_EXIST}
                         />
                     </View>

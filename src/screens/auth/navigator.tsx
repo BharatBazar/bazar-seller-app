@@ -10,10 +10,12 @@ import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
-import { BGCOLOR, FLEX, HP, provideShadow, WP } from '../../common/styles';
+import { AIC, BGCOLOR, BR, BTW, FDR, FLEX, H, HP, JCC, MT, provideShadow, PV, WP } from '../../common/styles';
 import { Right } from '../../navigation/NavigationEffect';
 import Address from './Address';
 import HeaderBar from '../component/HeaderBar';
+import { borderColor, colorCode } from '@app/common/color';
+import WrappedText from '../component/WrappedText';
 
 const Stack = createStackNavigator();
 
@@ -107,7 +109,21 @@ class AuthNavigation extends React.Component<Props, {}> {
                         }}
                     />
                 </Stack.Navigator>
-                <View style={[BGCOLOR('#FFFFFF'), HP(1), WP(10)]} />
+                <View
+                    style={[
+                        BGCOLOR('#FFFFFF'),
+                        PV(0.2),
+                        WP(10),
+                        AIC(),
+                        JCC(),
+
+                        MT(0.1),
+                        { borderTopWidth: 1, borderColor: borderColor },
+                    ]}
+                >
+                    <WrappedText text="Step 1 of 5 completed" containerStyle={{ marginBottom: 5 }} />
+                    <View style={[WP(5), H(10), BR(2), BGCOLOR(colorCode.SAFFRON)]} />
+                </View>
             </View>
         );
     }

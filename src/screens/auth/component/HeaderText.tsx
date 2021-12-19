@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FontFamily, fs12, fs21, fs28 } from '../../../common';
+import { FontFamily, fs12, fs14, fs16, fs21, fs28 } from '../../../common';
 import { colorCode } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import WrappedText from '../../component/WrappedText';
@@ -7,18 +7,13 @@ import WrappedText from '../../component/WrappedText';
 export interface ErrorTextProps {
     step: string;
     heading: string;
-    subHeading: string;
+    subHeading?: string;
 }
 
 const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) => {
     return (
         <>
-            <WrappedText
-                text={step}
-                fontSize={fs28}
-                textColor={colorCode.SAFFRON}
-                fontFamily={FontFamily.RobotoMedium}
-            />
+            <WrappedText text={step} fontSize={fs16} textColor={colorCode.SAFFRON} fontFamily={FontFamily.RobotBold} />
             <WrappedText
                 text={heading}
                 fontSize={fs21}
@@ -26,13 +21,15 @@ const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) =>
                 textStyle={{ marginTop: getHP(0.05) }}
                 fontFamily={FontFamily.RobotoMedium}
             />
-            <WrappedText
-                text={subHeading}
-                fontSize={fs12}
-                textColor={colorCode.BLACKLOW(50)}
-                textStyle={{ marginTop: getHP(0.1) }}
-                fontFamily={FontFamily.RobotoRegular}
-            />
+            {typeof subHeading === 'string' && (
+                <WrappedText
+                    text={subHeading}
+                    fontSize={fs12}
+                    textColor={colorCode.BLACKLOW(50)}
+                    textStyle={{ marginTop: getHP(0.1) }}
+                    fontFamily={FontFamily.RobotoRegular}
+                />
+            )}
         </>
     );
 };
