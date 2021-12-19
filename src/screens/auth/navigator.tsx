@@ -5,7 +5,7 @@ import SetPassword from './SetPassword';
 import AddDukanMembers from './AddDukanMembers';
 import { NavigationKey } from '../../labels';
 import React from 'react';
-import { View } from 'react-native';
+import { View, KeyboardAvoidingView, Platform } from 'react-native';
 import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
@@ -109,21 +109,21 @@ class AuthNavigation extends React.Component<Props, {}> {
                         }}
                     />
                 </Stack.Navigator>
-                <View
+                <KeyboardAvoidingView
                     style={[
-                        BGCOLOR('#FFFFFF'),
+                        //BGCOLOR('red'),
                         PV(0.2),
                         WP(10),
                         AIC(),
                         JCC(),
 
-                        MT(0.1),
+                        // MT(0.1),
                         { borderTopWidth: 1, borderColor: borderColor },
                     ]}
                 >
                     <WrappedText text="Step 1 of 5 completed" containerStyle={{ marginBottom: 5 }} />
                     <View style={[WP(5), H(10), BR(2), BGCOLOR(colorCode.SAFFRON)]} />
-                </View>
+                </KeyboardAvoidingView>
             </View>
         );
     }

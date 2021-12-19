@@ -170,7 +170,7 @@ export const borderinsideeffect = (borderWidth = 2, borderColor = colorCode.BLAC
 
 export const provideShadow = (height = 1, width = 0, shadowRadius = 2, shadowOpacity = 0.2, shadowColor = '#000000') =>
     Platform.OS == 'android'
-        ? { elevation: 2 }
+        ? { elevation: height }
         : {
               shadowColor,
               shadowOffset: { width: width, height: height },

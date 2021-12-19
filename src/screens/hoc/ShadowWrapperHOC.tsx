@@ -10,7 +10,7 @@ export interface ScreenHOCProps {
 
 const ShadowWrapperHOC: React.FC<ScreenHOCProps> = ({ children, containerStyle }) => {
     return (
-        <View style={[BGCOLOR(colorCode.WHITE), BR(0.15), PH(0.5), PV(0.3), MV(0.1), containerStyle]}>
+        <View style={[BGCOLOR(colorCode.WHITE), BR(0.15), PH(0.5), PV(0.3), , containerStyle]}>
             {children && children}
         </View>
     );

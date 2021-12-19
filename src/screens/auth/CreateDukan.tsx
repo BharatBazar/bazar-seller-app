@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
 import { AIC, PH, PV, FDR, MT, FLEX, ML } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
@@ -195,7 +195,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         } = this.state;
 
         return (
-            <View style={[{ flex: 1 }, PH(0.3), PV(0.3)]}>
+            <ScrollView style={[{ flex: 1, padding: 8, backgroundColor: '#FFFFFF' }]}>
                 <ShadowWrapperHOC>
                     <>
                         <HeaderText
@@ -204,7 +204,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                             subHeading={CreateDukanText.MESSAGE}
                         />
                         {this.returnErrorText('serverError')}
-                        <View style={{ marginTop: getHP(0.2) }}>
+                        <View style={{}}>
                             <View style={[FDR(), AIC()]}>
                                 <View style={{ flex: 1 }}>
                                     <WrappedTextInput
@@ -304,7 +304,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                         </View>
                     </>
                 </ShadowWrapperHOC>
-            </View>
+            </ScrollView>
         );
     }
 }
