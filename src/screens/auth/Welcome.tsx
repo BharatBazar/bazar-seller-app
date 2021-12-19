@@ -25,7 +25,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
                     <WrappedText
                         text={GlobalText.companyName}
                         fontSize={fs40}
-                        fontFamily={FontFamily.RobotoMedium}
+                        fontFamily={FontFamily.Medium}
                         textColor={'#242424'}
                     />
 
@@ -33,7 +33,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
                         text={GlobalText.companyMessage}
                         fontSize={fs12}
                         textColor={'#8A8A8A'}
-                        fontFamily={FontFamily.RobotoMedium}
+                        fontFamily={FontFamily.Medium}
                     />
                     <View style={[FLEX(1), AIC(), JCC()]}>
                         <WrappedText text={'Some graphic will come here ...'} textColor={colorCode.BLACKLOW(20)} />

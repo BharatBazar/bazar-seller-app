@@ -128,14 +128,14 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                             />
                             <WrappedText
                                 text={'Re-order images'}
-                                fontFamily={FontFamily.RobotoMedium}
+                                fontFamily={FontFamily.Medium}
                                 fontSize={fs20}
                                 containerStyle={[MT(0.1)]}
                                 textColor={'#1f1f1f'}
                             />
                             <WrappedText
                                 text={'Click on image and place it in order you want'}
-                                fontFamily={FontFamily.RobotoMedium}
+                                fontFamily={FontFamily.Medium}
                                 fontSize={fs13}
                                 textColor={'#646464'}
                                 containerStyle={[MT(0.05)]}

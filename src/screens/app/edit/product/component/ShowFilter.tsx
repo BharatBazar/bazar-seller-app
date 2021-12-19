@@ -33,7 +33,7 @@ export const ShowFilter = ({
             }}
         >
             <View style={[FLEX(1)]}>
-                <WrappedText text={item.name} fontSize={fs14} textColor={'#1f1f1f'} fontFamily={FontFamily.RobotBold} />
+                <WrappedText text={item.name} fontSize={fs14} textColor={'#1f1f1f'} fontFamily={FontFamily.Bold} />
                 <WrappedText
                     text={item.description}
                     textColor={'#8A8A8A'}

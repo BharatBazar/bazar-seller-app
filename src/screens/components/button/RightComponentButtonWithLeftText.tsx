@@ -57,7 +57,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
                 text={buttonText}
                 textColor={buttonTextColor}
                 fontSize={fs14}
-                fontFamily={FontFamily.RobotoMedium}
+                fontFamily={FontFamily.Medium}
                 containerStyle={{ marginTop: 0 }}
             />
             {rightComponent && rightComponent()}

@@ -45,7 +45,7 @@ const NormalButton: React.FunctionComponent<NormalButtonProps> = ({
         >
             <WrappedText
                 text={buttonText}
-                fontFamily={FontFamily.RobotoMedium}
+                fontFamily={FontFamily.Medium}
                 fontSize={fontSize}
                 textStyle={textStyle}
                 textColor={textColor || '#FFFFFF'}

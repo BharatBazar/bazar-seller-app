@@ -314,7 +314,7 @@ const Verification: React.SFC<VerificationProps> = ({
                             text={'Dukan Verification Status'}
                             fontSize={fs14}
                             //containerStyle={[MT(0.4)]}
-                            fontFamily={FontFamily.RobotoMedium}
+                            fontFamily={FontFamily.Medium}
                             textColor={colorCode.BLACKLOW(60)}
                         />
                         <View style={[MT(0.4)]}>
@@ -330,7 +330,7 @@ const Verification: React.SFC<VerificationProps> = ({
                             text={'Message from company'}
                             fontSize={fs14}
                             containerStyle={[MT(0.5)]}
-                            fontFamily={FontFamily.RobotoMedium}
+                            fontFamily={FontFamily.Medium}
                             textColor={colorCode.SAFFRON}
                         />
                         <WrappedText

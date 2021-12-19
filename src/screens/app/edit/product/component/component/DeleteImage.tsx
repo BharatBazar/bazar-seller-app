@@ -50,7 +50,7 @@ const DeleteImagePopup: React.FunctionComponent<DeleteImagePopupProps> = ({
                     fontSize={fs13}
                     containerStyle={[MV(0.2), MH(0.2)]}
                     textStyle={{ textAlign: 'center' }}
-                    fontFamily={FontFamily.RobotoRegular}
+                    fontFamily={FontFamily.Regular}
                 />
                 {image && (
                     <FastImageWrapper

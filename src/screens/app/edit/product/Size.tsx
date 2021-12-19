@@ -208,7 +208,7 @@ const ProductPrice: React.FC<ProductPriceProps> = ({
                             BGCOLOR('#FFFFFF'),
                             { marginBottom: getHP(0.2) },
                         ]}
-                        fontFamily={FontFamily.RobotBold}
+                        fontFamily={FontFamily.Bold}
                         fontWeight={'600'}
                         textColor={'#161616'}
                         fontSize={fs12}

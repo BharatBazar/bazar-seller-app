@@ -50,7 +50,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                         text={'Hi! ' + userDetail.name}
                         textColor={'#FFFFFF'}
                         fontSize={fs20}
-                        fontFamily={FontFamily.RobotBold}
+                        fontFamily={FontFamily.Bold}
                     />
                     <WrappedText text={userDetail.phoneNumber} textColor={'#FFFFFF'} />
                 </View>
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     textStyle: {
         color: black100,
         fontSize: fs14,
-        fontFamily: FontFamily.RobotoRegular,
+        fontFamily: FontFamily.Regular,
         marginLeft: getWP(0.5),
     },
     iconStyle: {

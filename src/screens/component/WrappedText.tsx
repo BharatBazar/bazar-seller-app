@@ -39,7 +39,7 @@ function WrappedText(props: {
             <Text
                 style={[
                     {
-                        fontFamily: fontFamily || FontFamily.RobotoRegular,
+                        fontFamily: fontFamily || FontFamily.Regular,
                         fontSize: fontSize || fs11,
 
                         fontWeight: fontWeight || 'normal',

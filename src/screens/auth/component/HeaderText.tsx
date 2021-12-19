@@ -13,13 +13,13 @@ export interface ErrorTextProps {
 const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) => {
     return (
         <>
-            <WrappedText text={step} fontSize={fs16} textColor={colorCode.SAFFRON} fontFamily={FontFamily.RobotBold} />
+            <WrappedText text={step} fontSize={fs16} textColor={colorCode.SAFFRON} fontFamily={FontFamily.Bold} />
             <WrappedText
                 text={heading}
                 fontSize={fs21}
                 textColor={'#000'}
                 textStyle={{ marginTop: getHP(0.05) }}
-                fontFamily={FontFamily.RobotoMedium}
+                fontFamily={FontFamily.Medium}
             />
             {typeof subHeading === 'string' && (
                 <WrappedText
@@ -27,7 +27,7 @@ const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) =>
                     fontSize={fs12}
                     textColor={colorCode.BLACKLOW(50)}
                     textStyle={{ marginTop: getHP(0.1) }}
-                    fontFamily={FontFamily.RobotoRegular}
+                    fontFamily={FontFamily.Regular}
                 />
             )}
         </>

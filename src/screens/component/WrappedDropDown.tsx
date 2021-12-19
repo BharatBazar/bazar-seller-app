@@ -87,7 +87,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
         // <View style={[{ zIndex: zIndex }]}>
         // <WrappedText
         //     text={header}
-        //     fontFamily={FontFamily.RobotoRegular}
+        //     fontFamily={FontFamily.Regular}
         //     textStyle={{ letterSpacing: 0.5 }}
         //     textColor={'#000000' + colorTransparency[70]}
         //     fontSize={fs14}
