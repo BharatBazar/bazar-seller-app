@@ -68,13 +68,13 @@ export interface IRForgetPassword extends CommonApiResponse {
 export interface IRShopMemberLogin extends CommonApiResponse {
     payload: {
         data: IshopMemberPopulated;
-        shopNameAvailable?: boolean;
-        memberDetails?: boolean;
-        shopVerification?: boolean;
-        passwordAvailable?: boolean;
-        addressAvailable?: boolean;
-        category?: boolean;
-        subCategory?: boolean;
+        notShopNameAvailable?: boolean;
+        notMemberDetails?: boolean;
+        notShopVerification?: boolean;
+        notPasswordAvailable?: boolean;
+        notAddressAvailable?: boolean;
+        notCategory?: boolean;
+        notSubCategory?: boolean;
     };
 }
 

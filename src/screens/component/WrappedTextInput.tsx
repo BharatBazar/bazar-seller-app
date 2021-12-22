@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { FontFamily, fs10, fs13 } from '../../common';
+import { FontFamily, fs10, fs11, fs13 } from '../../common';
 import { colorCode, errorColor } from '../../common/color';
 import { getHP } from '../../common/dimension';
 import { AIC, JCC, MT } from '../../common/styles';
@@ -146,9 +146,11 @@ const styles = StyleSheet.create({
         //paddingLeft: 20,
     },
     errorText: {
-        fontSize: fs10,
+        fontSize: fs11,
         color: errorColor,
         fontStyle: 'normal',
+        fontFamily: FontFamily.Regular,
+        marginTop: 3,
     },
     eye: {
         height: getHP(0.2),

@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Alert, Pressable, View } from 'react-native';
 import { fs10, fs11, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, mainColor } from '../../common/color';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import { GlobalText } from '../../common/customScreenText';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
+import { BGCOLOR, colorTransparency, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
 import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
@@ -18,6 +18,11 @@ import WrappedText from '../component/WrappedText';
 import WrappedTextInput from '../component/WrappedTextInput';
 import ServerErrorText from './component/errorText';
 import Loader from '../component/Loader';
+import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
+import { commonButtonProps } from '../components/button';
+import Ripple from 'react-native-material-ripple';
+import TextRippleButton from '../components/button/TextRippleB';
+import { ToastHOC } from '../hoc/ToastHOC';
 
 export interface OpenDukanProps extends NavigationProps {}
 
@@ -52,59 +57,67 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     };
 
     const navigateTo = (screen: string, params: IshopMemberPopulated) => {
-        navigation.reset({
-            index: 0,
-            routes: [
-                {
-                    name: NavigationKey.AUTHNAVIGATOR,
-                    params: {
-                        ownerDetails: { ...params, shop: params.shop._id },
-                        screen: screen,
+        if (params.shop) {
+            navigation.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: NavigationKey.AUTHNAVIGATOR,
+                        params: {
+                            ownerDetails: { ...params, shop: params.shop._id },
+                            screen: screen,
+                        },
                     },
-                },
-            ],
-        });
+                ],
+            });
+        } else {
+            ToastHOC.errorAlert('Shop does not exist for your phone number please contact our support');
+        }
     };
 
     const resetTo = (screen: string, params: IshopMemberPopulated) => {
-        console.log('screen => ', screen);
-        navigation.reset({
-            index: 0,
-            routes: [
-                {
-                    name: screen,
-                    params: {
-                        ownerDetails: { ...params, shop: params.shop._id },
-                        screen: screen,
+        if (params.shop) {
+            navigation.reset({
+                index: 0,
+                routes: [
+                    {
+                        name: screen,
+                        params: {
+                            ownerDetails: { ...params, shop: params.shop._id },
+                            screen: screen,
+                        },
                     },
-                },
-            ],
-        });
+                ],
+            });
+        } else {
+            ToastHOC.errorAlert('Shop does not exist for your phone number please contact our support');
+        }
     };
 
     const submitDetails = async () => {
         try {
             setLoader(true);
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
+            console.log('response =>', response);
             setLoader(false);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'toker exist');
                 await Storage.setItem(StorageItemKeys.userDetail, currentAccountState.data);
                 let screen = '';
-                if (currentAccountState.passwordAvailable) {
+                if (currentAccountState.notPasswordAvailable) {
                     screen = NavigationKey.SETPASSWORD;
-                } else if (currentAccountState.shopNameAvailable) {
+                } else if (currentAccountState.notShopNameAvailable) {
                     screen = NavigationKey.SHOPDETAILS;
-                } else if (currentAccountState.addressAvailable) {
+                } else if (currentAccountState.notAddressAvailable) {
                     screen = NavigationKey.ADDRESS;
-                } else if (currentAccountState.memberDetails) {
+                } else if (currentAccountState.notMemberDetails) {
                     screen = NavigationKey.ADDDUKANMEMBERS;
-                } else if (currentAccountState.shopVerification) {
+                } else if (currentAccountState.notShopVerification) {
                     screen = NavigationKey.VERIFICATION;
-                } else if (currentAccountState.category) {
+                } else if (currentAccountState.notCategory) {
                     screen = NavigationKey.PRODUCTDETAILS;
-                } else if (currentAccountState.subCategory) {
+                } else if (currentAccountState.notSubCategory) {
                     screen = NavigationKey.PRODUCTSUBCATEGORY;
                 } else {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
@@ -121,6 +134,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 setError({ error: response.message });
             }
         } catch (error) {
+            console.log(error.message);
             setLoader(false);
             setError({ error: error.message });
         }
@@ -132,7 +146,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             error['phoneNumber'] = 'Please enter correct mobile number';
         }
         if (!passwordValidation.every((item) => item.regex.test(formData.password))) {
-            error['password'] = 'Password is not correct please check.';
+            error['password'] = 'Please enter correct password.';
         }
         if (Object.keys(error).length == 0) {
             setError({});
@@ -158,7 +172,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 <WrappedText
                     text={'Open your dukan'}
                     fontSize={fs28}
-                    textColor={'#000'}
+                    textColor={mainColor}
                     textStyle={[provideShadow(5), MT(0.2)]}
                 />
                 <WrappedText
@@ -185,6 +199,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                         {...componentProps.textInputProps}
                         errorText={error['phoneNumber']}
                     />
+                    <View style={[MT(0.1)]} />
 
                     <WrappedTextInput
                         placeholder={'Password'}
@@ -195,19 +210,31 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                         errorText={error['password']}
                     />
 
-                    <TextButton
-                        text={'Sign In'}
-                        textProps={componentProps.buttonTextProps}
-                        containerStyle={{ ...buttonContainerStyle, marginTop: getHP(0.4) }}
+                    <RightComponentButtonWithLeftText
                         onPress={() => {
                             validateField();
                         }}
+                        buttonText={'Open your dukan'}
+                        {...commonButtonProps}
+                        borderWidth={0}
+                        marginTop={getHP(0.2)}
                     />
 
                     <View style={[MT(0.1)]}>
-                        <View style={[FDR()]}>
-                            <WrappedText text={'By signing in you agree to Bharat Bazar'} {...privacyText} />
-                            <WrappedText text={" Condition's of use."} {...privacyText} textColor={mainColor} />
+                        <View style={[]}>
+                            <WrappedText
+                                text={'By clicking on open your dukan you agree to Bharat Bazar'}
+                                {...privacyText}
+                            />
+
+                            <TextRippleButton
+                                onPress={() => {}}
+                                containerStyle={[{ alignSelf: 'flex-start' }]}
+                                buttonText={"Condition's of use."}
+                                {...privacyText}
+                                rippleColor={'#0000001A'}
+                                buttonTextColor={mainColor}
+                            />
                         </View>
                         <View style={[FDR()]}>
                             <WrappedText text={'Please also read our '} {...privacyText} />
@@ -216,25 +243,23 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     </View>
                     <LineHeading text={'New to ' + GlobalText.companyName + ' ?'} />
 
-                    <TextButton
-                        text={'Register'}
-                        textProps={{ textColor: mainColor, textStyle: [provideShadow(2)] }}
-                        containerStyle={{
-                            ...buttonContainerStyle,
-                            marginTop: getHP(0.1),
-                            backgroundColor: colorCode.CHAKRALOW(20),
-                        }}
+                    <RightComponentButtonWithLeftText
                         onPress={() => {
                             navigation.replace(NavigationKey.AUTHNAVIGATOR);
                             //validateFields();
                         }}
+                        buttonText={'Register your dukan'}
+                        {...commonButtonProps}
+                        borderWidth={0}
+                        // backgroundColor={mainColor + colorTransparency[20]}
+                        marginTop={5}
                     />
                     <WrappedText
                         text={"Register yourself among other dukandar's and be part of nation's and your growth"}
                         fontSize={fs10}
                         textColor={mainColor}
                         textStyle={[MT(0.1)]}
-                        fontWeight={'200'}
+                        fontWeight={'300'}
                     />
                 </View>
             </View>
