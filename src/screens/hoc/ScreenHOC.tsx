@@ -30,7 +30,7 @@ const ScreenHOC: React.FC<ScreenHOCProps> = ({
                 animated={true}
                 showHideTransition={showHideTransition || 'fade'}
             />
-            {/* <View style={{ paddingTop: STATUS_BAR_HEIGHT, backgroundColor: statusbarColor }} /> */}
+            <View style={{ paddingTop: STATUS_BAR_HEIGHT, backgroundColor: statusbarColor }} />
             {children && children}
         </View>
     );

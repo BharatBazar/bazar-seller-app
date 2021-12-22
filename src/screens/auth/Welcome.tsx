@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode } from '../../common/color';
-import { AIC, BGCOLOR, BR, FLEX, JCC, MV, PH, PV } from '../../common/styles';
+import { AIC, BGCOLOR, BR, DSP, FLEX, JCC, MV, PA, PH, PV } from '../../common/styles';
 import WrappedRectangleButton from '../component/WrappedRectangleButton';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
@@ -21,7 +21,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
     render() {
         return (
             <ScreenHOC>
-                <View style={[PV(0.1), FLEX(1), PH(0.5), { paddingTop: STATUS_BAR_HEIGHT }]}>
+                <View style={[PA(DSP), FLEX(1)]}>
                     <WrappedText
                         text={GlobalText.companyName}
                         fontSize={fs40}

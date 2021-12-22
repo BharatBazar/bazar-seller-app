@@ -23,6 +23,10 @@ export const PV = (percentage?: number): ViewStyle => {
     return { paddingVertical: getHP(percentage || 0.05) };
 };
 
+export const PA = (padding: number): ViewStyle => {
+    return { padding: padding };
+};
+
 export const PT = (percentage?: number): ViewStyle => {
     return { paddingTop: getHP(percentage || 0.05) };
 };
@@ -177,3 +181,6 @@ export const provideShadow = (height = 1, width = 0, shadowRadius = 2, shadowOpa
               shadowOpacity,
               shadowRadius,
           };
+
+// Default screen padding every where
+export const DSP = 20;
