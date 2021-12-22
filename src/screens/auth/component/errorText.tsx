@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { fs12 } from '../../../common';
+import { FontFamily, fs12 } from '../../../common';
 import { errorColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import WrappedText from '../../component/WrappedText';
@@ -17,6 +17,7 @@ const ServerErrorText: React.SFC<ErrorTextProps> = ({ errorText, marginTop }) =>
             textColor={errorColor}
             textStyle={{ marginTop: marginTop || getHP(0.2) }}
             fontSize={fs12}
+            fontFamily={FontFamily.Regular}
         />
     );
 };

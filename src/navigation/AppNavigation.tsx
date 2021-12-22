@@ -46,10 +46,10 @@ class AppNavigation extends React.Component {
                 <Stack.Navigator
                     screenOptions={{
                         headerShown: false,
-                        transitionSpec: {
-                            open: config,
-                            close: config,
-                        },
+                        // transitionSpec: {
+                        //     open: config,
+                        //     close: config,
+                        // },
                     }}
                     initialRouteName={NavigationKey.SPLASH}
                 >

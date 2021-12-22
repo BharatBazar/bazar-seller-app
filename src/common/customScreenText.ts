@@ -1,6 +1,6 @@
 export const WelcomeText = {
     SHOP_EXIST: 'Already a dukan member?',
-    SHOP_NOT_EXIST: 'Create your dukan',
+    SHOP_NOT_EXIST: 'Register your dukan',
 };
 
 export const ErrorText = {
@@ -24,7 +24,7 @@ export const CreateDukanText = {
     ownerNameMessage: 'Owner name is an important field it will appear on your public facing digital dukan.',
     ownerEmail: 'Owner email or other active email',
     ownerEmailMessage:
-        'If you have problem maintaining an email then you can provide email of anyother member from your family like you son, daughter etc who can inform you about important update.',
+        'If you have problem maintaining an email then you can provide email of another member from your family like you son, daughter etc who can inform you about important update.',
     SignIn: 'Sign-In',
 };
 

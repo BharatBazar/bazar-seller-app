@@ -107,7 +107,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 } else if (currentAccountState.subCategory) {
                     screen = NavigationKey.PRODUCTSUBCATEGORY;
                 } else {
-                    await Storage.setItem(StorageItemKeys.isSignupCompleted, true);
+                    await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
                     screen = NavigationKey.BHARATBAZARHOME;
                 }
                 if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.BHARATBAZARHOME) {
