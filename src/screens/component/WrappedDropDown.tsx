@@ -16,6 +16,8 @@ export interface WrappedDropDownProps {
     placeholder: string;
     zIndexInverse: number;
     provideController?: Function;
+    dropDownMaxHeight?: number;
+    searchable?: boolean;
 }
 
 const dropDownProps = {
@@ -59,6 +61,8 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
     placeholder,
     provideController,
     zIndexInverse,
+    dropDownMaxHeight,
+    searchable,
 }) => {
     return (
         <DropDownPicker
@@ -75,6 +79,8 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
                     callBack();
                 }
             }}
+            dropDownMaxHeight={dropDownMaxHeight}
+            searchable={searchable}
             showArrow={true}
             zIndex={zIndex}
             zIndexInverse={zIndexInverse}

@@ -13,7 +13,7 @@ import DeleteImagePopup from './DeleteImage';
 import Ripple from 'react-native-material-ripple';
 
 import ImageZoomViewer from './ImageViewer';
-import AddPhoto from './AddPhoto';
+import AddPhoto from '../../../../../components/multimedia/AddPhoto';
 import { ErrorState } from '../generalConfig';
 import { ErrorText } from '@app/common/customScreenText';
 import { productStatus } from '@app/server/apis/product/product.interface';

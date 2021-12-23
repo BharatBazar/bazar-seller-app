@@ -4,7 +4,7 @@ import { fs13, fs20, NavigationProps } from '../../common';
 import { black50, colorCode, disabledColor, errorColor } from '../../common/color';
 import { buttonContainerStyle, textInputContainerStyle, componentProps } from '../../common/containerStyles';
 import { getHP } from '../../common/dimension';
-import { AIC, BGCOLOR, BR, FDR, FLEX, HP, JCC, ML, MT, PH, PV } from '../../common/styles';
+import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, HP, JCC, ML, MT, PA, PH, PV } from '../../common/styles';
 import { checkPincode } from '../../server/apis/address/address.api';
 import TextButton from '../component/TextButton';
 import WrappedDropDown from '../component/WrappedDropDown';
@@ -121,7 +121,7 @@ const Address: React.FC<AddressProps> = ({
     };
 
     return (
-        <View style={[FLEX(1), PH(0.4), PV(0.2)]}>
+        <View style={[FLEX(1), PA(DSP * 0.6)]}>
             <ShadowWrapperHOC>
                 <HeaderText
                     step={'Step 4'}
@@ -141,7 +141,7 @@ const Address: React.FC<AddressProps> = ({
                         placeholder={'Pincode'}
                         value={pincode}
                         onChangeText={(value) => {
-                            setPinCode(value);
+                            if (value.length <= 6) setPinCode(value);
                         }}
                         style={[
                             textInputContainerStyle,
@@ -156,11 +156,7 @@ const Address: React.FC<AddressProps> = ({
                         <TextButton
                             text={'Verify'}
                             textProps={componentProps.buttonTextProps}
-                            containerStyle={[
-                                HP(0.44),
-                                PH(0.5),
-                                { borderTopRightRadius: 2, borderBottomRightRadius: 2 },
-                            ]}
+                            containerStyle={[HP(0.5), PH(0.5), { borderTopRightRadius: 2, borderBottomRightRadius: 2 }]}
                             onPress={() => {
                                 checkPincodeInServer();
                             }}
@@ -176,53 +172,60 @@ const Address: React.FC<AddressProps> = ({
                         />
                     )}
                 </View>
-                {error['pincode'] && <WrappedText text={error['pincode']} textColor={errorColor} />}
-                <View style={[FDR(), MT(0.1)]}>
-                    <TextInput
-                        keyboardType={'number-pad'}
-                        placeholder={'State'}
-                        editable={false}
-                        value={state.name}
-                        style={[
-                            textInputContainerStyle,
-                            BGCOLOR(disabledColor),
-                            FLEX(1),
-                            { fontSize: fs13, color: black50 },
-                            PH(0.2),
-                        ]}
-                    />
-                    <TextInput
-                        keyboardType={'number-pad'}
-                        placeholder={'City'}
-                        editable={false}
-                        value={city.name}
-                        style={[
-                            textInputContainerStyle,
-                            BGCOLOR(disabledColor),
-                            ,
-                            FLEX(1),
-                            ML(0.1),
-                            { fontSize: fs13, color: black50 },
-                            PH(0.2),
-                        ]}
-                    />
-                </View>
-                <View style={[MT(0.2)]} />
-                <WrappedDropDown
-                    data={areas}
-                    arrowColor={black50}
-                    header={'Select Area'}
-                    callBack={() => {}}
-                    zIndex={5000}
-                    zIndexInverse={1000}
-                    selectValue={area}
-                    setValue={(value: string) => {
-                        setArea(value);
-                    }}
-                    placeholder={'Area'}
-                />
-                {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}
-
+                {error['pincode'] && (
+                    <WrappedText text={error['pincode']} textColor={errorColor} containerStyle={{ marginTop: 3 }} />
+                )}
+                {previousPin == pincode && (
+                    <>
+                        <View style={[FDR(), MT(0.1)]}>
+                            <TextInput
+                                keyboardType={'number-pad'}
+                                placeholder={'State'}
+                                editable={false}
+                                value={state.name}
+                                style={[
+                                    textInputContainerStyle,
+                                    BGCOLOR(disabledColor),
+                                    FLEX(1),
+                                    { fontSize: fs13, color: black50 },
+                                    PH(0.2),
+                                ]}
+                            />
+                            <TextInput
+                                keyboardType={'number-pad'}
+                                placeholder={'City'}
+                                editable={false}
+                                value={city.name}
+                                style={[
+                                    textInputContainerStyle,
+                                    BGCOLOR(disabledColor),
+                                    ,
+                                    FLEX(1),
+                                    ML(0.1),
+                                    { fontSize: fs13, color: black50 },
+                                    PH(0.2),
+                                ]}
+                            />
+                        </View>
+                        <View style={[MT(0.2)]} />
+                        <WrappedDropDown
+                            data={areas}
+                            arrowColor={black50}
+                            header={'Select Area'}
+                            callBack={() => {}}
+                            zIndex={5000}
+                            zIndexInverse={1000}
+                            selectValue={area}
+                            setValue={(value: string) => {
+                                setArea(value);
+                            }}
+                            searchable={true}
+                            dropDownMaxHeight={250}
+                            placeholder={'Area'}
+                        />
+                        {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}
+                    </>
+                )}
                 <View style={{ zIndex: -20 }}>
                     <TextInput
                         keyboardType={'number-pad'}

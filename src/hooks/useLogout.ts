@@ -23,6 +23,7 @@ function useLogout(successCallback = () => {}, failCallback = () => {}) {
                         await Storage.removeItem(value);
                     });
                     axios.defaults.headers.common['Auth-Token'] = undefined;
+                    axios.defaults.baseURL = '';
                     //await EncryptedStorage.setItem(EncryptedStorageItemKeys.PIN, '');
                     //props.userDetailsUpdate(user);
                     navigation.reset({
@@ -45,7 +46,9 @@ function useLogout(successCallback = () => {}, failCallback = () => {}) {
         if (logout) logOut();
     }, [logout]);
 
-    return setLogout;
+    const value = React.useMemo(() => setLogout, [setLogout]);
+
+    return value;
 }
 
 export default useLogout;

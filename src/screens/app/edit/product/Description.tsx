@@ -5,7 +5,7 @@ import ProductDetailsHeading from './component/ProductDetailsHeading';
 import ProductContainer from './component/productContainerHOC';
 import ProductButton from './component/ProductButton';
 import { IPostDataToServer, marTop } from './component/generalConfig';
-import AddPhoto from './component/component/AddPhoto';
+import AddPhoto from '../../../components/multimedia/AddPhoto';
 //import { TextInput } from 'react-native-gesture-handler';
 import { PT } from '@app/common/styles';
 

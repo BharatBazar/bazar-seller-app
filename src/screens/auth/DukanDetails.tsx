@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { black20, colorCode } from '../../common/color';
-import { BC, BR, BW, colorTransparency, HP, MT, PH, PV } from '../../common/styles';
+import { BC, BR, BW, colorTransparency, DSP, HP, MT, P, PA, PH, PV } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import { ShopDetailsText } from '../../common/customScreenText';
 import { fs12, NavigationProps } from '../../common';
@@ -17,6 +17,8 @@ import ServerErrorText from './component/errorText';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { marTop } from '../app/edit/product/component/generalConfig';
 import { Storage, StorageItemKeys } from '../../storage';
+import ShowInforTextBelowInput from '../components/text/ShowInfoTextBelowInput';
+import TextPhotoAudioInputComponent from '../components/multimedia/TextPhotoAudioInput';
 export interface ShopDetailsProps extends NavigationProps {
     route: {
         params: {
@@ -83,7 +85,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         }
     };
     return (
-        <View style={[{ flex: 1 }, PH(0.3), PV(0.2)]}>
+        <View style={[{ flex: 1 }, PA(DSP * 0.6)]}>
             <ShadowWrapperHOC>
                 <>
                     <HeaderText step={'Step 3'} heading={'Dukan Details'} subHeading={ShopDetailsText.MESSAGE} />
@@ -96,7 +98,11 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                             onChangeText={(name: string) => setDetails({ ...details, shopName: name })}
                             {...componentProps.textInputProps}
                         />
-
+                        <ShowInforTextBelowInput
+                            text={
+                                'Enter name from which you are popular in your locality as people will search this name for checking your dukan items. Also your dukan is your brand and trust.'
+                            }
+                        />
                         <WrappedTextInput
                             placeholder={'Dukan ke bare mai jankari'}
                             value={details.shopDescription}
@@ -107,6 +113,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                             textAlignVertical={'top'}
                             containerStyle={[HP(2), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}
                         />
+                        <TextPhotoAudioInputComponent />
 
                         <TextButton
                             text={'Submit'}

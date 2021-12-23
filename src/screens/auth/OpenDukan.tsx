@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Alert, Pressable, View } from 'react-native';
 import { fs10, fs11, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
-import { colorCode, mainColor } from '../../common/color';
+import { black40, colorCode, mainColor } from '../../common/color';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import { GlobalText } from '../../common/customScreenText';
 import { getHP, getWP } from '../../common/dimension';
@@ -165,6 +165,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                         navigation.goBack();
                     }}
                     iconName={'arrow-left'}
+                    iconColor="#000"
                     containerHeight={getHP(0.5)}
                     containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                 />
@@ -177,7 +178,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 <WrappedText
                     text={'Requires an active dukandar account'}
                     fontSize={fs13}
-                    textColor={colorCode.BLACKLOW(40)}
+                    textColor={black40}
                     textStyle={{ marginLeft: getWP(0.05), marginTop: getHP(0.05) }}
                 />
                 {error['error'] && <ServerErrorText errorText={error['error']} />}
