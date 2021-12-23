@@ -1,10 +1,14 @@
+import useLogout from '@app/hooks/useLogout';
 import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { fs13, fs14, fs16, fs28 } from '../../common';
 import { borderColor, colorCode, mainColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { AIC, BGCOLOR, FDR, PH, provideShadow, PV } from '../../common/styles';
+import { AIC, BGCOLOR, colorTransparency, FDR, JCC, PH, provideShadow, PV } from '../../common/styles';
+import { commonButtonProps } from '../components/button';
+import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
+import WrappedFeatherIcon from './WrappedFeatherIcon';
 import WrappedText from './WrappedText';
 
 interface Props {
@@ -12,34 +16,41 @@ interface Props {
     statusBarColor: string;
     headerBackgroundColor: string;
 }
-class HeaderBar extends Component<Props, {}> {
-    state = {};
-    render() {
-        const { containerStyle, statusBarColor, headerBackgroundColor } = this.props;
 
-        return (
-            <View style={[styles.container, containerStyle, provideShadow(2)]}>
-                <View style={styles.statusbar} />
+interface OnboardingHeaderProps {}
+
+const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
+    containerStyle,
+    statusBarColor,
+    headerBackgroundColor,
+}) => {
+    const setLogout = useLogout();
+    return (
+        <View style={[styles.container, containerStyle, provideShadow(2)]}>
+            <View style={styles.statusbar} />
+            <View style={[FDR(), AIC(), JCC('space-between'), PH(0.5)]}>
+                <View />
                 <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
                     <WrappedText
                         text={'Create your dukan'}
                         textColor={mainColor}
                         fontSize={fs16}
-                        textStyle={{ marginLeft: getWP(0.5), alignSelf: 'center' }}
+                        textStyle={{ alignSelf: 'center' }}
                     />
-                    {/* <WrappedText
-                        text={'in 5 simple steps'}
-                        textColor={colorCode.CHAKRALOW(60)}
-                        fontSize={fs13}
-                        textStyle={{ marginLeft: getWP(0.1) }}
-                    /> */}
                 </View>
-            </View>
-        );
-    }
-}
 
-export default HeaderBar;
+                <WrappedFeatherIcon
+                    iconName="log-out"
+                    onPress={() => {
+                        setLogout(true);
+                    }}
+                />
+            </View>
+        </View>
+    );
+};
+
+export default OnboardingHeader;
 
 const styles = StyleSheet.create({
     container: {

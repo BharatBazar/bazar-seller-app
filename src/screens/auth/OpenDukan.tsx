@@ -98,7 +98,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
         try {
             setLoader(true);
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
-            console.log('response =>', response);
+
             setLoader(false);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
@@ -134,7 +134,6 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 setError({ error: response.message });
             }
         } catch (error) {
-            console.log(error.message);
             setLoader(false);
             setError({ error: error.message });
         }
