@@ -2,7 +2,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import CreateDukan from './CreateDukan';
 import ShopDetails from './DukanDetails';
 import SetPassword from './SetPassword';
-import AddDukanMembers from './AddDukanMembers';
+import AddDukanMembers from './add-dukan-member/AddDukanMembers';
 import { NavigationKey } from '../../labels';
 import React from 'react';
 import { View, KeyboardAvoidingView, Platform } from 'react-native';
