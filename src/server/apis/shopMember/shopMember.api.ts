@@ -42,4 +42,12 @@ export async function updatePassword(data: { phoneNumber: string; password: stri
     return axios.post('/shopMember/updatePassword', data);
 }
 
+export async function verifyShopMember(data: { phoneNumber: string }): Promise<IRCheckPhoneNumber> {
+    return axios.post('/shopMember/verify', data);
+}
+
+export async function addShopMember(data: Partial<ICreateShopMember>): Promise<IRCreateShopMember> {
+    return axios.post('/shopMember/add', data);
+}
+
 //createShopMember({ phoneNumber: '9893137876', email: 'bothra.rajat08@gmail.com',name:"Rajat",role:'worker' });

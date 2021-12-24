@@ -21,6 +21,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { CreateDukanText, ErrorText } from '@app/common/customScreenText';
 import TextButton from '@app/screens/component/TextButton';
 import ServerErrorText from '../component/errorText';
+import { IRCheckPhoneNumber } from '@app/server/apis/shopMember/shopMember.interface';
+import { verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
 
 interface EditDukanMemberProps extends NavigationProps {
     selectedItem: member;
@@ -91,6 +93,11 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     const [timer, setTimer] = React.useState(-1);
     //const timerInterval: = null;
 
+    React.useEffect(() => {
+        if (timer < 1) {
+            clearTimeOut();
+        }
+    }, [timer]);
     function validateField() {
         const { phoneNumber, firstName, lastName } = member;
         let error: error = {};
@@ -147,22 +154,6 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
         }
     };
 
-    const sendOtp = async () => {
-        // try {
-        //     this.setState({ otpButtonState: 2 });
-        //     const response: IRCheckPhoneNumber = await triggerOtp({
-        //         phoneNumber: this.state.formState.phoneNumber,
-        //     });
-        //     if (response.status == 1) {
-        //         this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
-        //         this.setTimer();
-        //         this.setField('otp', response.payload);
-        //     }
-        // } catch (error) {
-        //     this.setState({ otpSent: false, timer: -1, otpButtonState: -1, error: { serverError: error.message } });
-        // }
-    };
-
     const returnErrorText = (field: keyof formError) => {
         return field in error ? <ServerErrorText errorText={error[field]} /> : <View />;
     };
@@ -170,10 +161,97 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     const setField = (key: keyof member, value: string) => {
         setMember((member) => {
             member[key] = value;
-            return member;
+            return { ...member };
         });
     };
 
+    const sendOtp = async () => {
+        try {
+            setOtpButtonState(2);
+            const response: IRCheckPhoneNumber = await verifyShopMember({
+                phoneNumber: member.phoneNumber,
+            });
+            if (response.status == 1) {
+                setOtpSent(true);
+                setOtpButtonState(1);
+                setTimer(10);
+                // this.setState({ otpSent: true, otpButtonState: 1, timer: 10 });
+                setTimerInterval();
+                console.log(response.payload);
+                setField('otp', response.payload);
+            }
+        } catch (error) {
+            setOtpSent(false);
+            setOtpButtonState(-1);
+            setTimer(-1);
+            setError({ serverError: error.message });
+        }
+    };
+
+    const checkPhoneNumber = (phoneNumber: string) => {
+        if (mobileValidation.test(phoneNumber)) {
+            setError((error) => {
+                delete error['phoneNumber'];
+                return { ...error };
+            });
+            setField('otp', '');
+            sendOtp();
+        } else {
+            setError({ ...error, serverError: ErrorText.phoneNumberError });
+            // this.setState({ error: { ...this.state.error, phoneNumber: ErrorText.phoneNumberError } });
+        }
+    };
+
+    const PhoneNumberTextInput = React.useMemo(
+        () => (
+            <WrappedTextInput
+                placeholder={role + ' mobile number'}
+                value={phoneNumber}
+                onChangeText={(phoneNumber) => setField('phoneNumber', phoneNumber)}
+                {...componentProps.textInputProps}
+                errorText={error['phoneNumber']}
+            />
+        ),
+        [member.phoneNumber],
+    );
+
+    const OtpTextInput = React.useMemo(
+        () => (
+            <WrappedTextInput
+                placeholder={'Verification code'}
+                value={otp}
+                onChangeText={(otp) => setField('otp', otp)}
+                {...componentProps.textInputProps}
+                errorText={error['otp']}
+            />
+        ),
+        [member.otp],
+    );
+
+    const FirstNameInput = React.useMemo(
+        () => (
+            <WrappedTextInput
+                value={firstName}
+                placeholder={role + ' first name'}
+                onChangeText={(firstName) => setField('firstName', firstName)}
+                errorText={error['firstNameError']}
+                {...componentProps.textInputProps}
+            />
+        ),
+        [member.firstName],
+    );
+    const LastNameInput = React.useMemo(
+        () => (
+            <WrappedTextInput
+                value={lastName}
+                placeholder={role + ' last name'}
+                onChangeText={(lastName) => setField('lastName', lastName)}
+                errorText={error['lastNameError']}
+                {...componentProps.textInputProps}
+            />
+        ),
+        [member.lastName],
+    );
     const { phoneNumber, otp, firstName, lastName } = member;
     return (
         <ScrollView style={[BGCOLOR('#FFFFFF'), FLEX(1), PA(DSP)]}>
@@ -193,15 +271,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
             {returnErrorText('serverError')}
             <View style={{}}>
                 <View style={[FDR(), AIC()]}>
-                    <View style={{ flex: 1 }}>
-                        <WrappedTextInput
-                            placeholder={role + ' mobile number'}
-                            value={phoneNumber}
-                            onChangeText={(phoneNumber) => setField('phoneNumber', phoneNumber)}
-                            {...componentProps.textInputProps}
-                            errorText={error['phoneNumber']}
-                        />
-                    </View>
+                    <View style={{ flex: 1 }}>{PhoneNumberTextInput}</View>
                 </View>
 
                 <TextButton
@@ -216,7 +286,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
                     ]}
                     onPress={() => {
-                        //  this.checkPhoneNumber(this.state.formState.phoneNumber);
+                        checkPhoneNumber(member.phoneNumber);
                     }}
                     isLoading={otpButtonState == 2 ? true : false}
                     disabled={otpButtonState == 2 || timer > 0}
@@ -224,36 +294,14 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
 
                 {otpSent && (
                     <>
-                        <WrappedTextInput
-                            placeholder={CreateDukanText.verificationOtp}
-                            value={otp}
-                            {...componentProps.textInputProps}
-                            onChangeText={(otp) => setField('otp', otp)}
-                            errorText={error['otpError']}
-                        />
+                        {OtpTextInput}
                         {otpSent && (
                             <WrappedText text={CreateDukanText.otpMessage} fontSize={10} textColor={messageColor} />
                         )}
 
                         <View style={[FDR()]}>
-                            <View style={[FLEX(1)]}>
-                                <WrappedTextInput
-                                    value={firstName}
-                                    placeholder={role + ' first name'}
-                                    onChangeText={(firstName) => setField('firstName', firstName)}
-                                    errorText={error['firstNameError']}
-                                    {...componentProps.textInputProps}
-                                />
-                            </View>
-                            <View style={[FLEX(1), ML(0.1)]}>
-                                <WrappedTextInput
-                                    value={lastName}
-                                    placeholder={role + ' last name'}
-                                    onChangeText={(lastName) => setField('lastName', lastName)}
-                                    errorText={error['lastNameError']}
-                                    {...componentProps.textInputProps}
-                                />
-                            </View>
+                            <View style={[FLEX(1)]}>{FirstNameInput}</View>
+                            <View style={[FLEX(1), ML(0.1)]}>{LastNameInput}</View>
                         </View>
                         <WrappedText text={CreateDukanText.ownerNameMessage} fontSize={10} textColor={messageColor} />
 

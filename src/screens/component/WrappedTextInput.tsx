@@ -68,6 +68,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             onChangeText,
             autoCapitalize,
         } = this.props;
+        console.log('rendering', placeholder);
         const { secureTextEntry } = this.state;
         return (
             <View>
