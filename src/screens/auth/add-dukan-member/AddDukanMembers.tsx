@@ -228,7 +228,13 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
 
                         <View style={{ marginTop: getHP(0.2) }}>
                             <AddMember
-                                onPressPlus={addcoOwner}
+                                onPressPlus={() => {
+                                    navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        message:
+                                            'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        role: 'Co-owner',
+                                    });
+                                }}
                                 onPressCross={deleteMember}
                                 data={coOwner}
                                 role={'Co-owner'}
@@ -239,7 +245,13 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 }
                             />
                             <AddMember
-                                onPressPlus={addWorker}
+                                onPressPlus={() => {
+                                    navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        message:
+                                            'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        role: 'Worker',
+                                    });
+                                }}
                                 onPressCross={deleteMember}
                                 data={worker}
                                 role={'worker'}

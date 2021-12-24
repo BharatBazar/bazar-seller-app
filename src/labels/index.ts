@@ -21,4 +21,5 @@ export const NavigationKey = {
     VERIFYOTP: 'VerifyOTP',
     RESETPASSWORD: 'ResetPassword',
     PRODUCTSTATUS: 'ProductStatus',
+    EDITDUKANMEMBER: 'EditDukanMember',
 };

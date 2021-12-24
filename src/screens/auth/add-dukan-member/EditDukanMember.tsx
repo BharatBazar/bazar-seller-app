@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { fs12, fs13, fs24, mobileValidation } from '../../../common';
+import { fs12, fs13, fs20, fs24, mobileValidation, NavigationProps } from '../../../common';
 import { black20, black40, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
 import { getHP, getWP } from '../../../common/dimension';
-import { BC, BGCOLOR, BW, DSP, FDR, FLEX, ML, PA } from '../../../common/styles';
+import { AIC, BC, BGCOLOR, BW, DSP, FDR, FLEX, ML, MT, PA, provideShadow } from '../../../common/styles';
 import { textInputContainerStyle } from '../../../common/containerStyles';
 import WrappedTextInput from '../../component/WrappedTextInput';
 import { border } from '../../app/edit/product/component/generalConfig';
@@ -12,14 +12,21 @@ import { getDefaultMember, member } from './AddDukanMembers';
 import Ripple from 'react-native-material-ripple';
 import WrappedText from '../../component/WrappedText';
 import OTPTextView from '@app/screens/components/input/OTPTextInput';
+import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import { NavigationProp } from '@react-navigation/native';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import { commonButtonProps } from '@app/screens/components/button';
 
-interface MemberDetailsPopupProps {
+interface EditDukanMemberProps extends NavigationProps {
     selectedItem: member;
+    route: {
+        params: {
+            role: 'Co-owner' | 'Worker';
 
-    role: 'Co-owner' | 'Worker';
-    isVisible: boolean;
-    setPopup: Function;
-    message?: string;
+            message?: string;
+        };
+    };
 }
 
 interface error {
@@ -41,13 +48,17 @@ const componentProps = {
     },
 };
 
-const MemberDetailsPopup: React.FunctionComponent<MemberDetailsPopupProps> = ({
+const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     selectedItem,
+    route: {
+        params: {
+            role,
 
-    role,
-    isVisible,
-    setPopup,
-    message,
+            message,
+        },
+    },
+
+    navigation,
 }) => {
     const [member, setMember] = React.useState<member>(getDefaultMember('Co-owner'));
 
@@ -79,22 +90,21 @@ const MemberDetailsPopup: React.FunctionComponent<MemberDetailsPopupProps> = ({
     };
 
     return (
-        <ModalWithHeader
-            isVisible={isVisible}
-            setPopup={() => {
-                setPopup(false);
-            }}
-            contentContainerStyle={[
-                { width: '100%' },
-                border,
-                BGCOLOR(colorCode.WHITE),
-                { borderRadius: getWP(0.2) },
-                PA(DSP),
-            ]}
-            heading={'Add ' + role}
-            subHeading={message}
-        >
-            <View style={[{ paddingVertical: DSP * 0.8 }]}>
+        <View style={[{ paddingTop: DSP * 1.5 }, { paddingHorizontal: DSP }, BGCOLOR('#FFFFFF'), FLEX(1)]}>
+            <View style={[FDR(), AIC('flex-start')]}>
+                <WrappedFeatherIcon
+                    iconName="chevron-left"
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                    containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), { paddingTop: 2 }]}
+                />
+            </View>
+            <View style={{ marginTop: 20 }}>
+                <WrappedText text={'Add ' + role} fontSize={fs20} />
+                <WrappedText text={message || ''} containerStyle={[MT(0.05)]} textColor={messageColor} />
+            </View>
+            <View style={[{ marginTop: DSP }]}>
                 {/* {selectedItem.error && selectedItem.error['error'] && (
                     <ServerErrorText errorText={selectedItem.error['error']} marginTop={0} />
                 )} */}
@@ -122,7 +132,7 @@ const MemberDetailsPopup: React.FunctionComponent<MemberDetailsPopupProps> = ({
                         />
                     </View>
                 </View>
-                <View style={[{ marginTop: DSP * 0.2 }]} />
+                <View style={[{ marginTop: DSP * 0.4 }]} />
                 <WrappedTextInput
                     placeholder={role + ' mobile number'}
                     value={member.phoneNumber}
@@ -132,7 +142,14 @@ const MemberDetailsPopup: React.FunctionComponent<MemberDetailsPopupProps> = ({
                     errorText={member.phoneNumber}
                     {...componentProps.textInputProps}
                 />
-                <View style={[BW(1), BC(borderColor)]}>
+                <RightComponentButtonWithLeftText
+                    buttonText="Send otp"
+                    {...commonButtonProps}
+                    onPress={() => {}}
+                    marginTop={DSP * 1.5}
+                    borderWidth={0}
+                />
+                {/* <View style={[BW(1), BC(borderColor)]}>
                     <WrappedText text="We have sent an otp to your dukan member number.please enter that otp to add these person as dukan member" />
                     <OTPTextView
                         // ref={'pin'}
@@ -157,10 +174,10 @@ const MemberDetailsPopup: React.FunctionComponent<MemberDetailsPopupProps> = ({
                             // this.setState({ otp });
                         }}
                     />
-                </View>
+                </View> */}
             </View>
-        </ModalWithHeader>
+        </View>
     );
 };
 
-export default MemberDetailsPopup;
+export default EditDukanMember;

@@ -96,7 +96,7 @@ const AddMember = ({
         <View style={[]}>
             <WrappedRectangleButton
                 onPress={() => {
-                    setPopupVisible(true);
+                    onPressPlus();
                 }}
                 containerStyle={[FDR(), MT(0.2), BW(1.5), BC(black20), BR(0.1), { padding: 10 }, AIC()]}
             >
@@ -187,7 +187,7 @@ const AddMember = ({
                     </Ripple>
                 );
             })}
-            <MemberDetailsPopup
+            {/* <MemberDetailsPopup
                 selectedItem={undefined}
                 role={role}
                 isVisible={isPopupVisible}
@@ -195,7 +195,7 @@ const AddMember = ({
                     setPopupVisible(false);
                 }}
                 message={message}
-            />
+            /> */}
         </View>
     );
 };

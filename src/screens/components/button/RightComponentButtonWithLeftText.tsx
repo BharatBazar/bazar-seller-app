@@ -45,7 +45,12 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
                 BW(borderWidth),
                 BC(borderColor),
                 BGCOLOR(backgroundColor),
-                { paddingVertical: 8, borderRadius: borderRadius || 200, marginTop: marginTop, marginLeft: marginLeft },
+                {
+                    paddingVertical: 12,
+                    borderRadius: borderRadius || 200,
+                    marginTop: marginTop,
+                    marginLeft: marginLeft,
+                },
                 PH(0.4),
 
                 FDR(),

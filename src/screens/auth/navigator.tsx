@@ -11,11 +11,12 @@ import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import ProductDetails from './ProductDetails';
 import ProductSubCategory from './ProductSubCategory';
 import { AIC, BGCOLOR, BR, BTW, FDR, FLEX, H, HP, JCC, MT, provideShadow, PV, WP } from '../../common/styles';
-import { Right } from '../../navigation/NavigationEffect';
+import { Bottom, Right } from '../../navigation/NavigationEffect';
 import Address from './Address';
 import HeaderBar from '../component/HeaderBar';
 import { borderColor, colorCode } from '@app/common/color';
 import WrappedText from '../component/WrappedText';
+import EditDukanMember from './add-dukan-member/EditDukanMember';
 
 const Stack = createStackNavigator();
 
@@ -87,6 +88,14 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.ADDDUKANMEMBERS}
                         component={AddDukanMembers}
+                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        options={{
+                            cardStyleInterpolator: Right,
+                        }}
+                    />
+                    <Stack.Screen
+                        name={NavigationKey.EDITDUKANMEMBER}
+                        component={EditDukanMember}
                         initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
                         options={{
                             cardStyleInterpolator: Right,
