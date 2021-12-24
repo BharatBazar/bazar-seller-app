@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { AIC, PH, PV, FDR, MT, FLEX, ML } from '../../common/styles';
+import { AIC, FDR, MT, FLEX, ML } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
