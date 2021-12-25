@@ -84,20 +84,20 @@ export type ICreateShopMember =
           email: string;
           firstName: string;
           lastName: string;
-          role: 'owner';
+          role: 'Owner';
           otp: string;
       }
     | {
           phoneNumber: string;
           firstName: string;
           lastName: string;
-          role: 'worker' | 'Co-owner';
+          role: 'Worker' | 'Co-owner';
           email?: string;
           shop: string;
       };
 
 export enum shopMemberRole {
-    'Owner' = 'owner',
+    'Owner' = 'Owner',
     'coOwner' = 'Co-owner',
-    'worker' = 'worker',
+    'worker' = 'Worker',
 }

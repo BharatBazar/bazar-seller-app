@@ -28,6 +28,7 @@ const TextButton: React.FC<TextButtonProps> = ({
     disabled,
     fade,
 }) => {
+    console.log('rerendering textbutton', textProps, text);
     return (
         <WrappedRectangleButton
             containerStyle={[
@@ -53,4 +54,12 @@ const TextButton: React.FC<TextButtonProps> = ({
     );
 };
 
-export default TextButton;
+const MemoizedTextButton = React.memo(
+    TextButton,
+    (prevProps, nextProps) =>
+        prevProps.text != nextProps.text &&
+        prevProps.isLoading != nextProps.isLoading &&
+        prevProps.disabled != nextProps.disabled,
+);
+
+export default MemoizedTextButton;
