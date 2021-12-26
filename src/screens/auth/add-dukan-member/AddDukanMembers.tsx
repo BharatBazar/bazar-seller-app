@@ -142,17 +142,22 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         }
     };
 
-    const deleteMember = (role: 'Co-owner' | 'worker', index: number, deleted?: boolean) => {
+    const deleteMember = async (role: 'Co-owner' | 'worker', index: number, deleted?: boolean) => {
         let data = role == 'Co-owner' ? [...coOwner] : [...worker];
         console.log(index);
-        data.splice(index, 1);
-        if (deleted) {
-            setSubmittedCount(submittedCount - 1);
-        }
-        if (role == 'Co-owner') {
-            setcoOwner([...data]);
-        } else {
-            setWorker([...data]);
+        try {
+            // await deleteShopMember({ _id: data[index]._id });
+            data.splice(index, 1);
+            if (deleted) {
+                setSubmittedCount(submittedCount - 1);
+            }
+            if (role == 'Co-owner') {
+                setcoOwner([...data]);
+            } else {
+                setWorker([...data]);
+            }
+        } catch (error) {
+            ToastHOC.errorAlert(error.message);
         }
     };
 

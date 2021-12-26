@@ -183,10 +183,11 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
             const response: IRCreateShopMember = update
                 ? await updateShopMember({ ...data, _id: shopMember._id })
                 : await addShopMember(data);
+
             if (response.status == 1) {
                 setSignInButtonState(0);
                 console.log(addMember, data);
-                addMember(update ? { ...data, _id: shopMember._id } : data);
+                addMember(update ? { ...data, _id: shopMember._id } : { ...data, _id: response.payload._id });
                 navigation.goBack();
             } else {
                 setSignInButtonState(0);

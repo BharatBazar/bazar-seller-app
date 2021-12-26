@@ -27,7 +27,7 @@ export async function shopMemberLogin(data: { phoneNumber: string; password: str
 }
 
 export async function deleteShopMember(data: { _id: string }): Promise<IRShopMemberDelete> {
-    return axios.delete('/shopMember/delete', data);
+    return axios.delete('/shopMember/delete?_id=' + data._id);
 }
 
 export async function forgetPassword(data: {

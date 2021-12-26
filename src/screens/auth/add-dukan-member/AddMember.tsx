@@ -11,6 +11,9 @@ import { deleteShopMember } from '../../../server/apis/shopMember/shopMember.api
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 import { member } from './AddDukanMembers';
 import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { AlertContext } from '@app/../App';
+import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
 
 const AddMember = ({
     onPressPlus,
@@ -36,37 +39,19 @@ const AddMember = ({
     submitDetails: (index: number, role: 'Co-owner' | 'worker') => void;
     onPressEdit: (shopMember: member, index?: number) => void;
 }) => {
-    const [selectedItem, setSelectedItem] = React.useState<member>({});
-
-    // member details adding popup
-    const [isPopupVisible, setPopupVisible] = React.useState(false);
-    function validateField(index: number) {
-        const { phoneNumber, firstName, lastName } = data[index];
-        let error: error = {};
-        if (!mobileValidation.test(phoneNumber)) {
-            error['phoneNumber'] = 'Please enter correct ' + role + ' mobile number';
-        }
-        if (firstName.length < 3) {
-            error['firstName'] = 'Please enter correct ' + role + ' first name.';
-        }
-        if (lastName.length < 3) {
-            error['lastName'] = 'Please enter correct ' + role + ' last name.';
-        }
-        if (Object.keys(error).length == 0) {
-            setField({}, role, index, 'error');
-            submitDetails(index, role);
-        } else {
-            setField(error, role, index, 'error');
-        }
-    }
+    const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
     const deleteMember = async (id: string, index: number) => {
-        const response: IRShopMemberDelete = await deleteShopMember({ _id: id });
-        if (response.status == 1) {
-            Alert.alert(response.message);
-            onPressCross(role, index, true);
-        } else {
-            setField(response.message, role, index, 'error');
+        try {
+            const response: IRShopMemberDelete = await deleteShopMember({ _id: id });
+            if (response.status == 1) {
+                Alert.alert(response.message);
+                onPressCross(role, index, true);
+            } else {
+                setField(response.message, role, index, 'error');
+            }
+        } catch (error) {
+            ToastHOC.errorAlert(error.message);
         }
     };
 
@@ -133,6 +118,18 @@ const AddMember = ({
                         <View style={[{ justifyContent: 'flex-end', flexDirection: 'row' }]}>
                             <ButtonFeatherIcon
                                 iconName="trash"
+                                onPress={() => {
+                                    setAlertState({
+                                        isVisible: true,
+                                        heading: 'Delete member',
+                                        subHeading:
+                                            'Are you sure you want to remove ' + item.firstName + ' from your shop?',
+                                        onPressRightButton: () => {
+                                            setAlertState(defaultAlertState);
+                                            deleteMember(item._id, index);
+                                        },
+                                    });
+                                }}
                                 containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF')]}
                             />
                             <ButtonFeatherIcon

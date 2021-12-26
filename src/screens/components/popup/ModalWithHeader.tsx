@@ -19,6 +19,8 @@ interface ModalWithHeaderAndButtonProps {
     modalStyle?: 'bottomPlaced' | 'centerPlaced';
     contentContainerStyle: ViewStyle | ViewStyle[];
     headerContainerStyle?: ViewStyle | ViewStyle[];
+    onPressLeftButton: Function;
+    onPressRightButton: Function;
 }
 
 const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButtonProps> = ({
@@ -31,6 +33,8 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
     children,
     headerStyle,
     headerContainerStyle,
+    onPressLeftButton,
+    onPressRightButton,
 }) => {
     const ModalProps =
         Platform.OS === 'ios'
@@ -64,9 +68,9 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
                 <View style={[FDR()]}>
                     <RightComponentButtonWithLeftText
                         onPress={() => {
-                            setPopup();
+                            onPressLeftButton();
                         }}
-                        buttonText={'Close'}
+                        buttonText={'Cancel'}
                         {...commonButtonProps}
                         backgroundColor="#FFF"
                         borderWidth={1}
@@ -76,9 +80,9 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
                     />
                     <RightComponentButtonWithLeftText
                         onPress={() => {
-                            // validateField();
+                            onPressRightButton();
                         }}
-                        buttonText={'Add'}
+                        buttonText={'Confirm'}
                         {...commonButtonProps}
                         borderWidth={0}
                         marginLeft={10}
