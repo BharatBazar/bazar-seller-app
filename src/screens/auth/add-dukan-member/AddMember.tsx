@@ -4,39 +4,13 @@ import { fs12, fs13, fs16, fs17, fs20, mobileValidation } from '../../../common'
 import { black20, black40, black50, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
 import { getWP } from '../../../common/dimension';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, ML, MT, PH, provideShadow, PV } from '../../../common/styles';
-import { textInputContainerStyle } from '../../../common/containerStyles';
-
 import WrappedText from '../../component/WrappedText';
 import Icons from 'react-native-vector-icons/Feather';
-import WrappedTextInput from '../../component/WrappedTextInput';
-
-import ServerErrorText from '../component/errorText';
 import { IRShopMemberDelete, IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
 import { deleteShopMember } from '../../../server/apis/shopMember/shopMember.api';
-
-import { border } from '../../app/edit/product/component/generalConfig';
-
-import RightComponentButtonWithLeftText from '../../components/button/RightComponentButtonWithLeftText';
-import { commonButtonProps } from '../../components/button';
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
-import ModalWithHeader from '@app/screens/components/popup/ModalWithHeader';
 import { member } from './AddDukanMembers';
-import Ripple from 'react-native-material-ripple';
-import MemberDetailsPopup from './MemberDetailsPopup';
-import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
-
-const componentProps = {
-    buttonTextProps: {
-        textColor: colorCode.WHITE,
-        textStyle: { fontSize: fs12 },
-    },
-    textInputProps: {
-        containerStyle: [textInputContainerStyle],
-        textInputStyle: { fontSize: fs13 },
-        paddingLeft: getWP(0.2),
-    },
-};
 
 const AddMember = ({
     onPressPlus,
@@ -60,7 +34,7 @@ const AddMember = ({
         field: 'firstName' | 'phoneNumber' | 'error' | 'lastName',
     ) => void;
     submitDetails: (index: number, role: 'Co-owner' | 'worker') => void;
-    onPressEdit: (shopMember: member) => void;
+    onPressEdit: (shopMember: member, index?: number) => void;
 }) => {
     const [selectedItem, setSelectedItem] = React.useState<member>({});
 
@@ -165,7 +139,7 @@ const AddMember = ({
                                 iconName="edit"
                                 containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
                                 onPress={() => {
-                                    onPressEdit(item);
+                                    onPressEdit(item, index);
                                 }}
                             />
                         </View>

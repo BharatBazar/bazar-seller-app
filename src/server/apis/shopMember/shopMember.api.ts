@@ -50,4 +50,8 @@ export async function addShopMember(data: Partial<ICreateShopMember>): Promise<I
     return axios.post('/shopMember/add', data);
 }
 
+export async function updateShopMember(data: Partial<ICreateShopMember>): Promise<IRCreateShopMember> {
+    return axios.patch('/shopMember/update', data);
+}
+
 //createShopMember({ phoneNumber: '9893137876', email: 'bothra.rajat08@gmail.com',name:"Rajat",role:'worker' });

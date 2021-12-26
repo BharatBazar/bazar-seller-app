@@ -27,7 +27,7 @@ import {
     IshopMember,
     shopMemberRole,
 } from '@app/server/apis/shopMember/shopMember.interface';
-import { addShopMember, verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
+import { addShopMember, updateShopMember, verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
 
 interface EditDukanMemberProps extends NavigationProps {
     selectedItem: member;
@@ -148,7 +148,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     const validateFields = () => {
         const { phoneNumber, otp, firstName, lastName } = member;
         let error: formError = {};
-        if (otp.length < 6) {
+        if (otpSent && otp.length < 6) {
             error['otp'] = ErrorText.otpError;
         }
         if (!mobileValidation.test(phoneNumber)) {
@@ -180,11 +180,13 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 role: role,
                 shop: shop,
             };
-            const response: IRCreateShopMember = await addShopMember(data);
+            const response: IRCreateShopMember = update
+                ? await updateShopMember({ ...data, _id: shopMember._id })
+                : await addShopMember(data);
             if (response.status == 1) {
                 setSignInButtonState(0);
                 console.log(addMember, data);
-                addMember(data);
+                addMember(update ? { ...data, _id: shopMember._id } : data);
                 navigation.goBack();
             } else {
                 setSignInButtonState(0);

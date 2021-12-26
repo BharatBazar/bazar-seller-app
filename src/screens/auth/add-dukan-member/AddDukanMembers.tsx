@@ -88,16 +88,20 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
 
     const [submittedCount, setSubmittedCount] = useState<number>(0);
     const [error, setError] = useState<string>('');
-    const addcoOwner = (data: member) => {
+    const addcoOwner = (data: member, index?: number) => {
         setcoOwner((coOwner) => {
-            coOwner.push(data);
+            if (typeof index == 'number') {
+                coOwner[index] = data;
+            } else coOwner.push(data);
             return [...coOwner];
         });
     };
 
-    const addWorker = (data: member) => {
+    const addWorker = (data: member, index?: number) => {
         setWorker((worker) => {
-            worker.push(data);
+            if (typeof index == 'number') {
+                worker[index] = data;
+            } else worker.push(data);
             return [...worker];
         });
     };
@@ -241,14 +245,14 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                         shop: ownerDetails.shop,
                                     });
                                 }}
-                                onPressEdit={(member: member) => {
+                                onPressEdit={(member: member, index?: number) => {
                                     navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
                                         message:
                                             'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.',
                                         role: shopMemberRole.coOwner,
                                         addMember: (data: member) => {
                                             console.log('add coowner', data);
-                                            addcoOwner(data);
+                                            addcoOwner(data, index);
                                         },
                                         shop: ownerDetails.shop,
                                         shopMember: member,
@@ -257,7 +261,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 }}
                                 onPressCross={deleteMember}
                                 data={coOwner}
-                                role={'Co-owner'}
+                                role={shopMemberRole.coOwner}
                                 setField={setField}
                                 submitDetails={submitDetails}
                                 message={
@@ -275,6 +279,20 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                             addWorker(data);
                                         },
                                         shop: ownerDetails.shop,
+                                    });
+                                }}
+                                onPressEdit={(member: member, index?: number) => {
+                                    navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        message:
+                                            'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        role: shopMemberRole.worker,
+                                        addMember: (data: member) => {
+                                            console.log('add coowner', data);
+                                            addWorker(data, index);
+                                        },
+                                        shop: ownerDetails.shop,
+                                        shopMember: member,
+                                        openUpdateFlow: true,
                                     });
                                 }}
                                 onPressCross={deleteMember}
