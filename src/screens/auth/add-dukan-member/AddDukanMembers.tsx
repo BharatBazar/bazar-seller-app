@@ -18,6 +18,7 @@ import {
     IRCreateShopMember,
     IRShopMemberDelete,
     IshopMember,
+    shopMemberRole,
 } from '../../../server/apis/shopMember/shopMember.interface';
 import { createShopMember, deleteShopMember } from '../../../server/apis/shopMember/shopMember.api';
 import { getShop, updateShop } from '../../../server/apis/shop/shop.api';
@@ -79,9 +80,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     },
 }) => {
     React.useEffect(() => {
-        if (update) {
-            fetchShopDetails();
-        }
+        fetchShopDetails();
     }, []);
 
     const [coOwner, setcoOwner] = useState<member[]>([]);
@@ -92,14 +91,14 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
     const addcoOwner = (data: member) => {
         setcoOwner((coOwner) => {
             coOwner.push(data);
-            return coOwner;
+            return [...coOwner];
         });
     };
 
     const addWorker = (data: member) => {
         setWorker((worker) => {
             worker.push(data);
-            return worker;
+            return [...worker];
         });
     };
 
@@ -214,10 +213,12 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         }
     }
 
+    console.log(coOwner, worker);
+
     return (
         <View style={[FLEX(1)]}>
-            <ScrollView style={[FLEX(1)]} contentContainerStyle={[PA(DSP * 0.6)]}>
-                <ShadowWrapperHOC>
+            <ScrollView style={[FLEX(1)]} contentContainerStyle={[PA(DSP), BGCOLOR('#FFFFFF')]}>
+                <View>
                     <>
                         <HeaderText
                             step={'Step 5'}
@@ -232,7 +233,12 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                     navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
                                         message:
                                             'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                        role: 'Co-owner',
+                                        role: shopMemberRole.coOwner,
+                                        addMember: (data: member) => {
+                                            console.log('add coowner', data);
+                                            addcoOwner(data);
+                                        },
+                                        shop: ownerDetails.shop,
                                     });
                                 }}
                                 onPressCross={deleteMember}
@@ -249,19 +255,24 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                     navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
                                         message:
                                             'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                        role: 'Worker',
+                                        role: shopMemberRole.worker,
+                                        addMember: (data: member) => {
+                                            console.log('add coowner', data);
+                                            addWorker(data);
+                                        },
+                                        shop: ownerDetails.shop,
                                     });
                                 }}
                                 onPressCross={deleteMember}
                                 data={worker}
-                                role={'worker'}
+                                role={shopMemberRole.worker}
                                 setField={setField}
                                 submitDetails={submitDetails}
-                                message={'Worker is someone whom you hire to handle shop'}
+                                message={'Worker is someone whom you hire to help in handling of your shop'}
                             />
                         </View>
                     </>
-                </ShadowWrapperHOC>
+                </View>
             </ScrollView>
             <View style={[PH(0.3), BGCOLOR('#FFFFFF')]}>
                 {!update && submittedCount == 0 ? (

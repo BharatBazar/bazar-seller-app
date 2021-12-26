@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { fs12, fs13, mobileValidation } from '../../../common';
-import { black20, black40, colorCode, messageColor } from '../../../common/color';
+import { fs12, fs13, fs16, fs17, fs20, mobileValidation } from '../../../common';
+import { black20, black40, black50, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
 import { getWP } from '../../../common/dimension';
-import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, MH, ML, MT, PH, PV } from '../../../common/styles';
+import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, ML, MT, PH, provideShadow, PV } from '../../../common/styles';
 import { textInputContainerStyle } from '../../../common/containerStyles';
 
 import WrappedText from '../../component/WrappedText';
@@ -23,6 +23,8 @@ import ModalWithHeader from '@app/screens/components/popup/ModalWithHeader';
 import { member } from './AddDukanMembers';
 import Ripple from 'react-native-material-ripple';
 import MemberDetailsPopup from './MemberDetailsPopup';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 
 const componentProps = {
     buttonTextProps: {
@@ -114,74 +116,52 @@ const AddMember = ({
                     <Ripple
                         style={[
                             { width: '100%' },
-                            border,
-                            BGCOLOR(colorCode.WHITE),
-                            PH(0.3),
-                            PV(0.2),
-                            { marginVertical: '2%', borderRadius: getWP(0.1) },
+                            FDR(),
+                            // AIC(),
+                            JCC('space-between'),
+                            BGCOLOR('#FFFFFF'),
+                            provideShadow(),
+                            // BGCOLOR(colorCode.CHAKRALOW(20)),
+
+                            {
+                                borderRadius: getWP(0.2),
+
+                                paddingVertical: 15,
+                                paddingHorizontal: 15,
+                                marginTop: 10,
+                                borderWidth: 1,
+                                borderColor: borderColor,
+                            },
                         ]}
                         key={item.key}
                         onPress={() => {
                             setSelectedItem(item);
                         }}
                     >
-                        {item.error && item.error['error'] && (
-                            <ServerErrorText errorText={item.error['error']} marginTop={0} />
-                        )}
-                        <View style={[FDR()]}>
-                            <View style={[FLEX(1)]}>
-                                <WrappedTextInput
-                                    value={item.firstName}
-                                    placeholder={role + ' first name'}
-                                    {...componentProps.textInputProps}
-                                    onChangeText={(text) => {
-                                        setField(text, role, index, 'firstName');
-                                    }}
-                                    errorText={item.error['firstName']}
-                                />
-                            </View>
-                            <View style={[FLEX(1), ML(0.1)]}>
-                                <WrappedTextInput
-                                    value={item.lastName}
-                                    placeholder={role + ' last name'}
-                                    {...componentProps.textInputProps}
-                                    onChangeText={(text) => {
-                                        setField(text, role, index, 'lastName');
-                                    }}
-                                    errorText={item.error['lastName']}
-                                />
-                            </View>
-                        </View>
-                        <WrappedTextInput
-                            placeholder={role + ' mobile number'}
-                            value={item.phoneNumber}
-                            onChangeText={(text) => {
-                                setField(text, role, index, 'phoneNumber');
-                            }}
-                            errorText={item.error['phoneNumber']}
-                            {...componentProps.textInputProps}
-                        />
-                        <View style={[FDR(), { justifyContent: 'flex-end', marginTop: 5 }]}>
-                            <RightComponentButtonWithLeftText
-                                onPress={() => {
-                                    validateField(index);
-                                }}
-                                buttonText={item.added ? 'Update' : 'Add'}
-                                {...commonButtonProps}
-                                borderWidth={0}
+                        <View>
+                            <WrappedText
+                                text={item.role}
+                                fontSize={fs12}
+                                containerStyle={[
+                                    BGCOLOR(mainColor),
+                                    provideShadow(),
+                                    { padding: 4, borderRadius: 4, alignItems: 'center' },
+                                ]}
+                                textColor="#FFF"
                             />
-                            <RightComponentButtonWithLeftText
-                                onPress={() => {
-                                    if (item.added) {
-                                        deleteMember(item._id, index);
-                                    } else {
-                                        onPressCross(role, index);
-                                    }
-                                }}
-                                buttonText={'Delete'}
-                                {...commonButtonProps}
-                                borderWidth={0}
-                                marginLeft={10}
+                            <View style={[MT(0.1)]} />
+                            <WrappedText text={item.firstName + ' ' + item.lastName} fontSize={fs16} />
+
+                            <WrappedText text={item.phoneNumber} fontSize={fs13} textColor={black50} />
+                        </View>
+                        <View style={[{ justifyContent: 'flex-end', flexDirection: 'row' }]}>
+                            <ButtonFeatherIcon
+                                iconName="trash"
+                                containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF')]}
+                            />
+                            <ButtonFeatherIcon
+                                iconName="edit"
+                                containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
                             />
                         </View>
                     </Ripple>

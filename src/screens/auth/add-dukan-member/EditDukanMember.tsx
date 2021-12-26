@@ -35,6 +35,8 @@ interface EditDukanMemberProps extends NavigationProps {
             role: shopMemberRole;
 
             message?: string;
+            addMember: Function;
+            shop?: string;
         };
     };
 }
@@ -78,11 +80,7 @@ const componentProps = {
 const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     selectedItem,
     route: {
-        params: {
-            role,
-
-            message,
-        },
+        params: { role, addMember, shop, message },
     },
 
     navigation,
@@ -95,6 +93,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     const [error, setError] = React.useState<formError>({});
     const timerInterval = React.useRef<null | NodeJS.Timeout>(null);
     const [timer, setTimer] = React.useState(-1);
+    const [update, setUpdate] = React.useState(false);
     //const timerInterval: = null;
 
     React.useEffect(() => {
@@ -162,12 +161,16 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     const submitDetails = async () => {
         setSignInButtonState(1);
         try {
-            const response: IRCreateShopMember = await addShopMember({
+            const data = {
                 ...member,
                 role: role,
-            });
+                shop: shop,
+            };
+            const response: IRCreateShopMember = await addShopMember(data);
             if (response.status == 1) {
                 setSignInButtonState(0);
+                console.log(addMember, data);
+                addMember(data);
                 navigation.goBack();
             } else {
                 setSignInButtonState(0);
