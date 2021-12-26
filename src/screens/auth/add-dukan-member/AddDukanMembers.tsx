@@ -272,6 +272,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 message={
                                     'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.'
                                 }
+                                key={1}
                             />
                             <AddMember
                                 onPressPlus={() => {
@@ -302,6 +303,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 }}
                                 onPressCross={deleteMember}
                                 data={worker}
+                                key={2}
                                 role={shopMemberRole.worker}
                                 setField={setField}
                                 submitDetails={submitDetails}

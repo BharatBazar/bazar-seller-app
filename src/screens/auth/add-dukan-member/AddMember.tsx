@@ -75,6 +75,7 @@ const AddMember = ({
             {data.map((item: member, index: number) => {
                 return (
                     <View
+                        key={item._id}
                         style={[
                             { width: '100%' },
                             FDR(),
