@@ -95,7 +95,6 @@ const AddMember = ({
                                 borderColor: borderColor,
                             },
                         ]}
-                        key={item.key}
                         onPress={() => {
                             setSelectedItem(item);
                         }}
