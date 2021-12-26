@@ -24,6 +24,7 @@ import ServerErrorText from '../component/errorText';
 import {
     IRCheckPhoneNumber,
     IRCreateShopMember,
+    IshopMember,
     shopMemberRole,
 } from '@app/server/apis/shopMember/shopMember.interface';
 import { addShopMember, verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
@@ -37,6 +38,8 @@ interface EditDukanMemberProps extends NavigationProps {
             message?: string;
             addMember: Function;
             shop?: string;
+            openUpdateFlow?: boolean;
+            shopMember: member;
         };
     };
 }
@@ -80,7 +83,7 @@ const componentProps = {
 const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     selectedItem,
     route: {
-        params: { role, addMember, shop, message },
+        params: { role, addMember, shop, message, shopMember, openUpdateFlow },
     },
 
     navigation,
@@ -96,6 +99,17 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     const [update, setUpdate] = React.useState(false);
     //const timerInterval: = null;
 
+    React.useEffect(() => {
+        if (openUpdateFlow) {
+            setUpdate(true);
+            setMember({
+                firstName: shopMember.firstName,
+                lastName: shopMember.lastName,
+                phoneNumber: shopMember.phoneNumber,
+                otp: '',
+            });
+        }
+    }, []);
     React.useEffect(() => {
         if (timer < 1) {
             clearTimeOut();
@@ -257,29 +271,36 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         <WrappedTextInput
                             placeholder={role + ' mobile number'}
                             value={phoneNumber}
-                            onChangeText={(phoneNumber) => setField('phoneNumber', phoneNumber)}
+                            onChangeText={(phoneNumber) => {
+                                setField('phoneNumber', phoneNumber);
+                                if (update && phoneNumber == shopMember.phoneNumber) {
+                                    setOtpSent(false);
+                                }
+                            }}
                             {...componentProps.textInputProps}
                             errorText={error['phoneNumber']}
                         />
                     </View>
                 </View>
-                <TextButton
-                    text={
-                        otpSent
-                            ? CreateDukanText.resendOTp + (timer > 0 ? ' in ' + timer + 's' : '')
-                            : CreateDukanText.sendOtp
-                    }
-                    textProps={componentProps.buttonTextProps}
-                    containerStyle={[
-                        buttonContainerStyle,
-                        { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
-                    ]}
-                    onPress={() => {
-                        checkPhoneNumber();
-                    }}
-                    isLoading={otpButtonState == 2 ? true : false}
-                    disabled={otpButtonState == 2 || timer > 0}
-                />
+                {((update && phoneNumber != shopMember.phoneNumber) || !update) && (
+                    <TextButton
+                        text={
+                            otpSent
+                                ? CreateDukanText.resendOTp + (timer > 0 ? ' in ' + timer + 's' : '')
+                                : CreateDukanText.sendOtp
+                        }
+                        textProps={componentProps.buttonTextProps}
+                        containerStyle={[
+                            buttonContainerStyle,
+                            { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
+                        ]}
+                        onPress={() => {
+                            checkPhoneNumber();
+                        }}
+                        isLoading={otpButtonState == 2 ? true : false}
+                        disabled={otpButtonState == 2 || timer > 0}
+                    />
+                )}
 
                 {otpSent && (
                     <>
@@ -293,7 +314,13 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         {otpSent && (
                             <WrappedText text={CreateDukanText.otpMessage} fontSize={10} textColor={messageColor} />
                         )}
+                    </>
+                )}
 
+                {((!update && otpSent) ||
+                    (update && phoneNumber != shopMember.phoneNumber && otpSent) ||
+                    (update && phoneNumber == shopMember.phoneNumber)) && (
+                    <>
                         <View style={[FDR()]}>
                             <View style={[FLEX(1)]}>
                                 <WrappedTextInput
@@ -314,10 +341,16 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                                 />
                             </View>
                         </View>
-                        <WrappedText text={CreateDukanText.ownerNameMessage} fontSize={10} textColor={messageColor} />
+                        {role == shopMemberRole.coOwner && (
+                            <WrappedText
+                                text={'Co-owner name is important as it will shop on your customer dukan face'}
+                                fontSize={10}
+                                textColor={messageColor}
+                            />
+                        )}
 
                         <TextButton
-                            text={CreateDukanText.SignIn}
+                            text={update ? 'Update details' : CreateDukanText.SignIn}
                             textProps={componentProps.buttonTextProps}
                             containerStyle={buttonContainerStyle}
                             onPress={() => {

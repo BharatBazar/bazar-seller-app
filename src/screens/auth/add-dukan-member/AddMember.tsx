@@ -46,6 +46,7 @@ const AddMember = ({
     setField,
     submitDetails,
     message,
+    onPressEdit,
 }: {
     message: string;
     onPressPlus: Function;
@@ -59,6 +60,7 @@ const AddMember = ({
         field: 'firstName' | 'phoneNumber' | 'error' | 'lastName',
     ) => void;
     submitDetails: (index: number, role: 'Co-owner' | 'worker') => void;
+    onPressEdit: (shopMember: member) => void;
 }) => {
     const [selectedItem, setSelectedItem] = React.useState<member>({});
 
@@ -113,7 +115,7 @@ const AddMember = ({
             <View style={[MT(0.1)]} /> */}
             {data.map((item: member, index: number) => {
                 return (
-                    <Ripple
+                    <View
                         style={[
                             { width: '100%' },
                             FDR(),
@@ -162,9 +164,12 @@ const AddMember = ({
                             <ButtonFeatherIcon
                                 iconName="edit"
                                 containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
+                                onPress={() => {
+                                    onPressEdit(item);
+                                }}
                             />
                         </View>
-                    </Ripple>
+                    </View>
                 );
             })}
             {/* <MemberDetailsPopup
