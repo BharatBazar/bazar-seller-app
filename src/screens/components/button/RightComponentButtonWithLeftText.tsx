@@ -4,15 +4,16 @@ import { View, StyleSheet, Image, ViewStyle } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { FontFamily, fs14 } from '@app/common';
 import WrappedText from '@app/screens/component/WrappedText';
+import { mainColor } from '@app/common/color';
 
 interface RightComponentButtonWithLeftTextProps {
     borderColor?: string;
-    backgroundColor: string;
+    backgroundColor?: string;
     containerStyle?: ViewStyle | ViewStyle[];
     onPress: Function;
     buttonText: string;
     rightComponent?: Function;
-    buttonTextColor: string;
+    buttonTextColor?: string;
     borderRadius?: number;
     borderWidth?: number;
     marginTop?: number;
@@ -44,15 +45,15 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
             style={[
                 BW(borderWidth),
                 BC(borderColor),
-                BGCOLOR(backgroundColor),
+                BGCOLOR(backgroundColor || mainColor),
                 {
                     paddingVertical: 12,
-                    borderRadius: borderRadius || 200,
+                    borderRadius: borderRadius || 6,
                     marginTop: marginTop,
                     marginLeft: marginLeft,
                 },
                 PH(0.4),
-
+                !rightComponent ? { alignItems: 'center', justifyContent: 'center' } : {},
                 FDR(),
                 { overflow: 'hidden' },
                 containerStyle,
@@ -60,7 +61,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
         >
             <WrappedText
                 text={buttonText}
-                textColor={buttonTextColor}
+                textColor={buttonTextColor || '#FFFFFF'}
                 fontSize={fs14}
                 fontFamily={FontFamily.Medium}
                 containerStyle={{ marginTop: 0 }}
@@ -70,4 +71,9 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
     );
 };
 
-export default RightComponentButtonWithLeftText;
+export default React.memo(
+    RightComponentButtonWithLeftText,
+    (prevProps: RightComponentButtonWithLeftTextProps, nextProps: RightComponentButtonWithLeftTextProps) => {
+        return prevProps.onPress == nextProps.onPress && prevProps.buttonText == nextProps.buttonText;
+    },
+);

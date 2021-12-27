@@ -41,6 +41,7 @@ export interface Shop {
     category: product[];
     subCategory: product[][];
     subCategory1: product[][][];
+    shopMemberOnBoardingDone: boolean;
 }
 
 export interface IRGetShop extends CommonApiResponse {
@@ -80,8 +81,9 @@ export interface updateShopData {
     area: string;
     pincode: string;
     localAddress: string;
-    rating: Number;
-    noOfRating: Number;
+    rating: number;
+    noOfRating: number;
+    shopMemberOnBoardingDone: boolean;
 }
 
 export interface IRShopUpdate extends CommonApiResponse {

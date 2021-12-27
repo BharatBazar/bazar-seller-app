@@ -20,8 +20,7 @@ const AddMember = ({
     onPressCross,
     role,
     data,
-    setField,
-    submitDetails,
+
     message,
     onPressEdit,
 }: {
@@ -30,13 +29,7 @@ const AddMember = ({
     onPressCross: Function;
     role: 'Worker' | 'Co-owner';
     data: member[];
-    setField: (
-        value: string | Object,
-        role: 'Co-owner' | 'Worker',
-        index: number,
-        field: 'firstName' | 'phoneNumber' | 'error' | 'lastName',
-    ) => void;
-    submitDetails: (index: number, role: 'Co-owner' | 'worker') => void;
+
     onPressEdit: (shopMember: member, index?: number) => void;
 }) => {
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
@@ -48,7 +41,7 @@ const AddMember = ({
                 Alert.alert(response.message);
                 onPressCross(role, index, true);
             } else {
-                setField(response.message, role, index, 'error');
+                throw new Error(response.message);
             }
         } catch (error) {
             ToastHOC.errorAlert(error.message);

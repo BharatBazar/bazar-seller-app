@@ -31,6 +31,7 @@ export interface IshopMember {
     password: string;
     isTerminated: boolean;
     isDeleted: boolean;
+    shopMemberOnBoardingDone: boolean;
 }
 
 export interface IshopMemberPopulated {

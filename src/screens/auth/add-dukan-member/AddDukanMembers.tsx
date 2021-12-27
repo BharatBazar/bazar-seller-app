@@ -1,34 +1,17 @@
 import React, { useState } from 'react';
-import { View, ScrollView, Alert } from 'react-native';
-import { fs12, fs13, fs14, fs20, mobileValidation, NavigationProps } from '../../../common';
-import { colorCode, messageColor } from '../../../common/color';
-import { getHP, getWP } from '../../../common/dimension';
-import { BGCOLOR, DSP, FDR, FLEX, MH, ML, MT, MV, PA, PH, provideShadow, PV, WP } from '../../../common/styles';
-import { textInputContainerStyle, buttonContainerStyle } from '../../../common/containerStyles';
-import WrappedRoundButton from '../../component/WrappedRoundButton';
-import WrappedText from '../../component/WrappedText';
-import Icons from 'react-native-vector-icons/Feather';
-import WrappedTextInput from '../../component/WrappedTextInput';
-import TextButton from '../../component/TextButton';
-import ShadowWrapperHOC from '../../hoc/ShadowWrapperHOC';
+import { View, ScrollView } from 'react-native';
+import { NavigationProps } from '../../../common';
+import { getHP } from '../../../common/dimension';
+import { BGCOLOR, DSP, FLEX, PA } from '../../../common/styles';
 import HeaderText from '../component/HeaderText';
 import ServerErrorText from '../component/errorText';
-import {
-    ICreateShopMember,
-    IRCreateShopMember,
-    IRShopMemberDelete,
-    IshopMember,
-    shopMemberRole,
-} from '../../../server/apis/shopMember/shopMember.interface';
-import { createShopMember, deleteShopMember } from '../../../server/apis/shopMember/shopMember.api';
+import { IshopMember, shopMemberRole } from '../../../server/apis/shopMember/shopMember.interface';
 import { getShop, updateShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, IRShopUpdate } from '../../../server/apis/shop/shop.interface';
 import { NavigationKey } from '../../../labels';
-import { border } from '../../app/edit/product/component/generalConfig';
 import { Storage, StorageItemKeys } from '../../../storage';
 import { ToastHOC } from '../../hoc/ToastHOC';
 import RightComponentButtonWithLeftText from '../../components/button/RightComponentButtonWithLeftText';
-import { commonButtonProps } from '../../components/button';
 import AddMember from './AddMember';
 
 const getId = () => {
@@ -130,19 +113,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         }
     };
 
-    const setField = (value: string | Object, role: 'Co-owner' | 'worker', index: number, field: keyof member) => {
-        let data = role == 'Co-owner' ? [...coOwner] : [...worker];
-
-        data[index][field] = value;
-
-        if (role == 'Co-owner') {
-            setcoOwner([...data]);
-        } else {
-            setWorker([...data]);
-        }
-    };
-
-    const deleteMember = async (role: 'Co-owner' | 'worker', index: number, deleted?: boolean) => {
+    const deleteMember = async (role: shopMemberRole, index: number, deleted?: boolean) => {
         let data = role == 'Co-owner' ? [...coOwner] : [...worker];
         console.log(index);
         try {
@@ -151,7 +122,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
             if (deleted) {
                 setSubmittedCount(submittedCount - 1);
             }
-            if (role == 'Co-owner') {
+            if (role == shopMemberRole.coOwner) {
                 setcoOwner([...data]);
             } else {
                 setWorker([...data]);
@@ -161,68 +132,46 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
         }
     };
 
-    const submitDetails = async (index: number, role: 'worker' | 'Co-owner', skipped = false) => {
+    const goNext = async () => {
         try {
-            let data: Partial<ICreateShopMember>;
-            let details: member;
-            if (!skipped) {
-                details = role == 'worker' ? worker[index] : coOwner[index];
-
-                data = {
-                    firstName: details.firstName,
-                    lastName: details.lastName,
-                    phoneNumber: details.phoneNumber,
-                    role: details.role,
-                    shop: ownerDetails.shop,
-                };
-
-                const response: IRCreateShopMember = await createShopMember(data);
-
-                if (response.status == 1) {
-                    Alert.alert('Member added!!');
-                    if (role == 'Co-owner') {
-                        coOwner[index] = { ...coOwner[index], added: true, _id: response.payload._id };
-                        setcoOwner(coOwner);
-                    } else {
-                        worker[index] = { ...worker[index], added: true, _id: response.payload._id };
-                        setWorker(worker);
-                    }
-                    setSubmittedCount(submittedCount + 1);
-                } else {
-                    setField({ error: response.message }, role, index, 'error');
-                }
+            const response: IRShopUpdate = await updateShop({
+                _id: ownerDetails.shop,
+                shopMemberOnBoardingDone: true,
+            });
+            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.VERIFICATION);
+            if (response.status == 1) {
+                navigation.reset({
+                    index: 0,
+                    routes: [
+                        {
+                            name: NavigationKey.VERIFICATION,
+                            params: { ownerDetails: { ...ownerDetails, membersDetailSkipped: true } },
+                        },
+                    ],
+                });
             }
         } catch (error) {
-            setField({ error: error.message }, role, index, 'error');
+            ToastHOC.errorAlert(error.message);
         }
-    };
-
-    const goNext = () => {
-        navigation.reset({
-            index: 0,
-            routes: [
-                {
-                    name: NavigationKey.VERIFICATION,
-                    params: { ownerDetails },
-                },
-            ],
-        });
     };
 
     async function ifSkipped() {
-        const response: IRShopUpdate = await updateShop({
-            _id: ownerDetails.shop,
-            membersDetailSkipped: true,
-        });
-        if (response.status == 1) {
-            await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.PRODUCTDETAILS);
-            goNext();
-        } else {
-            setError(response.message);
+        try {
+            const response: IRShopUpdate = await updateShop({
+                _id: ownerDetails.shop,
+                shopMemberOnBoardingDone: true,
+                membersDetailSkipped: true,
+            });
+            if (response.status == 1) {
+                await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.VERIFICATION);
+                goNext();
+            } else {
+                setError(response.message);
+            }
+        } catch (error) {
+            ToastHOC.errorAlert(error.message);
         }
     }
-
-    console.log(coOwner, worker);
 
     return (
         <View style={[FLEX(1)]}>
@@ -267,8 +216,6 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 onPressCross={deleteMember}
                                 data={coOwner}
                                 role={shopMemberRole.coOwner}
-                                setField={setField}
-                                submitDetails={submitDetails}
                                 message={
                                     'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.'
                                 }
@@ -305,36 +252,30 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                                 data={worker}
                                 key={2}
                                 role={shopMemberRole.worker}
-                                setField={setField}
-                                submitDetails={submitDetails}
                                 message={'Worker is someone whom you hire to help in handling of your shop'}
                             />
                         </View>
                     </>
                 </View>
             </ScrollView>
-            <View style={[PH(0.3), BGCOLOR('#FFFFFF')]}>
-                {!update && submittedCount == 0 ? (
+            <View style={[PA(DSP * 0.5), BGCOLOR('#FFFFFF')]}>
+                {coOwner.length + worker.length == 0 ? (
                     <RightComponentButtonWithLeftText
                         onPress={() => {
                             ifSkipped();
                         }}
-                        buttonText={'Do this later'}
-                        {...commonButtonProps}
-                        borderWidth={0}
+                        buttonText={'Do this process later'}
                     />
                 ) : (
                     <View />
                 )}
 
-                {submittedCount != 0 && (
+                {coOwner.length + worker.length != 0 && (
                     <RightComponentButtonWithLeftText
                         onPress={() => {
                             goNext();
                         }}
-                        buttonText={'Submit'}
-                        {...commonButtonProps}
-                        borderWidth={0}
+                        buttonText={'Submit details'}
                     />
                 )}
             </View>
