@@ -14,6 +14,7 @@ import { createShopMember, triggerOtp, updateShopMember } from '../../server/api
 import {
     IRCheckPhoneNumber,
     IRCreateShopMember,
+    IshopMember,
     shopMemberRole,
 } from '../../server/apis/shopMember/shopMember.interface';
 import ServerErrorText from './component/errorText';
@@ -28,6 +29,7 @@ export interface CreateDukanProps extends NavigationProps {
         params: {
             update: boolean;
             details: formState;
+            updateCallback: (details: IshopMember) => void;
         };
     };
 }
@@ -113,6 +115,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
                     this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
                 } else {
+                    this.props.route.params.updateCallback({ ...this.state.formState, role: shopMemberRole.Owner });
                     this.props.navigation.goBack();
                 }
 

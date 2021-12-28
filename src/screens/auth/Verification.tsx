@@ -343,6 +343,9 @@ const Verification: React.SFC<VerificationProps> = ({
                                             dontShowHeader: true,
                                             update: true,
                                             details: owner[0],
+                                            updateCallback: (details: IshopMember) => {
+                                                setOwnerDetails([details]);
+                                            },
                                         });
                                     }}
                                     onPressPlus={() => {}}

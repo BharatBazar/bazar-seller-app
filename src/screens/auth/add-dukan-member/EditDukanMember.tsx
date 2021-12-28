@@ -38,6 +38,7 @@ interface EditDukanMemberProps extends NavigationProps {
             message?: string;
             addMember: Function;
             shop?: string;
+            updateCallBack: Function;
             openUpdateFlow?: boolean;
             shopMember: member;
         };
