@@ -14,6 +14,7 @@ import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon'
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { AlertContext } from '@app/../App';
 import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
+import MemberDetails from './MemberDetails';
 
 const AddMember = ({
     onPressPlus,
@@ -67,73 +68,13 @@ const AddMember = ({
             <View style={[MT(0.1)]} /> */}
             {data.map((item: member, index: number) => {
                 return (
-                    <View
-                        key={item._id}
-                        style={[
-                            { width: '100%' },
-                            FDR(),
-                            // AIC(),
-                            JCC('space-between'),
-                            BGCOLOR('#FFFFFF'),
-                            provideShadow(),
-                            // BGCOLOR(colorCode.CHAKRALOW(20)),
-
-                            {
-                                borderRadius: getWP(0.2),
-
-                                paddingVertical: 15,
-                                paddingHorizontal: 15,
-                                marginTop: 10,
-                                borderWidth: 1,
-                                borderColor: borderColor,
-                            },
-                        ]}
-                        onPress={() => {
-                            setSelectedItem(item);
-                        }}
-                    >
-                        <View>
-                            <WrappedText
-                                text={item.role}
-                                fontSize={fs12}
-                                containerStyle={[
-                                    BGCOLOR(mainColor),
-                                    provideShadow(),
-                                    { padding: 4, borderRadius: 4, alignItems: 'center' },
-                                ]}
-                                textColor="#FFF"
-                            />
-                            <View style={[MT(0.1)]} />
-                            <WrappedText text={item.firstName + ' ' + item.lastName} fontSize={fs16} />
-
-                            <WrappedText text={item.phoneNumber} fontSize={fs13} textColor={black50} />
-                        </View>
-                        <View style={[{ justifyContent: 'flex-end', flexDirection: 'row' }]}>
-                            <ButtonFeatherIcon
-                                iconName="trash"
-                                onPress={() => {
-                                    setAlertState({
-                                        isVisible: true,
-                                        heading: 'Delete member',
-                                        subHeading:
-                                            'Are you sure you want to remove ' + item.firstName + ' from your shop?',
-                                        onPressRightButton: () => {
-                                            setAlertState(defaultAlertState);
-                                            deleteMember(item._id, index);
-                                        },
-                                    });
-                                }}
-                                containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF')]}
-                            />
-                            <ButtonFeatherIcon
-                                iconName="edit"
-                                containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
-                                onPress={() => {
-                                    onPressEdit(item, index);
-                                }}
-                            />
-                        </View>
-                    </View>
+                    <MemberDetails
+                        item={item}
+                        onPressCross={onPressCross}
+                        onPressEdit={onPressEdit}
+                        onPressPlus={onPressPlus}
+                        role={role}
+                    />
                 );
             })}
             {/* <MemberDetailsPopup

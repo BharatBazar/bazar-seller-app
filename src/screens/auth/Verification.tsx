@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { FontFamily, fs12, fs14, fs16, fs18, fs20, fs28, NavigationProps } from '../../common';
+import { FontFamily, fs12, fs14, fs16, fs18, fs20, fs28, fs6, NavigationProps } from '../../common';
 import { getHP, getWP } from '../../common/dimension';
 import {
     AIC,
@@ -9,6 +9,7 @@ import {
     BR,
     BW,
     colorTransparency,
+    DSP,
     FDR,
     FLEX,
     HP,
@@ -16,6 +17,7 @@ import {
     MH,
     MT,
     MV,
+    PA,
     PH,
     provideShadow,
     PT,
@@ -24,7 +26,7 @@ import {
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
-import { borderColor, colorCode, mainColor } from '../../common/color';
+import { borderColor, colorCode, mainColor, messageColor } from '../../common/color';
 import { IRGetShop, IRShopVerification, Shop, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
@@ -40,6 +42,9 @@ import Loader from '../component/Loader';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import { commonButtonProps } from '../components/button';
+import Border from '../components/border/Border';
+import AddMember from './add-dukan-member/AddMember';
+import MemberDetails from './add-dukan-member/MemberDetails';
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -124,24 +129,19 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
 
 const shopDetails = (shop: Partial<Shop>) => {
     return (
-        <View style={[PV(0.2), MT(0.1), BGCOLOR('#FFFFFF')]}>
-            <View style={[]}>
-                <WrappedText text={shop.shopName + ' address details'} textColor={mainColor} fontSize={fs18} />
-                <WrappedText text={shop.localAddress} textColor={'#8a8a8a'} fontSize={fs14} />
-            </View>
-            <View style={[MT(0.1)]} />
-            {SectionHorizontal('State', shop.state.name || 'NA')}
-            {SectionHorizontal('City', shop.city.name || 'NA')}
-            {SectionHorizontal('Area', shop.area.name || 'NA')}
-            {SectionHorizontal('Pincode', shop.pincode || 'NA')}
+        <View style={[BGCOLOR('#FFFFFF'), provideShadow(1), PA(DSP), BR(0.1), MT(0.2)]}>
+            <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
+            <WrappedText text={'About your dukan'} containerStyle={[MT(0.1)]} />
+            <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
+
+            <View style={[MT(0.2)]} />
+            <WrappedText text={'Address '} />
+            <WrappedText text={shop.localAddress} textColor={messageColor} containerStyle={[MT(0.1)]} />
 
             <WrappedText
-                text={'About ' + shop.shopName}
-                textColor={mainColor}
-                fontSize={fs18}
-                containerStyle={[MT(0.2)]}
+                textColor={messageColor}
+                text={shop.area.name + ',\n' + shop.city.name + ', ' + shop.state.name + ' (' + shop.pincode + ')'}
             />
-            <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} fontSize={fs14} />
         </View>
     );
 };
@@ -275,9 +275,10 @@ const Verification: React.SFC<VerificationProps> = ({
             <StatusBar />
             <View style={[FLEX(1)]}>
                 <ScrollView style={[{ marginBottom: 5 }]} showsVerticalScrollIndicator={false}>
-                    <View style={[PH(0.5), PT(0.4)]}>
-                        <WrappedText text={'Dukan Verification'} fontSize={fs28} textColor={'#161616'} />
-                        {/* <WrappedText
+                    <View style={[BGCOLOR('#FFFFFF'), , PA(DSP)]}>
+                        <View style={[]}>
+                            <WrappedText text={'Dukan Verification'} fontSize={fs28} textColor={'#161616'} />
+                            {/* <WrappedText
                         text={
                             'Hurrray!! You have successfull completed all the process to get you started in your journey of growth and success.'
                         }
@@ -289,91 +290,135 @@ const Verification: React.SFC<VerificationProps> = ({
                         }
                         textStyle={{ marginTop: getHP(0.2) }}
                     /> */}
-                        <WrappedText
-                            text={
-                                'Company will contact you soon for dukan verification. After that you will be able to access your dukan.'
-                            }
-                            textStyle={{ marginTop: getHP(0.1) }}
-                        />
-                    </View>
-                    <View
-                        style={[
-                            // BW(2),
-                            MV(0.2),
-                            // BC(colorCode.SAFFRONLOW(10)),
-                            BGCOLOR('#FFFFFF'),
-                            provideShadow(1),
-                            PH(0.6),
-                            PV(0.3),
-                            BR(0.1),
-                            MH(0.5),
-                            MT(0.3),
-                        ]}
-                    >
-                        <WrappedText
-                            text={'Dukan Verification Status'}
-                            fontSize={fs14}
-                            //containerStyle={[MT(0.4)]}
-                            fontFamily={FontFamily.Medium}
-                            textColor={colorCode.BLACKLOW(60)}
-                        />
-                        <View style={[MT(0.4)]}>
-                            <StepIndicator
-                                customStyles={customStyles}
-                                currentPosition={currentPosition}
-                                labels={indicatorLabel}
-                                stepCount={3}
-                                direction={'horizontal'}
+                            <WrappedText
+                                text={
+                                    'Company will contact you soon for dukan verification. After that you will be able to access your dukan.'
+                                }
+                                textStyle={{ marginTop: getHP(0.1) }}
                             />
                         </View>
-                        <WrappedText
-                            text={'Message from company'}
-                            fontSize={fs14}
-                            containerStyle={[MT(0.5)]}
-                            fontFamily={FontFamily.Medium}
-                            textColor={colorCode.SAFFRON}
-                        />
-                        <WrappedText
-                            text={
-                                verificationDetails.remarks
-                                    ? verificationDetails.remarks
-                                    : 'Our organization will contact you soon..'
-                            }
-                            fontSize={fs16}
-                            containerStyle={[MT(0.05)]}
-                            textColor={colorCode.BLACKLOW(30)}
-                        />
+                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
+                            <WrappedText
+                                text={'Dukan Verification Status'}
+                                fontSize={fs14}
+                                fontFamily={FontFamily.Medium}
+                                textColor={colorCode.BLACKLOW(60)}
+                            />
+                            <View style={[MT(0.4)]}>
+                                <StepIndicator
+                                    customStyles={customStyles}
+                                    currentPosition={currentPosition}
+                                    labels={indicatorLabel}
+                                    stepCount={3}
+                                    direction={'horizontal'}
+                                />
+                            </View>
+                        </View>
+                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
+                            <WrappedText
+                                text={'Message from company'}
+                                fontSize={fs14}
+                                fontFamily={FontFamily.Medium}
+                                textColor={colorCode.SAFFRON}
+                            />
+                            <WrappedText
+                                text={
+                                    verificationDetails.remarks
+                                        ? verificationDetails.remarks
+                                        : 'Our organization will contact you soon..'
+                                }
+                                fontSize={fs16}
+                                containerStyle={[MT(0.05)]}
+                                textColor={colorCode.BLACKLOW(30)}
+                            />
+                        </View>
                     </View>
-                    <ShadowWrapperHOC containerStyle={[provideShadow(1), MH(0.5)]}>
-                        <View>{shop.state ? shopDetails(shop) : <View />}</View>
-                        <WrappedText
-                            text={'Shop member details'}
-                            fontSize={fs20}
-                            textColor={mainColor}
-                            textStyle={[MV(0.1)]}
-                        />
-                        {showMemberDetails(owner, shopMemberRole.Owner, dukanName, () => {
+                    <View style={[, BGCOLOR('#FFFFFF'), { paddingHorizontal: DSP }]}>
+                        {/* {showMemberDetails(owner, shopMemberRole.Owner, dukanName, () => {
                             navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
                                 screen: NavigationKey.CREATEDUKAN,
                                 ownerDetails,
                                 update: true,
                             });
-                        })}
-                        {showMemberDetails(coOwner, shopMemberRole.coOwner, dukanName, () => {
-                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                screen: NavigationKey.ADDDUKANMEMBERS,
-                                ownerDetails,
-                                update: true,
-                            });
-                        })}
-                        {showMemberDetails(worker, shopMemberRole.worker, dukanName, () => {
-                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                screen: NavigationKey.ADDDUKANMEMBERS,
-                                ownerDetails,
-                                update: true,
-                            });
-                        })}
-                    </ShadowWrapperHOC>
+                        })} */}
+                        <MemberDetails
+                            role={shopMemberRole.Owner}
+                            onPressCross={() => {}}
+                            onPressEdit={() => {}}
+                            onPressPlus={() => {}}
+                            item={owner[0]}
+                        />
+                        <View>{shop.state ? shopDetails(shop) : <View />}</View>
+                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
+                            <WrappedText text={'Shop member details'} textColor={mainColor} />
+                            <AddMember
+                                onPressPlus={() => {
+                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                    //     message:
+                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                    //     role: shopMemberRole.worker,
+                                    //     addMember: (data: member) => {
+                                    //         console.log('add coowner', data);
+                                    //         addWorker(data);
+                                    //     },
+                                    //     shop: ownerDetails.shop,
+                                    // });
+                                }}
+                                onPressEdit={(member: member, index?: number) => {
+                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                    //     message:
+                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                    //     role: shopMemberRole.worker,
+                                    //     addMember: (data: member) => {
+                                    //         console.log('add coowner', data);
+                                    //         addWorker(data, index);
+                                    //     },
+                                    //     shop: ownerDetails.shop,
+                                    //     shopMember: member,
+                                    //     openUpdateFlow: true,
+                                    // });
+                                }}
+                                onPressCross={() => {}}
+                                data={coOwner}
+                                key={2}
+                                role={shopMemberRole.coOwner}
+                                message={'Worker is someone whom you hire to help in handling of your shop'}
+                            />
+                            <AddMember
+                                onPressPlus={() => {
+                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                    //     message:
+                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                    //     role: shopMemberRole.worker,
+                                    //     addMember: (data: member) => {
+                                    //         console.log('add coowner', data);
+                                    //         addWorker(data);
+                                    //     },
+                                    //     shop: ownerDetails.shop,
+                                    // });
+                                }}
+                                onPressEdit={(member: member, index?: number) => {
+                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                    //     message:
+                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                    //     role: shopMemberRole.worker,
+                                    //     addMember: (data: member) => {
+                                    //         console.log('add coowner', data);
+                                    //         addWorker(data, index);
+                                    //     },
+                                    //     shop: ownerDetails.shop,
+                                    //     shopMember: member,
+                                    //     openUpdateFlow: true,
+                                    // });
+                                }}
+                                onPressCross={() => {}}
+                                data={worker}
+                                key={2}
+                                role={shopMemberRole.worker}
+                                message={'Worker is someone whom you hire to help in handling of your shop'}
+                            />
+                        </View>
+                    </View>
                 </ScrollView>
                 <View
                     style={{
