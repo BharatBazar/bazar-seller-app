@@ -46,6 +46,7 @@ import Border from '../components/border/Border';
 import AddMember from './add-dukan-member/AddMember';
 import MemberDetails from './add-dukan-member/MemberDetails';
 import { ShadowWrappper } from '../components/styles/common';
+import ButtonFeatherIcon from '../components/button/ButtonFeatherIcon';
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -128,11 +129,18 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
     }
 };
 
+const renderEditButton = (onPress: Function) => (
+    <ButtonFeatherIcon iconName="edit" containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF')]} onPress={onPress} />
+);
+
 const shopDetails = (shop: Partial<Shop>) => {
     return (
         <View>
             <View style={ShadowWrappper()}>
-                <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
+                <View style={[FDR(), JCC('space-between'), AIC()]}>
+                    <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
+                    {renderEditButton(() => {})}
+                </View>
                 <WrappedText text={'About your dukan'} containerStyle={[MT(0.1)]} />
                 <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
             </View>
@@ -271,6 +279,15 @@ const Verification: React.SFC<VerificationProps> = ({
         }
     }
 
+    const openEditFlow = (screen: string, details: any, updateCallback: Function) => {
+        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+            screen: screen,
+            update: true,
+            details: details,
+            updateCallback: updateCallback,
+        });
+    };
+
     React.useEffect(() => {
         loadVerificationDetail();
         getShopDetailsFromServer();
@@ -325,27 +342,13 @@ const Verification: React.SFC<VerificationProps> = ({
                             </View>
                         </View>
                         <View style={[, BGCOLOR('#FFFFFF'), { paddingHorizontal: DSP }]}>
-                            {/* {showMemberDetails(owner, shopMemberRole.Owner, dukanName, () => {
-                            navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                screen: NavigationKey.CREATEDUKAN,
-                                ownerDetails,
-                                update: true,
-                            });
-                        })} */}
                             {owner.length > 0 && (
                                 <MemberDetails
                                     role={shopMemberRole.Owner}
                                     onPressCross={() => {}}
                                     onPressEdit={(item, index) => {
-                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                            screen: NavigationKey.CREATEDUKAN,
-                                            ownerDetails,
-                                            dontShowHeader: true,
-                                            update: true,
-                                            details: owner[0],
-                                            updateCallback: (details: IshopMember) => {
-                                                setOwnerDetails([details]);
-                                            },
+                                        openEditFlow(NavigationKey.CREATEDUKAN, owner[0], (details: IshopMember) => {
+                                            setOwnerDetails([details]);
                                         });
                                     }}
                                     onPressPlus={() => {}}
