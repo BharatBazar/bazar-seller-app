@@ -27,7 +27,7 @@ import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
 import { borderColor, colorCode, mainColor, messageColor } from '../../common/color';
-import { IRGetShop, IRShopVerification, Shop, verificationStatus } from '../../server/apis/shop/shop.interface';
+import { IRGetShop, IRShopVerification, IShop, Shop, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
 import TextButton from '../component/TextButton';
@@ -132,29 +132,6 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
 const renderEditButton = (onPress: Function) => (
     <ButtonFeatherIcon iconName="edit" containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF')]} onPress={onPress} />
 );
-
-const shopDetails = (shop: Partial<Shop>) => {
-    return (
-        <View>
-            <View style={ShadowWrappper()}>
-                <View style={[FDR(), JCC('space-between'), AIC()]}>
-                    <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
-                    {renderEditButton(() => {})}
-                </View>
-                <WrappedText text={'About your dukan'} containerStyle={[MT(0.1)]} />
-                <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
-            </View>
-            <View style={ShadowWrappper()}>
-                <WrappedText text={'Address '} />
-                <WrappedText text={shop.localAddress} textColor={messageColor} containerStyle={[MT(0.1)]} />
-                <WrappedText
-                    textColor={messageColor}
-                    text={shop.area.name + ',\n' + shop.city.name + ', ' + shop.state.name + ' (' + shop.pincode + ')'}
-                />
-            </View>
-        </View>
-    );
-};
 
 const Verification: React.SFC<VerificationProps> = ({
     navigation,
@@ -279,13 +256,51 @@ const Verification: React.SFC<VerificationProps> = ({
         }
     }
 
-    const openEditFlow = (screen: string, details: any, updateCallback: Function) => {
+    const openEditFlow = (screen: string, details: Partial<IshopMember> | Partial<IShop>, updateCallback: Function) => {
         navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
             screen: screen,
             update: true,
             details: details,
-            updateCallback: updateCallback,
+            updateCallback: (params: any) => updateCallback(params),
         });
+    };
+
+    const shopDetails = (shop: Shop) => {
+        return (
+            <View>
+                <View style={ShadowWrappper()}>
+                    <View style={[FDR(), JCC('space-between'), AIC()]}>
+                        <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
+                        {renderEditButton(() => {
+                            openEditFlow(
+                                NavigationKey.SHOPDETAILS,
+                                {
+                                    shopName: shop.shopName,
+                                    shopDescription: shop.shopDescription,
+                                    _id: shop._id,
+                                },
+                                (details: Partial<IShop>) => {
+                                    console.log(' SHOP details =>', details);
+                                    setShop({ ...shop, ...details });
+                                },
+                            );
+                        })}
+                    </View>
+                    <WrappedText text={'About your dukan'} containerStyle={[MT(0.1)]} />
+                    <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
+                </View>
+                <View style={ShadowWrappper()}>
+                    <WrappedText text={'Address '} />
+                    <WrappedText text={shop.localAddress} textColor={messageColor} containerStyle={[MT(0.1)]} />
+                    <WrappedText
+                        textColor={messageColor}
+                        text={
+                            shop.area.name + ',\n' + shop.city.name + ', ' + shop.state.name + ' (' + shop.pincode + ')'
+                        }
+                    />
+                </View>
+            </View>
+        );
     };
 
     React.useEffect(() => {

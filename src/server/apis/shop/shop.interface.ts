@@ -44,6 +44,35 @@ export interface Shop {
     shopMemberOnBoardingDone: boolean;
 }
 
+export interface IShop {
+    _id: string;
+    shopName: string;
+    addressOfShop: string;
+    membersDetailSkipped: boolean;
+    isTerminated: boolean;
+
+    shopDescription: string;
+
+    shopImage: [string];
+    ownerImage: [string];
+    // whatYouSell: string[];
+    owner: {};
+    coOwner: {}[];
+    worker: {}[];
+    isVerified: boolean;
+    state: string;
+    city: string;
+    area: string;
+    pincode: string;
+    localAddress: string;
+    rating: Number;
+    noOfRating: Number;
+
+    category: product[];
+    subCategory: product[][];
+    subCategory1: product[][][];
+    shopMemberOnBoardingDone: boolean;
+}
 export interface IRGetShop extends CommonApiResponse {
     payload: Shop;
 }

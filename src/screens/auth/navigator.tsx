@@ -43,6 +43,7 @@ class AuthNavigation extends React.Component<Props, {}> {
             var screen = undefined;
             var update = undefined;
         }
+        let initialParams = ownerDetails || update ? { ownerDetails, ...params } : {};
 
         return (
             <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
@@ -60,7 +61,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                 >
                     <Stack.Screen
                         name={NavigationKey.CREATEDUKAN}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         component={CreateDukan}
                         options={{
                             cardStyleInterpolator: Right,
@@ -70,7 +71,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.SETPASSWORD}
                         component={SetPassword}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -78,7 +79,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.SHOPDETAILS}
                         component={ShopDetails}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -86,7 +87,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.ADDRESS}
                         component={Address}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -94,7 +95,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.ADDDUKANMEMBERS}
                         component={AddDukanMembers}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -102,7 +103,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.EDITDUKANMEMBER}
                         component={EditDukanMember}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -110,7 +111,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.PRODUCTDETAILS}
                         component={ProductDetails}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
@@ -118,7 +119,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                     <Stack.Screen
                         name={NavigationKey.PRODUCTSUBCATEGORY}
                         component={ProductSubCategory}
-                        initialParams={(ownerDetails && { ownerDetails, ...params }) || {}}
+                        initialParams={initialParams}
                         options={{
                             cardStyleInterpolator: Right,
                         }}
