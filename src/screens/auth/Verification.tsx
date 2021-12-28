@@ -290,7 +290,26 @@ const Verification: React.SFC<VerificationProps> = ({
                     <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
                 </View>
                 <View style={ShadowWrappper()}>
-                    <WrappedText text={'Address '} />
+                    <View style={[FDR(), JCC('space-between'), AIC()]}>
+                        <WrappedText text={'Address '} />
+                        {renderEditButton(() => {
+                            openEditFlow(
+                                NavigationKey.ADDRESS,
+                                {
+                                    localAddress: shop.localAddress,
+                                    area: shop.area._id,
+                                    city: shop.city._id,
+                                    state: shop.state._id,
+                                    pincode: shop.pincode,
+                                    _id: shop._id,
+                                },
+                                (details: Partial<IShop>) => {
+                                    console.log(' SHOP details =>', details);
+                                    setShop({ ...shop, ...details });
+                                },
+                            );
+                        })}
+                    </View>
                     <WrappedText text={shop.localAddress} textColor={messageColor} containerStyle={[MT(0.1)]} />
                     <WrappedText
                         textColor={messageColor}
