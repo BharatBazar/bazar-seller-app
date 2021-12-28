@@ -342,6 +342,7 @@ const Verification: React.SFC<VerificationProps> = ({
                                             ownerDetails,
                                             dontShowHeader: true,
                                             update: true,
+                                            details: owner[0],
                                         });
                                     }}
                                     onPressPlus={() => {}}

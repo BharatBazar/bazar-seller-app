@@ -10,8 +10,12 @@ import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
-import { createShopMember, triggerOtp } from '../../server/apis/shopMember/shopMember.api';
-import { IRCheckPhoneNumber, IRCreateShopMember } from '../../server/apis/shopMember/shopMember.interface';
+import { createShopMember, triggerOtp, updateShopMember } from '../../server/apis/shopMember/shopMember.api';
+import {
+    IRCheckPhoneNumber,
+    IRCreateShopMember,
+    shopMemberRole,
+} from '../../server/apis/shopMember/shopMember.interface';
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
 import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
@@ -23,6 +27,7 @@ export interface CreateDukanProps extends NavigationProps {
     route: {
         params: {
             update: boolean;
+            details: formState;
         };
     };
 }
@@ -91,17 +96,27 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     submitDetails = async () => {
         this.setState({ signInButtonState: 2 });
         try {
-            const response: IRCreateShopMember = await createShopMember({
-                ...this.state.formState,
-                role: 'owner',
-            });
+            const response: IRCreateShopMember = this.state.update
+                ? await updateShopMember({
+                      ...this.state.formState,
+                      role: shopMemberRole.Owner,
+                  })
+                : await createShopMember({
+                      ...this.state.formState,
+                      role: shopMemberRole.Owner,
+                  });
             if (response.status == 1) {
-                await Storage.setItem(StorageItemKeys.Token, 'token exists');
-                await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
-                await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
-                await Storage.setItem(StorageItemKeys.userDetail, response.payload);
+                if (!this.state.update) {
+                    await Storage.setItem(StorageItemKeys.Token, 'token exists');
+                    await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
+                    await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
+                    await Storage.setItem(StorageItemKeys.userDetail, response.payload);
+                    this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
+                } else {
+                    this.props.navigation.goBack();
+                }
+
                 this.setState({ signInButtonState: 0 });
-                this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
             } else {
                 this.setState({ error: { ...this.state.error, serverError: response.message }, signInButtonState: 0 });
             }
@@ -111,10 +126,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     };
 
     validateFields = () => {
-        const { formState } = this.state;
+        const { formState, otpSent } = this.state;
         const { phoneNumber, otp, email, firstName, lastName } = formState;
         let error: formError = {};
-        if (otp.length < 6) {
+        if (otpSent && otp.length < 6) {
             error['otpError'] = ErrorText.otpError;
         }
         if (!mobileValidation.test(phoneNumber)) {
@@ -182,6 +197,11 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         return field in error ? <ServerErrorText errorText={error[field]} /> : <View />;
     };
 
+    componentDidMount() {
+        if (this.state.update) {
+            this.setState({ formState: { ...this.props.route.params.details, otp: '' } });
+        }
+    }
     render() {
         const componentProps = {
             buttonTextProps: {
@@ -194,6 +214,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             },
         };
 
+        const { details } = this.props.route.params;
+
         const {
             otpSent,
             signInButtonState,
@@ -203,7 +225,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             timer,
             update,
         } = this.state;
-
+        console.log(details.phoneNumber, phoneNumber, update);
         return (
             <ScrollView
                 style={[{ flex: 1, padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP, backgroundColor: '#FFFFFF' }]}
@@ -220,31 +242,37 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                             <WrappedTextInput
                                 placeholder={CreateDukanText.ownerMobileNumber}
                                 value={phoneNumber}
-                                onChangeText={(phoneNumber) => this.setField('phoneNumber', phoneNumber)}
+                                onChangeText={(phoneNumber) => {
+                                    this.setField('phoneNumber', phoneNumber);
+                                    if (update && phoneNumber == details.phoneNumber) {
+                                        this.setState({ otpSent: false });
+                                    }
+                                }}
                                 {...componentProps.textInputProps}
                                 errorText={error['phoneNumber']}
                             />
                         </View>
                     </View>
 
-                    <TextButton
-                        text={
-                            otpSent
-                                ? CreateDukanText.resendOTp + (timer > 0 ? 'in ' + timer + 's' : '')
-                                : CreateDukanText.sendOtp
-                        }
-                        textProps={componentProps.buttonTextProps}
-                        containerStyle={[
-                            buttonContainerStyle,
-                            { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
-                        ]}
-                        onPress={() => {
-                            this.checkPhoneNumber(this.state.formState.phoneNumber);
-                        }}
-                        isLoading={otpButtonState == 2 ? true : false}
-                        disabled={otpButtonState == 2 || timer > 0}
-                    />
-
+                    {((update && phoneNumber != details.phoneNumber) || !update) && (
+                        <TextButton
+                            text={
+                                otpSent
+                                    ? CreateDukanText.resendOTp + (timer > 0 ? 'in ' + timer + 's' : '')
+                                    : CreateDukanText.sendOtp
+                            }
+                            textProps={componentProps.buttonTextProps}
+                            containerStyle={[
+                                buttonContainerStyle,
+                                { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
+                            ]}
+                            onPress={() => {
+                                this.checkPhoneNumber(this.state.formState.phoneNumber);
+                            }}
+                            isLoading={otpButtonState == 2 ? true : false}
+                            disabled={otpButtonState == 2 || timer > 0}
+                        />
+                    )}
                     {otpSent && (
                         <>
                             <WrappedTextInput
@@ -257,7 +285,13 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                             {otpSent && (
                                 <WrappedText text={CreateDukanText.otpMessage} fontSize={10} textColor={messageColor} />
                             )}
+                        </>
+                    )}
 
+                    {((!update && otpSent) ||
+                        (update && phoneNumber != details.phoneNumber && otpSent) ||
+                        (update && phoneNumber == details.phoneNumber)) && (
+                        <>
                             <View style={[FDR()]}>
                                 <View style={[FLEX(1)]}>
                                     <WrappedTextInput

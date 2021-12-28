@@ -32,6 +32,7 @@ export interface IshopMember {
     isTerminated: boolean;
     isDeleted: boolean;
     shopMemberOnBoardingDone: boolean;
+    email?: string;
 }
 
 export interface IshopMemberPopulated {

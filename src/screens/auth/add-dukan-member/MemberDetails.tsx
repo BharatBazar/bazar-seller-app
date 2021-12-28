@@ -78,13 +78,21 @@ const MemberDetails: React.FunctionComponent<MemberDetailsProps> = ({
                     containerStyle={[
                         BGCOLOR(mainColor),
                         provideShadow(),
-                        { padding: 4, borderRadius: 4, alignItems: 'center' },
+                        {
+                            paddingHorizontal: 10,
+                            paddingVertical: 4,
+                            borderRadius: 4,
+                            alignItems: 'center',
+                            alignSelf: 'flex-start',
+                        },
                     ]}
                     textColor="#FFF"
                 />
                 <View style={[MT(0.1)]} />
                 <WrappedText text={item.firstName + ' ' + item.lastName} fontSize={fs14} />
-
+                {role && role == shopMemberRole.Owner && (
+                    <WrappedText text={item.email} fontSize={fs13} textColor={black50} />
+                )}
                 <WrappedText text={item.phoneNumber} fontSize={fs13} textColor={black50} />
             </View>
             <View style={[{ justifyContent: 'flex-end', flexDirection: 'row' }]}>
