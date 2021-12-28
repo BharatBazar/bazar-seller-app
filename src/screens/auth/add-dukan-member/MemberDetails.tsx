@@ -20,7 +20,7 @@ interface MemberDetailsProps {
     onPressPlus: Function;
     onPressCross: Function;
     role: shopMemberRole;
-
+    index?: number;
     onPressEdit: (shopMember: member, index?: number) => void;
 }
 
@@ -30,6 +30,7 @@ const MemberDetails: React.FunctionComponent<MemberDetailsProps> = ({
     onPressEdit,
     onPressPlus,
     role,
+    index,
 }) => {
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
@@ -87,7 +88,7 @@ const MemberDetails: React.FunctionComponent<MemberDetailsProps> = ({
                 <WrappedText text={item.phoneNumber} fontSize={fs13} textColor={black50} />
             </View>
             <View style={[{ justifyContent: 'flex-end', flexDirection: 'row' }]}>
-                {role != shopMemberRole.Owner && (
+                {role !== shopMemberRole.Owner && (
                     <ButtonFeatherIcon
                         iconName="trash"
                         onPress={() => {

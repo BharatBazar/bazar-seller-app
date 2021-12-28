@@ -13,7 +13,9 @@ export interface ErrorTextProps {
 const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) => {
     return (
         <>
-            <WrappedText text={step} fontSize={fs16} textColor={colorCode.SAFFRON} fontFamily={FontFamily.Bold} />
+            {typeof step == 'string' && (
+                <WrappedText text={step} fontSize={fs16} textColor={colorCode.SAFFRON} fontFamily={FontFamily.Bold} />
+            )}
             <WrappedText
                 text={heading}
                 fontSize={fs21}

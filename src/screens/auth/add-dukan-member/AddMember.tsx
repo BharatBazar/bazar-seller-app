@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { fs12, fs13, fs16, fs17, fs20, mobileValidation } from '../../../common';
+import { fs10, fs12, fs13, fs16, fs17, fs20, mobileValidation } from '../../../common';
 import { black20, black40, black50, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
 import { getWP } from '../../../common/dimension';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, ML, MT, PH, provideShadow, PV } from '../../../common/styles';
@@ -61,7 +61,7 @@ const AddMember = ({
 
                 <View style={[FLEX(1), { marginLeft: 10 }]}>
                     <WrappedText text={'Add ' + role.toLocaleUpperCase() + ' to your dukan'} fontSize={fs12} />
-                    <WrappedText text={message} fontSize={fs12} textColor={messageColor} />
+                    <WrappedText text={message} fontSize={fs10} textColor={messageColor} />
                 </View>
             </WrappedRectangleButton>
             {/* <WrappedText text={message} fontSize={fs12} containerStyle={[MT(0.1)]} textColor={messageColor} />

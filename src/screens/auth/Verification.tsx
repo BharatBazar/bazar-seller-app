@@ -45,6 +45,7 @@ import { commonButtonProps } from '../components/button';
 import Border from '../components/border/Border';
 import AddMember from './add-dukan-member/AddMember';
 import MemberDetails from './add-dukan-member/MemberDetails';
+import { ShadowWrappper } from '../components/styles/common';
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -53,7 +54,7 @@ export interface VerificationProps extends NavigationProps {
     };
 }
 
-const labels = ['Registered', 'Verfication in process.', 'Verified.'];
+const labels = ['Registered on Platform', 'Verfication in process.', 'Verified.'];
 const customStyles = {
     stepIndicatorSize: getHP(0.5),
     currentStepIndicatorSize: getHP(0.7),
@@ -129,19 +130,20 @@ const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanNa
 
 const shopDetails = (shop: Partial<Shop>) => {
     return (
-        <View style={[BGCOLOR('#FFFFFF'), provideShadow(1), PA(DSP), BR(0.1), MT(0.2)]}>
-            <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
-            <WrappedText text={'About your dukan'} containerStyle={[MT(0.1)]} />
-            <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
-
-            <View style={[MT(0.2)]} />
-            <WrappedText text={'Address '} />
-            <WrappedText text={shop.localAddress} textColor={messageColor} containerStyle={[MT(0.1)]} />
-
-            <WrappedText
-                textColor={messageColor}
-                text={shop.area.name + ',\n' + shop.city.name + ', ' + shop.state.name + ' (' + shop.pincode + ')'}
-            />
+        <View>
+            <View style={ShadowWrappper()}>
+                <WrappedText text={shop.shopName} textColor={mainColor} fontFamily={FontFamily.Bold} />
+                <WrappedText text={'About your dukan'} containerStyle={[MT(0.1)]} />
+                <WrappedText text={shop.shopDescription} textColor={'#8a8a8a'} containerStyle={[MT(0.1)]} />
+            </View>
+            <View style={ShadowWrappper()}>
+                <WrappedText text={'Address '} />
+                <WrappedText text={shop.localAddress} textColor={messageColor} containerStyle={[MT(0.1)]} />
+                <WrappedText
+                    textColor={messageColor}
+                    text={shop.area.name + ',\n' + shop.city.name + ', ' + shop.state.name + ' (' + shop.pincode + ')'}
+                />
+            </View>
         </View>
     );
 };
@@ -243,10 +245,12 @@ const Verification: React.SFC<VerificationProps> = ({
     }
 
     async function getShopDetailsFromServer() {
+        setLoader(true);
         try {
             const response: IRGetShop = await getShop({
                 _id: ownerDetails.shop,
             });
+
             const shop = response.payload;
             if (shop.owner) {
                 setOwnerDetails([{ ...shop.owner }]);
@@ -260,7 +264,9 @@ const Verification: React.SFC<VerificationProps> = ({
             setShop(shop);
             console.log(shop);
             setDukanName(shop.shopName);
+            setLoader(false);
         } catch (error) {
+            setLoader(false);
             ToastHOC.errorAlert(error.message);
         }
     }
@@ -270,220 +276,212 @@ const Verification: React.SFC<VerificationProps> = ({
         getShopDetailsFromServer();
     }, []);
 
-    return (
-        <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
-            <StatusBar />
-            <View style={[FLEX(1)]}>
-                <ScrollView style={[{ marginBottom: 5 }]} showsVerticalScrollIndicator={false}>
-                    <View style={[BGCOLOR('#FFFFFF'), , PA(DSP)]}>
-                        <View style={[]}>
-                            <WrappedText text={'Dukan Verification'} fontSize={fs28} textColor={'#161616'} />
-                            {/* <WrappedText
-                        text={
-                            'Hurrray!! You have successfull completed all the process to get you started in your journey of growth and success.'
-                        }
-                        textStyle={{ marginTop: getHP(0.3) }}
-                    />
-                    <WrappedText
-                        text={
-                            'Together we will grow & will end all the monopoly in the market. Bharat Bazar will be cheerfull as it was when there was no monopoly.'
-                        }
-                        textStyle={{ marginTop: getHP(0.2) }}
-                    /> */}
-                            <WrappedText
-                                text={
-                                    'Company will contact you soon for dukan verification. After that you will be able to access your dukan.'
-                                }
-                                textStyle={{ marginTop: getHP(0.1) }}
-                            />
-                        </View>
-                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
-                            <WrappedText
-                                text={'Dukan Verification Status'}
-                                fontSize={fs14}
-                                fontFamily={FontFamily.Medium}
-                                textColor={colorCode.BLACKLOW(60)}
-                            />
-                            <View style={[MT(0.4)]}>
-                                <StepIndicator
-                                    customStyles={customStyles}
-                                    currentPosition={currentPosition}
-                                    labels={indicatorLabel}
-                                    stepCount={3}
-                                    direction={'horizontal'}
+    if (loader) {
+        return <Loader />;
+    } else
+        return (
+            <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
+                <StatusBar />
+                <View style={[FLEX(1)]}>
+                    <ScrollView style={[{ marginBottom: 5 }]} showsVerticalScrollIndicator={false}>
+                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP)]}>
+                            <View style={[]}>
+                                <WrappedText text={'Dukan Verification'} fontSize={fs28} textColor={'#161616'} />
+
+                                <WrappedText
+                                    text={
+                                        'Company will contact you soon for dukan verification. After that you will be able to access your dukan.'
+                                    }
+                                    textStyle={{ marginTop: getHP(0.1) }}
+                                />
+                            </View>
+                            <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
+                                <WrappedText
+                                    text={'Dukan Verification Status'}
+                                    fontFamily={FontFamily.Medium}
+                                    textColor={'#161616'}
+                                />
+                                <View style={[MT(0.4)]}>
+                                    <StepIndicator
+                                        customStyles={customStyles}
+                                        currentPosition={currentPosition}
+                                        labels={indicatorLabel}
+                                        stepCount={3}
+                                        direction={'horizontal'}
+                                    />
+                                </View>
+                            </View>
+                            <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
+                                <WrappedText text={'Message from company'} fontFamily={FontFamily.Medium} />
+                                <WrappedText
+                                    text={
+                                        verificationDetails.remarks
+                                            ? verificationDetails.remarks
+                                            : 'Our organization will contact you soon..'
+                                    }
+                                    containerStyle={[MT(0.05)]}
+                                    textColor={colorCode.BLACKLOW(30)}
                                 />
                             </View>
                         </View>
-                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
-                            <WrappedText
-                                text={'Message from company'}
-                                fontSize={fs14}
-                                fontFamily={FontFamily.Medium}
-                                textColor={colorCode.SAFFRON}
-                            />
-                            <WrappedText
-                                text={
-                                    verificationDetails.remarks
-                                        ? verificationDetails.remarks
-                                        : 'Our organization will contact you soon..'
-                                }
-                                fontSize={fs16}
-                                containerStyle={[MT(0.05)]}
-                                textColor={colorCode.BLACKLOW(30)}
-                            />
-                        </View>
-                    </View>
-                    <View style={[, BGCOLOR('#FFFFFF'), { paddingHorizontal: DSP }]}>
-                        {/* {showMemberDetails(owner, shopMemberRole.Owner, dukanName, () => {
+                        <View style={[, BGCOLOR('#FFFFFF'), { paddingHorizontal: DSP }]}>
+                            {/* {showMemberDetails(owner, shopMemberRole.Owner, dukanName, () => {
                             navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
                                 screen: NavigationKey.CREATEDUKAN,
                                 ownerDetails,
                                 update: true,
                             });
                         })} */}
-                        <MemberDetails
-                            role={shopMemberRole.Owner}
-                            onPressCross={() => {}}
-                            onPressEdit={() => {}}
-                            onPressPlus={() => {}}
-                            item={owner[0]}
-                        />
-                        <View>{shop.state ? shopDetails(shop) : <View />}</View>
-                        <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
-                            <WrappedText text={'Shop member details'} textColor={mainColor} />
-                            <AddMember
-                                onPressPlus={() => {
-                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                    //     message:
-                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                    //     role: shopMemberRole.worker,
-                                    //     addMember: (data: member) => {
-                                    //         console.log('add coowner', data);
-                                    //         addWorker(data);
-                                    //     },
-                                    //     shop: ownerDetails.shop,
-                                    // });
-                                }}
-                                onPressEdit={(member: member, index?: number) => {
-                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                    //     message:
-                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                    //     role: shopMemberRole.worker,
-                                    //     addMember: (data: member) => {
-                                    //         console.log('add coowner', data);
-                                    //         addWorker(data, index);
-                                    //     },
-                                    //     shop: ownerDetails.shop,
-                                    //     shopMember: member,
-                                    //     openUpdateFlow: true,
-                                    // });
-                                }}
-                                onPressCross={() => {}}
-                                data={coOwner}
-                                key={2}
-                                role={shopMemberRole.coOwner}
-                                message={'Worker is someone whom you hire to help in handling of your shop'}
-                            />
-                            <AddMember
-                                onPressPlus={() => {
-                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                    //     message:
-                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                    //     role: shopMemberRole.worker,
-                                    //     addMember: (data: member) => {
-                                    //         console.log('add coowner', data);
-                                    //         addWorker(data);
-                                    //     },
-                                    //     shop: ownerDetails.shop,
-                                    // });
-                                }}
-                                onPressEdit={(member: member, index?: number) => {
-                                    // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                    //     message:
-                                    //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                    //     role: shopMemberRole.worker,
-                                    //     addMember: (data: member) => {
-                                    //         console.log('add coowner', data);
-                                    //         addWorker(data, index);
-                                    //     },
-                                    //     shop: ownerDetails.shop,
-                                    //     shopMember: member,
-                                    //     openUpdateFlow: true,
-                                    // });
-                                }}
-                                onPressCross={() => {}}
-                                data={worker}
-                                key={2}
-                                role={shopMemberRole.worker}
-                                message={'Worker is someone whom you hire to help in handling of your shop'}
-                            />
+                            {owner.length > 0 && (
+                                <MemberDetails
+                                    role={shopMemberRole.Owner}
+                                    onPressCross={() => {}}
+                                    onPressEdit={(item, index) => {
+                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                            screen: NavigationKey.CREATEDUKAN,
+                                            ownerDetails,
+                                            dontShowHeader: true,
+                                            update: true,
+                                        });
+                                    }}
+                                    onPressPlus={() => {}}
+                                    item={owner[0]}
+                                />
+                            )}
+                            <View>{shop.state ? shopDetails(shop) : <View />}</View>
+                            <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
+                                <WrappedText text={'Shop member details'} textColor={mainColor} />
+                                <AddMember
+                                    onPressPlus={() => {
+                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        //     message:
+                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        //     role: shopMemberRole.worker,
+                                        //     addMember: (data: member) => {
+                                        //         console.log('add coowner', data);
+                                        //         addWorker(data);
+                                        //     },
+                                        //     shop: ownerDetails.shop,
+                                        // });
+                                    }}
+                                    onPressEdit={(member: member, index?: number) => {
+                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        //     message:
+                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        //     role: shopMemberRole.worker,
+                                        //     addMember: (data: member) => {
+                                        //         console.log('add coowner', data);
+                                        //         addWorker(data, index);
+                                        //     },
+                                        //     shop: ownerDetails.shop,
+                                        //     shopMember: member,
+                                        //     openUpdateFlow: true,
+                                        // });
+                                    }}
+                                    onPressCross={() => {}}
+                                    data={coOwner}
+                                    key={2}
+                                    role={shopMemberRole.coOwner}
+                                    message={'Worker is someone whom you hire to help in handling of your shop'}
+                                />
+                                <AddMember
+                                    onPressPlus={() => {
+                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        //     message:
+                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        //     role: shopMemberRole.worker,
+                                        //     addMember: (data: member) => {
+                                        //         console.log('add coowner', data);
+                                        //         addWorker(data);
+                                        //     },
+                                        //     shop: ownerDetails.shop,
+                                        // });
+                                    }}
+                                    onPressEdit={(member: member, index?: number) => {
+                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
+                                        //     message:
+                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                        //     role: shopMemberRole.worker,
+                                        //     addMember: (data: member) => {
+                                        //         console.log('add coowner', data);
+                                        //         addWorker(data, index);
+                                        //     },
+                                        //     shop: ownerDetails.shop,
+                                        //     shopMember: member,
+                                        //     openUpdateFlow: true,
+                                        // });
+                                    }}
+                                    onPressCross={() => {}}
+                                    data={worker}
+                                    key={2}
+                                    role={shopMemberRole.worker}
+                                    message={'Worker is someone whom you hire to help in handling of your shop'}
+                                />
+                            </View>
                         </View>
-                    </View>
-                </ScrollView>
-                <View
-                    style={{
-                        paddingHorizontal: '5%',
-                        marginBottom: '2%',
-                        paddingTop: '2%',
-                        borderTopWidth: 2,
-                        borderColor: borderColor,
-                    }}
-                >
-                    {verificationDetails.isVerified ? (
-                        <TextButton
-                            onPress={() => {
-                                navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                    screen: NavigationKey.PRODUCTDETAILS,
-                                    ownerDetails,
-                                });
-                            }}
-                            textProps={componentProps.buttonTextProps}
-                            text={'Continue'}
-                            containerStyle={[
-                                buttonContainerStyle,
-                                { marginTop: getHP(0.3) },
-                                //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
-                            ]}
-                        />
-                    ) : (
-                        <View>
-                            <RightComponentButtonWithLeftText
+                    </ScrollView>
+                    <View
+                        style={[
+                            {
+                                padding: DSP,
+                            },
+                            provideShadow(),
+                        ]}
+                    >
+                        {verificationDetails.isVerified ? (
+                            <TextButton
                                 onPress={() => {
                                     navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                        screen: NavigationKey.ADDDUKANMEMBERS,
+                                        screen: NavigationKey.PRODUCTDETAILS,
                                         ownerDetails,
-                                        update: true,
                                     });
                                 }}
-                                buttonText={'Edit dukan member details'}
-                                {...commonButtonProps}
+                                textProps={componentProps.buttonTextProps}
+                                text={'Continue'}
+                                containerStyle={[
+                                    buttonContainerStyle,
+
+                                    //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
+                                ]}
                             />
-                            <RightComponentButtonWithLeftText
-                                onPress={() => {
-                                    Alert.alert(
-                                        'Warning!',
-                                        'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
-                                        [
-                                            {
-                                                text: 'Remove my dukan from market',
-                                                onPress: deleteShopFromServerStorage,
-                                            },
-                                            {
-                                                text: 'Cancel',
-                                            },
-                                        ],
-                                    );
-                                }}
-                                {...commonButtonProps}
-                                buttonText={'Remove my dukan from market'}
-                            />
-                        </View>
-                    )}
+                        ) : (
+                            <View>
+                                {/* <RightComponentButtonWithLeftText
+                                    onPress={() => {
+                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                            screen: NavigationKey.ADDDUKANMEMBERS,
+                                            ownerDetails,
+                                            update: true,
+                                        });
+                                    }}
+                                    buttonText={'Edit dukan member details'}
+                                    {...commonButtonProps}
+                                /> */}
+                                <RightComponentButtonWithLeftText
+                                    onPress={() => {
+                                        Alert.alert(
+                                            'Warning!',
+                                            'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
+                                            [
+                                                {
+                                                    text: 'Remove my dukan from market',
+                                                    onPress: deleteShopFromServerStorage,
+                                                },
+                                                {
+                                                    text: 'Cancel',
+                                                },
+                                            ],
+                                        );
+                                    }}
+                                    {...commonButtonProps}
+                                    buttonText={'Remove my dukan from market'}
+                                />
+                            </View>
+                        )}
+                    </View>
                 </View>
             </View>
-            {loader && <Loader />}
-        </View>
-    );
+        );
 };
 
 export default Verification;
