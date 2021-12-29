@@ -69,6 +69,7 @@ const AddMember = ({
             {data.map((item: member, index: number) => {
                 return (
                     <MemberDetails
+                        key={item._id}
                         item={item}
                         onPressCross={onPressCross}
                         onPressEdit={onPressEdit}

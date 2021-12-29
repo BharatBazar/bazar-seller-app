@@ -26,7 +26,7 @@ import {
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
-import { borderColor, colorCode, mainColor, messageColor } from '../../common/color';
+import { borderColor, colorCode, errorColor, mainColor, messageColor } from '../../common/color';
 import { IRGetShop, IRShopVerification, IShop, Shop, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
@@ -55,29 +55,43 @@ export interface VerificationProps extends NavigationProps {
     };
 }
 
-const labels = ['Registered on Platform', 'Verfication in process.', 'Verified.'];
+const labels = ['Registered on Platform', 'Verfication in process', 'Verified.'];
+
 const customStyles = {
     stepIndicatorSize: getHP(0.5),
     currentStepIndicatorSize: getHP(0.7),
     separatorStrokeWidth: 2,
     currentStepStrokeWidth: 3,
-    stepStrokeCurrentColor: mainColor,
+
     stepStrokeWidth: 3,
-    stepStrokeFinishedColor: mainColor,
+
     stepStrokeUnFinishedColor: '#aaaaaa',
-    separatorFinishedColor: mainColor,
+
     separatorUnFinishedColor: '#aaaaaa',
-    stepIndicatorFinishedColor: mainColor,
+
     stepIndicatorUnFinishedColor: '#ffffff',
     stepIndicatorCurrentColor: '#ffffff',
     stepIndicatorLabelFontSize: 13,
     currentStepIndicatorLabelFontSize: 13,
-    stepIndicatorLabelCurrentColor: mainColor,
+    stepIndicatorLabelCurrentColor: colorCode.SAFFRON,
+    stepIndicatorFinishedColor: colorCode.SAFFRON,
+    separatorFinishedColor: colorCode.SAFFRON,
+    stepStrokeFinishedColor: colorCode.SAFFRON,
+    stepStrokeCurrentColor: colorCode.SAFFRON,
     stepIndicatorLabelFinishedColor: '#ffffff',
     stepIndicatorLabelUnFinishedColor: '#aaaaaa',
     labelColor: '#999999',
     labelSize: 10,
-    currentStepLabelColor: mainColor,
+    currentStepLabelColor: colorCode.SAFFRON,
+};
+
+const RejectedColor = {
+    stepIndicatorLabelCurrentColor: errorColor,
+    stepIndicatorFinishedColor: errorColor,
+    separatorFinishedColor: errorColor,
+    stepStrokeFinishedColor: errorColor,
+    stepStrokeCurrentColor: errorColor,
+    currentStepLabelColor: errorColor,
 };
 
 const Section = (propertyName: string, value: string) => (
@@ -133,6 +147,12 @@ const renderEditButton = (onPress: Function) => (
     <ButtonFeatherIcon iconName="edit" containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF')]} onPress={onPress} />
 );
 
+const HeadingStyle = {
+    fontFamily: FontFamily.Medium,
+    textColor: '#161616',
+    fontSize: fs14,
+};
+
 const Verification: React.SFC<VerificationProps> = ({
     navigation,
     route: {
@@ -169,13 +189,13 @@ const Verification: React.SFC<VerificationProps> = ({
     };
     const findVerificationIndex = () => {
         findCurrentPosition();
-        if (verificationDetails.shopVerificationStatus === verificationStatus.rejected) {
+        if (verificationDetails.verificationStatus === verificationStatus.rejected) {
             let labelsi = [...indicatorLabel];
-            labelsi[2] = 'Verification rejected.';
+            labelsi[2] = 'Verification rejected';
             setLabels(labelsi);
         } else {
             let labelsi = [...indicatorLabel];
-            labelsi[2] = 'Verified.';
+            labelsi[2] = 'Verified';
             setLabels(labelsi);
         }
     };
@@ -364,14 +384,14 @@ const Verification: React.SFC<VerificationProps> = ({
                                 />
                             </View>
                             <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
-                                <WrappedText
-                                    text={'Dukan Verification Status'}
-                                    fontFamily={FontFamily.Medium}
-                                    textColor={'#161616'}
-                                />
+                                <WrappedText text={'Dukan Verification Status'} {...HeadingStyle} />
                                 <View style={[MT(0.4)]}>
                                     <StepIndicator
-                                        customStyles={customStyles}
+                                        customStyles={
+                                            verificationDetails.verificationStatus == verificationStatus.rejected
+                                                ? { ...customStyles, ...RejectedColor }
+                                                : { ...customStyles }
+                                        }
                                         currentPosition={currentPosition}
                                         labels={indicatorLabel}
                                         stepCount={3}
@@ -380,15 +400,19 @@ const Verification: React.SFC<VerificationProps> = ({
                                 </View>
                             </View>
                             <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
-                                <WrappedText text={'Message from company'} fontFamily={FontFamily.Medium} />
+                                <WrappedText text={'Message from company'} {...HeadingStyle} />
                                 <WrappedText
                                     text={
                                         verificationDetails.remarks
                                             ? verificationDetails.remarks
                                             : 'Our organization will contact you soon..'
                                     }
-                                    containerStyle={[MT(0.05)]}
-                                    textColor={colorCode.BLACKLOW(30)}
+                                    containerStyle={[MT(0.1)]}
+                                    textColor={
+                                        verificationDetails.verificationStatus == verificationStatus.rejected
+                                            ? errorColor
+                                            : colorCode.BLACKLOW(30)
+                                    }
                                 />
                             </View>
                         </View>
@@ -451,7 +475,7 @@ const Verification: React.SFC<VerificationProps> = ({
                                     }}
                                     onPressCross={deleteMember}
                                     data={coOwner}
-                                    key={2}
+                                    key={1}
                                     role={shopMemberRole.coOwner}
                                     message={
                                         'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.'
@@ -509,39 +533,24 @@ const Verification: React.SFC<VerificationProps> = ({
                         style={[
                             {
                                 padding: DSP,
+                                borderTopWidth: 1,
+                                borderTopColor: borderColor,
+                                backgroundColor: '#FFFFFF',
                             },
-                            provideShadow(),
                         ]}
                     >
                         {verificationDetails.isVerified ? (
-                            <TextButton
+                            <RightComponentButtonWithLeftText
                                 onPress={() => {
                                     navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
                                         screen: NavigationKey.PRODUCTDETAILS,
                                         ownerDetails,
                                     });
                                 }}
-                                textProps={componentProps.buttonTextProps}
-                                text={'Continue'}
-                                containerStyle={[
-                                    buttonContainerStyle,
-
-                                    //{ position: 'absolute', top: getHP(0.1), right: getHP(0.3) },
-                                ]}
+                                buttonText={'Continue'}
                             />
                         ) : (
                             <View>
-                                {/* <RightComponentButtonWithLeftText
-                                    onPress={() => {
-                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                            screen: NavigationKey.ADDDUKANMEMBERS,
-                                            ownerDetails,
-                                            update: true,
-                                        });
-                                    }}
-                                    buttonText={'Edit dukan member details'}
-                                    {...commonButtonProps}
-                                /> */}
                                 <RightComponentButtonWithLeftText
                                     onPress={() => {
                                         Alert.alert(
@@ -558,7 +567,6 @@ const Verification: React.SFC<VerificationProps> = ({
                                             ],
                                         );
                                     }}
-                                    {...commonButtonProps}
                                     buttonText={'Remove my dukan from market'}
                                 />
                             </View>
