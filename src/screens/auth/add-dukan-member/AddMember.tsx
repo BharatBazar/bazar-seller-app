@@ -74,6 +74,7 @@ const AddMember = ({
                         onPressEdit={onPressEdit}
                         onPressPlus={onPressPlus}
                         role={role}
+                        index={index}
                     />
                 );
             })}

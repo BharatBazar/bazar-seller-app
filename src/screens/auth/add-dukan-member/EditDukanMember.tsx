@@ -28,6 +28,7 @@ import {
     shopMemberRole,
 } from '@app/server/apis/shopMember/shopMember.interface';
 import { addShopMember, updateShopMember, verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
+import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 
 interface EditDukanMemberProps extends NavigationProps {
     selectedItem: member;
@@ -41,6 +42,7 @@ interface EditDukanMemberProps extends NavigationProps {
             updateCallBack: Function;
             openUpdateFlow?: boolean;
             shopMember: member;
+            update?: boolean;
         };
     };
 }
@@ -84,7 +86,7 @@ const componentProps = {
 const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     selectedItem,
     route: {
-        params: { role, addMember, shop, message, shopMember, openUpdateFlow },
+        params: { role, addMember, shop, message, shopMember, openUpdateFlow, paddingTop },
     },
 
     navigation,
@@ -254,7 +256,9 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     };
 
     return (
-        <ScrollView style={[BGCOLOR('#FFFFFF'), FLEX(1), PA(DSP)]}>
+        <ScrollView
+            style={[BGCOLOR('#FFFFFF'), FLEX(1), PA(DSP), paddingTop ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}
+        >
             <View style={[FDR(), AIC('flex-start')]}>
                 <WrappedFeatherIcon
                     iconName="chevron-left"

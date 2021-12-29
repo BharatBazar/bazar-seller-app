@@ -322,6 +322,23 @@ const Verification: React.SFC<VerificationProps> = ({
         );
     };
 
+    const deleteMember = async (role: shopMemberRole, index: number, deleted?: boolean) => {
+        let data = role == 'Co-owner' ? [...coOwner] : [...worker];
+        console.log(index);
+        try {
+            // await deleteShopMember({ _id: data[index]._id });
+            data.splice(index, 1);
+
+            if (role == shopMemberRole.coOwner) {
+                setcoOwner([...data]);
+            } else {
+                setWorker([...data]);
+            }
+        } catch (error) {
+            ToastHOC.errorAlert(error.message);
+        }
+    };
+
     React.useEffect(() => {
         loadVerificationDetail();
         getShopDetailsFromServer();
@@ -391,68 +408,95 @@ const Verification: React.SFC<VerificationProps> = ({
                             )}
                             <View>{shop.state ? shopDetails(shop) : <View />}</View>
                             <View style={[BGCOLOR('#FFFFFF'), , PA(DSP), provideShadow(1), MT(0.2), BR(0.1)]}>
-                                <WrappedText text={'Shop member details'} textColor={mainColor} />
+                                <WrappedText text={'Shop member details'} />
                                 <AddMember
                                     onPressPlus={() => {
-                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                        //     message:
-                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                        //     role: shopMemberRole.worker,
-                                        //     addMember: (data: member) => {
-                                        //         console.log('add coowner', data);
-                                        //         addWorker(data);
-                                        //     },
-                                        //     shop: ownerDetails.shop,
-                                        // });
+                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                            screen: NavigationKey.EDITDUKANMEMBER,
+                                            update: true,
+                                            message:
+                                                'Co-owner is basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                            role: shopMemberRole.coOwner,
+                                            addMember: (data: IshopMember) => {
+                                                console.log('add coowner', data);
+                                                setcoOwner((coOwner) => {
+                                                    coOwner.push(data);
+                                                    return [...coOwner];
+                                                });
+                                            },
+                                            shop: ownerDetails.shop,
+                                            paddingTop: true,
+                                        });
                                     }}
-                                    onPressEdit={(member: member, index?: number) => {
-                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                        //     message:
-                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                        //     role: shopMemberRole.worker,
-                                        //     addMember: (data: member) => {
-                                        //         console.log('add coowner', data);
-                                        //         addWorker(data, index);
-                                        //     },
-                                        //     shop: ownerDetails.shop,
-                                        //     shopMember: member,
-                                        //     openUpdateFlow: true,
-                                        // });
+                                    onPressEdit={(IshopMember: IshopMember, index: number) => {
+                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                            screen: NavigationKey.EDITDUKANMEMBER,
+                                            update: true,
+                                            message:
+                                                'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                            role: shopMemberRole.coOwner,
+                                            addMember: (data: IshopMember) => {
+                                                console.log('add coowner', data, index);
+                                                setcoOwner((coOwner) => {
+                                                    console.log('add coowner', data, index, coOwner);
+                                                    coOwner[index] = data;
+                                                    return [...coOwner];
+                                                });
+                                            },
+                                            shop: ownerDetails.shop,
+                                            shopMember: IshopMember,
+                                            openUpdateFlow: true,
+                                            paddingTop: true,
+                                        });
                                     }}
-                                    onPressCross={() => {}}
+                                    onPressCross={deleteMember}
                                     data={coOwner}
                                     key={2}
                                     role={shopMemberRole.coOwner}
-                                    message={'Worker is someone whom you hire to help in handling of your shop'}
+                                    message={
+                                        'Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.'
+                                    }
                                 />
                                 <AddMember
                                     onPressPlus={() => {
-                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                        //     message:
-                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                        //     role: shopMemberRole.worker,
-                                        //     addMember: (data: member) => {
-                                        //         console.log('add coowner', data);
-                                        //         addWorker(data);
-                                        //     },
-                                        //     shop: ownerDetails.shop,
-                                        // });
+                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                            screen: NavigationKey.EDITDUKANMEMBER,
+                                            update: true,
+                                            message: 'Worker is someone whom you hire to help in handling of your shop',
+                                            role: shopMemberRole.worker,
+                                            addMember: (data: IshopMember) => {
+                                                console.log('add coowner', data);
+                                                setWorker((wosetWorker) => {
+                                                    wosetWorker.push(data);
+                                                    return [...wosetWorker];
+                                                });
+                                            },
+                                            shop: ownerDetails.shop,
+                                            paddingTop: true,
+                                        });
                                     }}
-                                    onPressEdit={(member: member, index?: number) => {
-                                        // navigation.navigate(NavigationKey.EDITDUKANMEMBER, {
-                                        //     message:
-                                        //         'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                        //     role: shopMemberRole.worker,
-                                        //     addMember: (data: member) => {
-                                        //         console.log('add coowner', data);
-                                        //         addWorker(data, index);
-                                        //     },
-                                        //     shop: ownerDetails.shop,
-                                        //     shopMember: member,
-                                        //     openUpdateFlow: true,
-                                        // });
+                                    onPressEdit={(member: IshopMember, index: number) => {
+                                        navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                            screen: NavigationKey.EDITDUKANMEMBER,
+                                            update: true,
+                                            message:
+                                                'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                            role: shopMemberRole.coOwner,
+                                            addMember: (data: IshopMember) => {
+                                                console.log('add coowner', data, index);
+                                                setWorker((worksetWorker) => {
+                                                    console.log('add coowner', data, index, worksetWorker);
+                                                    worksetWorker[index] = data;
+                                                    return [...worksetWorker];
+                                                });
+                                            },
+                                            shop: ownerDetails.shop,
+                                            shopMember: member,
+                                            openUpdateFlow: true,
+                                            paddingTop: true,
+                                        });
                                     }}
-                                    onPressCross={() => {}}
+                                    onPressCross={deleteMember}
                                     data={worker}
                                     key={2}
                                     role={shopMemberRole.worker}
