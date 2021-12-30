@@ -541,9 +541,10 @@ const Verification: React.SFC<VerificationProps> = ({
                     >
                         {verificationDetails.isVerified ? (
                             <RightComponentButtonWithLeftText
-                                onPress={() => {
-                                    navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                        screen: NavigationKey.PRODUCTDETAILS,
+                                onPress={async () => {
+                                    await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.PRODUCTDETAILS);
+                                    await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
+                                    navigation.replace(NavigationKey.PRODUCTDETAILS, {
                                         ownerDetails,
                                     });
                                 }}

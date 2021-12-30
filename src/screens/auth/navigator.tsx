@@ -108,22 +108,6 @@ class AuthNavigation extends React.Component<Props, {}> {
                             cardStyleInterpolator: Right,
                         }}
                     />
-                    <Stack.Screen
-                        name={NavigationKey.PRODUCTDETAILS}
-                        component={ProductDetails}
-                        initialParams={initialParams}
-                        options={{
-                            cardStyleInterpolator: Right,
-                        }}
-                    />
-                    <Stack.Screen
-                        name={NavigationKey.PRODUCTSUBCATEGORY}
-                        component={ProductSubCategory}
-                        initialParams={initialParams}
-                        options={{
-                            cardStyleInterpolator: Right,
-                        }}
-                    />
                 </Stack.Navigator>
                 {!update && (
                     <KeyboardAvoidingView

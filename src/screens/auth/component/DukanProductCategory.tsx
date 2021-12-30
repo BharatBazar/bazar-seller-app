@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { colorCode } from '../../../common/color';
-import { AIC, PH, provideShadow, PV } from '../../../common/styles';
+import { black100, black60, colorCode, mainColor } from '../../../common/color';
+import { AIC, FDR, PH, provideShadow, PV } from '../../../common/styles';
 import WrappedRectangleButton from '../../component/WrappedRectangleButton';
 import { productData } from '../ProductCategory';
 import Icon from 'react-native-vector-icons/Feather';
@@ -8,7 +8,7 @@ import { View, ViewStyle } from 'react-native';
 import { getHP, getWP } from '../../../common/dimension';
 import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
-import { fs10, fs9 } from '../../../common';
+import { FontFamily, fs10, fs12, fs13, fs14, fs16, fs9 } from '../../../common';
 
 export interface ProductCategoryProps {
     item: productData;
@@ -21,44 +21,37 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
         <WrappedRectangleButton
             containerStyle={[
                 containerStyle,
-                item.selected ? { ...provideShadow(), borderWidth: 0.5 } : {},
-                { borderColor: colorCode.GREENLOW(60), borderRadius: getWP(0.1), backgroundColor: colorCode.WHITE },
+                FDR(),
+                { flex: 1 },
+                // item.selected ? { ...provideShadow() } : {},
+                { borderRadius: getWP(0.1), backgroundColor: colorCode.WHITE },
             ]}
             onPress={onPressCategory}
         >
-            <>
-                {item.selected ? (
-                    <Icon
-                        name={'check-circle'}
-                        color={colorCode.GREEN}
-                        style={{ position: 'absolute', top: '4%', right: '4%', zIndex: 100 }}
-                    />
-                ) : (
-                    <View style={{ height: getHP(0.1) }} />
-                )}
-                <FastImageWrapper
-                    source={{ uri: item.image }}
-                    imageStyle={{
-                        height: getHP(0.6),
-                        width: getHP(0.6),
-                    }}
-                    resizeMode={'cover'}
+            <FastImageWrapper
+                source={{ uri: item.image }}
+                imageStyle={{
+                    height: getHP(0.6),
+                    width: getHP(0.6),
+                }}
+                resizeMode={'cover'}
+            />
+            <View style={{ flex: 1, marginLeft: 10 }}>
+                <WrappedText
+                    text={item.name}
+                    textColor={!item.selected ? black60 : black100}
+                    fontSize={fs13}
+                    fontFamily={FontFamily.Medium}
                 />
-                <View style={[PV(0.1), PH(0.1), AIC()]}>
-                    <WrappedText
-                        text={item.name}
-                        textColor={item.selected ? colorCode.GREENLOW(50) : colorCode.CHAKRALOW(70)}
-                        fontSize={fs10}
-                        textStyle={{ textAlign: 'center' }}
-                    />
-                    <WrappedText
-                        text={item.description}
-                        textColor={colorCode.BLACKLOW(40)}
-                        fontSize={fs9}
-                        textStyle={{ textAlign: 'center', marginTop: getHP(0.05) }}
-                    />
-                </View>
-            </>
+                <WrappedText
+                    text={item.description}
+                    textColor={colorCode.BLACKLOW(40)}
+                    fontSize={fs9}
+                    textStyle={{ marginTop: getHP(0.05) }}
+                />
+            </View>
+
+            <Icon name={item.selected ? 'check' : 'circle'} style={{ marginLeft: 20 }} size={15} color={mainColor} />
         </WrappedRectangleButton>
     );
 };

@@ -3,9 +3,9 @@ import { View } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { NavigationProps } from '../../../common';
 import { NavigationKey } from '../../../labels';
-import StatusBar from '../../component/StatusBar';
+import StatusBar, { STATUS_BAR_HEIGHT } from '../../component/StatusBar';
 import Header from './component/Header';
-import { AIC, BGCOLOR, FLEX, JCC } from '../../../common/styles';
+import { AIC, BGCOLOR, DSP, FLEX, JCC, PA } from '../../../common/styles';
 
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
@@ -31,7 +31,7 @@ const Category: React.FC<CategoryProps> = ({
     const [showFooter, setShowFooter] = React.useState<boolean>(false);
 
     return (
-        <View style={[FLEX(1), BGCOLOR('#F4F4F4')]}>
+        <View style={[FLEX(1), BGCOLOR('#F4F4F4'), PA(DSP), { paddingTop: STATUS_BAR_HEIGHT + DSP }]}>
             <StatusBar />
             <Header headerTitle={categoryName} onPressBack={() => navigation.goBack()} />
             {current && current.length == 0 ? (

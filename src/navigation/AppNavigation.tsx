@@ -29,6 +29,8 @@ import ForgetPassword from '../screens/auth/SendOtp';
 import VerifyOTP from '../screens/auth/VerifyOTP';
 import ResetPassword from '../screens/auth/ResetPassword';
 import ProductTab from '@app/screens/app/listing/Tabs';
+import ProductDetails from '@app/screens/auth/ProductDetails';
+import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -67,6 +69,8 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.BHARATBAZARHOME} component={BharatBazarHome} />
                     <Stack.Screen name={NavigationKey.PRODUCTSEARCH} component={ProdcutSearch} />
                     <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />
+                    <Stack.Screen name={NavigationKey.PRODUCTDETAILS} component={ProductDetails} />
+                    <Stack.Screen name={NavigationKey.PRODUCTSUBCATEGORY} component={ProductSubCategory} />
                     <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
                     <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
                     <Stack.Screen name={NavigationKey.FORGETPASSWORD} component={ForgetPassword} />

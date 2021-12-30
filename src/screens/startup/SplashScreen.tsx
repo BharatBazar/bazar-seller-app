@@ -18,18 +18,19 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                 // varaible name itself explains its use
                 // It is usefull to skip falling in the redirection flow if customer onboarding is completed
                 // when ever user opens app
+                await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
                 const isCustomerOnboardingCompleted = await Storage.getItem(
                     StorageItemKeys.isCustomerOnboardingCompleted,
                 );
+                const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
+                if (!screenName) {
+                    navigation.replace(NavigationKey.WELCOME);
+                    return;
+                }
+                let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
                 if (isCustomerOnboardingCompleted == undefined || isCustomerOnboardingCompleted == false) {
                     //It tells that what is current screen in onboarding flow
-                    const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
-                    if (!screenName) {
-                        navigation.replace(NavigationKey.WELCOME);
-                        return;
-                    }
-                    let ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
                     if (screenName != NavigationKey.VERIFICATION) {
                         navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: screenName, ownerDetails });
@@ -39,8 +40,16 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                         return;
                     }
                 } else if (isCustomerOnboardingCompleted) {
-                    navigation.replace(NavigationKey.BHARATBAZARHOME);
-                    return;
+                    //It tells that what is current screen in onboarding flow
+                    if (screenName) {
+                        {
+                            navigation.replace(screenName, { ownerDetails });
+                            return;
+                        }
+                    } else {
+                        navigation.replace(NavigationKey.BHARATBAZARHOME);
+                        return;
+                    }
                 } else {
                     navigation.replace(NavigationKey.WELCOME);
                     return;

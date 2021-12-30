@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { AIC, BGCOLOR, BR, FLEX, JCC, MT, PH } from '../../common/styles';
+import { AIC, BGCOLOR, BR, DSP, FLEX, JCC, M, MT, PA, PH } from '../../common/styles';
 import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import {
     categoryType,
@@ -18,11 +18,17 @@ import { IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interf
 import { updateShop } from '../../server/apis/shop/shop.api';
 import ProductCategory from './component/DukanProductCategory';
 import ServerErrorText from './component/errorText';
-import { colorCode } from '../../common/color';
-import { NavigationProps } from '../../common';
+import { black10, colorCode, subHeadingColor } from '../../common/color';
+import { FontFamily, fs16, fs18, fs20, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../storage';
+import { generalContainerStyle } from '../components/styles/common';
+import WrappedText from '../component/WrappedText';
+import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
+import Border from '../components/border/Border';
+import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
+import { ToastHOC } from '../hoc/ToastHOC';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -53,7 +59,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             _id: ownerDetails.shop,
         });
         if (response.status == 1) {
-            navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY);
+            navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY, { ownerDetails: ownerDetails });
         } else {
             setError(response.message);
         }
@@ -79,59 +85,53 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     }, []);
 
     return (
-        <ScrollView
-            style={[FLEX(1), PH(0.6), BGCOLOR(colorCode.WHITE)]}
-            contentContainerStyle={{ paddingBottom: '2%' }}
-        >
+        <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
             <View style={[MT(0.1)]} />
-            <HeaderText
-                step={'Step 5'}
-                heading={'What you sell'}
-                subHeading={'Select what services you provide by your dukan by clicking on the category'}
-            />
-            {error.length > 0 && <ServerErrorText errorText={error} />}
+            <View style={{ paddingHorizontal: '5%', paddingVertical: '4%' }}>
+                <WrappedText
+                    text={'which category does your dukan exist?'}
+                    fontSize={fs18}
+                    textAlign="center"
+                    fontFamily={FontFamily.Medium}
+                />
+                <WrappedText
+                    text={
+                        'Select category under which you sell for example if your sell items for men select men or your sell any electronic items select Electronics category. If you deal in multiple category select them all'
+                    }
+                    textAlign="center"
+                    containerStyle={[MT(0.1)]}
+                    textColor={subHeadingColor}
+                />
+            </View>
 
-            <FlatList
-                data={data}
-                numColumns={2}
-                style={{
-                    height: getHP(6),
-                    marginTop: getHP(0.2),
-                    borderTopWidth: 0.5,
-                    borderBottomWidth: 0.5,
-                    borderColor: '#8A8A8A',
-                }}
-                //contentContainerStyle={{ paddingTop: getHP(0.1) }}
-                columnWrapperStyle={{ justifyContent: 'space-evenly' }}
-                keyExtractor={(item) => item.name}
-                renderItem={({ item, index }: { item: productData; index: number }) => {
-                    return (
-                        <ProductCategory
-                            item={item}
-                            containerStyle={styles.productCategory}
-                            onPressCategory={() => {
-                                const prodcutCategory = [...data];
-                                prodcutCategory[index].selected = !prodcutCategory[index].selected;
+            <Border />
 
-                                setData(prodcutCategory);
-                            }}
-                        />
-                    );
-                }}
-            />
+            <ScrollView style={{}}>
+                {data.map((item, index) => (
+                    <ProductCategory
+                        item={item}
+                        containerStyle={styles.productCategory}
+                        onPressCategory={() => {
+                            const prodcutCategory = [...data];
+                            prodcutCategory[index].selected = !prodcutCategory[index].selected;
 
-            <TextButton
-                text={'Submit'}
-                textProps={componentProps.buttonTextProps}
-                containerStyle={{ ...buttonContainerStyle, marginTop: getHP(0.5) }}
+                            setData(prodcutCategory);
+                        }}
+                    />
+                ))}
+            </ScrollView>
+            <Border />
+            <RightComponentButtonWithLeftText
+                buttonText={'Submit'}
                 onPress={() => {
                     const selectedCategory: [string] = data.filter((item) => item.selected).map((item) => item._id);
                     if (selectedCategory.length == 0) {
-                        setError('Please select atleast one category');
+                        ToastHOC.errorAlert('Please select atleast one category');
                     } else submitDetails({ category: selectedCategory });
                 }}
+                containerStyle={{ margin: DSP }}
             />
-        </ScrollView>
+        </View>
     );
 };
 
@@ -142,11 +142,11 @@ const styles = StyleSheet.create({
         ...JCC(),
 
         backgroundColor: colorCode.WHITE,
-        borderColor: colorCode.GREENLOW(50),
+
         flex: 1,
         paddingVertical: '2%',
-        marginHorizontal: '5%',
-        marginVertical: '3%',
+        marginTop: 10,
+        paddingHorizontal: '5%',
     },
 });
 
