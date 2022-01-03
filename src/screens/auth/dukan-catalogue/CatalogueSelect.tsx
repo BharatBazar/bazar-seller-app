@@ -14,6 +14,7 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import CatalogueCardVertical from '../component/CatalogueCardVertical';
 import CatalogueItem from './CatalogueItem';
+import CataloguePopup from './CataloguePopup';
 
 interface CatalogueProps {}
 
@@ -31,6 +32,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
 
     //It is basically all the child for the current item
     const [currentItem, setCurrentItem] = React.useState<IProductCatalogue[]>([]);
+    const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
 
     const getCatalogueDetails = async (currentCatelogueIndex: number) => {
         setLoader(true);
@@ -68,7 +70,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
             <Border />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={[]}>
-                    {currentItem.map((item) => {
+                    {currentItem.map((item, index) => {
                         const isSelected = selectedCategory.includes(item._id);
 
                         return (
@@ -78,6 +80,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                     if (!isSelected) {
                                         selectedCategory.push(item._id);
                                         setSelectedCategory([...selectedCategory]);
+                                        if (item.subCategoryExist) {
+                                            setCurrentSelectedIndex(index + 1);
+                                        }
                                     } else {
                                         setSelectedCategory([...selectedCategory.filter((id) => id != item._id)]);
                                     }
@@ -90,6 +95,13 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
             </ScrollView>
             <Border />
             <RightComponentButtonWithLeftText buttonText="Continue" onPress={() => {}} containerStyle={[MT(0.1)]} />
+            <CataloguePopup
+                parentCatalogue={currentItem[currentSelectedIndex - 1]}
+                isVisible={currentSelectedIndex > 0 ? true : false}
+                setPopup={() => {
+                    setCurrentSelectedIndex(0);
+                }}
+            />
         </View>
     );
 };

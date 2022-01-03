@@ -18,6 +18,7 @@ const ModalHOC: React.FC<ModalProps> = ({ isVisible, setPopup, children }) => {
             onBackdropPress={() => {
                 setPopup();
             }}
+            backdropTransitionOutTiming={0}
         >
             {children}
         </Modal>
