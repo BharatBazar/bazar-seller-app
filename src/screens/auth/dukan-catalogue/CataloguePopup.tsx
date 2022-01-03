@@ -1,6 +1,7 @@
 import { fs18, fs22 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
 import { AIC, BGCOLOR, BTR, DSP, FLEX, MT, PA } from '@app/common/styles';
+import Loader from '@app/screens/component/Loader';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
@@ -57,7 +58,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
 
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
-            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20)]}>
+            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden' }]}>
                 <View style={[AIC()]}>
                     <WrappedText text="What you sell under Mens category ?" fontSize={fs22} textAlign="center" />
                     <WrappedText
@@ -90,6 +91,8 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                 </ScrollView>
                 <Border />
                 <RightComponentButtonWithLeftText buttonText="Continue" onPress={() => {}} containerStyle={[MT(0.2)]} />
+
+                {loader && <Loader containerStyle={{ borderTopRightRadius: 20, borderTopLeftRadius: 20 }} />}
             </View>
         </ModalHOC>
     );

@@ -7,8 +7,8 @@ import RightComponentButtonWithLeftText from '@app/screens/components/button/Rig
 import { generalContainerStyle } from '@app/screens/components/styles/common';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { getShop } from '@app/server/apis/shop/shop.api';
-import { IRGetShop } from '@app/server/apis/shop/shop.interface';
+import { getShop, updateShop } from '@app/server/apis/shop/shop.api';
+import { IRGetShop, IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
 import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
@@ -34,12 +34,18 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
     const [currentItem, setCurrentItem] = React.useState<IProductCatalogue[]>([]);
     const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
 
+    const [subCategory, setSubCategory] = React.useState<IProductCatalogue[][]>([]);
+    const [subCategory1, setSubCategory1] = React.useState<IProductCatalogue[][][]>([]);
+
     const getCatalogueDetails = async (currentCatelogueIndex: number) => {
         setLoader(true);
         const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
         const response: IRGetShop = await getShop({
             _id: ownerDetails.shop,
         });
+
+        setSubCategory(response.payload.subCategory);
+        setSubCategory1(response.payload.subCategory1);
 
         if (response.status == 1) {
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
@@ -48,7 +54,25 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                 categoryType: categoryType.SubCategory,
             });
             setParentCatalogue(response.payload.category);
+            setSubCategory(response.payload.subCategory);
+            setSubCategory1(response.payload.subCategory1);
             setCurrentItem(response1.payload);
+        } else {
+            setError(response.message);
+        }
+    };
+
+    //While updating full subCategory and subCategory1 is going
+    //So we have to carefully update index
+    const updateCatalogueDetails = async (data: updateShopData) => {
+        setLoader(true);
+        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+        const response: IRShopUpdate = await updateShop({
+            ...data,
+            _id: ownerDetails.shop,
+        });
+        if (response.status == 1) {
+            setLoader(false);
         } else {
             setError(response.message);
         }
