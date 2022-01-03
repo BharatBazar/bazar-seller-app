@@ -17,7 +17,11 @@ import {
     PV,
     W,
 } from '../../common/styles';
-import { categoryType, IRGetProductCatalogue, product } from '../../server/apis/catalogue/catalogue.interface';
+import {
+    categoryType,
+    IRGetProductCatalogue,
+    IProductCatalogue,
+} from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 import HeaderText from './component/HeaderText';
 import { getHP, getWP } from '../../common/dimension';
@@ -29,12 +33,17 @@ import ServerErrorText from './component/errorText';
 import WrappedText from '../component/WrappedText';
 import { colorCode } from '../../common/color';
 import LoadProductDetails from './component/LoadProductDetails';
-import { fs12, fs20, NavigationProps } from '../../common';
+import { fs12, fs18, fs20, NavigationProps } from '../../common';
 import ProductButton from '../app/edit/product/component/ProductButton';
 import { padHor, padVer } from '../app/edit/product/component/generalConfig';
 import { NavigationKey } from '../../labels';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../storage';
+import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
+import CatalogueCardVertical from './component/CatalogueCardVertical';
+import Border from '../components/border/Border';
+import CataloguePopup from './dukan-catalogue/CataloguePopup';
+import Catalogue from './dukan-catalogue/CatalogueSelect';
 
 export interface ProductSubCategory extends NavigationProps {
     route: {
@@ -48,7 +57,7 @@ interface selected {
     selected: boolean;
 }
 
-export interface productData extends product, selected {}
+export interface productData extends IProductCatalogue, selected {}
 
 const ProductSubCategory: React.SFC<ProductSubCategory> = ({
     navigation,
@@ -61,6 +70,11 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
     const [shop, setShop] = React.useState<Partial<Shop>>({});
     const [category, setCategory] = React.useState<[productData[]]>([[]]);
     const [subCategory, setSubCategory] = React.useState<{ [key: string]: productData[] }>({});
+    const [showCataloguePopup, setShowCataloguePopup] = React.useState(false);
+
+    const [selectedCategory, setSelectedCategory] = React.useState<[string[]]>([[]]);
+    const [selectedSubCategory, setSelectedSubCategory] = React.useState<[string[][]]>([[]]);
+    const [selectedCatalogueAddress, setSelectedCatalogueAddress] = React.useState<string>('');
 
     const submitDetails = async (data: updateShopData) => {
         const response: IRShopUpdate = await updateShop({
@@ -175,131 +189,180 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
         });
     };
 
-    return (
-        <ScrollView style={[{ flex: 1 }, BGCOLOR(colorCode.WHITE)]} contentContainerStyle={{ paddingBottom: '2%' }}>
-            <View style={[padHor]}>
-                <HeaderText
-                    step={'Step 5'}
-                    heading={'Aap kya bechte hai detail mai batae'}
-                    subHeading={'Select what services you provide by your dukan by clicking on the category'}
-                />
-                {error.length > 0 && <ServerErrorText errorText={error} />}
-            </View>
-            <View style={[padHor]}>
-                <ProductButton
-                    buttonText={'Save all'}
-                    onPress={() => {
-                        extractSelectedDataAndSubmitIt();
-                    }}
-                />
-            </View>
-            {shop['category'] &&
-                shop.category.map((item, index1) => {
-                    return (
-                        <View
-                            style={[MT(0.3), padVer, BGCOLOR(colorCode.WHITELOW(10)), provideShadow(2)]}
-                            key={item._id}
-                        >
-                            <View style={[FDR(), AIC(), padHor]}>
-                                <View
-                                    style={[
-                                        HP(0.2),
-                                        W(getHP(0.2)),
-                                        BR(1),
-                                        {},
-                                        BGCOLOR(colorCode.CHAKRALOW(10)),
-                                        borderinsideeffect(1.5, colorCode.CHAKRALOW(30)),
-                                    ]}
-                                />
-                                <WrappedText
-                                    text={
-                                        item.subCategoryExist
-                                            ? 'Choose item you sell under ' + item.name + ' category.'
-                                            : 'Choose product category you sell under ' + item.name + ''
-                                    }
-                                    textColor={colorCode.CHAKRALOW(90)}
-                                    fontSize={fs20}
-                                    containerStyle={[ML(0.2)]}
-                                />
-                            </View>
+    const [index3, index4] = selectedCatalogueAddress.split('-');
+    return <Catalogue />;
+    // return (
+    //     <ScrollView
+    //         style={[{ flex: 1, paddingTop: STATUS_BAR_HEIGHT }, BGCOLOR(colorCode.WHITE)]}
+    //         contentContainerStyle={{ paddingBottom: '2%' }}
+    //     >
+    //         <View style={[padHor]}>
+    //             <HeaderText
+    //                 step={undefined}
+    //                 heading={'What you sell'}
+    //                 subHeading={'Select what you sell under each category you selected'}
+    //             />
+    //             {error.length > 0 && <ServerErrorText errorText={error} />}
+    //         </View>
+    //         <View style={[padHor]}>
+    //             <ProductButton
+    //                 buttonText={'Save all'}
+    //                 onPress={() => {
+    //                     extractSelectedDataAndSubmitIt();
+    //                 }}
+    //             />
+    //         </View>
+    //         {shop['category'] &&
+    //             shop.category.map((item, index1) => {
+    //                 return (
+    //                     <View style={[MT(0.1), padVer, BGCOLOR(colorCode.WHITELOW(10))]} key={item._id}>
+    //                         <Border />
+    //                         <View style={[FDR(), AIC(), padHor, { marginTop: 20 }]}>
+    //                             <View
+    //                                 style={[
+    //                                     HP(0.2),
+    //                                     W(getHP(0.2)),
+    //                                     BR(1),
+    //                                     {},
+    //                                     BGCOLOR(colorCode.CHAKRALOW(10)),
+    //                                     borderinsideeffect(1.5, colorCode.CHAKRALOW(30)),
+    //                                 ]}
+    //                             />
+    //                             <WrappedText
+    //                                 text={
+    //                                     item.subCategoryExist
+    //                                         ? 'Choose item you sell under ' + item.name + ' category.'
+    //                                         : 'Choose product category you sell under ' + item.name + ''
+    //                                 }
+    //                                 textColor={colorCode.CHAKRALOW(90)}
+    //                                 fontSize={fs18}
+    //                                 containerStyle={[ML(0.2)]}
+    //                             />
+    //                         </View>
+    //                         <ScrollView horizontal={true} style={{ paddingVertical: '2%', marginTop: 10 }}>
+    //                             {item &&
+    //                                 item.map((item1: productData, index: number) => {
+    //                                     const selected = selectedCategory[index1].includes(item1._id);
+    //                                     return (
+    //                                         <CatalogueCardVertical
+    //                                             containerStyle={{ width: getWP(3), ...AIC(), ...JCC(), ...MH(0.2) }}
+    //                                             item={item1}
+    //                                             selected={selected}
+    //                                             onPressCategory={() => {
+    //                                                 if (!selected) {
+    //                                                     let selectedCate = [...selectedCategory];
+    //                                                     selectedCate[index1].push(item1._id);
+    //                                                     setSelectedCategory([...selectedCate]);
+    //                                                     if (item1.subCategoryExist) {
+    //                                                         setSelectedCatalogueAddress(`${index1}-${index}`);
+    //                                                     }
+    //                                                 }
+    //                                                 // const prodcutCategory = [...category];
+    //                                                 // const currentSelected = prodcutCategory[index1][index].selected;
+    //                                                 // if (!currentSelected) {
+    //                                                 //     setShowCataloguePopup(true);
+    //                                                 // }
+    //                                                 //prodcutCategory[index1][index].selected = !currentSelected;
 
-                            <FlatList
-                                data={category[index1]}
-                                horizontal={true}
-                                style={{ width: getWP(10), marginTop: getHP(0.2) }}
-                                contentContainerStyle={[PV(0.2), PH(0.2)]}
-                                //columnWrapperStyle={{ justifyContent: 'space-evenly' }}
-                                keyExtractor={(item) => item._id}
-                                renderItem={({ item, index }: { item: productData; index: number }) => {
-                                    return (
-                                        <ProductCategory
-                                            containerStyle={{ width: getWP(3), ...AIC(), ...JCC(), ...MH(0.2) }}
-                                            item={item}
-                                            onPressCategory={() => {
-                                                const prodcutCategory = [...category];
-                                                const currentSelected = prodcutCategory[index1][index].selected;
-                                                prodcutCategory[index1][index].selected = !currentSelected;
+    //                                                 //prodcutCategory[index1].sort((item) => !item.selected);
 
-                                                //prodcutCategory[index1].sort((item) => !item.selected);
+    //                                                 // setCategory(prodcutCategory);
+    //                                                 // if (item.subCategoryExist) {
+    //                                                 //     if (!currentSelected) {
+    //                                                 //         updateSubCategory([], item._id);
+    //                                                 //     } else {
+    //                                                 //         deleteSubCategory(item._id);
+    //                                                 //     }
+    //                                                 // }
+    //                                             }}
+    //                                         />
+    //                                     );
+    //                                 })}
+    //                         </ScrollView>
+    //                         {/* <FlatList
+    //                             data={category[index1]}
+    //                             //horizontal={true}
+    //                             style={{ marginTop: getHP(0.2) }}
+    //                             contentContainerStyle={[PV(0.2), PH(0.2)]}
+    //                             //columnWrapperStyle={{ justifyContent: 'space-evenly' }}
+    //                             keyExtractor={(item) => item._id}
+    //                             renderItem={({ item, index }: { item: productData; index: number }) => {
+    //                                 return (
+    //                                     <CatalogueCardVertical
+    //                                         containerStyle={{ width: getWP(3), ...AIC(), ...JCC(), ...MH(0.2) }}
+    //                                         item={item}
+    //                                         onPressCategory={() => {
+    //                                             const prodcutCategory = [...category];
+    //                                             const currentSelected = prodcutCategory[index1][index].selected;
+    //                                             prodcutCategory[index1][index].selected = !currentSelected;
 
-                                                setCategory(prodcutCategory);
-                                                if (item.subCategoryExist) {
-                                                    if (!currentSelected) {
-                                                        updateSubCategory([], item._id);
-                                                    } else {
-                                                        deleteSubCategory(item._id);
-                                                    }
-                                                }
-                                            }}
-                                        />
-                                    );
-                                }}
-                            />
-                            {item.subCategoryExist &&
-                                category[index1] &&
-                                category[index1]
-                                    .filter((item) => item.selected)
-                                    .map((newSubCategory, index) => {
-                                        return (
-                                            <View key={item._id + index.toString()} style={[ML(0.2), MT(0.2)]}>
-                                                <View style={[FDR(), AIC(), padHor]}>
-                                                    <View
-                                                        style={[
-                                                            HP(0.15),
-                                                            W(getHP(0.15)),
-                                                            BR(1),
-                                                            BGCOLOR(colorCode.CHAKRALOW(30)),
-                                                            borderinsideeffect(1, colorCode.CHAKRALOW(30)),
-                                                        ]}
-                                                    />
+    //                                             //prodcutCategory[index1].sort((item) => !item.selected);
 
-                                                    <WrappedText
-                                                        text={
-                                                            'Choose product category you sell under ' +
-                                                            newSubCategory.name +
-                                                            ' ' +
-                                                            item.name
-                                                        }
-                                                        fontSize={fs12}
-                                                        textColor={colorCode.CHAKRALOW(90)}
-                                                        containerStyle={[ML(0.1)]}
-                                                    />
-                                                </View>
-                                                <LoadProductDetails
-                                                    query={{ parent: newSubCategory._id, active: true }}
-                                                    data={subCategory[newSubCategory._id]}
-                                                    setData={(data: productData[]) => {
-                                                        updateSubCategory(data, newSubCategory._id);
-                                                    }}
-                                                />
-                                            </View>
-                                        );
-                                    })}
-                        </View>
-                    );
-                })}
-        </ScrollView>
-    );
+    //                                             setCategory(prodcutCategory);
+    //                                             if (item.subCategoryExist) {
+    //                                                 if (!currentSelected) {
+    //                                                     updateSubCategory([], item._id);
+    //                                                 } else {
+    //                                                     deleteSubCategory(item._id);
+    //                                                 }
+    //                                             }
+    //                                         }}
+    //                                     />
+    //                                 );
+    //                             }}
+    //                         /> */}
+    //                         {item.subCategoryExist &&
+    //                             category[index1] &&
+    //                             category[index1]
+    //                                 .filter((item) => item.selected)
+    //                                 .map((newSubCategory, index) => {
+    //                                     return (
+    //                                         <View key={item._id + index.toString()} style={[ML(0.2), MT(0.2)]}>
+    //                                             <View style={[FDR(), AIC(), padHor]}>
+    //                                                 <View
+    //                                                     style={[
+    //                                                         HP(0.15),
+    //                                                         W(getHP(0.15)),
+    //                                                         BR(1),
+    //                                                         BGCOLOR(colorCode.CHAKRALOW(30)),
+    //                                                         borderinsideeffect(1, colorCode.CHAKRALOW(30)),
+    //                                                     ]}
+    //                                                 />
+
+    //                                                 <WrappedText
+    //                                                     text={
+    //                                                         'Choose product category you sell under ' +
+    //                                                         newSubCategory.name +
+    //                                                         ' ' +
+    //                                                         item.name
+    //                                                     }
+    //                                                     fontSize={fs12}
+    //                                                     textColor={colorCode.CHAKRALOW(90)}
+    //                                                     containerStyle={[ML(0.1)]}
+    //                                                 />
+    //                                             </View>
+    //                                             <LoadProductDetails
+    //                                                 query={{ parent: newSubCategory._id, active: true }}
+    //                                                 data={subCategory[newSubCategory._id]}
+    //                                                 setData={(data: productData[]) => {
+    //                                                     updateSubCategory(data, newSubCategory._id);
+    //                                                 }}
+    //                                             />
+    //                                         </View>
+    //                                     );
+    //                                 })}
+    //                     </View>
+    //                 );
+    //             })}
+    //         <CataloguePopup
+    //             title={''}
+    //             isVisible={selectedCatalogueAddress.length > 0}
+    //             setPopup={() => {
+    //                 setSelectedCatalogueAddress('');
+    //             }}
+    //         />
+    //     </ScrollView>
+    // );
 };
 
 const styles = StyleSheet.create({

@@ -87,19 +87,19 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     return (
         <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
             <View style={[MT(0.1)]} />
-            <View style={{ paddingHorizontal: '5%', paddingVertical: '4%' }}>
+            <View style={{ paddingHorizontal: '5%', paddingVertical: '2%' }}>
                 <WrappedText
                     text={'which category does your dukan exist?'}
-                    fontSize={fs18}
+                    fontSize={fs20}
                     textAlign="center"
                     fontFamily={FontFamily.Medium}
                 />
                 <WrappedText
                     text={
-                        'Select category under which you sell for example if your sell items for men select men or your sell any electronic items select Electronics category. If you deal in multiple category select them all'
+                        'select category in which you sell your dukan product in the market. For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
                     }
                     textAlign="center"
-                    containerStyle={[MT(0.1)]}
+                    containerStyle={[MT(0.15)]}
                     textColor={subHeadingColor}
                 />
             </View>
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
 
         flex: 1,
         paddingVertical: '2%',
-        marginTop: 10,
+        marginTop: 15,
         paddingHorizontal: '5%',
     },
 });

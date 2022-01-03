@@ -12,7 +12,7 @@ import { FontFamily, fs10, fs12, fs13, fs14, fs16, fs9 } from '../../../common';
 
 export interface ProductCategoryProps {
     item: productData;
-    containerStyle: ViewStyle | ViewStyle[];
+    containerStyle?: ViewStyle | ViewStyle[];
     onPressCategory: () => void;
 }
 
@@ -23,7 +23,7 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
                 containerStyle,
                 FDR(),
                 { flex: 1 },
-                // item.selected ? { ...provideShadow() } : {},
+                //item.selected ? { ...provideShadow() } : {},
                 { borderRadius: getWP(0.1), backgroundColor: colorCode.WHITE },
             ]}
             onPress={onPressCategory}
@@ -31,8 +31,8 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
             <FastImageWrapper
                 source={{ uri: item.image }}
                 imageStyle={{
-                    height: getHP(0.6),
-                    width: getHP(0.6),
+                    height: getHP(0.4),
+                    width: getHP(0.4),
                 }}
                 resizeMode={'cover'}
             />
@@ -40,18 +40,23 @@ const ProductCategory: React.SFC<ProductCategoryProps> = ({ item, onPressCategor
                 <WrappedText
                     text={item.name}
                     textColor={!item.selected ? black60 : black100}
-                    fontSize={fs13}
+                    fontSize={fs14}
                     fontFamily={FontFamily.Medium}
                 />
                 <WrappedText
                     text={item.description}
                     textColor={colorCode.BLACKLOW(40)}
-                    fontSize={fs9}
+                    fontSize={fs12}
                     textStyle={{ marginTop: getHP(0.05) }}
                 />
             </View>
 
-            <Icon name={item.selected ? 'check' : 'circle'} style={{ marginLeft: 20 }} size={15} color={mainColor} />
+            <Icon
+                name={item.selected ? 'check' : 'circle'}
+                style={{ marginLeft: 20 }}
+                size={18}
+                color={!item.selected ? black60 : black100}
+            />
         </WrappedRectangleButton>
     );
 };

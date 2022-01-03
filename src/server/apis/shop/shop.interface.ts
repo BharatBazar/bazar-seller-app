@@ -74,7 +74,7 @@ export interface IShop {
     shopMemberOnBoardingDone: boolean;
 }
 export interface IRGetShop extends CommonApiResponse {
-    payload: Shop;
+    payload: IShop;
 }
 
 export enum verificationStatus {

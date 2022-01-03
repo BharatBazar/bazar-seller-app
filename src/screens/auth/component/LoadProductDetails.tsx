@@ -6,6 +6,7 @@ import { AIC, JCC, MH, ML, WP } from '../../../common/styles';
 import { getProductCatalogueAPI } from '../../../server/apis/catalogue/catalogue.api';
 import { IRGetProductCatalogue, product } from '../../../server/apis/catalogue/catalogue.interface';
 import { productData } from '../ProductCategory';
+import CatalogueCardVertical from './CatalogueCardVertical';
 import ProductCategory from './DukanProductCategory';
 import ServerErrorText from './errorText';
 
@@ -62,7 +63,7 @@ const LoadProductDetails: React.FC<LoadProductDetailsProps> = ({ query, data, se
                 keyExtractor={(item) => item._id}
                 renderItem={({ item, index }: { item: productData; index: number }) => {
                     return (
-                        <ProductCategory
+                        <CatalogueCardVertical
                             containerStyle={[WP(3), MH(0.2), AIC(), JCC()]}
                             item={item}
                             onPressCategory={() => {
