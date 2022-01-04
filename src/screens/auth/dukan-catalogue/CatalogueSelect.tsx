@@ -1,18 +1,18 @@
-import { fs18, fs22 } from '@app/common';
+import { fs22 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
-import { AIC, FLEX, MT } from '@app/common/styles';
+import { AIC, MT } from '@app/common/styles';
+import Loader from '@app/screens/component/Loader';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { generalContainerStyle } from '@app/screens/components/styles/common';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { getShop, updateShop } from '@app/server/apis/shop/shop.api';
+import { getShop, getShopCatalgoue, updateShop } from '@app/server/apis/shop/shop.api';
 import { IRGetShop, IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
 import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
-import CatalogueCardVertical from '../component/CatalogueCardVertical';
 import CatalogueItem from './CatalogueItem';
 import CataloguePopup from './CataloguePopup';
 
@@ -40,39 +40,25 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
     const getCatalogueDetails = async (currentCatelogueIndex: number) => {
         setLoader(true);
         const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-        const response: IRGetShop = await getShop({
+        const response: IRGetShop = await getShopCatalgoue({
             _id: ownerDetails.shop,
         });
 
-        setSubCategory(response.payload.subCategory);
-        setSubCategory1(response.payload.subCategory1);
-
+        const { subCategory, subCategory1, category } = response.payload;
+        // console.log('subCategory =>', subCategory);
+        setParentCatalogue(category);
+        setSelectedCategory(subCategory.length == 0 ? [] : subCategory[currentCatelogueIndex]);
+        setSubCategory(subCategory);
+        setSubCategory1(subCategory1);
+        setLoader(false);
         if (response.status == 1) {
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
                 active: true,
-                parent: response.payload.category[currentCatelogueIndex],
+                parent: category[currentCatelogueIndex],
                 categoryType: categoryType.SubCategory,
             });
-            setParentCatalogue(response.payload.category);
-            setSubCategory(response.payload.subCategory);
-            setSubCategory1(response.payload.subCategory1);
-            setCurrentItem(response1.payload);
-        } else {
-            setError(response.message);
-        }
-    };
 
-    //While updating full subCategory and subCategory1 is going
-    //So we have to carefully update index
-    const updateCatalogueDetails = async (data: updateShopData) => {
-        setLoader(true);
-        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-        const response: IRShopUpdate = await updateShop({
-            ...data,
-            _id: ownerDetails.shop,
-        });
-        if (response.status == 1) {
-            setLoader(false);
+            setCurrentItem(response1.payload);
         } else {
             setError(response.message);
         }
@@ -111,6 +97,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                         setSelectedCategory([...selectedCategory.filter((id) => id != item._id)]);
                                     }
                                 }}
+                                //selectedItems={subCategory1[currentCatelogueIndex][index]}
                                 selected={isSelected}
                             />
                         );
@@ -120,12 +107,18 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
             <Border />
             <RightComponentButtonWithLeftText buttonText="Continue" onPress={() => {}} containerStyle={[MT(0.1)]} />
             <CataloguePopup
+                subCategory={subCategory}
+                subCategory1={subCategory1}
                 parentCatalogue={currentItem[currentSelectedIndex - 1]}
                 isVisible={currentSelectedIndex > 0 ? true : false}
                 setPopup={() => {
                     setCurrentSelectedIndex(0);
                 }}
+                currentCatalogueIndex={currentSelectedIndex}
+                currentSelectedIndex={currentCatelogueIndex}
+                successCallback={getCatalogueDetails}
             />
+            {loader && <Loader />}
         </View>
     );
 };

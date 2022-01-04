@@ -10,8 +10,8 @@ import { generalContainerStyle } from '@app/screens/components/styles/common';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { getShop } from '@app/server/apis/shop/shop.api';
-import { IRGetShop } from '@app/server/apis/shop/shop.interface';
+import { getShop, updateShop } from '@app/server/apis/shop/shop.api';
+import { IRGetShop, IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
 import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
@@ -23,6 +23,11 @@ interface CataloguePopupProps {
     setPopup: Function;
 
     parentCatalogue: IProductCatalogue;
+    subCategory: IProductCatalogue[][];
+    subCategory1: IProductCatalogue[][][];
+    currentCatalogueIndex: number;
+    successCallback: Function;
+    currentSelectedIndex: number;
 }
 
 const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
@@ -30,6 +35,11 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     setPopup = () => {},
 
     parentCatalogue,
+    subCategory,
+    subCategory1,
+    successCallback,
+    currentCatalogueIndex,
+    currentSelectedIndex,
 }) => {
     const [loader, setLoader] = React.useState(false);
 
@@ -48,6 +58,28 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             categoryType: categoryType.SubCategory1,
         });
         setCurrentItem(response1.payload);
+        setLoader(false);
+    };
+
+    //While updating full subCategory and subCategory1 is going
+    //So we have to carefully update index
+    const updateCatalogueDetails = async (data: updateShopData) => {
+        setLoader(true);
+        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+
+        const response: IRShopUpdate = await updateShop({
+            ...data,
+            _id: ownerDetails.shop,
+        });
+
+        if (response.status == 1) {
+            setLoader(false);
+            setPopup();
+            successCallback();
+        } else {
+            setLoader(false);
+            setError(response.message);
+        }
     };
 
     React.useEffect(() => {
@@ -90,7 +122,25 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                     </View>
                 </ScrollView>
                 <Border />
-                <RightComponentButtonWithLeftText buttonText="Continue" onPress={() => {}} containerStyle={[MT(0.2)]} />
+                <RightComponentButtonWithLeftText
+                    buttonText="Continue"
+                    onPress={async () => {
+                        var a = [...subCategory];
+                        if (a.length == 0) {
+                            a.push([parentCatalogue._id]);
+                        } else {
+                            a[currentCatalogueIndex].push(parentCatalogue._id);
+                        }
+                        var b = [...subCategory1];
+                        if (b.length == 0) {
+                            b.push([[...selectedCategory]]);
+                        } else {
+                            b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
+                        }
+                        await updateCatalogueDetails({ subCategory: a, subCategory1: b });
+                    }}
+                    containerStyle={[MT(0.2)]}
+                />
 
                 {loader && <Loader containerStyle={{ borderTopRightRadius: 20, borderTopLeftRadius: 20 }} />}
             </View>

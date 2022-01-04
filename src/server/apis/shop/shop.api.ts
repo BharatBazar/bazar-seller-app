@@ -10,6 +10,11 @@ export async function updateShop(data: Partial<updateShopData>): Promise<IRShopU
 export async function getShop(data: { _id: string }): Promise<IRGetShop> {
     return axios.post('/shop/get', data);
 }
+
+export async function getShopCatalgoue(data: { _id: string }): Promise<IRGetShop> {
+    return axios.post('/shop/getCatalogue', data);
+}
+
 export async function deleteShop(data: { _id: string }): Promise<Shop> {
     return axios.delete('/shop/delete?_id=' + data._id);
 }

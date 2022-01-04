@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { black100, black60, colorCode, mainColor } from '../../../common/color';
-import { AIC, BGCOLOR, FDR, ML, MT, PH, provideShadow, PV } from '../../../common/styles';
+import { AIC, BGCOLOR, BR, FDR, ML, MR, MT, PH, provideShadow, PV } from '../../../common/styles';
 import WrappedRectangleButton from '../../component/WrappedRectangleButton';
 
 import Icon from 'react-native-vector-icons/Feather';
@@ -17,11 +17,37 @@ export interface CatalogueItemProps {
     item: IProductCatalogue;
     containerStyle?: ViewStyle | ViewStyle[];
     onPressCategory: () => void;
+    //selectedItems: IProductCatalogue[];
     selected: boolean;
 }
 
-const CatalogueItem: React.SFC<CatalogueItemProps> = ({ item, onPressCategory, containerStyle, selected }) => {
+const CatalogueItem: React.SFC<CatalogueItemProps> = ({
+    item,
+    onPressCategory,
+    containerStyle,
+
+    selected,
+}) => {
     const ComponentType = selected ? View : Ripple;
+
+    console.log(item.child);
+
+    const renderSelectedItems = () => {
+        return (
+            <View>
+                <WrappedText text="item you sell inside clothes" containerStyle={[MT(0.05)]} textColor="#242424" />
+                <View style={[FDR(), { flexWrap: 'wrap' }]}>
+                    {item.child.map((item) => (
+                        <WrappedText
+                            text={item.name}
+                            containerStyle={[BGCOLOR(mainColor), PH(0.1), PV(0.05), MR(0.1), BR(0.05), MT(0.1)]}
+                            textColor="#FFFFFF"
+                        />
+                    ))}
+                </View>
+            </View>
+        );
+    };
     return (
         <ComponentType
             style={[
@@ -30,6 +56,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({ item, onPressCategory, c
                 { flex: 1 },
                 MT(0.1),
                 AIC(),
+                PV(0.1),
 
                 { borderRadius: getWP(0.1), backgroundColor: selected ? colorCode.CHAKRALOW(20) : colorCode.WHITE },
             ]}
@@ -50,12 +77,16 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({ item, onPressCategory, c
                     fontSize={fs14}
                     fontFamily={FontFamily.Medium}
                 />
-                <WrappedText
-                    text={item.description}
-                    textColor={colorCode.BLACKLOW(40)}
-                    fontSize={fs12}
-                    textStyle={{ marginTop: getHP(0.05) }}
-                />
+                {selected ? (
+                    renderSelectedItems()
+                ) : (
+                    <WrappedText
+                        text={item.description}
+                        textColor={colorCode.BLACKLOW(40)}
+                        fontSize={fs12}
+                        textStyle={{ marginTop: getHP(0.05) }}
+                    />
+                )}
             </View>
 
             {selected && (

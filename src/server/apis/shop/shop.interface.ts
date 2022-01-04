@@ -1,4 +1,4 @@
-import { product } from '../catalogue/catalogue.interface';
+import { IProductCatalogue, product } from '../catalogue/catalogue.interface';
 import { commonApiHandler } from './../../index';
 import { CommonApiResponse, IapiEndPOint } from './../common.interface';
 import { IshopMember } from '../shopMember/shopMember.interface';
@@ -68,13 +68,21 @@ export interface IShop {
     rating: Number;
     noOfRating: Number;
 
-    category: product[];
-    subCategory: product[][];
-    subCategory1: product[][][];
+    category: IProductCatalogue[];
+    subCategory: IProductCatalogue[][];
+    subCategory1: IProductCatalogue[][][];
     shopMemberOnBoardingDone: boolean;
 }
 export interface IRGetShop extends CommonApiResponse {
     payload: IShop;
+}
+
+export interface IRGetShopCatalogue extends CommonApiResponse {
+    payload: {
+        category: string[];
+        subCategory: string[][];
+        subCategory1: string[][][];
+    };
 }
 
 export enum verificationStatus {
