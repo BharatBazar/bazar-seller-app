@@ -1,29 +1,22 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { AIC, BGCOLOR, BR, DSP, FLEX, JCC, M, MT, PA, PH } from '../../common/styles';
-import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
+import { AIC, BR, DSP, JCC, MT } from '../../common/styles';
 import {
     categoryType,
     IProductCatalogue,
     IRGetProductCatalogue,
-    product,
 } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
-import HeaderText from './component/HeaderText';
-import { getHP } from '../../common/dimension';
-import { FlatList } from 'react-native-gesture-handler';
-import TextButton from '../component/TextButton';
+
 import { IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interface';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import ProductCategory from './component/DukanProductCategory';
-import ServerErrorText from './component/errorText';
-import { black10, colorCode, subHeadingColor } from '../../common/color';
-import { FontFamily, fs16, fs18, fs20, NavigationProps } from '../../common';
+import { colorCode, subHeadingColor } from '../../common/color';
+import { FontFamily, fs20, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import { Storage, StorageItemKeys } from '../../storage';
-import { generalContainerStyle } from '../components/styles/common';
+
 import WrappedText from '../component/WrappedText';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import Border from '../components/border/Border';
@@ -42,7 +35,7 @@ interface selected {
     selected: boolean;
 }
 
-export interface productData extends product, selected {}
+export interface productData extends IProductCatalogue, selected {}
 
 const ProductDetails: React.SFC<ProductDetail> = ({
     navigation,
