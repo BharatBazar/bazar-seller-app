@@ -1,6 +1,6 @@
-import { fs12, fs14, fs16, fs18, fs22 } from '@app/common';
+import { fs14 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
-import { AIC, BGCOLOR, FDR, FLEX, JCC, ML, MT, provideShadow } from '@app/common/styles';
+import { BGCOLOR, FDR, FLEX, JCC, ML, MT, provideShadow } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
@@ -9,8 +9,8 @@ import RightComponentButtonWithLeftText from '@app/screens/components/button/Rig
 import { generalContainerStyle } from '@app/screens/components/styles/common';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { getShop, getShopCatalgoue, updateShop } from '@app/server/apis/shop/shop.api';
-import { IRGetShop, IRGetShopCatalogue, IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
+import { getShopCatalgoue } from '@app/server/apis/shop/shop.api';
+import { IRGetShopCatalogue } from '@app/server/apis/shop/shop.interface';
 import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
@@ -31,7 +31,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
     //loader function
     const [loader, setLoader] = React.useState(false);
 
-    //all the selected catelgory
+    //all the selected catelgory in this particular catalogue
     const [selectedCategory, setSelectedCategory] = React.useState<string[]>([]);
     const [error, setError] = React.useState('');
 
@@ -56,16 +56,24 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
         });
 
         const { subCategory, subCategory1, category } = response.payload;
-
+        console.log(
+            'catalogue =>',
+            currentCatelogueIndex,
+            subCategory,
+            subCategory1,
+            currentCatelogueIndex || subCategory.length == 0 || currentCatelogueIndex + 1 > subCategory.length
+                ? []
+                : subCategory[currentCatelogueIndex],
+        );
         setParentCatalogue(category);
         setSelectedCategory(
-            subCategory.length == 0 || currentCatelogueIndex + 1 > subCategory.length
+            typeof currentCatelogueIndex != 'number' || currentCatelogueIndex + 1 > subCategory.length
                 ? []
                 : subCategory[currentCatelogueIndex],
         );
         setSubCategory(subCategory);
         setSubCategory1(subCategory1);
-        setLoader(false);
+
         if (response.status == 1) {
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
                 active: true,
@@ -74,8 +82,10 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
             });
 
             setCurrentItem(response1.payload);
+            setLoader(false);
         } else {
             setError(response.message);
+            setLoader(false);
         }
     };
 
@@ -83,7 +93,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
         getCatalogueDetails(currentCatelogueIndex);
     }, [currentCatelogueIndex]);
 
-    const currentCatalogue: IProductCatalogue =
+    const currentCatalogue: IProductCatalogue | {} =
         parentCatalogue.length > 0 ? parentCatalogue[currentCatelogueIndex] : {};
     return (
         <View style={[generalContainerStyle()]}>
@@ -95,10 +105,12 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                         containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(1)]}
                     />
 
-                    <FastImage
-                        source={{ uri: currentCatalogue.image }}
-                        style={{ height: 50, width: 50, marginLeft: 20 }}
-                    />
+                    {currentCatalogue && (
+                        <FastImage
+                            source={{ uri: currentCatalogue.image }}
+                            style={{ height: 50, width: 50, marginLeft: 20 }}
+                        />
+                    )}
                     <View style={[ML(0.6), FLEX(1)]}>
                         <WrappedText
                             text={'What you sell under ' + currentCatalogue.name + ' category ?'}
@@ -131,7 +143,6 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                         setSelectedCategory([...selectedCategory.filter((id) => id != item._id)]);
                                     }
                                 }}
-                                //selectedItems={subCategory1[currentCatelogueIndex][index]}
                                 selected={isSelected}
                             />
                         );
@@ -169,9 +180,16 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                 setPopup={() => {
                     setCurrentSelectedIndex(0);
                 }}
-                currentCatalogueIndex={currentSelectedIndex}
-                currentSelectedIndex={currentCatelogueIndex}
-                successCallback={getCatalogueDetails}
+                currentSelectedIndex={currentSelectedIndex - 1}
+                currentCatalogueIndex={currentCatelogueIndex}
+                successCallback={() => {
+                    setCurrentCatalogueIndex((index) => index + 1);
+                }}
+                failureCallback={() => {
+                    setSelectedCategory([
+                        ...selectedCategory.filter((item) => item != currentItem[currentSelectedIndex - 1]._id),
+                    ]);
+                }}
             />
             {loader && <Loader />}
         </View>

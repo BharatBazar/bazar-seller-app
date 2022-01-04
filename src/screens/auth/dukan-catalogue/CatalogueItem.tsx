@@ -37,13 +37,13 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
             <View>
                 <WrappedText text="item you sell inside clothes" containerStyle={[MT(0.05)]} textColor="#242424" />
                 <View style={[FDR(), { flexWrap: 'wrap' }]}>
-                    {item.child.map((item) => (
+                    {/* {item.child.map((item) => (
                         <WrappedText
                             text={item.name}
                             containerStyle={[BGCOLOR(mainColor), PH(0.1), PV(0.05), MR(0.1), BR(0.05), MT(0.1)]}
                             textColor="#FFFFFF"
                         />
-                    ))}
+                    ))} */}
                 </View>
             </View>
         );
