@@ -98,7 +98,9 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
         <ModalHOC
             isVisible={isVisible}
             setPopup={() => {
-                failureCallback();
+                if (selectedCategory.length == 0) {
+                    failureCallback();
+                }
                 setPopup();
                 setSelectedCategory([]);
             }}

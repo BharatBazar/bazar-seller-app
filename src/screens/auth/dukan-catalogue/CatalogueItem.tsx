@@ -17,6 +17,7 @@ export interface CatalogueItemProps {
     item: IProductCatalogue;
     containerStyle?: ViewStyle | ViewStyle[];
     onPressCategory: () => void;
+    onPressEdit: Function;
     //selectedItems: IProductCatalogue[];
     selected: boolean;
 }
@@ -25,7 +26,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     item,
     onPressCategory,
     containerStyle,
-
+    onPressEdit,
     selected,
 }) => {
     const ComponentType = selected ? View : Ripple;
@@ -94,6 +95,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                     iconName="edit"
                     containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
                     onPress={() => {
+                        onPressEdit();
                         //onPressEdit(item, index);
                     }}
                 />

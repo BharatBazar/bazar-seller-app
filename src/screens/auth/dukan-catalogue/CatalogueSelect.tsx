@@ -143,6 +143,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                         setSelectedCategory([...selectedCategory.filter((id) => id != item._id)]);
                                     }
                                 }}
+                                onPressEdit={() => {
+                                    setCurrentSelectedIndex(index + 1);
+                                }}
                                 selected={isSelected}
                             />
                         );
