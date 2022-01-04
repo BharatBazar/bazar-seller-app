@@ -79,7 +79,7 @@ export interface IRGetShop extends CommonApiResponse {
 
 export interface IRGetShopCatalogue extends CommonApiResponse {
     payload: {
-        category: string[];
+        category: IProductCatalogue[];
         subCategory: string[][];
         subCategory1: string[][][];
     };
