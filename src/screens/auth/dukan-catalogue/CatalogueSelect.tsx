@@ -197,7 +197,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                 currentSelectedIndex={currentSelectedIndex - 1}
                 currentCatalogueIndex={currentCatelogueIndex}
                 successCallback={() => {
-                    setCurrentCatalogueIndex((index) => index + 1);
+                    // setCurrentCatalogueIndex((index) => index + 1);
                 }}
                 failureCallback={() => {
                     setSelectedCategory([

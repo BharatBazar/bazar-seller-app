@@ -15,7 +15,8 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import CatalogueItem from './CatalogueItem';
-
+import { showMessage, hideMessage } from 'react-native-flash-message';
+import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
 interface CataloguePopupProps {
     isVisible: boolean;
     setPopup: Function;
@@ -65,6 +66,8 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
         setLoader(false);
     };
 
+    const modalRef = React.useRef<null | FlashErrorMessageType>(null);
+
     //While updating full subCategory and subCategory1 is going
     //So we have to carefully update index
     const updateCatalogueDetails = async (data: updateShopData) => {
@@ -99,27 +102,31 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     }, [isVisible]);
 
     const onPressSubmitDetails = async () => {
-        console.log(subCategory, subCategory1, currentCatalogueIndex, currentSelectedIndex);
-        var a = [...subCategory];
-        if (a.length < currentCatalogueIndex + 1) {
-            a.push([parentCatalogue._id]);
+        if (selectedCategory.length == 0) {
+            if (modalRef.current) modalRef.current.showError('Please select atleast one category', 'danger');
         } else {
-            a[currentCatalogueIndex].push(parentCatalogue._id);
-        }
-        var b = [...subCategory1];
-        if (b.length < currentCatalogueIndex + 1) {
-            b.push([[...selectedCategory]]);
-        } else {
-            if (b[currentCatalogueIndex].length < currentSelectedIndex + 1) {
-                b[currentCatalogueIndex].push(selectedCategory);
-            } else b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
-        }
+            var a = [...subCategory];
+            if (a.length < currentCatalogueIndex + 1) {
+                a.push([parentCatalogue._id]);
+            } else {
+                a[currentCatalogueIndex].push(parentCatalogue._id);
+            }
+            var b = [...subCategory1];
+            if (b.length < currentCatalogueIndex + 1) {
+                b.push([[...selectedCategory]]);
+            } else {
+                if (b[currentCatalogueIndex].length < currentSelectedIndex + 1) {
+                    b[currentCatalogueIndex].push(selectedCategory);
+                } else b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
+            }
 
-        await updateCatalogueDetails({ subCategory: a, subCategory1: b });
+            await updateCatalogueDetails({ subCategory: a, subCategory1: b });
+        }
     };
 
     return (
         <ModalHOC
+            refer={(ref) => (modalRef.current = ref)}
             isVisible={isVisible}
             setPopup={() => {
                 if (!childrenAvailable) failureCallback();
@@ -127,6 +134,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                 setPopup();
                 setSelectedCategory([]);
             }}
+            showErrorMessage={error}
         >
             <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden' }]}>
                 <View style={[FDR()]}>

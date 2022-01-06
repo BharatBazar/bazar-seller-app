@@ -14,6 +14,7 @@ import AppNavigation from './src/navigation/AppNavigation';
 import { initializeAxios } from './src/server';
 import useAlert, { defaultAlertState } from '@app/hooks/useAlert';
 import AlertBox from '@app/screens/components/popup/AlertBox';
+import FlashMessage from 'react-native-flash-message';
 
 export const AlertContext = createContext(() => {});
 
@@ -44,6 +45,7 @@ const App: () => Node = () => {
                     }}
                 />
             </AlertContext.Provider>
+            <FlashMessage position={'top'} />
         </>
     );
 };
