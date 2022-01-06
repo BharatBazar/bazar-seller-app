@@ -83,6 +83,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             setLoader(false);
             setPopup();
             successCallback();
+            setSelectedCategory([]);
         } else {
             setLoader(false);
             setError(response.message);
@@ -106,11 +107,13 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             if (modalRef.current) modalRef.current.showError('Please select atleast one category', 'danger');
         } else {
             var a = [...subCategory];
+            console.log('a =>', a);
             if (a.length < currentCatalogueIndex + 1) {
                 a.push([parentCatalogue._id]);
             } else {
                 a[currentCatalogueIndex].push(parentCatalogue._id);
             }
+            console.log('a =>', a);
             var b = [...subCategory1];
             if (b.length < currentCatalogueIndex + 1) {
                 b.push([[...selectedCategory]]);
@@ -120,10 +123,13 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                 } else b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
             }
 
+            console.log('update Ctalogue', a, b);
+
             await updateCatalogueDetails({ subCategory: a, subCategory1: b });
         }
     };
 
+    console.log(subCategory, subCategory1, 'catqalogue popup');
     return (
         <ModalHOC
             refer={(ref) => (modalRef.current = ref)}

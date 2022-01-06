@@ -10,13 +10,14 @@ import { generalContainerStyle } from '@app/screens/components/styles/common';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { getShopCatalgoue } from '@app/server/apis/shop/shop.api';
-import { IRGetShopCatalogue } from '@app/server/apis/shop/shop.interface';
+import { getShopCatalgoue, updateShop } from '@app/server/apis/shop/shop.api';
+import { IRGetShopCatalogue, IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
 import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { showMessage } from 'react-native-flash-message';
+import { sub } from 'react-native-reanimated';
 import CatalogueItem from './CatalogueItem';
 import CataloguePopup from './CataloguePopup';
 
@@ -71,9 +72,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
         setSelectedCategory(
             typeof currentCatelogueIndex != 'number' || currentCatelogueIndex + 1 > subCategory.length
                 ? []
-                : subCategory[currentCatelogueIndex],
+                : [...subCategory[currentCatelogueIndex]],
         );
-        setSubCategory(subCategory);
+        setSubCategory([...subCategory]);
         setSubCategory1(subCategory1);
 
         if (response.status == 1) {
@@ -101,6 +102,50 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
             return items.filter((item) => subCategory1[currentCatelogueIndex][currentSelectedIndex].includes(item._id));
         }
     };
+
+    //While updating full subCategory and subCategory1 is going
+    //So we have to carefully update index
+    const updateCatalogueDetails = async (data: updateShopData) => {
+        setLoader(true);
+        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+
+        const response: IRShopUpdate = await updateShop({
+            ...data,
+            _id: ownerDetails.shop,
+        });
+
+        if (response.status == 1) {
+            setLoader(false);
+        } else {
+            setLoader(false);
+            setError(response.message);
+        }
+    };
+
+    const deleteCatalogue = async (index: number, id: string) => {
+        if (subCategory.length >= currentCatelogueIndex + 1) {
+            if (subCategory[currentCatelogueIndex].length >= index + 1) {
+                console.log(subCategory, index, currentCatelogueIndex);
+                subCategory[currentCatelogueIndex].splice(index, 1);
+                console.log(subCategory);
+                let b = [];
+
+                if (
+                    subCategory1.length >= currentCatelogueIndex + 1 &&
+                    subCategory1[currentCatelogueIndex].length >= index + 1
+                ) {
+                    subCategory1[currentCatelogueIndex].splice(index, 1);
+                }
+
+                console.log('sub CATEGORY =>', subCategory, subCategory1, index);
+                await updateCatalogueDetails({ subCategory: subCategory, subCategory1: subCategory1 });
+                setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
+                setSubCategory(subCategory);
+                setSubCategory1(subCategory1);
+            }
+        }
+    };
+
     React.useEffect(() => {
         getCatalogueDetails(currentCatelogueIndex);
     }, [currentCatelogueIndex]);
@@ -152,7 +197,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                             setCurrentSelectedIndex(index + 1);
                                         }
                                     } else {
-                                        setSelectedCategory([...selectedCategory.filter((id) => id != item._id)]);
+                                        deleteCatalogue(index, item._id);
                                     }
                                 }}
                                 onPressEdit={() => {
@@ -201,6 +246,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                 currentSelectedIndex={currentSelectedIndex - 1}
                 currentCatalogueIndex={currentCatelogueIndex}
                 successCallback={() => {
+                    getCatalogueDetails(currentCatelogueIndex);
                     // setCurrentCatalogueIndex((index) => index + 1);
                 }}
                 failureCallback={() => {
