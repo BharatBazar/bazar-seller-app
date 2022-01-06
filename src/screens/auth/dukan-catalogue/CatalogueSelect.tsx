@@ -7,6 +7,7 @@ import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { generalContainerStyle } from '@app/screens/components/styles/common';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 import { getShopCatalgoue } from '@app/server/apis/shop/shop.api';
@@ -15,6 +16,7 @@ import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
+import { showMessage } from 'react-native-flash-message';
 import CatalogueItem from './CatalogueItem';
 import CataloguePopup from './CataloguePopup';
 
@@ -178,7 +180,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                 <RightComponentButtonWithLeftText
                     buttonText="Continue"
                     onPress={() => {
-                        setCurrentCatalogueIndex((index) => index + 1);
+                        if (selectedCategory.length == 0) {
+                            showMessage({ message: 'Please select atleast one category', type: 'danger' });
+                        } else setCurrentCatalogueIndex((index) => index + 1);
                     }}
                     containerStyle={[MT(0.2)]}
                     // rightComponent={() => (
