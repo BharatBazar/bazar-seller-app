@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { AIC, BR, DSP, JCC, MT } from '../../common/styles';
+import { AIC, BR, DSP, JCC, MT, PH } from '../../common/styles';
 import {
     categoryType,
     IProductCatalogue,
@@ -9,8 +9,8 @@ import {
 } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 
-import { IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interface';
-import { updateShop } from '../../server/apis/shop/shop.api';
+import { IRGetShopCatalogue, IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interface';
+import { getShopCatalgoue, updateShop } from '../../server/apis/shop/shop.api';
 import ProductCategory from './component/DukanProductCategory';
 import { colorCode, subHeadingColor } from '../../common/color';
 import { FontFamily, fs20, NavigationProps } from '../../common';
@@ -22,6 +22,12 @@ import RightComponentButtonWithLeftText from '../components/button/RightComponen
 import Border from '../components/border/Border';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import { ToastHOC } from '../hoc/ToastHOC';
+import { Storage, StorageItemKeys } from '@app/storage';
+import Loader from '../component/Loader';
+import CatalogueItem from './dukan-catalogue/CatalogueItem';
+import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
+import { AlertContext } from '@app/../App';
+import { showMessage } from 'react-native-flash-message';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -45,12 +51,23 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 }) => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
+    const [loader, setLoader] = React.useState(false);
+    const [selectedCategory, setSelectedCategory] = React.useState<string[]>([]);
+    //Selected current catalogue by a shop
+    const [subCategory, setSubCategory] = React.useState<string[][]>([]);
+    const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
+
+    const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
     const submitDetails = async (data: updateShopData) => {
+        setLoader(true);
         const response: IRShopUpdate = await updateShop({
-            ...data,
+            category: selectedCategory,
+            subCategory1,
+            subCategory,
             _id: ownerDetails.shop,
         });
+        setLoader(false);
         if (response.status == 1) {
             navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY, { ownerDetails: ownerDetails });
         } else {
@@ -59,15 +76,28 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     };
 
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
+        setLoader(true);
+        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+
+        //getting all the current selected catalogue of an shop with the parent catalogue or top
+        //category populated
+        const response1: IRGetShopCatalogue = await getShopCatalgoue({
+            _id: ownerDetails.shop,
+        });
+        const { category, subCategory, subCategory1 } = response1.payload;
+        setSelectedCategory([...category.map((item) => item._id)]);
+        setSubCategory([...subCategory]);
+        setSubCategory1([...subCategory1]);
         const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
         if (response.status == 1) {
             const data: productData[] = response.payload.map((item) => {
-                return { ...item, selected: false };
+                return { ...item };
             });
             setData(data);
         } else {
             setError(response.message);
         }
+        setLoader(false);
     };
 
     useEffect(() => {
@@ -76,6 +106,19 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
         return () => {};
     }, []);
+
+    console.log(subCategory, subCategory1, selectedCategory);
+
+    const onePressDelete = (index: number, id: string) => {
+        setAlertState(defaultAlertState);
+        if (subCategory.length >= index + 1) {
+            setSubCategory([...subCategory.splice(index, 1)]);
+        }
+        if (subCategory1.length >= index + 1) {
+            setSubCategory1([...subCategory1.splice(index, 1)]);
+        }
+        setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
+    };
 
     return (
         <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
@@ -99,31 +142,53 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
             <Border />
 
-            <ScrollView style={{}}>
-                {data.map((item, index) => (
-                    <ProductCategory
-                        item={item}
-                        containerStyle={styles.productCategory}
-                        onPressCategory={() => {
-                            const prodcutCategory = [...data];
-                            prodcutCategory[index].selected = !prodcutCategory[index].selected;
+            <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
+                {data.map((item, index) => {
+                    const isSelected = selectedCategory.includes(item._id);
 
-                            setData(prodcutCategory);
-                        }}
-                    />
-                ))}
+                    return (
+                        <CatalogueItem
+                            item={item}
+                            selected={isSelected}
+                            containerStyle={styles.productCategory}
+                            onPressCategory={() => {
+                                if (!isSelected) {
+                                    selectedCategory.push(item._id);
+                                    setSelectedCategory([...selectedCategory]);
+                                } else {
+                                    if (subCategory.length >= index + 1 && subCategory[index].length > 0) {
+                                        setAlertState({
+                                            isVisible: true,
+                                            heading: 'Remove ' + item.name + ' catalogue',
+                                            subHeading:
+                                                'Are you sure you want to remove ' +
+                                                item.name +
+                                                ' catalogue' +
+                                                ' from your shop it will delete all your saved data under this catalogue?',
+                                            onPressRightButton: () => {
+                                                onePressDelete(index, item._id);
+                                            },
+                                        });
+                                    } else {
+                                        onePressDelete(index, item._id);
+                                    }
+                                }
+                            }}
+                        />
+                    );
+                })}
             </ScrollView>
             <Border />
             <RightComponentButtonWithLeftText
                 buttonText={'Submit'}
                 onPress={() => {
-                    const selectedCategory: [string] = data.filter((item) => item.selected).map((item) => item._id);
                     if (selectedCategory.length == 0) {
-                        ToastHOC.errorAlert('Please select atleast one category');
+                        showMessage({ message: 'Please select atleast one catagory', type: 'danger' });
                     } else submitDetails({ category: selectedCategory });
                 }}
                 containerStyle={{ margin: DSP }}
             />
+            {loader && <Loader />}
         </View>
     );
 };

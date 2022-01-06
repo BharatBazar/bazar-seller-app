@@ -1,19 +1,13 @@
-import React, { useState } from 'react';
-import { View, Alert } from 'react-native';
-import { fs10, fs12, fs13, fs16, fs17, fs20, mobileValidation } from '../../../common';
-import { black20, black40, black50, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
-import { getWP } from '../../../common/dimension';
-import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, ML, MT, PH, provideShadow, PV } from '../../../common/styles';
+import React from 'react';
+import { View } from 'react-native';
+import { fs10, fs12 } from '../../../common';
+import { black20, black40, messageColor } from '../../../common/color';
+import { AIC, BC, BR, BW, FDR, FLEX, MT } from '../../../common/styles';
 import WrappedText from '../../component/WrappedText';
 import Icons from 'react-native-vector-icons/Feather';
-import { IRShopMemberDelete, IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
-import { deleteShopMember } from '../../../server/apis/shopMember/shopMember.api';
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 import { member } from './AddDukanMembers';
-import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
-import { AlertContext } from '@app/../App';
-import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
+
 import MemberDetails from './MemberDetails';
 
 const AddMember = ({
@@ -33,22 +27,6 @@ const AddMember = ({
 
     onPressEdit: (shopMember: member, index?: number) => void;
 }) => {
-    const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
-
-    const deleteMember = async (id: string, index: number) => {
-        try {
-            const response: IRShopMemberDelete = await deleteShopMember({ _id: id });
-            if (response.status == 1) {
-                Alert.alert(response.message);
-                onPressCross(role, index, true);
-            } else {
-                throw new Error(response.message);
-            }
-        } catch (error) {
-            ToastHOC.errorAlert(error.message);
-        }
-    };
-
     return (
         <View style={[]}>
             <WrappedRectangleButton
@@ -64,8 +42,6 @@ const AddMember = ({
                     <WrappedText text={message} fontSize={fs10} textColor={messageColor} />
                 </View>
             </WrappedRectangleButton>
-            {/* <WrappedText text={message} fontSize={fs12} containerStyle={[MT(0.1)]} textColor={messageColor} />
-            <View style={[MT(0.1)]} /> */}
             {data.map((item: member, index: number) => {
                 return (
                     <MemberDetails
@@ -79,15 +55,6 @@ const AddMember = ({
                     />
                 );
             })}
-            {/* <MemberDetailsPopup
-                selectedItem={undefined}
-                role={role}
-                isVisible={isPopupVisible}
-                setPopup={() => {
-                    setPopupVisible(false);
-                }}
-                message={message}
-            /> */}
         </View>
     );
 };

@@ -138,6 +138,8 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
         getCatalogueDetails(currentCatelogueIndex);
     }, [currentCatelogueIndex]);
 
+    console.log(parentCatalogue);
+
     const currentCatalogue: IProductCatalogue | {} =
         parentCatalogue.length > 0 ? parentCatalogue[currentCatelogueIndex] : {};
     return (
