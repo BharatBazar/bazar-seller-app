@@ -60,7 +60,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
 
         const { subCategory, subCategory1, category } = response.payload;
         console.log(
-            'catalogue =>',
+            'cataloguxse =>',
             currentCatelogueIndex,
             subCategory,
             subCategory1,
@@ -195,6 +195,15 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                         setSelectedCategory([...selectedCategory]);
                                         if (item.subCategoryExist) {
                                             setCurrentSelectedIndex(index + 1);
+                                        } else {
+                                            var a = [...subCategory];
+
+                                            if (a.length < currentCatelogueIndex + 1) {
+                                                a.push([item._id]);
+                                            } else {
+                                                a[currentCatelogueIndex].push(item._id);
+                                            }
+                                            updateCatalogueDetails({ subCategory: a });
                                         }
                                     } else {
                                         deleteCatalogue(index, item._id);
@@ -212,16 +221,20 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
             </ScrollView>
             <Border />
             <View style={[FDR(), JCC('space-between')]}>
-                <RightComponentButtonWithLeftText
-                    buttonText="Prev"
-                    onPress={() => {
-                        setCurrentCatalogueIndex((index) => index - 1);
-                    }}
-                    containerStyle={[MT(0.2)]}
-                    // rightComponent={() => (
-                    //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-left" iconSize={20} />
-                    // )}
-                />
+                {currentCatelogueIndex > 0 ? (
+                    <RightComponentButtonWithLeftText
+                        buttonText="Prev"
+                        onPress={() => {
+                            setCurrentCatalogueIndex((index) => index - 1);
+                        }}
+                        containerStyle={[MT(0.2)]}
+                        // rightComponent={() => (
+                        //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-left" iconSize={20} />
+                        // )}
+                    />
+                ) : (
+                    <View />
+                )}
                 <RightComponentButtonWithLeftText
                     buttonText="Continue"
                     onPress={() => {

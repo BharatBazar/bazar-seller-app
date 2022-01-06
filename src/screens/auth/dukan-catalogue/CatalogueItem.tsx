@@ -95,7 +95,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 )}
             </View>
 
-            {selected && onPressEdit && (
+            {selected && onPressEdit && item.subCategoryExist && (
                 <ButtonFeatherIcon
                     iconName="edit"
                     containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
