@@ -1,14 +1,12 @@
 import * as React from 'react';
 import { black100, black60, colorCode, mainColor } from '../../../common/color';
 import { AIC, BGCOLOR, BR, FDR, ML, MR, MT, PH, provideShadow, PV } from '../../../common/styles';
-import WrappedRectangleButton from '../../component/WrappedRectangleButton';
-
 import Icon from 'react-native-vector-icons/Feather';
 import { View, ViewStyle } from 'react-native';
 import { getHP, getWP } from '../../../common/dimension';
 import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
-import { FontFamily, fs10, fs12, fs13, fs14, fs16, fs9 } from '../../../common';
+import { FontFamily, fs12, fs14 } from '../../../common';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 import Ripple from 'react-native-material-ripple';
 import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
@@ -35,8 +33,6 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     children,
 }) => {
     const ComponentType = selected ? View : Ripple;
-
-    console.log(children);
 
     const renderSelectedItems = () => {
         return (

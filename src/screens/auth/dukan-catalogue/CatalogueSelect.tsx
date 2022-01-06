@@ -7,7 +7,6 @@ import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { generalContainerStyle } from '@app/screens/components/styles/common';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 import { getShopCatalgoue, updateShop } from '@app/server/apis/shop/shop.api';
@@ -17,7 +16,6 @@ import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import { showMessage } from 'react-native-flash-message';
-import { sub } from 'react-native-reanimated';
 import CatalogueItem from './CatalogueItem';
 import CataloguePopup from './CataloguePopup';
 
@@ -59,15 +57,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
         });
 
         const { subCategory, subCategory1, category } = response.payload;
-        console.log(
-            'cataloguxse =>',
-            currentCatelogueIndex,
-            subCategory,
-            subCategory1,
-            currentCatelogueIndex || subCategory.length == 0 || currentCatelogueIndex + 1 > subCategory.length
-                ? []
-                : subCategory[currentCatelogueIndex],
-        );
+
         setParentCatalogue(category);
         setSelectedCategory(
             typeof currentCatelogueIndex != 'number' || currentCatelogueIndex + 1 > subCategory.length
@@ -125,9 +115,8 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
     const deleteCatalogue = async (index: number, id: string) => {
         if (subCategory.length >= currentCatelogueIndex + 1) {
             if (subCategory[currentCatelogueIndex].length >= index + 1) {
-                console.log(subCategory, index, currentCatelogueIndex);
                 subCategory[currentCatelogueIndex].splice(index, 1);
-                console.log(subCategory);
+
                 let b = [];
 
                 if (
@@ -137,7 +126,6 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                     subCategory1[currentCatelogueIndex].splice(index, 1);
                 }
 
-                console.log('sub CATEGORY =>', subCategory, subCategory1, index);
                 await updateCatalogueDetails({ subCategory: subCategory, subCategory1: subCategory1 });
                 setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
                 setSubCategory(subCategory);
