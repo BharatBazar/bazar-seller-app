@@ -14,7 +14,7 @@ export interface IProductCatalogue {
     subCategoryExist: boolean;
     parent: string;
     active: boolean;
-    child: string;
+    child: IProductCatalogue[];
     _id: string;
 }
 

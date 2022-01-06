@@ -108,7 +108,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         <View
             style={[
                 { flex: 1, backgroundColor: '#FFFFFF' },
-                update ? { padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP } : {},
+                { padding: DSP, paddingTop: update ? STATUS_BAR_HEIGHT + DSP : DSP },
             ]}
         >
             <HeaderText

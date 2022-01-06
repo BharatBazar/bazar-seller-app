@@ -89,6 +89,16 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
         }
     };
 
+    const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
+        if (
+            subCategory1 &&
+            typeof currentCatelogueIndex == 'number' &&
+            subCategory1.length >= currentCatelogueIndex + 1 &&
+            subCategory1[currentCatelogueIndex].length >= currentSelectedIndex + 1
+        ) {
+            return items.filter((item) => subCategory1[currentCatelogueIndex][currentSelectedIndex].includes(item._id));
+        }
+    };
     React.useEffect(() => {
         getCatalogueDetails(currentCatelogueIndex);
     }, [currentCatelogueIndex]);
@@ -147,6 +157,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                                     setCurrentSelectedIndex(index + 1);
                                 }}
                                 selected={isSelected}
+                                children={provideChildren(index, item.child)}
                             />
                         );
                     })}
@@ -193,6 +204,12 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
                         ...selectedCategory.filter((item) => item != currentItem[currentSelectedIndex - 1]._id),
                     ]);
                 }}
+                childrenAvailable={
+                    subCategory1 &&
+                    typeof currentCatelogueIndex == 'number' &&
+                    subCategory1.length >= currentCatelogueIndex + 1 &&
+                    subCategory1[currentCatelogueIndex].length >= currentSelectedIndex
+                }
             />
             {loader && <Loader />}
         </View>

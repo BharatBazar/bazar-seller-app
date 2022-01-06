@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { fs12, fs13, NavigationProps, passwordValidation } from '../../common';
 import { colorCode, messageColor } from '../../common/color';
 import { getHP, getWP } from '../../common/dimension';
-import { FLEX, PV, PH, MT, FDR } from '../../common/styles';
+import { FLEX, PV, PH, MT, FDR, BGCOLOR, PA, DSP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
@@ -114,66 +114,62 @@ const SetPassword: React.FC<OpenDukanProps> = ({
     };
 
     return (
-        <View style={[FLEX(1), PH(0.4), PV(0.2)]}>
-            <ShadowWrapperHOC>
-                <>
-                    <HeaderText
-                        step={'Step 2'}
-                        heading={'Protect your account with password'}
-                        subHeading={"Setting password helps to protect your account from attacker's."}
-                    />
+        <View style={[FLEX(1), PA(DSP), BGCOLOR('#FFFFFF')]}>
+            <HeaderText
+                step={'Step 2'}
+                heading={'Protect your account with password'}
+                subHeading={"Setting password helps to protect your account from attacker's."}
+            />
 
-                    {error['serverError'] && <ServerErrorText errorText={error['serverError']} />}
-                    <View style={{ marginTop: getHP(0.2) }}>
-                        <WrappedTextInput
-                            placeholder={'Set Password'}
-                            value={formData.password}
-                            eyeButton={true}
-                            onChangeText={(password) => setField('password', password)}
-                            {...componentProps.textInputProps}
-                            errorText={error['password']}
-                        />
-                        <View style={{ marginTop: getHP(0.1) }}>
-                            {password.map((item, index) => {
-                                return (
-                                    <View style={[FDR(), MT(0.05)]} key={index}>
-                                        <FeatherIcon
-                                            name={item.matched ? 'check-circle' : 'x-circle'}
-                                            color={item.matched ? colorCode.GREEN : messageColor}
-                                        />
-                                        <WrappedText
-                                            text={item.error}
-                                            fontSize={fs12}
-                                            textStyle={{ marginLeft: getWP(0.2) }}
-                                            textColor={item.matched ? colorCode.GREEN : messageColor}
-                                        />
-                                    </View>
-                                );
-                            })}
-                        </View>
-                        <View style={{ marginTop: getHP(0.1) }}>
-                            <WrappedTextInput
-                                placeholder={'Confirm Password'}
-                                value={formData.confirmPassword}
-                                secureTextEntry={true}
-                                onChangeText={(confirmPassword) => setField('confirmPassword', confirmPassword)}
-                                {...componentProps.textInputProps}
-                                errorText={error['confirmPassword']}
-                            />
-                        </View>
-                        <TextButton
-                            text={'SET PASSWORD'}
-                            textProps={componentProps.buttonTextProps}
-                            containerStyle={[buttonContainerStyle, MT(0.4)]}
-                            onPress={() => {
-                                validateFields();
-                            }}
-                            isLoading={setPasswordButton == 2 ? true : false}
-                            disabled={setPasswordButton == 2}
-                        />
-                    </View>
-                </>
-            </ShadowWrapperHOC>
+            {error['serverError'] && <ServerErrorText errorText={error['serverError']} />}
+            <View style={{ marginTop: getHP(0.2) }}>
+                <WrappedTextInput
+                    placeholder={'Set Password'}
+                    value={formData.password}
+                    eyeButton={true}
+                    onChangeText={(password) => setField('password', password)}
+                    {...componentProps.textInputProps}
+                    errorText={error['password']}
+                />
+                <View style={{ marginTop: getHP(0.1) }}>
+                    {password.map((item, index) => {
+                        return (
+                            <View style={[FDR(), MT(0.05)]} key={index}>
+                                <FeatherIcon
+                                    name={item.matched ? 'check-circle' : 'x-circle'}
+                                    color={item.matched ? colorCode.GREEN : messageColor}
+                                />
+                                <WrappedText
+                                    text={item.error}
+                                    fontSize={fs12}
+                                    textStyle={{ marginLeft: getWP(0.2) }}
+                                    textColor={item.matched ? colorCode.GREEN : messageColor}
+                                />
+                            </View>
+                        );
+                    })}
+                </View>
+                <View style={{ marginTop: getHP(0.1) }}>
+                    <WrappedTextInput
+                        placeholder={'Confirm Password'}
+                        value={formData.confirmPassword}
+                        secureTextEntry={true}
+                        onChangeText={(confirmPassword) => setField('confirmPassword', confirmPassword)}
+                        {...componentProps.textInputProps}
+                        errorText={error['confirmPassword']}
+                    />
+                </View>
+                <TextButton
+                    text={'SET PASSWORD'}
+                    textProps={componentProps.buttonTextProps}
+                    containerStyle={[buttonContainerStyle, MT(0.4)]}
+                    onPress={() => {
+                        validateFields();
+                    }}
+                    isLoading={setPasswordButton == 2 ? true : false}
+                    disabled={setPasswordButton == 2}
+                />
+            </View>
         </View>
     );
 };

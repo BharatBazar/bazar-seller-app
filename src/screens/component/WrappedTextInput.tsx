@@ -45,13 +45,6 @@ export default class WrappedTextInput extends Component<Props, State> {
         };
     }
 
-    shouldComponentUpdate(prevProps: Props) {
-        if (this.props.value != prevProps.value || this.props.errorText != prevProps.errorText) {
-            return true;
-        }
-        return false;
-    }
-
     componentDidMount() {
         const { eyeButton } = this.props;
         this.setState({ secureTextEntry: eyeButton });

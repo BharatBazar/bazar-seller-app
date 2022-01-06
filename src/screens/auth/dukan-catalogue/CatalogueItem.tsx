@@ -17,9 +17,13 @@ export interface CatalogueItemProps {
     item: IProductCatalogue;
     containerStyle?: ViewStyle | ViewStyle[];
     onPressCategory: () => void;
-    onPressEdit: Function;
+    onPressEdit?: Function;
     //selectedItems: IProductCatalogue[];
     selected: boolean;
+
+    // children's are basically items inside that catalogue
+
+    children?: string;
 }
 
 const CatalogueItem: React.SFC<CatalogueItemProps> = ({
@@ -28,23 +32,24 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     containerStyle,
     onPressEdit,
     selected,
+    children,
 }) => {
     const ComponentType = selected ? View : Ripple;
 
-    console.log(item.child);
+    console.log(children);
 
     const renderSelectedItems = () => {
         return (
             <View>
                 <WrappedText text="item you sell inside clothes" containerStyle={[MT(0.05)]} textColor="#242424" />
                 <View style={[FDR(), { flexWrap: 'wrap' }]}>
-                    {/* {item.child.map((item) => (
+                    {children.map((item) => (
                         <WrappedText
                             text={item.name}
                             containerStyle={[BGCOLOR(mainColor), PH(0.1), PV(0.05), MR(0.1), BR(0.05), MT(0.1)]}
                             textColor="#FFFFFF"
                         />
-                    ))} */}
+                    ))}
                 </View>
             </View>
         );
@@ -59,7 +64,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 AIC(),
                 PV(0.1),
 
-                { borderRadius: getWP(0.1), backgroundColor: selected ? colorCode.CHAKRALOW(20) : colorCode.WHITE },
+                { borderRadius: getWP(0.3), backgroundColor: selected ? colorCode.CHAKRALOW(20) : colorCode.WHITE },
             ]}
             onPress={onPressCategory}
         >
@@ -78,7 +83,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                     fontSize={fs14}
                     fontFamily={FontFamily.Medium}
                 />
-                {selected ? (
+                {selected && item.subCategoryExist && children ? (
                     renderSelectedItems()
                 ) : (
                     <WrappedText
@@ -90,7 +95,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 )}
             </View>
 
-            {selected && (
+            {selected && onPressEdit && (
                 <ButtonFeatherIcon
                     iconName="edit"
                     containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
@@ -105,15 +110,6 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                     iconName="x"
                     onPress={() => {
                         onPressCategory();
-                        // setAlertState({
-                        //     isVisible: true,
-                        //     heading: 'Delete member',
-                        //     subHeading: 'Are you sure you want to remove ' + item.firstName + ' from your shop?',
-                        //     onPressRightButton: () => {
-                        //         setAlertState(defaultAlertState);
-                        //         deleteMember(item._id, index);
-                        //     },
-                        // });
                     }}
                     containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
                 />

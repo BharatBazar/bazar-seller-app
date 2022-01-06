@@ -27,6 +27,9 @@ interface CataloguePopupProps {
     successCallback: Function;
     failureCallback: Function;
     currentSelectedIndex: number;
+
+    //To check whether it already has children or not so that to initiate the failure call back or clean up..
+    childrenAvailable: boolean;
 }
 
 const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
@@ -40,6 +43,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     currentCatalogueIndex,
     failureCallback,
     currentSelectedIndex,
+    childrenAvailable,
 }) => {
     const [loader, setLoader] = React.useState(false);
 
@@ -94,13 +98,32 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
         }
     }, [isVisible]);
 
+    const onPressSubmitDetails = async () => {
+        console.log(subCategory, subCategory1, currentCatalogueIndex, currentSelectedIndex);
+        var a = [...subCategory];
+        if (a.length < currentCatalogueIndex + 1) {
+            a.push([parentCatalogue._id]);
+        } else {
+            a[currentCatalogueIndex].push(parentCatalogue._id);
+        }
+        var b = [...subCategory1];
+        if (b.length < currentCatalogueIndex + 1) {
+            b.push([[...selectedCategory]]);
+        } else {
+            if (b[currentCatalogueIndex].length < currentSelectedIndex + 1) {
+                b[currentCatalogueIndex].push(selectedCategory);
+            } else b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
+        }
+
+        await updateCatalogueDetails({ subCategory: a, subCategory1: b });
+    };
+
     return (
         <ModalHOC
             isVisible={isVisible}
             setPopup={() => {
-                if (selectedCategory.length == 0) {
-                    failureCallback();
-                }
+                if (!childrenAvailable) failureCallback();
+
                 setPopup();
                 setSelectedCategory([]);
             }}
@@ -144,26 +167,8 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                 </ScrollView>
                 <Border />
                 <RightComponentButtonWithLeftText
-                    buttonText="Continue"
-                    onPress={async () => {
-                        console.log(subCategory, subCategory1, currentCatalogueIndex, currentSelectedIndex);
-                        var a = [...subCategory];
-                        if (a.length < currentCatalogueIndex + 1) {
-                            a.push([parentCatalogue._id]);
-                        } else {
-                            a[currentCatalogueIndex].push(parentCatalogue._id);
-                        }
-                        var b = [...subCategory1];
-                        if (b.length < currentCatalogueIndex + 1) {
-                            b.push([[...selectedCategory]]);
-                        } else {
-                            if (b[currentCatalogueIndex].length < currentSelectedIndex + 1) {
-                                b[currentCatalogueIndex].push(selectedCategory);
-                            } else b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
-                        }
-
-                        await updateCatalogueDetails({ subCategory: a, subCategory1: b });
-                    }}
+                    buttonText="Submit selected catalogue"
+                    onPress={onPressSubmitDetails}
                     containerStyle={[MT(0.2)]}
                 />
 

@@ -33,7 +33,7 @@ interface Props extends NavigationProps {
 class AuthNavigation extends React.Component<Props, {}> {
     render() {
         let params = {};
-        console.log(this.props.route.params);
+        console.log('App parameter', this.props.route.params);
         if (this.props.route.params) {
             console.log(this.props.route.params);
             var { ownerDetails, screen, update } = this.props.route.params;

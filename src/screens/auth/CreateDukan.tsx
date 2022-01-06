@@ -228,10 +228,17 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             timer,
             update,
         } = this.state;
-        console.log(details.phoneNumber, phoneNumber, update);
+        //console.log(details.phoneNumber, phoneNumber, update);
         return (
             <ScrollView
-                style={[{ flex: 1, padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP, backgroundColor: '#FFFFFF' }]}
+                style={[
+                    {
+                        flex: 1,
+                        padding: DSP,
+                        paddingTop: update ? STATUS_BAR_HEIGHT + DSP : DSP,
+                        backgroundColor: '#FFFFFF',
+                    },
+                ]}
             >
                 <HeaderText
                     step={update ? undefined : 'Step 1'}
