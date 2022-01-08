@@ -54,6 +54,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     const [loader, setLoader] = React.useState(false);
     const [selectedCategory, setSelectedCategory] = React.useState<string[]>([]);
     //Selected current catalogue by a shop
+
     const [subCategory, setSubCategory] = React.useState<string[][]>([]);
     const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
 
@@ -75,6 +76,27 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         }
     };
 
+    const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
+        const indexOfA = selectedCategory.findIndex((item) => item == a._id);
+        const indexOfB = selectedCategory.findIndex((item) => item == b._id);
+        console.log(indexOfA, indexOfB, selectedCategory);
+        if (indexOfA == -1 && indexOfB == -1) {
+            return 0;
+        } else if (indexOfA > -1 && indexOfB > -1) {
+            if (indexOfA < indexOfB) {
+                return -1;
+            } else if (indexOfA == indexOfB) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else if (indexOfA > -1 && indexOfB == -1) {
+            return -1;
+        } else if (indexOfB > -1 && indexOfA == -1) {
+            return 1;
+        }
+    };
+
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
         setLoader(true);
         const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
@@ -85,22 +107,25 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             _id: ownerDetails.shop,
         });
         const { category, subCategory, subCategory1 } = response1.payload;
-        setSelectedCategory([...category.map((item) => item._id)]);
-        setSubCategory([...subCategory]);
-        setSubCategory1([...subCategory1]);
+        setSelectedCategory([...category]);
+        if (subCategory.length > 0) setSubCategory([...subCategory]);
+        if (subCategory1.length > 0) setSubCategory1([...subCategory1]);
+
         const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
         if (response.status == 1) {
-            const data: productData[] = response.payload.map((item) => {
-                return { ...item };
-            });
-            setData(data);
+            response.payload.sort((a, b) => sortFunction(a, b, category));
+
+            setData([...response.payload]);
+
+            setLoader(false);
         } else {
             setError(response.message);
+            setLoader(false);
         }
-        setLoader(false);
     };
 
     useEffect(() => {
+        console.log('First time');
         fetchProductDetails({ categoryType: categoryType.Category, active: true });
         //getShopDetails();
 
@@ -111,13 +136,15 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     const onePressDelete = (index: number, id: string) => {
         setAlertState(defaultAlertState);
-        if (subCategory.length >= index + 1) {
-            setSubCategory([...subCategory.splice(index, 1)]);
+        const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
+        console.log(indexInSelectedArray, selectedCategory, subCategory, subCategory1);
+        if (subCategory.length >= indexInSelectedArray + 1) {
+            setSubCategory((subCategory) => [...subCategory.filter((item, indx) => indexInSelectedArray != indx)]);
         }
-        if (subCategory1.length >= index + 1) {
-            setSubCategory1([...subCategory1.splice(index, 1)]);
+        if (subCategory1.length >= indexInSelectedArray + 1) {
+            setSubCategory1((subCategory1) => [...subCategory1.filter((item, indx) => indexInSelectedArray != indx)]);
         }
-        setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
+        setSelectedCategory((selectedCategory) => [...selectedCategory.filter((_id) => _id != id)]);
     };
 
     return (
@@ -125,7 +152,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             <View style={[MT(0.1)]} />
             <View style={{ paddingHorizontal: '5%', paddingVertical: '2%' }}>
                 <WrappedText
-                    text={'which category does your dukan exist?'}
+                    text={'In which category does your dukan exist?'}
                     fontSize={fs20}
                     textAlign="center"
                     fontFamily={FontFamily.Medium}
@@ -151,6 +178,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                             item={item}
                             selected={isSelected}
                             containerStyle={styles.productCategory}
+                            onPressEdit={() => {}}
                             onPressCategory={() => {
                                 if (!isSelected) {
                                     selectedCategory.push(item._id);
