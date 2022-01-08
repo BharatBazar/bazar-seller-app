@@ -28,6 +28,7 @@ import CatalogueItem from './dukan-catalogue/CatalogueItem';
 import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
 import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
+import Catalogue from './dukan-catalogue/CatalogueSelect';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -37,9 +38,7 @@ export interface ProductDetail extends NavigationProps {
     };
 }
 
-interface selected {
-    selected: boolean;
-}
+interface selected {}
 
 export interface productData extends IProductCatalogue, selected {}
 
@@ -57,6 +56,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     const [subCategory, setSubCategory] = React.useState<string[][]>([]);
     const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
+    const [currentCatelogueIndex, setCurrentCatalogueIndex] = React.useState<number>(0);
+
+    //Current selected item from the child category
+    const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
 
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
@@ -97,6 +100,25 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         }
     };
 
+    //While updating full subCategory and subCategory1 is going
+    //So we have to carefully update index
+    const updateCatalogueDetails = async (data: updateShopData) => {
+        setLoader(true);
+        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+
+        const response: IRShopUpdate = await updateShop({
+            ...data,
+            _id: ownerDetails.shop,
+        });
+
+        if (response.status == 1) {
+            setLoader(false);
+        } else {
+            setLoader(false);
+            setError(response.message);
+        }
+    };
+
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
         setLoader(true);
         const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
@@ -113,7 +135,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
         const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
         if (response.status == 1) {
-            response.payload.sort((a, b) => sortFunction(a, b, category));
+            response.payload.sort((a: IProductCatalogue, b: IProductCatalogue) => sortFunction(a, b, category));
 
             setData([...response.payload]);
 
@@ -181,8 +203,18 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                             onPressEdit={() => {}}
                             onPressCategory={() => {
                                 if (!isSelected) {
-                                    selectedCategory.push(item._id);
-                                    setSelectedCategory([...selectedCategory]);
+                                    if (item.subCategoryExist) {
+                                        setCurrentSelectedIndex(index + 1);
+                                    } else {
+                                        var a = [...subCategory];
+
+                                        if (a.length < index + 1) {
+                                            a.push([item._id]);
+                                        } else {
+                                            a[index].push(item._id);
+                                        }
+                                        updateCatalogueDetails({ category: a });
+                                    }
                                 } else {
                                     if (subCategory.length >= index + 1 && subCategory[index].length > 0) {
                                         setAlertState({
@@ -215,6 +247,32 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                     } else submitDetails({ category: selectedCategory });
                 }}
                 containerStyle={{ margin: DSP }}
+            />
+            <Catalogue
+                isVisible={currentSelectedIndex > 0 ? true : false}
+                setPopup={() => {
+                    setCurrentSelectedIndex(0);
+                }}
+                subCategory={subCategory.length >= currentSelectedIndex ? subCategory[currentSelectedIndex - 1] : []}
+                subCategory1={
+                    subCategory1.length >= currentSelectedIndex ? subCategory1[currentSelectedIndex - 1] : [[]]
+                }
+                parentCatalogue={data[currentSelectedIndex - 1]}
+                successCallback={() => {
+                    //getCatalogueDetails(currentCatelogueIndex);
+                    // setCurrentCatalogueIndex((index) => index + 1);
+                }}
+                failureCallback={() => {
+                    setSelectedCategory([
+                        ...selectedCategory.filter((item) => item != data[currentSelectedIndex - 1]._id),
+                    ]);
+                }}
+                childrenAvailable={
+                    subCategory1 &&
+                    typeof currentCatelogueIndex == 'number' &&
+                    subCategory1.length >= currentCatelogueIndex + 1 &&
+                    subCategory1[currentCatelogueIndex].length >= currentSelectedIndex
+                }
             />
             {loader && <Loader />}
         </View>

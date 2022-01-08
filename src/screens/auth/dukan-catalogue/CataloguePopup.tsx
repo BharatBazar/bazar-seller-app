@@ -22,15 +22,10 @@ interface CataloguePopupProps {
     setPopup: Function;
 
     parentCatalogue: IProductCatalogue;
-    subCategory: string[][];
-    subCategory1: string[][][];
-    currentCatalogueIndex: number;
-    successCallback: Function;
-    failureCallback: Function;
-    currentSelectedIndex: number;
 
-    //To check whether it already has children or not so that to initiate the failure call back or clean up..
-    childrenAvailable: boolean;
+    successCallback: Function;
+    alreadySelectedCategory: string[];
+    failureCallback: Function;
 }
 
 const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
@@ -38,18 +33,16 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     setPopup = () => {},
 
     parentCatalogue = {},
-    subCategory,
-    subCategory1,
+
     successCallback,
-    currentCatalogueIndex,
+
     failureCallback,
-    currentSelectedIndex,
-    childrenAvailable,
+    alreadySelectedCategory,
 }) => {
     const [loader, setLoader] = React.useState(false);
 
     //all the selected catelgory
-    const [selectedCategory, setSelectedCategory] = React.useState<string[]>([]);
+    const [currentSelectedCategory, setSelectedCategory] = React.useState<string[]>([]);
     const [error, setError] = React.useState('');
 
     //It is basically all the child for the current item
@@ -93,37 +86,16 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     React.useEffect(() => {
         if (isVisible) {
             getCatalogueDetails();
-            if (
-                subCategory1.length >= currentCatalogueIndex + 1 &&
-                subCategory1[currentCatalogueIndex].length >= currentSelectedIndex + 1
-            ) {
-                setSelectedCategory(subCategory1[currentCatalogueIndex][currentSelectedIndex]);
-            }
+
+            setSelectedCategory(alreadySelectedCategory);
         }
     }, [isVisible]);
 
     const onPressSubmitDetails = async () => {
-        if (selectedCategory.length == 0) {
+        if (currentSelectedCategory.length == 0) {
             if (modalRef.current) modalRef.current.showError('Please select atleast one category', 'danger');
         } else {
-            var a = [...subCategory];
-
-            if (a.length < currentCatalogueIndex + 1) {
-                a.push([parentCatalogue._id]);
-            } else {
-                a[currentCatalogueIndex].push(parentCatalogue._id);
-            }
-
-            var b = [...subCategory1];
-            if (b.length < currentCatalogueIndex + 1) {
-                b.push([[...selectedCategory]]);
-            } else {
-                if (b[currentCatalogueIndex].length < currentSelectedIndex + 1) {
-                    b[currentCatalogueIndex].push(selectedCategory);
-                } else b[currentCatalogueIndex][currentSelectedIndex] = selectedCategory;
-            }
-
-            await updateCatalogueDetails({ subCategory: a, subCategory1: b });
+            successCallback(true, currentSelectedCategory);
         }
     };
 
@@ -132,10 +104,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             refer={(ref) => (modalRef.current = ref)}
             isVisible={isVisible}
             setPopup={() => {
-                if (!childrenAvailable) failureCallback();
-
-                setPopup();
-                setSelectedCategory([]);
+                successCallback(false);
             }}
             showErrorMessage={error}
         >
@@ -157,17 +126,19 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{}}>
                         {currentItem.map((item) => {
-                            const isSelected = selectedCategory.includes(item._id);
+                            const isSelected = currentSelectedCategory.includes(item._id);
 
                             return (
                                 <CatalogueItem
                                     item={item}
                                     onPressCategory={() => {
                                         if (!isSelected) {
-                                            selectedCategory.push(item._id);
-                                            setSelectedCategory([...selectedCategory]);
+                                            currentSelectedCategory.push(item._id);
+                                            setSelectedCategory([...currentSelectedCategory]);
                                         } else {
-                                            setSelectedCategory([...selectedCategory.filter((id) => id != item._id)]);
+                                            setSelectedCategory([
+                                                ...currentSelectedCategory.filter((id) => id != item._id),
+                                            ]);
                                         }
                                     }}
                                     selected={isSelected}

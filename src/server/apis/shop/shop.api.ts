@@ -1,7 +1,15 @@
 import { apiEndPoint } from './../../index';
 import axios from 'axios';
 
-import { IRShopUpdate, updateShopData, Shop, IRShopVerification, IRProductId, IRGetShop } from './shop.interface';
+import {
+    IRShopUpdate,
+    updateShopData,
+    Shop,
+    IRShopVerification,
+    IRProductId,
+    IRGetShop,
+    IRGetShopCatalogue,
+} from './shop.interface';
 
 export async function updateShop(data: Partial<updateShopData>): Promise<IRShopUpdate> {
     return axios.patch('/shop/update', data);
@@ -11,7 +19,7 @@ export async function getShop(data: { _id: string }): Promise<IRGetShop> {
     return axios.post('/shop/get', data);
 }
 
-export async function getShopCatalgoue(data: { _id: string }): Promise<IRGetShop> {
+export async function getShopCatalgoue(data: { _id: string }): Promise<IRGetShopCatalogue> {
     return axios.post('/shop/getCatalogue', data);
 }
 

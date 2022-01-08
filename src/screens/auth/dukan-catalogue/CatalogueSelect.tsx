@@ -1,12 +1,14 @@
 import { fs14 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
-import { BGCOLOR, FDR, FLEX, JCC, ML, MT, provideShadow } from '@app/common/styles';
+import { BGCOLOR, BTR, DSP, FDR, FLEX, JCC, ML, MT, PA, provideShadow } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
 import { generalContainerStyle } from '@app/screens/components/styles/common';
+import ModalHOC from '@app/screens/hoc/ModalHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 import { getShopCatalgoue, updateShop } from '@app/server/apis/shop/shop.api';
@@ -19,15 +21,23 @@ import { showMessage } from 'react-native-flash-message';
 import CatalogueItem from './CatalogueItem';
 import CataloguePopup from './CataloguePopup';
 
-interface CatalogueProps {}
+interface CatalogueProps {
+    isVisible: boolean;
+    setPopup: Function;
+    parentCatalogue: IProductCatalogue;
+    subCategory1: string[][];
+    subCategory: string[];
+}
 
-const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
-    //index is basically multiple parents are selected so for which parent currently we are
-    //selecting child
-    const [currentCatelogueIndex, setCurrentCatalogueIndex] = React.useState<number>(0);
-
+const Catalogue: React.FunctionComponent<CatalogueProps> = ({
+    isVisible,
+    setPopup,
+    parentCatalogue,
+    subCategory,
+    subCategory1,
+}) => {
     // All the parent catalogue or subcategory like mens, women etc
-    const [parentCatalogue, setParentCatalogue] = React.useState<IProductCatalogue[]>([]);
+    // const [parentCatalogue, setParentCatalogue] = React.useState<IProductCatalogue[]>([]);
 
     //loader function
     const [loader, setLoader] = React.useState(false);
@@ -42,55 +52,58 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
     //Current selected item from the child category
     const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
 
-    //Selected current catalogue by a shop
-    const [subCategory, setSubCategory] = React.useState<string[][]>([]);
-    const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
+    const modalRef = React.useRef<null | FlashErrorMessageType>(null);
 
-    const getCatalogueDetails = async (currentCatelogueIndex: number) => {
+    const getCatalogueDetails = async () => {
         setLoader(true);
-        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
-        //getting all the current selected catalogue of an shop with the parent catalogue or top
-        //category populated
-        const response: IRGetShopCatalogue = await getShopCatalgoue({
-            _id: ownerDetails.shop,
+        const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
+            const indexOfA = selectedCategory.findIndex((item) => item == a._id);
+            const indexOfB = selectedCategory.findIndex((item) => item == b._id);
+            console.log(indexOfA, indexOfB, selectedCategory);
+            if (indexOfA == -1 && indexOfB == -1) {
+                return 0;
+            } else if (indexOfA > -1 && indexOfB > -1) {
+                if (indexOfA < indexOfB) {
+                    return -1;
+                } else if (indexOfA == indexOfB) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else if (indexOfA > -1 && indexOfB == -1) {
+                return -1;
+            } else if (indexOfB > -1 && indexOfA == -1) {
+                return 1;
+            }
+        };
+
+        setSelectedCategory(subCategory);
+        const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
+            active: true,
+            parent: parentCatalogue._id,
+            categoryType: categoryType.SubCategory,
         });
-
-        const { subCategory, subCategory1, category } = response.payload;
-
-        setParentCatalogue(category);
-        setSelectedCategory(
-            typeof currentCatelogueIndex != 'number' || currentCatelogueIndex + 1 > subCategory.length
-                ? []
-                : [...subCategory[currentCatelogueIndex]],
-        );
-        setSubCategory([...subCategory]);
-        setSubCategory1(subCategory1);
-
-        if (response.status == 1) {
-            const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
-                active: true,
-                parent: category[currentCatelogueIndex]._id,
-                categoryType: categoryType.SubCategory,
-            });
-
+        console.log(response1.payload);
+        if (response1.status == 1) {
+            response1.payload.sort((a, b) => sortFunction(a, b, subCategory));
             setCurrentItem(response1.payload);
             setLoader(false);
         } else {
-            setError(response.message);
+            setError(response1.message);
             setLoader(false);
         }
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
-        if (
-            subCategory1 &&
-            typeof currentCatelogueIndex == 'number' &&
-            subCategory1.length >= currentCatelogueIndex + 1 &&
-            subCategory1[currentCatelogueIndex].length >= currentSelectedIndex + 1
-        ) {
-            return items.filter((item) => subCategory1[currentCatelogueIndex][currentSelectedIndex].includes(item._id));
-        }
+        // if (
+        //     subCategory1 &&
+        //     typeof currentCatelogueIndex == 'number' &&
+        //     subCategory1.length >= currentCatelogueIndex + 1 &&
+        //     subCategory1[currentCatelogueIndex].length >= currentSelectedIndex + 1
+        // ) {
+        return items.filter((item) => subCategory1[currentSelectedIndex].includes(item._id));
+        // }
     };
 
     //While updating full subCategory and subCategory1 is going
@@ -135,137 +148,164 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = () => {
     };
 
     React.useEffect(() => {
-        getCatalogueDetails(currentCatelogueIndex);
-    }, [currentCatelogueIndex]);
+        if (isVisible) getCatalogueDetails();
+    }, [isVisible]);
 
-    console.log(parentCatalogue);
+    console.log('sub Categpory 1 =>', subCategory1);
 
-    const currentCatalogue: IProductCatalogue | {} =
-        parentCatalogue.length > 0 ? parentCatalogue[currentCatelogueIndex] : {};
+    const currentCatalogue: IProductCatalogue | { name: string; image: '' } = parentCatalogue
+        ? parentCatalogue
+        : { name: '', image: '' };
     return (
-        <View style={[generalContainerStyle()]}>
-            <View style={[]}>
-                <View style={[FDR()]}>
-                    <WrappedFeatherIcon
-                        onPress={() => {}}
-                        iconName="chevron-left"
-                        containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(1)]}
-                    />
+        <ModalHOC
+            refer={(ref) => (modalRef.current = ref)}
+            isVisible={isVisible}
+            setPopup={() => {
+                // if (!childrenAvailable) failureCallback();
 
-                    {currentCatalogue && (
-                        <FastImage
-                            source={{ uri: currentCatalogue.image }}
-                            style={{ height: 50, width: 50, marginLeft: 20 }}
+                setPopup();
+                setSelectedCategory([]);
+            }}
+            showErrorMessage={error}
+        >
+            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden' }]}>
+                <View style={[]}>
+                    <View style={[FDR()]}>
+                        <WrappedFeatherIcon
+                            onPress={() => {}}
+                            iconName="chevron-left"
+                            containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(1)]}
                         />
-                    )}
-                    <View style={[ML(0.6), FLEX(1)]}>
-                        <WrappedText
-                            text={'What you sell under ' + currentCatalogue.name + ' category ?'}
-                            fontSize={fs14}
-                        />
-                        <WrappedText
-                            text={'Select item you sell under ' + currentCatalogue.name + ' cateogry by clicking on it'}
-                            textColor={subHeadingColor}
-                        />
+
+                        {currentCatalogue && (
+                            <FastImage
+                                source={{ uri: currentCatalogue.image }}
+                                style={{ height: 50, width: 50, marginLeft: 20 }}
+                            />
+                        )}
+                        <View style={[ML(0.6), FLEX(1)]}>
+                            <WrappedText
+                                text={'What you sell under ' + currentCatalogue.name + ' category ?'}
+                                fontSize={fs14}
+                            />
+                            <WrappedText
+                                text={
+                                    'Select item you sell under ' +
+                                    currentCatalogue.name +
+                                    ' cateogry by clicking on it'
+                                }
+                                textColor={subHeadingColor}
+                            />
+                        </View>
                     </View>
                 </View>
-            </View>
-            <Border />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <View style={[]}>
-                    {currentItem.map((item, index) => {
-                        const isSelected = selectedCategory.includes(item._id);
+                <Border />
+                <ScrollView showsVerticalScrollIndicator={false}>
+                    <View style={[]}>
+                        {currentItem.map((item, index) => {
+                            const isSelected = selectedCategory.includes(item._id);
 
-                        return (
-                            <CatalogueItem
-                                item={item}
-                                onPressCategory={() => {
-                                    if (!isSelected) {
-                                        selectedCategory.push(item._id);
-                                        setSelectedCategory([...selectedCategory]);
-                                        if (item.subCategoryExist) {
-                                            setCurrentSelectedIndex(index + 1);
-                                        } else {
-                                            var a = [...subCategory];
-
-                                            if (a.length < currentCatelogueIndex + 1) {
-                                                a.push([item._id]);
+                            return (
+                                <CatalogueItem
+                                    item={item}
+                                    onPressCategory={() => {
+                                        if (!isSelected) {
+                                            if (item.subCategoryExist) {
+                                                setCurrentSelectedIndex(index + 1);
                                             } else {
-                                                a[currentCatelogueIndex].push(item._id);
+                                                var a = [...subCategory];
+
+                                                // if (a.length < currentCatelogueIndex + 1) {
+                                                //     a.push([item._id]);
+                                                // } else {
+                                                //     a[currentCatelogueIndex].push(item._id);
+                                                // }
+                                                // updateCatalogueDetails({ subCategory: a });
                                             }
-                                            updateCatalogueDetails({ subCategory: a });
+                                        } else {
+                                            deleteCatalogue(index, item._id);
                                         }
-                                    } else {
-                                        deleteCatalogue(index, item._id);
-                                    }
-                                }}
-                                onPressEdit={() => {
-                                    setCurrentSelectedIndex(index + 1);
-                                }}
-                                selected={isSelected}
-                                children={provideChildren(index, item.child)}
-                            />
-                        );
-                    })}
-                </View>
-            </ScrollView>
-            <Border />
-            <View style={[FDR(), JCC('space-between')]}>
-                {currentCatelogueIndex > 0 ? (
+                                    }}
+                                    onPressEdit={() => {
+                                        setCurrentSelectedIndex(index + 1);
+                                    }}
+                                    selected={isSelected}
+                                    children={isSelected ? provideChildren(index, item.child) : []}
+                                />
+                            );
+                        })}
+                    </View>
+                </ScrollView>
+                <Border />
+                <View style={[FDR(), JCC('space-between')]}>
+                    {/* {currentCatelogueIndex > 0 ? (
+                        <RightComponentButtonWithLeftText
+                            buttonText="Prev"
+                            onPress={() => {
+                                setCurrentCatalogueIndex((index) => index - 1);
+                            }}
+                            containerStyle={[MT(0.2)]}
+                            // rightComponent={() => (
+                            //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-left" iconSize={20} />
+                            // )}
+                        />
+                    ) : (
+                        <View />
+                    )} */}
                     <RightComponentButtonWithLeftText
-                        buttonText="Prev"
+                        buttonText="Continue"
                         onPress={() => {
-                            setCurrentCatalogueIndex((index) => index - 1);
+                            if (selectedCategory.length == 0) {
+                                showMessage({ message: 'Please select atleast one category', type: 'danger' });
+                            } else setCurrentCatalogueIndex((index) => index + 1);
                         }}
                         containerStyle={[MT(0.2)]}
                         // rightComponent={() => (
-                        //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-left" iconSize={20} />
+                        //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-right" iconSize={20} />
                         // )}
                     />
-                ) : (
-                    <View />
-                )}
-                <RightComponentButtonWithLeftText
-                    buttonText="Continue"
-                    onPress={() => {
-                        if (selectedCategory.length == 0) {
-                            showMessage({ message: 'Please select atleast one category', type: 'danger' });
-                        } else setCurrentCatalogueIndex((index) => index + 1);
+                </View>
+                <CataloguePopup
+                    parentCatalogue={currentItem[currentSelectedIndex - 1]}
+                    isVisible={currentSelectedIndex > 0 ? true : false}
+                    setPopup={() => {
+                        setCurrentSelectedIndex(0);
                     }}
-                    containerStyle={[MT(0.2)]}
-                    // rightComponent={() => (
-                    //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-right" iconSize={20} />
-                    // )}
+                    alreadySelectedCategory={
+                        subCategory1 && subCategory1.length >= currentSelectedIndex
+                            ? subCategory1[currentSelectedIndex - 1]
+                            : []
+                    }
+                    successCallback={(selected: boolean, selectedSubCategory: string[]) => {
+                        if (selected) {
+                            subCategory1[currentSelectedIndex - 1] = selectedSubCategory;
+                            const currentSelectedItem = selectedCategory.find(
+                                (item) => item == currentItem[currentSelectedIndex - 1]._id,
+                            );
+                            console.log('current sele', currentSelectedItem);
+                            if (!currentSelectedItem) {
+                                setSelectedCategory((selectedCategory) => {
+                                    selectedCategory.push(currentItem[currentSelectedIndex - 1]._id);
+                                    return selectedCategory;
+                                });
+                                setCurrentSelectedIndex(0);
+                            } else {
+                                //setSelectedCategory((selectedCategory) => selectedCategory);
+                                setCurrentSelectedIndex(0);
+                            }
+                        } else {
+                            setCurrentSelectedIndex(0);
+                        }
+                    }}
+                    failureCallback={() => {
+                        // setSelectedCategory([
+                        //     ...selectedCategory.filter((item) => item != currentItem[currentSelectedIndex - 1]._id),
+                        // ]);
+                    }}
                 />
+                {loader && <Loader />}
             </View>
-            <CataloguePopup
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-                parentCatalogue={currentItem[currentSelectedIndex - 1]}
-                isVisible={currentSelectedIndex > 0 ? true : false}
-                setPopup={() => {
-                    setCurrentSelectedIndex(0);
-                }}
-                currentSelectedIndex={currentSelectedIndex - 1}
-                currentCatalogueIndex={currentCatelogueIndex}
-                successCallback={() => {
-                    getCatalogueDetails(currentCatelogueIndex);
-                    // setCurrentCatalogueIndex((index) => index + 1);
-                }}
-                failureCallback={() => {
-                    setSelectedCategory([
-                        ...selectedCategory.filter((item) => item != currentItem[currentSelectedIndex - 1]._id),
-                    ]);
-                }}
-                childrenAvailable={
-                    subCategory1 &&
-                    typeof currentCatelogueIndex == 'number' &&
-                    subCategory1.length >= currentCatelogueIndex + 1 &&
-                    subCategory1[currentCatelogueIndex].length >= currentSelectedIndex
-                }
-            />
-            {loader && <Loader />}
-        </View>
+        </ModalHOC>
     );
 };
 
