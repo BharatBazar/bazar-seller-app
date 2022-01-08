@@ -63,7 +63,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
-    const submitDetails = async (data: updateShopData) => {
+    const submitDetails = async () => {
         setLoader(true);
         const response: IRShopUpdate = await updateShop({
             category: selectedCategory,
@@ -73,7 +73,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         });
         setLoader(false);
         if (response.status == 1) {
-            navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY, { ownerDetails: ownerDetails });
+            showMessage({
+                message: 'Dukan catalogue updated',
+                type: 'success',
+            });
+            //  navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY, { ownerDetails: ownerDetails });
         } else {
             setError(response.message);
         }
@@ -148,25 +152,35 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     useEffect(() => {
         console.log('First time');
+
         fetchProductDetails({ categoryType: categoryType.Category, active: true });
         //getShopDetails();
 
         return () => {};
     }, []);
 
-    console.log(subCategory, subCategory1, selectedCategory);
+    console.log(subCategory1);
 
-    const onePressDelete = (index: number, id: string) => {
+    const onePressDelete = (id: string) => {
         setAlertState(defaultAlertState);
         const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
-        console.log(indexInSelectedArray, selectedCategory, subCategory, subCategory1);
+        console.log('onDelete =>', indexInSelectedArray, selectedCategory, subCategory, subCategory1);
         if (subCategory.length >= indexInSelectedArray + 1) {
-            setSubCategory((subCategory) => [...subCategory.filter((item, indx) => indexInSelectedArray != indx)]);
+            setSubCategory((subCategory) => {
+                let sc = subCategory.filter((item, indx) => indexInSelectedArray != indx);
+                return sc;
+            });
         }
         if (subCategory1.length >= indexInSelectedArray + 1) {
-            setSubCategory1((subCategory1) => [...subCategory1.filter((item, indx) => indexInSelectedArray != indx)]);
+            setSubCategory1((subCategory1) => {
+                let sc = subCategory1.filter((item, indx) => indexInSelectedArray != indx);
+                return sc;
+            });
         }
-        setSelectedCategory((selectedCategory) => [...selectedCategory.filter((_id) => _id != id)]);
+        setSelectedCategory((selectedCategory) => {
+            let sc = selectedCategory.filter((_id) => _id != id);
+            return sc;
+        });
     };
 
     return (
@@ -194,29 +208,30 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
                 {data.map((item, index) => {
                     const isSelected = selectedCategory.includes(item._id);
-
+                    const indx = selectedCategory.findIndex((id) => id == item._id);
+                    const currentIndex = indx == -1 ? selectedCategory.length : indx;
                     return (
                         <CatalogueItem
+                            key={item._id}
                             item={item}
                             selected={isSelected}
                             containerStyle={styles.productCategory}
-                            onPressEdit={() => {}}
+                            onPressEdit={() => {
+                                setCurrentCatalogueIndex(index);
+                                setCurrentSelectedIndex(currentIndex + 1);
+                            }}
                             onPressCategory={() => {
                                 if (!isSelected) {
                                     if (item.subCategoryExist) {
-                                        setCurrentSelectedIndex(index + 1);
+                                        setCurrentCatalogueIndex(index);
+                                        setCurrentSelectedIndex(currentIndex + 1);
                                     } else {
-                                        var a = [...subCategory];
-
-                                        if (a.length < index + 1) {
-                                            a.push([item._id]);
-                                        } else {
-                                            a[index].push(item._id);
-                                        }
-                                        updateCatalogueDetails({ category: a });
                                     }
                                 } else {
-                                    if (subCategory.length >= index + 1 && subCategory[index].length > 0) {
+                                    if (
+                                        subCategory.length >= currentIndex + 1 &&
+                                        subCategory[currentIndex].length > 0
+                                    ) {
                                         setAlertState({
                                             isVisible: true,
                                             heading: 'Remove ' + item.name + ' catalogue',
@@ -226,11 +241,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                                 ' catalogue' +
                                                 ' from your shop it will delete all your saved data under this catalogue?',
                                             onPressRightButton: () => {
-                                                onePressDelete(index, item._id);
+                                                onePressDelete(item._id);
                                             },
                                         });
                                     } else {
-                                        onePressDelete(index, item._id);
+                                        onePressDelete(item._id);
                                     }
                                 }
                             }}
@@ -242,9 +257,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             <RightComponentButtonWithLeftText
                 buttonText={'Submit'}
                 onPress={() => {
-                    if (selectedCategory.length == 0) {
-                        showMessage({ message: 'Please select atleast one catagory', type: 'danger' });
-                    } else submitDetails({ category: selectedCategory });
+                    // if (selectedCategory.length == 0) {
+                    //     showMessage({ message: 'Please select atleast one catagory', type: 'danger' });
+                    // } else
+                    submitDetails();
                 }}
                 containerStyle={{ margin: DSP }}
             />
@@ -253,26 +269,41 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 setPopup={() => {
                     setCurrentSelectedIndex(0);
                 }}
-                subCategory={subCategory.length >= currentSelectedIndex ? subCategory[currentSelectedIndex - 1] : []}
+                subCategory={
+                    subCategory.length >= currentSelectedIndex ? subCategory[currentSelectedIndex - 1] || [] : []
+                }
                 subCategory1={
-                    subCategory1.length >= currentSelectedIndex ? subCategory1[currentSelectedIndex - 1] : [[]]
+                    subCategory1.length >= currentSelectedIndex ? subCategory1[currentSelectedIndex - 1] || [[]] : [[]]
                 }
-                parentCatalogue={data[currentSelectedIndex - 1]}
-                successCallback={() => {
-                    //getCatalogueDetails(currentCatelogueIndex);
-                    // setCurrentCatalogueIndex((index) => index + 1);
+                parentCatalogue={data[currentCatelogueIndex]}
+                successCallback={(selected: boolean, subCategory: string[], subCategory1: [string[]]) => {
+                    if (selected) {
+                        setSubCategory((sc) => {
+                            sc.splice(currentSelectedIndex - 1, 0, subCategory || []);
+                            return sc;
+                        });
+                        setSubCategory1((sc1) => {
+                            sc1.splice(currentSelectedIndex - 1, 0, subCategory1 || [[]]);
+                            return sc1;
+                        });
+                        console.log('selecte =>', selectedCategory);
+                        const currentSelectedItem = selectedCategory.find(
+                            (item) => item == data[currentCatelogueIndex]._id,
+                        );
+                        console.log('curr', currentSelectedIndex);
+                        if (currentSelectedItem) {
+                            setCurrentSelectedIndex(0);
+                        } else {
+                            setSelectedCategory((c) => {
+                                c.push(data[currentCatelogueIndex]._id);
+                                return c;
+                            });
+                            setCurrentSelectedIndex(0);
+                        }
+                    } else {
+                        setCurrentSelectedIndex(0);
+                    }
                 }}
-                failureCallback={() => {
-                    setSelectedCategory([
-                        ...selectedCategory.filter((item) => item != data[currentSelectedIndex - 1]._id),
-                    ]);
-                }}
-                childrenAvailable={
-                    subCategory1 &&
-                    typeof currentCatelogueIndex == 'number' &&
-                    subCategory1.length >= currentCatelogueIndex + 1 &&
-                    subCategory1[currentCatelogueIndex].length >= currentSelectedIndex
-                }
             />
             {loader && <Loader />}
         </View>
