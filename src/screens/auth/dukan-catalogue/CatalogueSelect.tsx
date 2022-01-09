@@ -192,7 +192,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     onPressCategory={() => {
                                         if (!isSelected) {
                                             if (item.subCategoryExist) {
-                                                setCurrentSelectedIndex(index);
+                                                setCurrentCatalogueIndex(index);
                                                 setCurrentSelectedIndex(indx + 1);
                                             } else {
                                                 setSelectedCategory((sC) => {
@@ -208,7 +208,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     onPressEdit={
                                         item.subCategoryExist
                                             ? () => {
-                                                  setCurrentSelectedIndex(index);
+                                                  setCurrentCatalogueIndex(index);
                                                   setCurrentSelectedIndex(indx + 1);
                                               }
                                             : undefined

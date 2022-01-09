@@ -37,7 +37,11 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     const renderSelectedItems = () => {
         return (
             <View>
-                <WrappedText text="item you sell inside clothes" containerStyle={[MT(0.05)]} textColor="#242424" />
+                <WrappedText
+                    text="item you sell inside this category"
+                    containerStyle={[MT(0.05)]}
+                    textColor="#242424"
+                />
                 <View style={[FDR(), { flexWrap: 'wrap' }]}>
                     {children.map((item) => (
                         <WrappedText

@@ -185,6 +185,12 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         });
     };
 
+    const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
+        return subCategory && subCategory.length >= currentSelectedIndex && subCategory[currentSelectedIndex]
+            ? items.filter((item) => subCategory[currentSelectedIndex].includes(item._id))
+            : [];
+    };
+
     return (
         <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
             <View style={[MT(0.1)]} />
@@ -209,6 +215,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
             <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
                 {data.map((item, index) => {
+                    console.log(item.child, 'children');
                     const isSelected = selectedCategory.includes(item._id);
                     const indx = selectedCategory.findIndex((id) => id == item._id);
                     const currentIndex = indx == -1 ? selectedCategory.length : indx;
@@ -222,6 +229,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                 setCurrentCatalogueIndex(index);
                                 setCurrentSelectedIndex(currentIndex + 1);
                             }}
+                            children={isSelected && item.subCategoryExist ? provideChildren(indx, item.child) : []}
                             onPressCategory={() => {
                                 if (!isSelected) {
                                     if (item.subCategoryExist) {

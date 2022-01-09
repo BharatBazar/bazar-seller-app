@@ -55,34 +55,33 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             parent: parentCatalogue._id,
             categoryType: categoryType.SubCategory1,
         });
+        response1.payload.sort((a, b) => sortFunction(a, b, alreadySelectedCategory));
         setCurrentItem(response1.payload);
         setLoader(false);
     };
 
     const modalRef = React.useRef<null | FlashErrorMessageType>(null);
 
-    //While updating full subCategory and subCategory1 is going
-    //So we have to carefully update index
-    const updateCatalogueDetails = async (data: updateShopData) => {
-        setLoader(true);
-        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-
-        const response: IRShopUpdate = await updateShop({
-            ...data,
-            _id: ownerDetails.shop,
-        });
-
-        if (response.status == 1) {
-            setLoader(false);
-            setPopup();
-            successCallback();
-            setSelectedCategory([]);
-        } else {
-            setLoader(false);
-            setError(response.message);
+    const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
+        const indexOfA = selectedCategory.findIndex((item) => item == a._id);
+        const indexOfB = selectedCategory.findIndex((item) => item == b._id);
+        console.log(indexOfA, indexOfB, selectedCategory);
+        if (indexOfA == -1 && indexOfB == -1) {
+            return 0;
+        } else if (indexOfA > -1 && indexOfB > -1) {
+            if (indexOfA < indexOfB) {
+                return -1;
+            } else if (indexOfA == indexOfB) {
+                return 0;
+            } else {
+                return 1;
+            }
+        } else if (indexOfA > -1 && indexOfB == -1) {
+            return -1;
+        } else if (indexOfB > -1 && indexOfA == -1) {
+            return 1;
         }
     };
-
     React.useEffect(() => {
         if (isVisible) {
             getCatalogueDetails();
