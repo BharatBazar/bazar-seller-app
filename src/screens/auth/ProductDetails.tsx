@@ -272,10 +272,18 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                     setCurrentSelectedIndex(0);
                 }}
                 subCategory={
-                    subCategory.length >= currentSelectedIndex ? subCategory[currentSelectedIndex - 1] || [] : []
+                    subCategory.length >= currentSelectedIndex
+                        ? subCategory[currentSelectedIndex - 1]
+                            ? [...subCategory[currentSelectedIndex - 1]]
+                            : []
+                        : []
                 }
                 subCategory1={
-                    subCategory1.length >= currentSelectedIndex ? subCategory1[currentSelectedIndex - 1] || [[]] : [[]]
+                    subCategory1.length >= currentSelectedIndex
+                        ? subCategory1[currentSelectedIndex - 1]
+                            ? [...subCategory1[currentSelectedIndex - 1]]
+                            : [[]]
+                        : [[]]
                 }
                 parentCatalogue={data[currentCatelogueIndex]}
                 successCallback={(selected: boolean, subCategory: string[], subCategory1: [string[]]) => {
