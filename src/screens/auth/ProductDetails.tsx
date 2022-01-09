@@ -152,7 +152,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     useEffect(() => {
         console.log('First time');
-
+        //updateCatalogueDetails({ category: [], subCategory: [], subCategory1: [] });
         fetchProductDetails({ categoryType: categoryType.Category, active: true });
         //getShopDetails();
 

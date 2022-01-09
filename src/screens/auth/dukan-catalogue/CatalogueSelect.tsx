@@ -242,7 +242,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                         buttonText="Continue"
                         onPress={() => {
                             if (selectedCategory.length == 0) {
-                                showMessage({ message: 'Please select atleast one category', type: 'danger' });
+                                modalRef.current?.showError('Please select atleast one category', 'danger');
                             } else {
                                 successCallback(true, selectedCategory, subCategory1);
                             }
@@ -262,6 +262,8 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                     alreadySelectedCategory={
                         subCategory1 && subCategory1.length >= currentSelectedIndex
                             ? subCategory1[currentSelectedIndex - 1]
+                                ? [...subCategory1[currentSelectedIndex - 1]]
+                                : []
                             : []
                     }
                     successCallback={(selected: boolean, selectedSubCategory: string[]) => {
