@@ -131,6 +131,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
 
     React.useEffect(() => {
         if (isVisible) getCatalogueDetails();
+        else {
+            setSelectedCategory([]);
+        }
     }, [isVisible]);
 
     console.log('sub Categpory 1 =>', subCategory1);

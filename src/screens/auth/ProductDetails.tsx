@@ -63,12 +63,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
-    const submitDetails = async () => {
+    const submitDetails = async (data: updateShopData) => {
         setLoader(true);
+        console.log('selected Category =>', selectedCategory, data.category);
         const response: IRShopUpdate = await updateShop({
-            category: selectedCategory,
-            subCategory1,
-            subCategory,
+            ...data,
             _id: ownerDetails.shop,
         });
         setLoader(false);
@@ -106,14 +105,20 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     //While updating full subCategory and subCategory1 is going
     //So we have to carefully update index
-    const updateCatalogueDetails = async (data: updateShopData) => {
+    const updateCatalogueDetails = async (data?: updateShopData) => {
         setLoader(true);
         const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
-        const response: IRShopUpdate = await updateShop({
-            ...data,
-            _id: ownerDetails.shop,
-        });
+        const response: IRShopUpdate = await updateShop(
+            data
+                ? { ...data, _id: ownerDetails.shop }
+                : {
+                      category: selectedCategory,
+                      subCategory1,
+                      subCategory,
+                      _id: ownerDetails.shop,
+                  },
+        );
 
         if (response.status == 1) {
             setLoader(false);
@@ -164,7 +169,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     const onePressDelete = (id: string, subCategoryExist: boolean) => {
         setAlertState(defaultAlertState);
         const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
-        console.log('onDelete =>', indexInSelectedArray, selectedCategory, subCategory, subCategory1);
         if (subCategory.length >= indexInSelectedArray + 1) {
             setSubCategory((subCategory) => {
                 let sc = subCategory.filter((item, indx) => indexInSelectedArray != indx);
@@ -183,6 +187,9 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             let sc = selectedCategory.filter((_id) => _id != id);
             return sc;
         });
+        setTimeout(() => {
+            submitDetails({ category: selectedCategory, subCategory: subCategory, subCategory1: subCategory1 });
+        }, 1000);
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
@@ -270,7 +277,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                     // if (selectedCategory.length == 0) {
                     //     showMessage({ message: 'Please select atleast one catagory', type: 'danger' });
                     // } else
-                    submitDetails();
+                    submitDetails({ category: selectedCategory, subCategory: subCategory, subCategory1: subCategory1 });
                 }}
                 containerStyle={{ margin: DSP }}
             />
@@ -311,12 +318,22 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                         console.log('curr', currentSelectedIndex);
                         if (currentSelectedItem) {
                             setCurrentSelectedIndex(0);
+                            submitDetails({
+                                category: selectedCategory,
+                                subCategory: subCategory,
+                                subCategory1: subCategory1,
+                            });
                         } else {
                             setSelectedCategory((c) => {
                                 c.push(data[currentCatelogueIndex]._id);
                                 return c;
                             });
                             setCurrentSelectedIndex(0);
+                            submitDetails({
+                                category: selectedCategory,
+                                subCategory: subCategory,
+                                subCategory1: subCategory1,
+                            });
                         }
                     } else {
                         setCurrentSelectedIndex(0);
