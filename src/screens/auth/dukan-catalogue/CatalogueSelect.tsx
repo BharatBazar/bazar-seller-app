@@ -99,7 +99,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
-        return subCategory1 ? items.filter((item) => subCategory1[currentSelectedIndex].includes(item._id)) : [];
+        return subCategory1 && subCategory1.length >= currentSelectedIndex && subCategory1[currentSelectedIndex]
+            ? items.filter((item) => subCategory1[currentSelectedIndex].includes(item._id))
+            : [];
     };
 
     //While updating full subCategory and subCategory1 is going
@@ -121,7 +123,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
         }
     };
 
-    const deleteCatalogue = async (index: number, id: string) => {
+    const deleteCatalogue = async (indx: number, id: string) => {
+        if (subCategory1.length >= indx) subCategory1.splice(indx, 1);
+
         setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
     };
 

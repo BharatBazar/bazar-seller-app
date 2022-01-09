@@ -88,6 +88,8 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             getCatalogueDetails();
 
             setSelectedCategory(alreadySelectedCategory);
+        } else {
+            setSelectedCategory([]);
         }
     }, [isVisible]);
 

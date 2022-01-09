@@ -161,7 +161,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     console.log(subCategory1);
 
-    const onePressDelete = (id: string) => {
+    const onePressDelete = (id: string, subCategoryExist: boolean) => {
         setAlertState(defaultAlertState);
         const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
         console.log('onDelete =>', indexInSelectedArray, selectedCategory, subCategory, subCategory1);
@@ -171,9 +171,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 return sc;
             });
         }
-        if (subCategory1.length >= indexInSelectedArray + 1) {
+        if (subCategoryExist && subCategory1.length >= indexInSelectedArray + 1) {
             setSubCategory1((subCategory1) => {
+                console.log('subCategory1 => ', subCategory1);
                 let sc = subCategory1.filter((item, indx) => indexInSelectedArray != indx);
+                console.log('subCategory1 => ', sc);
                 return sc;
             });
         }
@@ -241,11 +243,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                                 ' catalogue' +
                                                 ' from your shop it will delete all your saved data under this catalogue?',
                                             onPressRightButton: () => {
-                                                onePressDelete(item._id);
+                                                onePressDelete(item._id, item.subCategoryExist);
                                             },
                                         });
                                     } else {
-                                        onePressDelete(item._id);
+                                        onePressDelete(item._id, item.subCategoryExist);
                                     }
                                 }
                             }}
