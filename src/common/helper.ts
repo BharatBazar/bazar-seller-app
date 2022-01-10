@@ -23,6 +23,18 @@ export const compareObjects = (object1: Object, object2: Object) => {
     return a;
 };
 
+export const isArrayEqual = (array1: any[], array2: any[]) => {
+    if (array1.length != array2.length) {
+        return false;
+    } else {
+        return array1.every((item, index) => {
+            let b = array2[index];
+
+            return item == b;
+        });
+    }
+};
+
 export const timeLine = [
     '1 day',
     '2 days',

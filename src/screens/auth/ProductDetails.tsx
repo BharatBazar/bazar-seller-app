@@ -11,17 +11,16 @@ import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.ap
 
 import { IRGetShopCatalogue, IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interface';
 import { getShopCatalgoue, updateShop } from '../../server/apis/shop/shop.api';
-import ProductCategory from './component/DukanProductCategory';
+
 import { colorCode, subHeadingColor } from '../../common/color';
 import { FontFamily, fs20, NavigationProps } from '../../common';
-import { NavigationKey } from '../../labels';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 
 import WrappedText from '../component/WrappedText';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import Border from '../components/border/Border';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
-import { ToastHOC } from '../hoc/ToastHOC';
+
 import { Storage, StorageItemKeys } from '@app/storage';
 import Loader from '../component/Loader';
 import CatalogueItem from './dukan-catalogue/CatalogueItem';
@@ -162,7 +161,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         return () => {};
     }, []);
 
-    console.log('sub category', selectedCategory, subCategory, subCategory1);
     const selectedCategoryLength = React.useRef<number>(0);
     React.useEffect(() => {
         if (selectedCategory.length > selectedCategoryLength.current) {

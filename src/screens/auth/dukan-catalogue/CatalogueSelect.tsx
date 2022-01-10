@@ -1,6 +1,7 @@
 import { fs14 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
+import { isArrayEqual } from '@app/common/helper';
 import { BGCOLOR, BTR, DSP, FDR, FLEX, JCC, ML, MT, PA, provideShadow } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -55,7 +56,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     //Current selected item from the child category
     const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
     const [currentCatalogueIndex, setCurrentCatalogueIndex] = React.useState(0);
-
+    const [buttonDisabled, setButtonDisabled] = React.useState(true);
     const modalRef = React.useRef<null | FlashErrorMessageType>(null);
 
     const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
@@ -82,7 +83,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     const getCatalogueDetails = async () => {
         setLoader(true);
 
-        setSelectedCategory(subCategory ? subCategory : []);
+        setSelectedCategory(subCategory ? [...subCategory] : []);
         const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
             active: true,
             parent: parentCatalogue._id,
@@ -91,7 +92,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
         console.log(response1.payload);
         if (response1.status == 1) {
             response1.payload.sort((a, b) => sortFunction(a, b, subCategory ? subCategory : []));
-            setCurrentItem(response1.payload);
+            setCurrentItem([...response1.payload]);
             setLoader(false);
         } else {
             setError(response1.message);
@@ -134,10 +135,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
         if (isVisible) getCatalogueDetails();
         else {
             setSelectedCategory([]);
+            setButtonDisabled(true);
         }
     }, [isVisible]);
-
-    console.log('sub Categpory 1 =>', subCategory1);
 
     const currentCatalogue: IProductCatalogue | { name: string; image: '' } = parentCatalogue
         ? parentCatalogue
@@ -155,7 +155,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                 <View style={[]}>
                     <View style={[FDR()]}>
                         <WrappedFeatherIcon
-                            onPress={() => {}}
+                            onPress={() => {
+                                successCallback(false);
+                            }}
                             iconName="chevron-left"
                             containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(1)]}
                         />
@@ -209,6 +211,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                             }
                                         } else {
                                             deleteCatalogue(indx, item._id);
+                                            setButtonDisabled(false);
                                         }
                                     }}
                                     onPressEdit={
@@ -229,21 +232,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                     </View>
                 </ScrollView>
                 <Border />
-                <View style={[FDR(), JCC('space-between')]}>
-                    {/* {currentCatelogueIndex > 0 ? (
-                        <RightComponentButtonWithLeftText
-                            buttonText="Prev"
-                            onPress={() => {
-                                setCurrentCatalogueIndex((index) => index - 1);
-                            }}
-                            containerStyle={[MT(0.2)]}
-                            // rightComponent={() => (
-                            //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-left" iconSize={20} />
-                            // )}
-                        />
-                    ) : (
-                        <View />
-                    )} */}
+                <View style={[]}>
                     <RightComponentButtonWithLeftText
                         buttonText="Continue"
                         onPress={() => {
@@ -253,10 +242,8 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                 successCallback(true, selectedCategory, subCategory1);
                             }
                         }}
+                        disabled={buttonDisabled}
                         containerStyle={[MT(0.2)]}
-                        // rightComponent={() => (
-                        //     <WrappedFeatherIcon onPress={() => {}} iconName="chevron-right" iconSize={20} />
-                        // )}
                     />
                 </View>
                 <CataloguePopup
@@ -275,6 +262,9 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                     successCallback={(selected: boolean, selectedSubCategory: string[]) => {
                         if (selected) {
                             subCategory1[currentSelectedIndex - 1] = [...selectedSubCategory];
+                            if (isArrayEqual(selectedSubCategory, subCategory1[currentSelectedIndex - 1])) {
+                                setButtonDisabled(false);
+                            }
                             const currentSelectedItem = selectedCategory.find(
                                 (item) => item == currentItem[currentCatalogueIndex]._id,
                             );
@@ -285,6 +275,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     return [...selectedCategory];
                                 });
                                 setCurrentSelectedIndex(0);
+                                if (!buttonDisabled) setButtonDisabled(false);
                             } else {
                                 //setSelectedCategory((selectedCategory) => selectedCategory);
                                 setCurrentSelectedIndex(0);

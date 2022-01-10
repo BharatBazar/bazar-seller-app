@@ -18,6 +18,7 @@ import CatalogueItem from './CatalogueItem';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
 import { getHP } from '@app/common/dimension';
+import { isArrayEqual } from '@app/common/helper';
 interface CataloguePopupProps {
     isVisible: boolean;
     setPopup: Function;
@@ -42,6 +43,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
 }) => {
     const [loader, setLoader] = React.useState(false);
 
+    const [buttonDisabled, setButtonDisabled] = React.useState(true);
     //all the selected catelgory
     const [currentSelectedCategory, setSelectedCategory] = React.useState<string[]>([]);
     const [error, setError] = React.useState('');
@@ -57,7 +59,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             categoryType: categoryType.SubCategory1,
         });
         response1.payload.sort((a, b) => sortFunction(a, b, alreadySelectedCategory));
-        setCurrentItem(response1.payload);
+        setCurrentItem([...response1.payload]);
         setLoader(false);
     };
 
@@ -66,7 +68,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
         const indexOfA = selectedCategory.findIndex((item) => item == a._id);
         const indexOfB = selectedCategory.findIndex((item) => item == b._id);
-        console.log(indexOfA, indexOfB, selectedCategory);
+
         if (indexOfA == -1 && indexOfB == -1) {
             return 0;
         } else if (indexOfA > -1 && indexOfB > -1) {
@@ -87,8 +89,9 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
         if (isVisible) {
             getCatalogueDetails();
 
-            setSelectedCategory(alreadySelectedCategory);
+            setSelectedCategory([...alreadySelectedCategory]);
         } else {
+            setButtonDisabled(true);
             setSelectedCategory([]);
         }
     }, [isVisible]);
@@ -97,7 +100,9 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
         if (currentSelectedCategory.length == 0) {
             if (modalRef.current) modalRef.current.showError('Please select atleast one category', 'danger');
         } else {
-            successCallback(true, currentSelectedCategory);
+            if (isArrayEqual(currentSelectedCategory, alreadySelectedCategory)) {
+                successCallback(false);
+            } else successCallback(true, currentSelectedCategory);
         }
     };
 
@@ -138,10 +143,12 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                                         if (!isSelected) {
                                             currentSelectedCategory.push(item._id);
                                             setSelectedCategory([...currentSelectedCategory]);
+                                            setButtonDisabled(false);
                                         } else {
                                             setSelectedCategory([
                                                 ...currentSelectedCategory.filter((id) => id != item._id),
                                             ]);
+                                            setButtonDisabled(false);
                                         }
                                     }}
                                     selected={isSelected}
@@ -155,6 +162,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                     buttonText="Submit selected catalogue"
                     onPress={onPressSubmitDetails}
                     containerStyle={[MT(0.2)]}
+                    disabled={buttonDisabled}
                 />
 
                 {loader && <Loader containerStyle={{ borderTopRightRadius: 20, borderTopLeftRadius: 20 }} />}

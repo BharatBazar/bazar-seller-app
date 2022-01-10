@@ -1,4 +1,4 @@
-import { BC, BGCOLOR, BR, BW, FDR, JCC, MH, ML, MR, MV, PH, PV } from '@app/common/styles';
+import { BC, BGCOLOR, BR, BW, colorTransparency, FDR, JCC, MH, ML, MR, MV, PH, PV } from '@app/common/styles';
 import * as React from 'react';
 import { View, StyleSheet, Image, ViewStyle } from 'react-native';
 import Ripple from 'react-native-material-ripple';
@@ -18,6 +18,7 @@ interface RightComponentButtonWithLeftTextProps {
     borderWidth?: number;
     marginTop?: number;
     marginLeft?: number;
+    disabled?: boolean;
 }
 
 const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentButtonWithLeftTextProps> = ({
@@ -33,21 +34,23 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
     borderWidth,
     marginTop,
     marginLeft,
+    disabled,
 }) => {
+    const buttonColor = backgroundColor || mainColor;
     return (
         <Ripple
             onPress={() => {
-                if (onPress) {
+                if (onPress && !disabled) {
                     onPress();
                 }
             }}
-            rippleContainerBorderRadius={300}
+            rippleContainerBorderRadius={10}
             style={[
                 BW(borderWidth),
                 BC(borderColor),
-                BGCOLOR(backgroundColor || mainColor),
+                BGCOLOR(buttonColor),
                 {
-                    paddingVertical: 12,
+                    paddingVertical: 15,
                     borderRadius: borderRadius || 6,
                     marginTop: marginTop,
                     marginLeft: marginLeft,
@@ -57,6 +60,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
                 FDR(),
                 { overflow: 'hidden' },
                 containerStyle,
+                { opacity: disabled ? 0.4 : 1 },
             ]}
         >
             <WrappedText
