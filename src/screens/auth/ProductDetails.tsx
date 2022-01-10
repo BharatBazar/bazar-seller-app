@@ -108,17 +108,17 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     const updateCatalogueDetails = async (data?: updateShopData) => {
         setLoader(true);
         const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+        let datasend = data
+            ? { ...data, _id: ownerDetails.shop }
+            : {
+                  category: [...selectedCategory],
+                  subCategory1: [...subCategory1],
+                  subCategory: [...subCategory],
+                  _id: ownerDetails.shop,
+              };
 
-        const response: IRShopUpdate = await updateShop(
-            data
-                ? { ...data, _id: ownerDetails.shop }
-                : {
-                      category: selectedCategory,
-                      subCategory1,
-                      subCategory,
-                      _id: ownerDetails.shop,
-                  },
-        );
+        console.log('Data send', datasend);
+        const response: IRShopUpdate = await updateShop(datasend);
 
         if (response.status == 1) {
             setLoader(false);
@@ -164,7 +164,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         return () => {};
     }, []);
 
-    console.log(subCategory1);
+    console.log('after update', subCategory, subCategory1);
 
     const onePressDelete = (id: string, subCategoryExist: boolean) => {
         setAlertState(defaultAlertState);
@@ -172,7 +172,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         if (subCategory.length >= indexInSelectedArray + 1) {
             setSubCategory((subCategory) => {
                 let sc = subCategory.filter((item, indx) => indexInSelectedArray != indx);
-                return sc;
+                return [...sc];
             });
         }
         if (subCategoryExist && subCategory1.length >= indexInSelectedArray + 1) {
@@ -180,15 +180,17 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 console.log('subCategory1 => ', subCategory1);
                 let sc = subCategory1.filter((item, indx) => indexInSelectedArray != indx);
                 console.log('subCategory1 => ', sc);
-                return sc;
+                return [...sc];
             });
         }
         setSelectedCategory((selectedCategory) => {
             let sc = selectedCategory.filter((_id) => _id != id);
-            return sc;
+            return [...sc];
         });
-        setTimeout(() => {
-            submitDetails({ category: selectedCategory, subCategory: subCategory, subCategory1: subCategory1 });
+        setTimeout(async () => {
+            updateCatalogueDetails();
+            // submitDetails()
+            // submitDetails({ category: selectedCategory, subCategory: subCategory, subCategory1: subCategory1 });
         }, 1000);
     };
 
@@ -228,7 +230,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                     const currentIndex = indx == -1 ? selectedCategory.length : indx;
                     return (
                         <CatalogueItem
-                            key={item._id}
+                            key={item._id + index.toString()}
                             item={item}
                             selected={isSelected}
                             containerStyle={styles.productCategory}
@@ -301,16 +303,28 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                         : [[]]
                 }
                 parentCatalogue={data[currentCatelogueIndex]}
-                successCallback={(selected: boolean, subCategory: string[], subCategory1: [string[]]) => {
+                successCallback={(selected: boolean, subCat: string[], subCate1: [string[]]) => {
                     if (selected) {
-                        setSubCategory((sc) => {
-                            sc.splice(currentSelectedIndex - 1, 0, subCategory || []);
-                            return sc;
-                        });
-                        setSubCategory1((sc1) => {
-                            sc1.splice(currentSelectedIndex - 1, 0, subCategory1 || [[]]);
-                            return sc1;
-                        });
+                        console.log(currentSelectedIndex, 'current index', subCategory, subCat, subCate1, subCategory1);
+                        if (subCat)
+                            setSubCategory((sc) => {
+                                if (subCategory.length >= currentSelectedIndex)
+                                    sc[currentSelectedIndex - 1] = subCat || [];
+                                else {
+                                    sc.push(subCat);
+                                }
+
+                                return [...sc];
+                            });
+                        if (subCate1)
+                            setSubCategory1((sc1) => {
+                                if (subCategory1.length >= currentSelectedIndex) {
+                                    sc1[currentSelectedIndex - 1] = subCate1 || [[]];
+                                } else {
+                                    sc1.push(subCate1);
+                                }
+                                return [...sc1];
+                            });
                         console.log('selecte =>', selectedCategory);
                         const currentSelectedItem = selectedCategory.find(
                             (item) => item == data[currentCatelogueIndex]._id,
@@ -318,22 +332,14 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                         console.log('curr', currentSelectedIndex);
                         if (currentSelectedItem) {
                             setCurrentSelectedIndex(0);
-                            submitDetails({
-                                category: selectedCategory,
-                                subCategory: subCategory,
-                                subCategory1: subCategory1,
-                            });
+                            updateCatalogueDetails();
                         } else {
                             setSelectedCategory((c) => {
                                 c.push(data[currentCatelogueIndex]._id);
-                                return c;
+                                return [...c];
                             });
                             setCurrentSelectedIndex(0);
-                            submitDetails({
-                                category: selectedCategory,
-                                subCategory: subCategory,
-                                subCategory1: subCategory1,
-                            });
+                            updateCatalogueDetails();
                         }
                     } else {
                         setCurrentSelectedIndex(0);
