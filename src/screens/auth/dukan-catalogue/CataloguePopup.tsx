@@ -17,6 +17,7 @@ import FastImage from 'react-native-fast-image';
 import CatalogueItem from './CatalogueItem';
 import { showMessage, hideMessage } from 'react-native-flash-message';
 import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
+import { getHP } from '@app/common/dimension';
 interface CataloguePopupProps {
     isVisible: boolean;
     setPopup: Function;
@@ -109,7 +110,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             }}
             showErrorMessage={error}
         >
-            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden' }]}>
+            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden', maxHeight: getHP(8) }]}>
                 <View style={[FDR()]}>
                     <FastImage source={{ uri: parentCatalogue.image }} style={{ height: 50, width: 50 }} />
                     <View style={[ML(0.6), FLEX(1)]}>

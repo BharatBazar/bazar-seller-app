@@ -1,5 +1,6 @@
 import { fs14 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
 import { BGCOLOR, BTR, DSP, FDR, FLEX, JCC, ML, MT, PA, provideShadow } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -150,7 +151,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
             }}
             showErrorMessage={error}
         >
-            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden' }]}>
+            <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden', maxHeight: getHP(9) }]}>
                 <View style={[]}>
                     <View style={[FDR()]}>
                         <WrappedFeatherIcon
@@ -182,7 +183,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                     </View>
                 </View>
                 <Border />
-                <ScrollView showsVerticalScrollIndicator={false}>
+                <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
                     <View style={[]}>
                         {currentItem.map((item, index) => {
                             const isSelected = selectedCategory.includes(item._id);
