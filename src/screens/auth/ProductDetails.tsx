@@ -166,6 +166,15 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     console.log('after update', subCategory, subCategory1);
 
+    const selectedCategoryLength = React.useRef<number>(0);
+    React.useEffect(() => {
+        if (selectedCategory.length > selectedCategoryLength.current) {
+            selectedCategoryLength.current = selectedCategory.length;
+        } else if (selectedCategory.length < selectedCategoryLength.current) {
+            updateCatalogueDetails();
+            selectedCategoryLength.current = selectedCategory.length;
+        }
+    }, [selectedCategory]);
     const onePressDelete = (id: string, subCategoryExist: boolean) => {
         setAlertState(defaultAlertState);
         const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
@@ -187,11 +196,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             let sc = selectedCategory.filter((_id) => _id != id);
             return [...sc];
         });
-        setTimeout(async () => {
-            updateCatalogueDetails();
-            // submitDetails()
-            // submitDetails({ category: selectedCategory, subCategory: subCategory, subCategory1: subCategory1 });
-        }, 1000);
+        console.log('update catalopgue =>');
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
