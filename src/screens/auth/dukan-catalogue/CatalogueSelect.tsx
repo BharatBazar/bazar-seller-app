@@ -271,7 +271,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                     }
                     successCallback={(selected: boolean, selectedSubCategory: string[]) => {
                         if (selected) {
-                            subCategory1[currentSelectedIndex - 1] = selectedSubCategory;
+                            subCategory1[currentSelectedIndex - 1] = [...selectedSubCategory];
                             const currentSelectedItem = selectedCategory.find(
                                 (item) => item == currentItem[currentCatalogueIndex]._id,
                             );
@@ -279,7 +279,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                             if (!currentSelectedItem) {
                                 setSelectedCategory((selectedCategory) => {
                                     selectedCategory.push(currentItem[currentCatalogueIndex]._id);
-                                    return selectedCategory;
+                                    return [...selectedCategory];
                                 });
                                 setCurrentSelectedIndex(0);
                             } else {
