@@ -208,6 +208,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
 
                                                     return [...sC];
                                                 });
+                                                setButtonDisabled(false);
                                             }
                                         } else {
                                             deleteCatalogue(indx, item._id);

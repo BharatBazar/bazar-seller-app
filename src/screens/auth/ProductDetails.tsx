@@ -28,6 +28,7 @@ import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
 import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
 import Catalogue from './dukan-catalogue/CatalogueSelect';
+import { NavigationKey } from '@app/labels';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -272,11 +273,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             <Border />
             <RightComponentButtonWithLeftText
                 buttonText={'Submit'}
-                onPress={() => {
-                    // if (selectedCategory.length == 0) {
-                    //     showMessage({ message: 'Please select atleast one catagory', type: 'danger' });
-                    // } else
-                    submitDetails({ category: selectedCategory, subCategory: subCategory, subCategory1: subCategory1 });
+                onPress={async () => {
+                    await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
+                    await Storage.setItem(StorageItemKeys.currentScreen, false);
+                    navigation.replace(NavigationKey.BHARATBAZARHOME);
                 }}
                 containerStyle={{ margin: DSP }}
             />

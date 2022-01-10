@@ -18,13 +18,15 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                 // varaible name itself explains its use
                 // It is usefull to skip falling in the redirection flow if customer onboarding is completed
                 // when ever user opens app
+                // await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.PRODUCTDETAILS);
+                // await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
 
                 const isCustomerOnboardingCompleted = await Storage.getItem(
                     StorageItemKeys.isCustomerOnboardingCompleted,
                 );
                 const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
                 console.log(isCustomerOnboardingCompleted, screenName);
-                if (!screenName) {
+                if (screenName == undefined) {
                     navigation.replace(NavigationKey.WELCOME);
                     return;
                 }
@@ -48,7 +50,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                             return;
                         }
                     } else {
-                        navigation.replace(NavigationKey.BHARATBAZARHOME);
+                        navigation.replace(NavigationKey.BHARATBAZARHOME, { ownerDetails });
                         return;
                     }
                 } else {
