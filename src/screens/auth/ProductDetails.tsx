@@ -65,7 +65,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     const submitDetails = async (data: updateShopData) => {
         setLoader(true);
-        console.log('selected Category =>', selectedCategory, data.category);
+
         const response: IRShopUpdate = await updateShop({
             ...data,
             _id: ownerDetails.shop,
@@ -117,7 +117,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                   _id: ownerDetails.shop,
               };
 
-        console.log('Data send', datasend);
         const response: IRShopUpdate = await updateShop(datasend);
 
         if (response.status == 1) {
@@ -156,16 +155,14 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     };
 
     useEffect(() => {
-        console.log('First time');
-        //updateCatalogueDetails({ category: [], subCategory: [], subCategory1: [] });
+        //   updateCatalogueDetails({ category: [], subCategory: [], subCategory1: [] });
         fetchProductDetails({ categoryType: categoryType.Category, active: true });
         //getShopDetails();
 
         return () => {};
     }, []);
 
-    console.log('after update', subCategory, subCategory1);
-
+    console.log('sub category', selectedCategory, subCategory, subCategory1);
     const selectedCategoryLength = React.useRef<number>(0);
     React.useEffect(() => {
         if (selectedCategory.length > selectedCategoryLength.current) {
@@ -186,9 +183,8 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         }
         if (subCategoryExist && subCategory1.length >= indexInSelectedArray + 1) {
             setSubCategory1((subCategory1) => {
-                console.log('subCategory1 => ', subCategory1);
                 let sc = subCategory1.filter((item, indx) => indexInSelectedArray != indx);
-                console.log('subCategory1 => ', sc);
+
                 return [...sc];
             });
         }
@@ -196,7 +192,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             let sc = selectedCategory.filter((_id) => _id != id);
             return [...sc];
         });
-        console.log('update catalopgue =>');
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
@@ -229,7 +224,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
             <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
                 {data.map((item, index) => {
-                    console.log(item.child, 'children');
                     const isSelected = selectedCategory.includes(item._id);
                     const indx = selectedCategory.findIndex((id) => id == item._id);
                     const currentIndex = indx == -1 ? selectedCategory.length : indx;
@@ -310,7 +304,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 parentCatalogue={data[currentCatelogueIndex]}
                 successCallback={(selected: boolean, subCat: string[], subCate1: [string[]]) => {
                     if (selected) {
-                        console.log(currentSelectedIndex, 'current index', subCategory, subCat, subCate1, subCategory1);
                         if (subCat)
                             setSubCategory((sc) => {
                                 if (subCategory.length >= currentSelectedIndex)
@@ -330,11 +323,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                 }
                                 return [...sc1];
                             });
-                        console.log('selecte =>', selectedCategory);
+
                         const currentSelectedItem = selectedCategory.find(
                             (item) => item == data[currentCatelogueIndex]._id,
                         );
-                        console.log('curr', currentSelectedIndex);
+
                         if (currentSelectedItem) {
                             setCurrentSelectedIndex(0);
                             updateCatalogueDetails();

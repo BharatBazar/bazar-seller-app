@@ -199,6 +199,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                                 setCurrentCatalogueIndex(index);
                                                 setCurrentSelectedIndex(indx + 1);
                                             } else {
+                                                subCategory1.push([]);
                                                 setSelectedCategory((sC) => {
                                                     sC.push(item._id);
 
