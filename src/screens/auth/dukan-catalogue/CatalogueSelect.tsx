@@ -192,6 +192,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                             console.log('isSelected', isSelected);
                             return (
                                 <CatalogueItem
+                                    key={item._id + index.toString()}
                                     item={item}
                                     onPressCategory={() => {
                                         if (!isSelected) {

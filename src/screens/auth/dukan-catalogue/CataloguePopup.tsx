@@ -127,11 +127,12 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
                 <Border />
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={{}}>
-                        {currentItem.map((item) => {
+                        {currentItem.map((item, index) => {
                             const isSelected = currentSelectedCategory.includes(item._id);
 
                             return (
                                 <CatalogueItem
+                                    key={item._id + index.toString()}
                                     item={item}
                                     onPressCategory={() => {
                                         if (!isSelected) {

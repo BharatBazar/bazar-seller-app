@@ -45,6 +45,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 <View style={[FDR(), { flexWrap: 'wrap' }]}>
                     {children.map((item) => (
                         <WrappedText
+                            key={item._id}
                             text={item.name}
                             containerStyle={[BGCOLOR(mainColor), PH(0.1), PV(0.05), MR(0.1), BR(0.05), MT(0.1)]}
                             textColor="#FFFFFF"
