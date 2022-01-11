@@ -22,9 +22,10 @@ const ModalHOC: React.FC<ModalProps> = ({ isVisible, setPopup, children, showErr
     };
 
     React.useEffect(() => {
-        refer({
-            showError,
-        });
+        if (refer)
+            refer({
+                showError,
+            });
     }, []);
 
     return (
