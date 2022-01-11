@@ -47,6 +47,7 @@ export default class AccordionHOC extends React.Component<Props, State> {
                     item={section.category}
                     touch={!section.category.subCategoryExist}
                     onPress={() => {
+                        console.log('propes', this.props);
                         this.props.navigation.navigate(NavigationKey.PRODUCT, {
                             itemType: section.category.name,
                             shopId: this.props.shopId,
@@ -80,6 +81,7 @@ export default class AccordionHOC extends React.Component<Props, State> {
                                 item={item}
                                 touch={!item.subCategoryExist}
                                 onPress={() => {
+                                    console.log('propes', this.props.shopId);
                                     this.props.navigation.navigate(NavigationKey.PRODUCT, {
                                         itemType: section.category.name + ' ' + item.name + ' ',
                                         shopId: this.props.shopId,

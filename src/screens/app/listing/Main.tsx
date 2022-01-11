@@ -55,7 +55,7 @@ const Product: React.FC<ProductProps> = ({
 
     React.useMemo(() => {
         setBaseUrl();
-        getCatalogueStatus({ shopId: shopId._id });
+        getCatalogueStatus({ shopId: shopId });
         // return () => {
         //     axios.defaults.baseURL = apiEndPoint;
         // };

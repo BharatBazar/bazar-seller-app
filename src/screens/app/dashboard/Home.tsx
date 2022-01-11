@@ -24,7 +24,7 @@ interface ISection {
 }
 interface State {
     activeSections: number[];
-    shop: Partial<Shop>;
+    shop: Shop;
     section: ISection[];
     userDetails: Partial<IshopMember>;
 }
@@ -48,6 +48,7 @@ export default class Home extends React.Component<Props, State> {
             const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
 
             this.setState({ userDetails });
+            console.log('userDetails provided');
             let response: IRGetShop = await getShop({
                 _id: userDetails.shop,
             });
@@ -74,6 +75,7 @@ export default class Home extends React.Component<Props, State> {
     }
 
     renderHeader = (section: ISection, _, isActive: boolean) => {
+        console.log('render Header', this.state.userDetails);
         return (
             <Animatable.View
                 duration={400}
