@@ -16,6 +16,7 @@ import IconIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import { APIProductStatus } from '@app/server/apis/product/product.api';
 import { IProductStatus } from '@app/server/apis/product/product.interface';
+import { showMessage } from 'react-native-flash-message';
 
 export interface ProductProps extends NavigationProps {
     route: {
@@ -44,16 +45,15 @@ const Product: React.FC<ProductProps> = ({
 
     const getCatalogueStatus = async (data: { shopId: string }) => {
         try {
-            console.log(data);
             const a = await APIProductStatus(data);
             setStatus(a.payload);
             console.log(a);
         } catch (error) {
-            Alert.alert(error.message);
+            showMessage({ message: error.message, type: 'danger' });
         }
     };
 
-    React.useMemo(() => {
+    React.useEffect(() => {
         setBaseUrl();
         getCatalogueStatus({ shopId: shopId });
         return () => {
