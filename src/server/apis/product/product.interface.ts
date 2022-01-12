@@ -129,5 +129,5 @@ export interface IProductStatus {
 }
 
 export interface IRProductStatus extends CommonApiResponse {
-    payload: IProductStatus;
+    payload: IProductStatus[];
 }

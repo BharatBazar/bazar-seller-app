@@ -19,6 +19,7 @@ export interface ProductListProps extends MaterialTopTabNavigationProp {
     subCategory: string;
     subCategory1: string;
     status: productStatus;
+    isInitialRoute: boolean;
 }
 
 const ProductList: React.SFC<ProductListProps> = ({
@@ -28,6 +29,7 @@ const ProductList: React.SFC<ProductListProps> = ({
     subCategory,
     subCategory1,
     status,
+    isInitialRoute,
 }) => {
     const [loading, setLoader] = useState(false);
     const [product, setProduct] = useState<IProduct[]>([]);
@@ -58,13 +60,16 @@ const ProductList: React.SFC<ProductListProps> = ({
             Alert.alert(error.message);
         }
     };
-    useEffect(() => {}, []);
+    useEffect(() => {
+        //fetchProducts();
+    }, []);
 
     useEffect(() => {
         if (navigation) {
+            if (isInitialRoute) fetchProducts();
             var _navListener = navigation.addListener('focus', (payload) => {
                 // update based on your requirements
-                console.log(status);
+                console.log('ficuseds', status);
                 if (status != undefined) {
                     fetchProducts();
                 }

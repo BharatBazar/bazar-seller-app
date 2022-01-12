@@ -7,6 +7,7 @@ import {
     IRProductColor,
     IRProductSize,
     IRProduct,
+    IRProductStatus,
 } from './product.interface';
 import axios from 'axios';
 
@@ -64,6 +65,6 @@ export async function APIDeleteFilter(data: { _id: string; filter: {}; multiple:
     return axios.patch('/delete/filter', data);
 }
 
-export async function APIProductStatus(data: { shopId: string }) {
+export async function APIProductStatus(data: { shopId: string }): Promise<IRProductStatus> {
     return axios.post('/status', data);
 }

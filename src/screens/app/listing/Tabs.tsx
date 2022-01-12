@@ -1,35 +1,12 @@
 import * as React from 'react';
-import { View, useWindowDimensions, Text } from 'react-native';
-import { TabView, SceneMap, TabBar, Route } from 'react-native-tab-view';
-import { FontFamily, fs10, fs12, NavigationProps } from '../../../common';
-import { colorCode, mainColor } from '../../../common/color';
-import { getHP } from '../../../common/dimension';
-import { IProductStatus, productStatus } from '../../../server/apis/product/product.interface';
-import WrappedText from '../../component/WrappedText';
+import { FontFamily, fs10, NavigationProps } from '../../../common';
+import { mainColor } from '../../../common/color';
+import { IProductStatus } from '../../../server/apis/product/product.interface';
 import ProductList from './List';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Loader from '@app/screens/component/Loader';
 
 const Tab = createMaterialTopTabNavigator();
-
-const FirstRoute = () => <View style={{ flex: 1 }} />;
-
-const SecondRoute = () => <View style={{ flex: 1 }} />;
-function HomeScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Home!</Text>
-        </View>
-    );
-}
-
-function SettingsScreen() {
-    return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Settings!</Text>
-        </View>
-    );
-}
 
 interface ProductTabProps extends NavigationProps {
     shopId: string;
@@ -66,23 +43,29 @@ const ProductTab: React.FC<ProductTabProps> = ({
                 lazy={true}
                 tabBarOptions={{
                     scrollEnabled: true,
-                    //   tabStyle: { width: 140 },
+
                     labelStyle: { fontSize: fs10, fontFamily: FontFamily.Medium },
                     indicatorStyle: { backgroundColor: mainColor },
-                    //labelStyle: { color: mainColor },
+
                     activeTintColor: mainColor,
 
                     allowFontScaling: false,
                 }}
                 swipeEnabled={false}
-                initialRouteName={'Rejected'}
+                initialRouteName={'Not Completed'}
             >
                 {tabs.map((item) => (
                     <Tab.Screen
                         name={item.name.split(' (')[0]}
                         options={{ tabBarLabel: item.name, title: item.name }}
                         children={(props) => (
-                            <ProductList key={item._id} {...basicProps} {...props} status={item._id} />
+                            <ProductList
+                                key={item._id}
+                                {...basicProps}
+                                {...props}
+                                status={item._id}
+                                isInitialRoute={item.name.split(' (')[0] == 'Not Completed'}
+                            />
                         )}
                     />
                 ))}

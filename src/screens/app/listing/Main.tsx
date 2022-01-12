@@ -1,10 +1,10 @@
 import axios from 'axios';
 import * as React from 'react';
-import { View, TextInput, Alert } from 'react-native';
+import { View } from 'react-native';
 import { fs18, fs24, NavigationProps } from '../../../common';
 import { colorCode, mainColor } from '../../../common/color';
-import { getHP, getWP } from '../../../common/dimension';
-import { AIC, BGCOLOR, FDR, FLEX, JCC, PH, PV } from '../../../common/styles';
+import { getHP } from '../../../common/dimension';
+import { AIC, BGCOLOR, FDR, JCC, PH, PV } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import { apiEndPoint } from '../../../server';
 import StatusBar from '../../component/StatusBar';
@@ -15,7 +15,7 @@ import ProductTab from './Tabs';
 import IconIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import { APIProductStatus } from '@app/server/apis/product/product.api';
-import { IProductStatus } from '@app/server/apis/product/product.interface';
+import { IProductStatus, IRProductStatus } from '@app/server/apis/product/product.interface';
 import { showMessage } from 'react-native-flash-message';
 
 export interface ProductProps extends NavigationProps {
@@ -45,10 +45,10 @@ const Product: React.FC<ProductProps> = ({
 
     const getCatalogueStatus = async (data: { shopId: string }) => {
         try {
-            const a = await APIProductStatus(data);
+            const a: IRProductStatus = await APIProductStatus(data);
             setStatus(a.payload);
             console.log(a);
-        } catch (error) {
+        } catch (error: Error) {
             showMessage({ message: error.message, type: 'danger' });
         }
     };
@@ -104,32 +104,6 @@ const Product: React.FC<ProductProps> = ({
                         />
                     </View>
                 </View>
-                {/* <View
-                    style={[
-                        {
-                            height: getHP(0.5),
-                            justifyContent: 'center',
-                            paddingTop: getHP(0.1),
-                            paddingHorizontal: getWP(0.5),
-                        },
-                    ]}
-                >
-                    <TextInput
-                        style={[
-                            {
-                                backgroundColor: colorCode.WHITE,
-                                flex: 1,
-                                padding: 0,
-                                paddingLeft: getWP(0.2),
-                                height: getHP(0.5),
-                                borderRadius: getHP(0.05),
-                            },
-                        ]}
-                        value={searchedText}
-                        onChangeText={(searchedText: string) => setSearchedText(searchedText)}
-                        placeholder={'Search listing with PID or title'}
-                    />
-                </View> */}
             </View>
             {/* <View style={[FLEX(1), FDR(), BGCOLOR('#F3F3F3'), JCC('space-between'), { flexWrap: 'wrap' }, PH(0.3)]}>
                 {status.map((item) => (
