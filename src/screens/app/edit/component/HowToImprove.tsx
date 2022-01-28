@@ -3,12 +3,11 @@ import Collapsible from 'react-native-collapsible';
 import { AlertBox } from '@app/common/containerStyles';
 import { View } from 'react-native';
 import WrappedText from '@app/screens/component/WrappedText';
-import { borderColor, errorColor, mainColor } from '@app/common/color';
-import { marHor, marTop } from '../product/component/generalConfig';
-import { fs14, fs16, fs18 } from '@app/common';
-import Accordion from 'react-native-collapsible/Accordion';
+import { errorColor, mainColor } from '@app/common/color';
+import { marHor } from '../product/component/generalConfig';
+import { fs14, fs18 } from '@app/common';
 import Ripple from 'react-native-material-ripple';
-import { BC, BGCOLOR, BR, BW, FDR, JCC, MT, MV, PH, provideShadow } from '@app/common/styles';
+import { BC, BR, BW, FDR, JCC, MT, MV, PH } from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 
 interface HowToImproveProps {

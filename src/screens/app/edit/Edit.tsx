@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { fs16, NavigationProps } from '../../../common';
+import { NavigationProps } from '../../../common';
 import StatusBar from '../../component/StatusBar';
 import Header from './component/Header';
 import Sections from './product/Sections';
@@ -10,18 +10,15 @@ import {
     createProduct,
     deleteProductFromServer,
     generalProductSchema,
-    marHor,
-    marTop,
     padHor,
     updateProduct,
 } from './product/component/generalConfig';
-import { AIC, BR, BW, FDR, FLEX, JCC, PH, PR, PV, WP } from '../../../common/styles';
+import { FDR, FLEX, PR, PV } from '../../../common/styles';
 import { IFilter, IProduct, IRProduct, productStatus } from '../../../server/apis/product/product.interface';
 import SimpleToast from 'react-native-simple-toast';
 import { APIgetProduct } from '../../../server/apis/product/product.api';
-import { colorCode, errorColor, mainColor } from '../../../common/color';
+import { mainColor } from '../../../common/color';
 import WrappedText from '../../component/WrappedText';
-import TextButton from '../../component/TextButton';
 import { ToastHOC } from '../../hoc/ToastHOC';
 import Loader from '../../component/Loader';
 import { IRGetFilterWithValue } from '../../../server/apis/filter/filter.interface';

@@ -1,6 +1,6 @@
 import { BC, BGCOLOR, BR, BW, colorTransparency, FDR, JCC, MH, ML, MR, MV, PH, PV } from '@app/common/styles';
 import * as React from 'react';
-import { View, StyleSheet, Image, ViewStyle } from 'react-native';
+import { View, StyleSheet, Image, ViewStyle, Platform } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { FontFamily, fs14 } from '@app/common';
 import WrappedText from '@app/screens/component/WrappedText';
@@ -50,7 +50,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
                 BC(borderColor),
                 BGCOLOR(buttonColor),
                 {
-                    paddingVertical: 15,
+                    paddingVertical: Platform.OS == 'android' ? 10 : 15,
                     borderRadius: borderRadius || 6,
                     marginTop: marginTop,
                     marginLeft: marginLeft,

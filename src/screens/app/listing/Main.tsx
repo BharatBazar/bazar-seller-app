@@ -17,10 +17,11 @@ import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import { APIProductStatus } from '@app/server/apis/product/product.api';
 import { IProductStatus, IRProductStatus } from '@app/server/apis/product/product.interface';
 import { showMessage } from 'react-native-flash-message';
+import { Shop } from '@app/server/apis/shop/shop.interface';
 
 export interface ProductProps extends NavigationProps {
     route: {
-        params: { itemType: string; shopId: string; category: string; subCategory: string; subCategory1: string };
+        params: { itemType: string; shopId: Shop; category: string; subCategory: string; subCategory1: string };
     };
 }
 
@@ -55,7 +56,7 @@ const Product: React.FC<ProductProps> = ({
 
     React.useEffect(() => {
         setBaseUrl();
-        getCatalogueStatus({ shopId: shopId });
+        getCatalogueStatus({ shopId: shopId._id });
         return () => {
             axios.defaults.baseURL = apiEndPoint;
         };

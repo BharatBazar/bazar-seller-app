@@ -5,11 +5,12 @@ import { IProductStatus } from '../../../server/apis/product/product.interface';
 import ProductList from './List';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Loader from '@app/screens/component/Loader';
+import { Shop } from '@app/server/apis/shop/shop.interface';
 
 const Tab = createMaterialTopTabNavigator();
 
 interface ProductTabProps extends NavigationProps {
-    shopId: string;
+    shopId: Shop;
     category: string;
     subCategory: string;
     subCategory1: string;

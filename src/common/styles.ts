@@ -183,4 +183,4 @@ export const provideShadow = (height = 1, width = 0, shadowRadius = 2, shadowOpa
           };
 
 // Default screen padding every where
-export const DSP = 20;
+export const DSP = Platform.OS == 'ios' ? 20 : 15;
