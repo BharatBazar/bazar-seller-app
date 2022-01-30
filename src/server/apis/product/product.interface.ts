@@ -17,6 +17,8 @@ export interface IFilter {
     multiple: boolean; // Multiple values can selected or not
     distributionLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
     values: IClassifier[];
+    filterLevel: number;
+    _id: string;
 }
 
 export enum classifierTypes {

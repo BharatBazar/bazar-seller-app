@@ -26,12 +26,12 @@ export default class Loader extends React.Component<LoaderProps, {}> {
                         bottom: 0,
                         alignItems: 'center',
                         justifyContent: 'center',
-                        backgroundColor: this.props.backgroundColor || '#FFFFFF' + colorTransparency[50],
+                        backgroundColor: this.props.backgroundColor || '#000000' + colorTransparency[20],
                     },
                     containerStyle,
                 ]}
             >
-                <ActivityIndicator color={mainColor} />
+                <ActivityIndicator color={'#FFF'} size={'large'} />
             </View>
         );
     }

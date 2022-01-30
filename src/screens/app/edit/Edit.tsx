@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { useState } from 'react';
 import { View, ScrollView, Alert } from 'react-native';
 import { NavigationProps } from '../../../common';
@@ -26,6 +26,7 @@ import { getFilterWithValue } from '../../../server/apis/filter/filter.api';
 import { returnEmptyStringOrValue } from '../../../common/helper';
 import HowToImprove from './component/HowToImprove';
 import ImproveList from './component/ImproveList';
+import EditProduct from '../product-edit';
 
 export interface CreateProductProps extends NavigationProps {
     route: {
@@ -118,15 +119,15 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         ]);
     };
 
-    React.useEffect(() => {
-        if (update) {
-            fetchProduct();
-        } else {
-            createProductInServer({});
-        }
-        loadFilter();
-        return () => {};
-    }, []);
+    // React.useEffect(() => {
+    //     if (update) {
+    //         fetchProduct();
+    //     } else {
+    //         createProductInServer({});
+    //     }
+    //     loadFilter();
+    //     return () => {};
+    // }, []);
 
     React.useEffect(() => {
         if (checkAllError == 2) {
@@ -211,83 +212,84 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         }
     };
 
-    return (
-        <View style={{ flex: 1 }}>
-            <StatusBar statusBarColor={mainColor} />
-            <Header
-                headerTitle={update ? 'Update Product' : 'Create Product'}
-                onPressBack={navigation.goBack}
-                // onPressBack={() => {
-                //     //navigation.navigate('Waiting For Approval');
-                // }}
-                onPressCorrect={() => {}}
-                onPressDelete={() => {
-                    deleteProduct();
-                }}
-            />
-            {loading ? (
-                <Loader />
-            ) : (
-                <>
-                    <View style={[border, FDR(), padHor, PR(0.1), PV(0.1)]}>
-                        <WrappedText
-                            text={`This product is under ${returnEmptyStringOrValue(
-                                category,
-                            )} ${returnEmptyStringOrValue(subCategory)} ${returnEmptyStringOrValue(
-                                subCategory1,
-                            )} category.`}
-                            containerStyle={[FLEX(1)]}
-                            textColor={'#646464'}
-                        />
-                        {/* <TextButton
-                            text={
-                                productDetails.status == productStatus.NOTCOMPLETED
-                                    ? 'Add to inventory'
-                                    : productDetails.status == productStatus.INVENTORY
-                                    ? 'Send for approval'
-                                    : productDetails.status == productStatus.REJECTED
-                                    ? 'Send for approval again'
-                                    : 'Waiting for approval'
-                            }
-                            onPress={() => {
-                                setGeneralLoader(true);
-                                setCheckAllError(1);
-                            }}
-                            textProps={{ textColor: colorCode.WHITE }}
-                            containerStyle={[AIC(), PH(0.5), BR(0.05)]}
-                        /> */}
-                        <ImproveList
-                            notes={productDetails.note}
-                            status={productDetails.status}
-                            onPress={() => {
-                                setGeneralLoader(true);
-                                setCheckAllError(1);
-                            }}
-                        />
-                    </View>
-                    {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
+    return <EditProduct />;
+    // return (
+    //     <View style={{ flex: 1 }}>
+    //         <StatusBar statusBarColor={mainColor} />
+    //         <Header
+    //             headerTitle={update ? 'Update Product' : 'Create Product'}
+    //             onPressBack={navigation.goBack}
+    //             // onPressBack={() => {
+    //             //     //navigation.navigate('Waiting For Approval');
+    //             // }}
+    //             onPressCorrect={() => {}}
+    //             onPressDelete={() => {
+    //                 deleteProduct();
+    //             }}
+    //         />
+    //         {loading ? (
+    //             <Loader />
+    //         ) : (
+    //             <>
+    //                 <View style={[border, FDR(), padHor, PR(0.1), PV(0.1)]}>
+    //                     <WrappedText
+    //                         text={`This product is under ${returnEmptyStringOrValue(
+    //                             category,
+    //                         )} ${returnEmptyStringOrValue(subCategory)} ${returnEmptyStringOrValue(
+    //                             subCategory1,
+    //                         )} category.`}
+    //                         containerStyle={[FLEX(1)]}
+    //                         textColor={'#646464'}
+    //                     />
+    //                     {/* <TextButton
+    //                         text={
+    //                             productDetails.status == productStatus.NOTCOMPLETED
+    //                                 ? 'Add to inventory'
+    //                                 : productDetails.status == productStatus.INVENTORY
+    //                                 ? 'Send for approval'
+    //                                 : productDetails.status == productStatus.REJECTED
+    //                                 ? 'Send for approval again'
+    //                                 : 'Waiting for approval'
+    //                         }
+    //                         onPress={() => {
+    //                             setGeneralLoader(true);
+    //                             setCheckAllError(1);
+    //                         }}
+    //                         textProps={{ textColor: colorCode.WHITE }}
+    //                         containerStyle={[AIC(), PH(0.5), BR(0.05)]}
+    //                     /> */}
+    //                     <ImproveList
+    //                         notes={productDetails.note}
+    //                         status={productDetails.status}
+    //                         onPress={() => {
+    //                             setGeneralLoader(true);
+    //                             setCheckAllError(1);
+    //                         }}
+    //                     />
+    //                 </View>
+    //                 {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
 
-                    <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
-                        {!loading && (
-                            <Sections
-                                filter={filter}
-                                distribution={distribution}
-                                checkAllError={checkAllError}
-                                setCheckAllError={setCheckAllError}
-                                productDetails={productDetails}
-                                update={update}
-                                postDataToServer={postProductDataToServer}
-                                setProductId={setProductId}
-                                productId={productId}
-                                productTypeDetails={{ category, subCategory, subCategory1 }}
-                            />
-                        )}
-                    </ScrollView>
-                </>
-            )}
-            {generalLoader && <Loader />}
-        </View>
-    );
+    //                 <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+    //                     {!loading && (
+    //                         <Sections
+    //                             filter={filter}
+    //                             distribution={distribution}
+    //                             checkAllError={checkAllError}
+    //                             setCheckAllError={setCheckAllError}
+    //                             productDetails={productDetails}
+    //                             update={update}
+    //                             postDataToServer={postProductDataToServer}
+    //                             setProductId={setProductId}
+    //                             productId={productId}
+    //                             productTypeDetails={{ category, subCategory, subCategory1 }}
+    //                         />
+    //                     )}
+    //                 </ScrollView>
+    //             </>
+    //         )}
+    //         {generalLoader && <Loader />}
+    //     </View>
+    // );
 };
 
 export default CreateProduct;

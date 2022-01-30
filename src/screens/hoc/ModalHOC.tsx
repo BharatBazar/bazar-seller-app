@@ -7,7 +7,7 @@ export interface ModalProps {
     isVisible: boolean;
     setPopup: Function;
     children: React.ReactChild;
-    showErrorMessage: string;
+    showErrorMessage?: string;
     refer?: any;
 }
 
@@ -36,6 +36,7 @@ const ModalHOC: React.FC<ModalProps> = ({ isVisible, setPopup, children, showErr
             onBackdropPress={() => {
                 setPopup();
             }}
+            statusBarTranslucent={true}
             backdropTransitionOutTiming={0}
         >
             {children}
