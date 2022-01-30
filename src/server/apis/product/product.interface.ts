@@ -117,7 +117,10 @@ export interface IProducts extends CommonApiResponse {
 }
 
 export interface IRProductColor extends CommonApiResponse {
-    payload: IProductColor;
+    payload: {
+        colorId: string;
+        productId: string;
+    };
 }
 export interface IRProductSize extends CommonApiResponse {
     payload: IProductSize;

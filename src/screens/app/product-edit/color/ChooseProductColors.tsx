@@ -7,7 +7,7 @@ import ModalHOC from '../../../hoc/ModalHOC';
 
 import ModalHeader from '../../../component/ModalHeader';
 import { IFilter } from '../../../../server/apis/product/product.interface';
-import { choosenColor } from '../data-types';
+import { choosenColor, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, MT, MV, PH, PL, PR, PV } from '@app/common/styles';
 import Border from '@app/screens/components/border/Border';
@@ -16,14 +16,21 @@ import Ripple from 'react-native-material-ripple';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { FontFamily, fs14, fs16 } from '@app/common';
 import ImageCropPicker from 'react-native-image-crop-picker';
+import { createProductColor, deleteProductColor } from '../../edit/product/component/generalConfig';
+import { color } from 'react-native-reanimated';
+import { showMessage } from 'react-native-flash-message';
+import Loader from '@app/screens/component/Loader';
 
 export interface ChooseProductColorsProps {
     setPopup: Function;
     isVisible: boolean;
     colors: IFilter[] | [];
     chosenColor: choosenColor[];
+    addColorsToChoosenArray: (color: choosenColor) => void;
+    removeColorFromArray: (index: number) => void;
 
     updateColorArray: Function;
+    productId: string;
 }
 
 const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
@@ -32,10 +39,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     colors,
     updateColorArray,
     chosenColor,
+    addColorsToChoosenArray,
+    removeColorFromArray,
 }) => {
+    const { productId, setProductId } = React.useContext(ProductIdContext);
+    const [loader, setLoader] = React.useState(false);
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
 
-    const openCamera = () => {
+    const openCamera = (color: IFilter) => {
         setShowImageSelect(false);
         ImageCropPicker.openCamera({
             width: 300,
@@ -50,6 +61,38 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             .catch((error) => {
                 setShowImageSelect(false);
             });
+    };
+
+    const createColorInServer = async (colorChoosen: IFilter) => {
+        try {
+            setLoader(true);
+            const color = await createProductColor({
+                color: colorChoosen._id,
+                parentId: productId ? productId : undefined,
+            });
+            setLoader(false);
+            if (!productId) {
+                setProductId(color.payload.productId);
+            }
+            addColorsToChoosenArray(
+                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId),
+            );
+        } catch (error) {
+            setLoader(false);
+            showMessage({ type: 'danger', message: error.message });
+        }
+    };
+
+    const deleteColorInServer = async (_id: string, index: number) => {
+        try {
+            setLoader(true);
+            const color = await deleteProductColor({ _id });
+            removeColorFromArray(index);
+            setLoader(false);
+        } catch (error) {
+            showMessage({ type: 'danger', message: error.message });
+            setLoader(false);
+        }
     };
 
     return (
@@ -74,9 +117,15 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                     <View style={{ flexWrap: 'wrap', flex: 1, flexDirection: 'row' }}>
                         {Array.from({ length: 20 }, () => colors)
                             .flat()
-                            .map((item, index) => {
+                            .map((item: IFilter, index: number) => {
+                                const indexInSelectedColor = chosenColor.findIndex(
+                                    (color) => color.color._id == item._id,
+                                );
+                                const selected = indexInSelectedColor > -1;
                                 return (
-                                    <View style={[BW(1), BC(item.description), MT(0.2), BR(0.4), MH(0.2)]}>
+                                    <View
+                                        style={[(selected && BW(1), BC(item.description)), , MT(0.2), BR(0.4), MH(0.2)]}
+                                    >
                                         <Ripple
                                             style={[
                                                 FDR(),
@@ -88,7 +137,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                                 { paddingVertical: 5 },
                                             ]}
                                             onPress={() => {
-                                                openCamera();
+                                                if (selected) {
+                                                    deleteColorInServer(
+                                                        chosenColor[indexInSelectedColor]._id,
+                                                        indexInSelectedColor,
+                                                    );
+                                                } else {
+                                                    createColorInServer(item);
+                                                }
                                             }}
                                         >
                                             <View
@@ -111,12 +167,15 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                                 fontFamily={FontFamily.Medium}
                                             />
                                         </Ripple>
-                                        <WrappedFeatherIcon
-                                            iconName="check-circle"
-                                            iconSize={20}
-                                            iconColor={item.description}
-                                            containerStyle={{ position: 'absolute', top: -12, right: -12 }}
-                                        />
+                                        {selected && (
+                                            <WrappedFeatherIcon
+                                                iconName="check-circle"
+                                                iconSize={20}
+                                                onPress={() => {}}
+                                                iconColor={item.description}
+                                                containerStyle={{ position: 'absolute', top: -12, right: -12 }}
+                                            />
+                                        )}
                                     </View>
                                 );
                             })}
@@ -125,6 +184,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 <Border marginTop={3} />
                 <RightComponentButtonWithLeftText buttonText={'close'} containerStyle={[MV(0.2)]} onPress={() => {}} />
             </View>
+            {loader && <Loader />}
         </ModalHOC>
     );
 };

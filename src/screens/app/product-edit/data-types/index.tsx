@@ -1,4 +1,5 @@
 import { IFilter } from '@app/server/apis/product/product.interface';
+import React from 'react';
 
 export enum idCreationStatus {
     'NotCreated' = 0,
@@ -29,7 +30,7 @@ export interface choosenColor {
     identificationPhoto: string;
 }
 
-export const provideDefaultColorState = (_id: string, color: IFilter) => {
+export const provideDefaultColorState = (_id: string, color: IFilter, parentId: string): choosenColor => {
     return {
         color,
         sizes: [],
@@ -37,5 +38,8 @@ export const provideDefaultColorState = (_id: string, color: IFilter) => {
         identificationPhoto: '',
         colors: [],
         _id,
+        parentId: parentId,
     };
 };
+
+export const ProductIdContext = React.createContext({ productId: undefined, setProductId: (id: string) => {} });

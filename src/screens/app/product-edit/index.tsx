@@ -13,7 +13,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { createProduct } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
-import { choosenColor } from './data-types';
+import { choosenColor, ProductIdContext } from './data-types';
 
 interface EditProductProps {
     update?: boolean;
@@ -23,8 +23,6 @@ interface EditProductProps {
         };
     };
 }
-
-export const ProductIdContext = React.createContext('');
 
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     update,
@@ -80,7 +78,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     }, []);
 
     return (
-        <ProductIdContext.Provider value={productId}>
+        <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
             <View style={styles.container}>
                 <StatusBar statusBarColor={mainColor} />
                 <HeaderWithBackButtonTitleAndrightButton
@@ -110,6 +108,15 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     isVisible={openChooseColor}
                     setPopup={() => {
                         setOpenChooseColor(false);
+                    }}
+                    addColorsToChoosenArray={(color: choosenColor) => {
+                        const data = [...choosenColor, color];
+                        setChoosenColor(data);
+                    }}
+                    removeColorFromArray={(index: number) => {
+                        const data = [...choosenColor];
+                        data.splice(index, 1);
+                        setChoosenColor(data);
                     }}
                     chosenColor={choosenColor}
                     colors={distribution.length > 0 ? distribution[0].values : []}
