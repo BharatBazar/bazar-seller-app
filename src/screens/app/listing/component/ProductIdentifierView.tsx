@@ -2,7 +2,7 @@ import { AlertBox } from '@app/common/containerStyles';
 import * as React from 'react';
 import { View } from 'react-native';
 import Ripple from 'react-native-material-ripple';
-import { fs10, fs16, fs9 } from '../../../../common';
+import { DEFAULT_IMAGE_URL, fs10, fs16, fs9 } from '../../../../common';
 import { borderColor, errorColor, subHeadingColor } from '../../../../common/color';
 import { getHP, getWP } from '../../../../common/dimension';
 import {
@@ -59,8 +59,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 {/* {rest.status != productStatus.NOTCOMPLETED && <WrappedText text={rest.itemId} />} */}
                 <FastImageWrapper
                     source={{
-                        uri:
-                            'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80',
+                        uri: DEFAULT_IMAGE_URL,
                     }}
                     resizeMode={'cover'}
                     imageStyle={[

@@ -1,9 +1,11 @@
-import { NavigationProps } from '@app/common';
-import { mainColor } from '@app/common/color';
+import { fs16, fs20, NavigationProps } from '@app/common';
+import { black100, mainColor } from '@app/common/color';
 import { DSP, PH } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import StatusBar, { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import WrappedText from '@app/screens/component/WrappedText';
+import Border from '@app/screens/components/border/Border';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
 import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/header/HeaderWithBackButtonTitleAndrightButton';
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
@@ -15,6 +17,7 @@ import { View, StyleSheet, ScrollView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { createProduct } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
+import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, ProductIdContext } from './data-types';
 
 interface EditProductProps extends NavigationProps {
@@ -131,7 +134,19 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     )}
+                    <Border />
+                    <WrappedText
+                        text="Selected color variant of product"
+                        textColor={black100}
+                        containerStyle={{ marginTop: DSP * 0.5 }}
+                        fontSize={fs16}
+                    />
+                    {choosenColor.map((item: choosenColor, index: number) => (
+                        <EditSelectedColor item={item} key={index} sizes={distribution[1].values} />
+                    ))}
+                    <Border />
                 </ScrollView>
+
                 <ChooseProductColors
                     isVisible={openChooseColor}
                     setPopup={() => {

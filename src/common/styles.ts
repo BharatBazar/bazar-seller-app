@@ -39,6 +39,10 @@ export const M = (percentage?: number): ViewStyle => {
     return { margin: getHP(percentage || 0.05) };
 };
 
+export const MA = (margin: number): ViewStyle => {
+    return { margin };
+};
+
 export const MH = (percentage?: number): ViewStyle => {
     return { marginHorizontal: getWP(percentage || 0.5) };
 };
