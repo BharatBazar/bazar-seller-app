@@ -86,7 +86,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const deleteColorInServer = async (_id: string, index: number) => {
         try {
             setLoader(true);
-            const color = await deleteProductColor({ _id });
+            const color = await deleteProductColor({ _id, parentId: productId ? productId : '' });
             removeColorFromArray(index);
             setLoader(false);
         } catch (error) {
