@@ -25,7 +25,7 @@ export async function APIdeleteProduct(data: { _id: string }): Promise<IRProduct
     return axios.delete('/delete?' + '_id=' + data._id);
 }
 
-export async function APIgetProduct(data: IProduct): Promise<IProduct> {
+export async function APIgetProduct(data: Partial<IProduct>): Promise<IRProduct> {
     return axios.post('/get', data);
 }
 

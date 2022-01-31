@@ -212,7 +212,14 @@ const CreateProduct: React.FC<CreateProductProps> = ({
         }
     };
 
-    return <EditProduct />;
+    return (
+        <EditProduct
+            navigation={navigation}
+            route={{
+                params: { update, _id, shopId, category, subCategory, subCategory1, changeTab },
+            }}
+        />
+    );
     // return (
     //     <View style={{ flex: 1 }}>
     //         <StatusBar statusBarColor={mainColor} />
