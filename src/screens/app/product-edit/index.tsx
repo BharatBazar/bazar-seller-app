@@ -34,9 +34,6 @@ interface EditProductProps extends NavigationProps {
 
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     navigation,
-    // route: {
-    //     params: { shopId },
-    // },
     route: {
         params: { update, _id, shopId, category, subCategory, subCategory1, changeTab },
     },

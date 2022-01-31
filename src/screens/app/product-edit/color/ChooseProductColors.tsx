@@ -95,6 +95,16 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         }
     };
 
+    const onPressColor = (selected: boolean, indexInSelectedColor: number, item: IFilter) => {
+        () => {
+            if (selected) {
+                deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor);
+            } else {
+                createColorInServer(item);
+            }
+        };
+    };
+
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View
@@ -127,35 +137,17 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                         style={[(selected && BW(1), BC(item.description)), , MT(0.2), BR(0.4), MH(0.2)]}
                                     >
                                         <Ripple
-                                            style={[
-                                                FDR(),
-                                                BGCOLOR('#F0F0F0'),
-                                                AIC(),
-                                                BR(0.4),
-                                                PL(0.2),
-                                                PR(0.4),
-                                                { paddingVertical: 5 },
-                                            ]}
+                                            style={arrayStyle.colorContainerStyle}
                                             onPress={() => {
-                                                if (selected) {
-                                                    deleteColorInServer(
-                                                        chosenColor[indexInSelectedColor]._id,
-                                                        indexInSelectedColor,
-                                                    );
-                                                } else {
-                                                    createColorInServer(item);
-                                                }
+                                                onPressColor(selected, indexInSelectedColor, item);
                                             }}
                                         >
                                             <View
                                                 style={[
+                                                    ...arrayStyle.colotStyle,
                                                     {
                                                         backgroundColor: item.description,
-                                                        height: 20,
-                                                        width: 20,
-                                                        borderRadius: getWP(10),
                                                     },
-                                                    //  colorStyle,
                                                 ]}
                                             />
                                             <WrappedText
@@ -182,7 +174,13 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                     </View>
                 </ScrollView>
                 <Border marginTop={3} />
-                <RightComponentButtonWithLeftText buttonText={'close'} containerStyle={[MV(0.2)]} onPress={() => {}} />
+                <RightComponentButtonWithLeftText
+                    buttonText={'close'}
+                    containerStyle={[MV(0.2)]}
+                    onPress={() => {
+                        setPopup(false);
+                    }}
+                />
             </View>
             {loader && <Loader />}
         </ModalHOC>
@@ -190,3 +188,15 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
 };
 
 export default ChooseProductColors;
+
+const arrayStyle = {
+    colorContainerStyle: [FDR(), BGCOLOR('#F0F0F0'), AIC(), BR(0.4), PL(0.2), PR(0.4), { paddingVertical: 5 }],
+    colotStyle: [
+        {
+            height: 20,
+            width: 20,
+            borderRadius: getWP(10),
+        },
+        //  colorStyle,
+    ],
+};
