@@ -96,13 +96,11 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     };
 
     const onPressColor = (selected: boolean, indexInSelectedColor: number, item: IFilter) => {
-        () => {
-            if (selected) {
-                deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor);
-            } else {
-                createColorInServer(item);
-            }
-        };
+        if (selected) {
+            deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor);
+        } else {
+            createColorInServer(item);
+        }
     };
 
     return (
@@ -132,10 +130,10 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                     (color) => color.color._id == item._id,
                                 );
                                 const selected = indexInSelectedColor > -1;
+                                console.log('selected =>', selected);
+                                const selectedStyle = selected ? [BW(1), BC(item.description)] : {};
                                 return (
-                                    <View
-                                        style={[(selected && BW(1), BC(item.description)), , MT(0.2), BR(0.4), MH(0.2)]}
-                                    >
+                                    <View style={[selectedStyle, MT(0.2), BR(0.4), MH(0.2)]}>
                                         <Ripple
                                             style={arrayStyle.colorContainerStyle}
                                             onPress={() => {
