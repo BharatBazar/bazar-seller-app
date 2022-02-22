@@ -33,7 +33,7 @@ const App: () => Node = () => {
     return (
         <>
             <AlertContext.Provider value={setAlertState}>
-                {/* <StatusBar translucent={true} backgroundColor={'#00000000'} /> */}
+                <StatusBar translucent={true} backgroundColor={'#00000000'} />
                 <AppNavigation />
                 <AlertBox
                     {...alertState}

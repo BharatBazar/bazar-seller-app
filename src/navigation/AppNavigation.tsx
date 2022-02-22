@@ -31,6 +31,7 @@ import ResetPassword from '../screens/auth/ResetPassword';
 import ProductTab from '@app/screens/app/listing/Tabs';
 import ProductDetails from '@app/screens/auth/ProductDetails';
 import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
+import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -88,6 +89,7 @@ class AppNavigation extends React.Component {
                             cardStyleInterpolator: Fade,
                         }}
                     />
+                    <Stack.Screen name={NavigationKey.EditProductSize} component={ProvideSize} />
                     {/* <Stack.Screen name={NavigationKey.PRODUCTSTATUS} component={ProductTab} /> */}
                 </Stack.Navigator>
                 <Toast ref={(ref) => Toast.setRef(ref)} />

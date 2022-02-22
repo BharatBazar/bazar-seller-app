@@ -69,6 +69,7 @@ export interface IProductColor {
     sizes: [IProductSize]; // will refer to jeans size table
     photos: [string];
     includedColor: [IClassifier];
+    shopId: string;
 }
 
 export interface IColorApp {

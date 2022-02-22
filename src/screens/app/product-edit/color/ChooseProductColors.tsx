@@ -6,7 +6,7 @@ import { colorCode, mainColor } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
 
 import ModalHeader from '../../../component/ModalHeader';
-import { IFilter } from '../../../../server/apis/product/product.interface';
+import { IClassifier, IFilter } from '../../../../server/apis/product/product.interface';
 import { choosenColor, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, MT, MV, PH, PL, PR, PV } from '@app/common/styles';
@@ -20,31 +20,34 @@ import { createProductColor, deleteProductColor } from '../../edit/product/compo
 import { color } from 'react-native-reanimated';
 import { showMessage } from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
+import ProvideSize from '../size/ProvideSize';
 
 export interface ChooseProductColorsProps {
     setPopup: Function;
     isVisible: boolean;
-    colors: IFilter[] | [];
+    colors: IClassifier[] | [];
+    avaialbleSize: IClassifier[] | [];
     chosenColor: choosenColor[];
     addColorsToChoosenArray: (color: choosenColor) => void;
     removeColorFromArray: (index: number) => void;
-
-    updateColorArray: Function;
-    productId: string;
+    shopId: string;
 }
 
 const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     setPopup,
     isVisible,
     colors,
-    updateColorArray,
     chosenColor,
     addColorsToChoosenArray,
     removeColorFromArray,
+    avaialbleSize,
+    shopId,
 }) => {
+    //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
     const [loader, setLoader] = React.useState(false);
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
+    const [showSizePopup, setShowSizePopup] = React.useState(false);
 
     const openCamera = (color: IFilter) => {
         setShowImageSelect(false);
@@ -69,6 +72,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             const color = await createProductColor({
                 color: colorChoosen._id,
                 parentId: productId ? productId : undefined,
+                shopId: shopId,
             });
             setLoader(false);
             if (!productId) {
@@ -77,6 +81,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             addColorsToChoosenArray(
                 provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId),
             );
+            setShowSizePopup(true);
         } catch (error) {
             setLoader(false);
             showMessage({ type: 'danger', message: error.message });
@@ -180,6 +185,13 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                     }}
                 />
             </View>
+            <ProvideSize
+                avaialbleSize={avaialbleSize}
+                isVisible={showSizePopup}
+                setPopup={() => {
+                    setShowSizePopup(false);
+                }}
+            />
             {loader && <Loader />}
         </ModalHOC>
     );

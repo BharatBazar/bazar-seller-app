@@ -10,12 +10,13 @@ export enum idCreationStatus {
 export interface choosenSize {
     _id: string;
     size: IFilter; //Will refer to size table
-    mrp: string;
-    quantity: string;
-    sp: string;
+    // mrp: string; // Optional
+    quantity: number;
+    //sp: string; //Optional
     parentId: string; //will refer to corresponding color
     itemId: string; // simple id generated for product identification by user
-    idStatus: idCreationStatus;
+    //idStatus: idCreationStatus; //
+    shopId: string;
 }
 
 export interface choosenColor {
@@ -39,6 +40,17 @@ export const provideDefaultColorState = (_id: string, color: IFilter, parentId: 
         colors: [],
         _id,
         parentId: parentId,
+    };
+};
+
+export const provideDefaultSizeState = (size: IFilter, parentId: string, shopId: string): choosenSize => {
+    return {
+        size: size,
+        _id: '',
+        quantity: 1,
+        parentId: parentId,
+        itemId: '',
+        shopId: shopId,
     };
 };
 

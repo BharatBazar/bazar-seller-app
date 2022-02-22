@@ -1,6 +1,7 @@
 import { fs16, fs20, NavigationProps } from '@app/common';
 import { black100, mainColor } from '@app/common/color';
 import { DSP, PH } from '@app/common/styles';
+import { NavigationKey } from '@app/labels';
 import Loader from '@app/screens/component/Loader';
 import StatusBar, { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -19,6 +20,7 @@ import { createProduct } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, ProductIdContext } from './data-types';
+import ProvideSize from './size/ProvideSize';
 
 interface EditProductProps extends NavigationProps {
     update?: boolean;
@@ -142,7 +144,11 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         fontSize={fs16}
                     />
                     {choosenColor.map((item: choosenColor, index: number) => (
-                        <EditSelectedColor item={item} key={index} sizes={distribution[1].values} />
+                        <EditSelectedColor
+                            item={item}
+                            key={index}
+                            sizes={distribution.length > 1 ? distribution[1].values : []}
+                        />
                     ))}
                     <Border />
                 </ScrollView>
@@ -152,6 +158,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     setPopup={() => {
                         setOpenChooseColor(false);
                     }}
+                    shopId={shopId}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];
                         setChoosenColor(data);
@@ -163,7 +170,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     chosenColor={choosenColor}
                     colors={distribution.length > 0 ? distribution[0].values : []}
+                    avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                 />
+
                 {loader && <Loader />}
             </View>
         </ProductIdContext.Provider>
