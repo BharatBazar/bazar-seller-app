@@ -50,7 +50,6 @@ const App: () => Node = () => {
             <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
                     <StatusBar translucent={true} backgroundColor={'#00000000'} />
-                    <AppNavigation />
                     <AlertBox
                         {...alertState}
                         onPressLeftButton={() => {
@@ -60,6 +59,7 @@ const App: () => Node = () => {
                             setAlertState(defaultAlertState);
                         }}
                     />
+                    <AppNavigation />
                 </AlertContext.Provider>
             </LoaderContext.Provider>
             <FlashMessage position={'top'} />

@@ -105,7 +105,6 @@ const MemberDetails: React.FunctionComponent<MemberDetailsProps> = ({
                                 heading: 'Delete member',
                                 subHeading: 'Are you sure you want to remove ' + item.firstName + ' from your shop?',
                                 onPressRightButton: () => {
-                                    setAlertState(defaultAlertState);
                                     deleteMember(item._id, index);
                                 },
                             });

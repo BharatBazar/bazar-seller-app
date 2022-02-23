@@ -1,6 +1,6 @@
-import { LoaderContext } from '@app/../App';
-import { fs12 } from '@app/common';
-import { mainColor } from '@app/common/color';
+import { AlertContext, LoaderContext } from '@app/../App';
+import { fs12, fs14 } from '@app/common';
+import { colorCode, mainColor } from '@app/common/color';
 import { AIC, colorTransparency, DSP, FDR, JCC, MT, MV } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
@@ -56,6 +56,8 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
         return () => {};
     }, [choosenSize]);
 
+    const setAlertState = React.useContext(AlertContext);
+
     console.log('shop id', shopId, colorId);
 
     const createSize = async (data: Partial<choosenSize>, index: number) => {
@@ -72,7 +74,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
             setLoader(false);
             if (id && id.status == 1) {
                 let sizes = [...selectedSize];
-                sizes[index] = { ...sizes[index], ...id.payload };
+                sizes[index] = { ...sizes[index], ...id.payload, size: sizes[index].size };
                 setSelectedSize(sizes);
             } else {
                 throw new Error(id.message);
@@ -133,17 +135,39 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
         }
     };
 
+    const onPressDoLater = () => {
+        const totalUncreatedProduct = selectedSize.findIndex((item) => item.itemId.length == 0);
+        if (totalUncreatedProduct > -1) {
+            setAlertState({
+                isVisible: true,
+                heading: 'Do Later',
+                subHeading: 'Are you sure you dont want to save created sizes and go back?',
+                onPressRightButton: () => {
+                    setPopup(false);
+                },
+            });
+        } else {
+            setPopup(false);
+        }
+    };
+
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP }}>
                 <TextRippleButton
                     onPress={() => {
-                        setPopup(false);
+                        onPressDoLater();
                     }}
                     buttonText="do later"
-                    fontSize={fs12}
+                    fontSize={fs14}
                     buttonTextColor={mainColor}
-                    containerStyle={{ alignSelf: 'flex-end', backgroundColor: mainColor + colorTransparency[30] }}
+                    containerStyle={{
+                        alignSelf: 'flex-end',
+                        backgroundColor: colorCode.CHAKRALOW(20),
+                        paddingHorizontal: '5%',
+                        paddingVertical: '1%',
+                        borderRadius: 4,
+                    }}
                 />
                 <ScrollView>
                     <HeaderWithTitleAndSubHeading
@@ -207,7 +231,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 <Border />
 
                 <RightComponentButtonWithLeftText
-                    buttonText={'close'}
+                    buttonText={'continue'}
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
                         setPopup(false);

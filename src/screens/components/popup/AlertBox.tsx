@@ -30,7 +30,9 @@ const AlertBox: React.FunctionComponent<AlertBoxProps> = ({
                 setPopup(false);
             }}
             modalStyle="centerPlaced"
-            onPressRightButton={onPressRightButton}
+            onPressRightButton={() => {
+                onPressRightButton();
+            }}
             onPressLeftButton={onPressLeftButton}
         >
             <View style={[HP(0.3)]} />
