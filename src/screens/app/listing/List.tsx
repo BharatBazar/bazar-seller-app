@@ -100,6 +100,7 @@ const ProductList: React.SFC<ProductListProps> = ({
                                 onPress={() => {
                                     navigation.navigate(NavigationKey.CREATEPRODUCT, {
                                         update: true,
+                                        shopId: shopId,
                                         _id: item._id,
                                         category: category,
                                         subCategory: subCategory,

@@ -9,14 +9,15 @@ import { IFilter } from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { ImageBackground, View } from 'react-native';
 import PhotoUpload from '../../edit/product/component/component/PhotoUpload';
-import { choosenColor } from '../data-types';
+import { choosenColor, choosenSize } from '../data-types';
 
 interface EditSelectedColorProps {
     item: choosenColor;
-    sizes: IFilter[];
+    sizes: choosenSize[];
 }
 
 const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ item, sizes }) => {
+    console.log('sizes =>', sizes);
     return (
         <View style={[{ marginTop: DSP }, BC(borderColor), BW(2), BR(0.1), BGCOLOR('#FFF')]}>
             <ImageBackground
@@ -60,7 +61,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
                                     provideShadow(),
                                 ]}
                             >
-                                <WrappedText text={item.name} />
+                                <WrappedText text={item.size.name} />
                             </View>
                         ))}
                 </View>

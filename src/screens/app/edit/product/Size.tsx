@@ -29,7 +29,7 @@ import { IProductSize, IRProductSize, ISizeApp } from '../../../../server/apis/p
 import { createProductSize, updateProductSize, deleteProductSize } from './component/generalConfig';
 import { generateProductId } from '@app/server/apis/shop/shop.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
-import ProductIdPopup from './component/ProductIdPopup';
+import ProductIdPopup from '../../product-edit/size/ProductIdPopup';
 import { provideAlert } from '@app/common/helper';
 import WrappedCheckBox from '@app/screens/component/WrappedCheckBox';
 

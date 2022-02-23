@@ -79,6 +79,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             if (!productId) {
                 setProductId(color.payload.productId);
             }
+            showMessage({ type: 'success', message: 'Product size created' });
             addColorsToChoosenArray(
                 provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId),
             );
@@ -130,52 +131,48 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
 
                 <ScrollView style={{ maxHeight: getHP(5) }}>
                     <View style={{ flexWrap: 'wrap', flex: 1, flexDirection: 'row' }}>
-                        {Array.from({ length: 20 }, () => colors)
-                            .flat()
-                            .map((item: IFilter, index: number) => {
-                                const indexInSelectedColor = chosenColor.findIndex(
-                                    (color) => color.color._id == item._id,
-                                );
-                                const selected = indexInSelectedColor > -1;
-                                console.log('selected =>', selected);
-                                const selectedStyle = selected ? [BW(1), BC(item.description)] : {};
-                                return (
-                                    <View style={[selectedStyle, MT(0.2), BR(0.4), MH(0.2)]}>
-                                        <Ripple
-                                            style={arrayStyle.colorContainerStyle}
-                                            onPress={() => {
-                                                onPressColor(selected, indexInSelectedColor, item);
-                                            }}
-                                        >
-                                            <View
-                                                style={[
-                                                    ...arrayStyle.colotStyle,
-                                                    {
-                                                        backgroundColor: item.description,
-                                                    },
-                                                ]}
-                                            />
-                                            <WrappedText
-                                                textStyle={{ textTransform: 'capitalize' }}
-                                                text={item.name.trim()}
-                                                containerStyle={{ marginLeft: getWP(0.3) }}
-                                                textColor={'#646464'}
-                                                fontSize={fs14}
-                                                fontFamily={FontFamily.Medium}
-                                            />
-                                        </Ripple>
-                                        {selected && (
-                                            <WrappedFeatherIcon
-                                                iconName="check-circle"
-                                                iconSize={20}
-                                                onPress={() => {}}
-                                                iconColor={item.description}
-                                                containerStyle={{ position: 'absolute', top: -12, right: -12 }}
-                                            />
-                                        )}
-                                    </View>
-                                );
-                            })}
+                        {colors.map((item: IFilter, index: number) => {
+                            const indexInSelectedColor = chosenColor.findIndex((color) => color.color._id == item._id);
+                            const selected = indexInSelectedColor > -1;
+                            console.log('selected =>', selected);
+                            const selectedStyle = selected ? [BW(1), BC(item.description)] : {};
+                            return (
+                                <View style={[selectedStyle, MT(0.2), BR(0.4), MH(0.2)]}>
+                                    <Ripple
+                                        style={arrayStyle.colorContainerStyle}
+                                        onPress={() => {
+                                            onPressColor(selected, indexInSelectedColor, item);
+                                        }}
+                                    >
+                                        <View
+                                            style={[
+                                                ...arrayStyle.colotStyle,
+                                                {
+                                                    backgroundColor: item.description,
+                                                },
+                                            ]}
+                                        />
+                                        <WrappedText
+                                            textStyle={{ textTransform: 'capitalize' }}
+                                            text={item.name.trim()}
+                                            containerStyle={{ marginLeft: getWP(0.3) }}
+                                            textColor={'#646464'}
+                                            fontSize={fs14}
+                                            fontFamily={FontFamily.Medium}
+                                        />
+                                    </Ripple>
+                                    {selected && (
+                                        <WrappedFeatherIcon
+                                            iconName="check-circle"
+                                            iconSize={20}
+                                            onPress={() => {}}
+                                            iconColor={item.description}
+                                            containerStyle={{ position: 'absolute', top: -12, right: -12 }}
+                                        />
+                                    )}
+                                </View>
+                            );
+                        })}
                     </View>
                 </ScrollView>
                 <Border marginTop={3} />
@@ -189,7 +186,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             </View>
             <ProvideSize
                 avaialbleSize={avaialbleSize}
-                isVisible={!showSizePopup}
+                isVisible={showSizePopup}
                 setPopup={() => {
                     setShowSizePopup(false);
                 }}

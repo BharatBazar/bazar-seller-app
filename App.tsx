@@ -15,11 +15,14 @@ import { initializeAxios } from './src/server';
 import useAlert, { defaultAlertState } from '@app/hooks/useAlert';
 import AlertBox from '@app/screens/components/popup/AlertBox';
 import FlashMessage from 'react-native-flash-message';
+import Loader from '@app/screens/component/Loader';
 
-export const AlertContext = createContext(() => {});
+export const AlertContext = createContext<Function>(() => {});
+export const LoaderContext = createContext<Function>(() => {});
 
 const App: () => Node = () => {
     const { alertState, setAlertState } = useAlert();
+    const [loader, setLoader] = React.useState(false);
 
     async function initializeApp() {
         console.log('App initialization');
@@ -30,22 +33,37 @@ const App: () => Node = () => {
         initializeApp();
     }, []);
 
+    const setLoaderCallback = React.useCallback(
+        (loaderComingValue: boolean) => {
+            if (loaderComingValue) {
+                if (loader) {
+                }
+            } else {
+                setLoader(false);
+            }
+        },
+        [loader],
+    );
+
     return (
         <>
-            <AlertContext.Provider value={setAlertState}>
-                <StatusBar translucent={true} backgroundColor={'#00000000'} />
-                <AppNavigation />
-                <AlertBox
-                    {...alertState}
-                    onPressLeftButton={() => {
-                        setAlertState(defaultAlertState);
-                    }}
-                    setPopup={() => {
-                        setAlertState(defaultAlertState);
-                    }}
-                />
-            </AlertContext.Provider>
+            <LoaderContext.Provider value={setLoaderCallback}>
+                <AlertContext.Provider value={setAlertState}>
+                    <StatusBar translucent={true} backgroundColor={'#00000000'} />
+                    <AppNavigation />
+                    <AlertBox
+                        {...alertState}
+                        onPressLeftButton={() => {
+                            setAlertState(defaultAlertState);
+                        }}
+                        setPopup={() => {
+                            setAlertState(defaultAlertState);
+                        }}
+                    />
+                </AlertContext.Provider>
+            </LoaderContext.Provider>
             <FlashMessage position={'top'} />
+            {loader && <Loader />}
         </>
     );
 };

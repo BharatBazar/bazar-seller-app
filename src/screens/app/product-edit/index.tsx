@@ -13,6 +13,7 @@ import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
 import { APIgetProduct } from '@app/server/apis/product/product.api';
 import { IFilter, IProduct, IRProduct } from '@app/server/apis/product/product.interface';
+import { IShop } from '@app/server/apis/shop/shop.interface';
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -28,7 +29,7 @@ interface EditProductProps extends NavigationProps {
         params: {
             update: boolean;
             _id?: string;
-            shopId: string;
+            shopId: IShop;
             category: string;
             subCategory: string;
             subCategory1: string;
@@ -77,7 +78,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             const response: IRProduct = await APIgetProduct({ _id: _id, shopId: shopId });
             console.log('response =>', response);
             if (response.status == 1) {
-                console.log('response set ', response.payload);
+                console.log('response set ', response.payload.colors[1].sizes);
                 setProductId(response.payload._id);
                 setChoosenColor(response.payload.colors);
                 setLoader(false);
@@ -103,12 +104,14 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     };
 
     React.useEffect(() => {
-        console.log(update, _id, shopId);
+        //console.log(update, _id, shopId);
         if (update) {
             fetchProduct();
         }
         loadFilter();
     }, []);
+
+    // console.log('shop id', shopId);
 
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
@@ -144,11 +147,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         fontSize={fs16}
                     />
                     {choosenColor.map((item: choosenColor, index: number) => (
-                        <EditSelectedColor
-                            item={item}
-                            key={index}
-                            sizes={distribution.length > 1 ? distribution[1].values : []}
-                        />
+                        <EditSelectedColor item={item} key={index} sizes={item.sizes} />
                     ))}
                     <Border />
                 </ScrollView>
@@ -158,7 +157,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     setPopup={() => {
                         setOpenChooseColor(false);
                     }}
-                    shopId={shopId}
+                    shopId={shopId._id}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];
                         setChoosenColor(data);
