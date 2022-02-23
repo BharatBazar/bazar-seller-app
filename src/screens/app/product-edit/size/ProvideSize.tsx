@@ -1,6 +1,6 @@
 import { AlertContext, LoaderContext } from '@app/../App';
 import { fs12, fs14 } from '@app/common';
-import { colorCode, mainColor } from '@app/common/color';
+import { colorCode, errorColor, mainColor } from '@app/common/color';
 import { AIC, colorTransparency, DSP, FDR, JCC, MT, MV } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
@@ -48,6 +48,8 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
 
     const [loader, setLoader] = React.useState(false);
 
+    const [error, setError] = React.useState({});
+
     React.useEffect(() => {
         if (choosenSize && choosenSize.length > 0) {
             setSelectedSize(choosenSize);
@@ -76,6 +78,11 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 let sizes = [...selectedSize];
                 sizes[index] = { ...sizes[index], ...id.payload, size: sizes[index].size };
                 setSelectedSize(sizes);
+                if (error[index]) {
+                    let errorr = { ...error };
+                    delete errorr[index];
+                    setError(errorr);
+                }
             } else {
                 throw new Error(id.message);
             }
@@ -133,6 +140,22 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
             sizes.splice(index, 1);
             setSelectedSize(sizes);
         }
+    };
+
+    const checkError = () => {
+        let error = {};
+        if (selectedSize.length > 0)
+            selectedSize.forEach((item, index) => {
+                if (item.itemId.length == 0) {
+                    error[index] = 'Please create product size or either delete it';
+                }
+                if (index == selectedSize.length - 1) {
+                    if (Object.keys(error).length == 0) {
+                        setPopup(false);
+                    } else setError(error);
+                }
+            });
+        else setPopup(false);
     };
 
     const onPressDoLater = () => {
@@ -204,28 +227,33 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                         heading="Selected Size"
                         subHeading="Provide details related to each size"
                     />
-
+                    <View style={[MT(0.2)]} />
                     {selectedSize.map((item, index) => (
-                        <Size
-                            setLoader={setLoader}
-                            shopId={shopId}
-                            key={index}
-                            size={item}
-                            setSize={(a: Partial<choosenSize>) => {
-                                let sizes = [...selectedSize];
-                                sizes[index] = { ...sizes[index], ...a };
-                                setSelectedSize(sizes);
-                            }}
-                            createSize={(data: Partial<choosenSize>) => {
-                                createSize(data, index);
-                            }}
-                            removeSize={() => {
-                                deleteSize(item, index);
-                            }}
-                            updateSize={() => {
-                                return updateSize(item, index);
-                            }}
-                        />
+                        <>
+                            {typeof error[index] == 'string' && (
+                                <WrappedText text={error[index]} textColor={errorColor} />
+                            )}
+                            <Size
+                                setLoader={setLoader}
+                                shopId={shopId}
+                                key={index}
+                                size={item}
+                                setSize={(a: Partial<choosenSize>) => {
+                                    let sizes = [...selectedSize];
+                                    sizes[index] = { ...sizes[index], ...a };
+                                    setSelectedSize(sizes);
+                                }}
+                                createSize={(data: Partial<choosenSize>) => {
+                                    createSize(data, index);
+                                }}
+                                removeSize={() => {
+                                    deleteSize(item, index);
+                                }}
+                                updateSize={() => {
+                                    return updateSize(item, index);
+                                }}
+                            />
+                        </>
                     ))}
                 </ScrollView>
                 <Border />
@@ -234,7 +262,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                     buttonText={'continue'}
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
-                        setPopup(false);
+                        checkError();
                     }}
                 />
             </View>

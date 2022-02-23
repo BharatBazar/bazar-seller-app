@@ -134,7 +134,9 @@ const Size: React.FunctionComponent<SizeProps> = ({
                         buttonText={itemId.length == 0 ? 'Create' : ' Save '}
                         onPress={async () => {
                             if (itemId.length == 0) {
-                                generateId();
+                                if (productUniqueId.length > 0) {
+                                    setShowIdPopup(true);
+                                } else generateId();
                             } else {
                                 const a = await updateSize();
                                 console.log('a =>', a);
