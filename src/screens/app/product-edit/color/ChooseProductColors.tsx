@@ -25,8 +25,8 @@ import ProvideSize from '../size/ProvideSize';
 export interface ChooseProductColorsProps {
     setPopup: Function;
     isVisible: boolean;
-    colors: IClassifier[] | [];
-    avaialbleSize: IClassifier[] | [];
+    colors: IFilter[] | [];
+    avaialbleSize: IFilter[] | [];
     chosenColor: choosenColor[];
     addColorsToChoosenArray: (color: choosenColor) => void;
     removeColorFromArray: (index: number) => void;
@@ -48,6 +48,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const [loader, setLoader] = React.useState(false);
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
     const [showSizePopup, setShowSizePopup] = React.useState(false);
+    const [currentColorId, setCurrentColorId] = React.useState('');
 
     const openCamera = (color: IFilter) => {
         setShowImageSelect(false);
@@ -81,6 +82,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             addColorsToChoosenArray(
                 provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId),
             );
+            setCurrentColorId(color.payload.colorId);
             setShowSizePopup(true);
         } catch (error) {
             setLoader(false);
@@ -187,10 +189,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             </View>
             <ProvideSize
                 avaialbleSize={avaialbleSize}
-                isVisible={showSizePopup}
+                isVisible={!showSizePopup}
                 setPopup={() => {
                     setShowSizePopup(false);
                 }}
+                choosenSize={[]}
+                setChoosenSize={() => {}}
+                shopId={shopId}
+                colorId={currentColorId}
             />
             {loader && <Loader />}
         </ModalHOC>

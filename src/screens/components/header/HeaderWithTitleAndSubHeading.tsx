@@ -12,6 +12,7 @@ interface HeaderWithTitleAndSubHeadingProps {
     headerStyle?: TextStyle;
     bottomBorderStyle?: ViewStyle | ViewStyle[];
     headerContainerStyle?: ViewStyle | ViewStyle[];
+    borderNeeded?: boolean;
 }
 
 const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSubHeadingProps> = ({
@@ -20,6 +21,7 @@ const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSu
     bottomBorderStyle,
     headerStyle,
     headerContainerStyle,
+    borderNeeded = true,
 }) => {
     return (
         <View style={headerContainerStyle}>
@@ -33,7 +35,7 @@ const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSu
                     containerStyle={[MT(0.05)]}
                 />
             )}
-            <Border borderStyle={bottomBorderStyle} />
+            {borderNeeded && <Border borderStyle={bottomBorderStyle} />}
         </View>
     );
 };
