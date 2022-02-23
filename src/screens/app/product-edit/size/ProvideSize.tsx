@@ -78,9 +78,9 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 let sizes = [...selectedSize];
                 sizes[index] = { ...sizes[index], ...id.payload, size: sizes[index].size };
                 setSelectedSize(sizes);
-                if (error[index]) {
+                if (error[data.size]) {
                     let errorr = { ...error };
-                    delete errorr[index];
+                    delete errorr[data.size];
                     setError(errorr);
                 }
             } else {
@@ -147,7 +147,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
         if (selectedSize.length > 0)
             selectedSize.forEach((item, index) => {
                 if (item.itemId.length == 0) {
-                    error[index] = 'Please create product size or either delete it';
+                    error[item.size._id] = 'Please create product size or either delete it';
                 }
                 if (index == selectedSize.length - 1) {
                     if (Object.keys(error).length == 0) {
@@ -230,8 +230,8 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                     <View style={[MT(0.2)]} />
                     {selectedSize.map((item, index) => (
                         <>
-                            {typeof error[index] == 'string' && (
-                                <WrappedText text={error[index]} textColor={errorColor} />
+                            {typeof error[item.size._id] == 'string' && (
+                                <WrappedText text={error[item.size._id]} textColor={errorColor} key={item.size._id} />
                             )}
                             <Size
                                 setLoader={setLoader}

@@ -78,29 +78,31 @@ const Size: React.FunctionComponent<SizeProps> = ({
 
     return (
         <View style={[BR(0.05), JCC(), PV(0.1)]}>
-            {itemId.length != 0 ? (
+            {/* {itemId.length != 0 ? (
                 <View style={[AIC('flex-start'), JCC(), MT(0.1), { marginBottom: getHP(0.2) }]}>
+                  
+                </View>
+            ) : (
+                <View />
+            )} */}
+
+            <View style={[FDR(), AIC(), JCC('space-between')]}>
+                <View style={[FDR(), AIC()]}>
                     <WrappedText
-                        text={'Size Unique Id - ' + itemId}
+                        text={itemId.length == 0 ? 'Yet to create' : 'Unique Id - ' + itemId}
                         containerStyle={[
                             PH(0.4),
                             PV(0.1),
-                            BGCOLOR(colorCode.CHAKRALOW(20)),
+                            BGCOLOR(itemId.length == 0 ? colorCode.SAFFRONLOW(20) : colorCode.CHAKRALOW(20)),
                             BR(0.05),
                             { opacity: 0.5 },
                         ]}
                         fontFamily={FontFamily.Bold}
                         fontWeight={'600'}
-                        textColor={colorCode.CHAKRALOW(100)}
+                        textColor={itemId.length == 0 ? colorCode.SAFFRONLOW(100) : colorCode.CHAKRALOW(100)}
                         fontSize={fs10}
                     />
-                </View>
-            ) : (
-                <View />
-            )}
 
-            <View style={[FDR(), AIC(), JCC('space-between')]}>
-                <View style={[FDR(), AIC()]}>
                     <WrappedText
                         text={name}
                         textColor={'#fff'}
@@ -115,40 +117,45 @@ const Size: React.FunctionComponent<SizeProps> = ({
                 />
 
                 <View style={[FDR(), JCC('flex-end')]}>
-                    <TextRippleButton
-                        buttonText={'Delete'}
-                        onPress={() => {
-                            removeSize();
-                        }}
-                        buttonTextColor={colorCode.CHAKRALOW(100)}
-                        fontSize={fs12}
-                        containerStyle={[
-                            PH(0.4),
-                            PV(0.03),
-                            BGCOLOR(colorCode.CHAKRALOW(20)),
-                            BR(0.05),
-                            { opacity: 0.5 },
-                        ]}
-                    />
-                    <TextRippleButton
-                        buttonText={itemId.length == 0 ? 'Create' : ' Save '}
-                        onPress={async () => {
-                            if (itemId.length == 0) {
-                                if (productUniqueId.length > 0) {
-                                    setShowIdPopup(true);
-                                } else generateId();
-                            } else {
-                                const a = await updateSize();
-                                console.log('a =>', a);
-                                if (a) {
-                                    previousValue.current = { quantity, itemId };
+                    {itemId.length !== 0 && previousValue.current?.quantity === quantity && (
+                        <TextRippleButton
+                            buttonText={'Delete'}
+                            onPress={() => {
+                                removeSize();
+                            }}
+                            buttonTextColor={colorCode.CHAKRALOW(100)}
+                            fontSize={fs12}
+                            containerStyle={[
+                                PH(0.4),
+                                PV(0.03),
+                                BGCOLOR(colorCode.CHAKRALOW(20)),
+                                BR(0.05),
+                                { opacity: 0.5 },
+                            ]}
+                        />
+                    )}
+                    {(previousValue.current?.quantity !== quantity || itemId.length == 0) && (
+                        <TextRippleButton
+                            buttonText={itemId.length == 0 ? 'Create' : ' Save '}
+                            onPress={async () => {
+                                if (itemId.length == 0) {
+                                    if (productUniqueId.length > 0) {
+                                        setShowIdPopup(true);
+                                    } else generateId();
+                                } else {
+                                    const a = await updateSize();
+                                    console.log('a =>', a);
+                                    if (a) {
+                                        previousValue.current = { quantity, itemId };
+                                        setProductuniqueId('');
+                                    }
                                 }
-                            }
-                        }}
-                        buttonTextColor={'#fff'}
-                        fontSize={fs12}
-                        containerStyle={[PH(0.4), PV(0.03), BGCOLOR(mainColor), BR(0.05), ML(0.1)]}
-                    />
+                            }}
+                            buttonTextColor={'#fff'}
+                            fontSize={fs12}
+                            containerStyle={[PH(0.4), PV(0.03), BGCOLOR(mainColor), BR(0.05), ML(0.1)]}
+                        />
+                    )}
                 </View>
             </View>
             <Border borderStyle={{ borderTopWidth: 1 }} />
