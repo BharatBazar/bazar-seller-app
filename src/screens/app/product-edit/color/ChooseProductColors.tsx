@@ -67,6 +67,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             });
     };
 
+    console.log('product DI', productId);
     const createColorInServer = async (colorChoosen: IFilter) => {
         try {
             setLoader(true);
@@ -175,7 +176,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                         })}
                     </View>
                 </ScrollView>
-                <Border marginTop={3} />
+                <Border marginTop={10} />
                 <RightComponentButtonWithLeftText
                     buttonText={'close'}
                     containerStyle={[MV(0.2)]}

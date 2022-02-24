@@ -50,7 +50,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [distribution, setDistribution] = React.useState<IFilter[]>([]);
     const [choosenColor, setChoosenColor] = React.useState<choosenColor[]>([]);
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
-    const [productId, setProductId] = React.useState('');
+    const [productId, setProductId] = React.useState(_id || '');
 
     const createProductInServer = async (data: Partial<IProduct>) => {
         try {
