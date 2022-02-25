@@ -1,5 +1,5 @@
-import { DEFAULT_IMAGE_URL, FontFamily, fs10, fs13, fs14, fs15, fs16 } from '@app/common';
-import { borderColor, mainColor } from '@app/common/color';
+import { DEFAULT_IMAGE_URL, FontFamily, fs10, fs12, fs13, fs14, fs15, fs16 } from '@app/common';
+import { borderColor, mainColor, subHeadingColor } from '@app/common/color';
 import { getHP, getWP } from '@app/common/dimension';
 import {
     AIC,
@@ -41,9 +41,18 @@ interface EditSelectedColorProps {
 const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ item, sizes }) => {
     console.log('sizes =>', sizes);
     return (
-        <View style={[{ marginTop: DSP }, BC(borderColor), BW(2), BR(0.1), BGCOLOR('#FFF')]}>
-            <View style={[FDR(), JCC('space-between'), AIC(), PH(0.5), PV(0.1)]}>
-                <View />
+        <View style={[{ marginTop: DSP }, provideShadow(2), BR(0.2), BGCOLOR('#FFF')]}>
+            <View style={[FDR(), JCC('space-between'), AIC(), { marginHorizontal: DSP * 1.5, marginTop: DSP * 0.8 }]}>
+                <View style={[FDR(), AIC()]}>
+                    <View style={[BGCOLOR(item.color.description), { height: 20, width: 20, borderRadius: 100 }]} />
+                    <WrappedText
+                        text={'product ' + item.color.name + ' color details'}
+                        textColor={item.color.description}
+                        fontSize={fs15}
+                        fontFamily={FontFamily.Medium}
+                        containerStyle={[ML(0.2), { marginTop: 0 }]}
+                    />
+                </View>
                 <WrappedFeatherIcon
                     iconName="trash-2"
                     iconSize={20}
@@ -74,7 +83,8 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
                     <WrappedText text={'1/7'} textColor={'#FFF'} fontSize={fs10} fontFamily={FontFamily.Bold} />
                 </View>
             </View> */}
-            <Border />
+            <Border marginTop={10} borderStyle={[{ marginHorizontal: DSP * 1.5 }]} />
+            <View style={{ marginTop: 10 }} />
             <ImageCarousel
                 screens={[DEFAULT_IMAGE_URL, DEFAULT_IMAGE_URL, DEFAULT_IMAGE_URL]}
                 itemWidth={getWP(4)}
@@ -86,10 +96,10 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
                     >
                         <WrappedFeatherIcon
                             iconName="trash-2"
-                            iconSize={15}
+                            iconSize={13}
                             iconColor={'#FFF'}
-                            containerHeight={25}
-                            containerStyle={[BGCOLOR('#00000099'), { position: 'absolute', right: 5, top: 5 }]}
+                            containerHeight={22}
+                            containerStyle={[BGCOLOR('#00000099'), { position: 'absolute', right: 7, top: 7 }]}
                             onPress={() => {}}
                         />
                     </ImageBackground>
@@ -97,16 +107,21 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
             />
 
             <View
-                style={[{ paddingHorizontal: DSP * 0.7, margin: 10, padding: 10 }, BGCOLOR('#FFFFFF'), border, BR(0.1)]}
+                style={[
+                    { paddingHorizontal: DSP * 0.7, margin: DSP * 1.5, padding: 10 },
+                    BGCOLOR('#FFFFFF'),
+                    border,
+                    BR(0.1),
+                ]}
             >
-                <View style={[, FDR(), JCC('space-between')]}>
+                <View style={[, FDR(), JCC('space-between'), AIC(sizes.length == 0 ? 'center' : 'flex-start')]}>
                     <View style={[FLEX(1)]}>
-                        <WrappedText text={'Selected sizes in' + ' '} fontSize={fs15} />
                         <WrappedText
-                            text={item.color.name + ' color of product.'}
-                            textColor={item.color.description}
-                            fontSize={fs15}
+                            text={sizes.length == 0 ? 'No Selected Sizes' : 'Selected sizes' + ' '}
+                            fontSize={sizes.length == 0 ? fs12 : fs14}
                             fontFamily={FontFamily.Medium}
+                            containerStyle={{ marginTop: 0 }}
+                            textColor={sizes.length == 0 ? '#00000066' : '#00000066'}
                         />
                     </View>
                     <WrappedFeatherIcon
@@ -117,35 +132,36 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
                         containerStyle={[BGCOLOR('#FFF'), provideShadow(2)]}
                     />
                 </View>
-                <View style={{ flexWrap: 'wrap', flexDirection: 'row', marginTop: DSP * 0.4 }}>
-                    {sizes &&
-                        sizes.map((item) => (
-                            <View
-                                style={[
-                                    BGCOLOR('#FFFFFf'),
-                                    provideShadow(1),
-                                    { marginLeft: 3, padding: 5, borderRadius: 5 },
-                                    AIC(),
-                                ]}
-                            >
-                                <WrappedText
-                                    text={item.size.name}
-                                    textColor={mainColor}
-                                    fontFamily={FontFamily.Medium}
-                                />
+                {sizes && sizes.length > 0 && (
+                    <View style={{ flexWrap: 'wrap', flexDirection: 'row', marginTop: DSP * 0.4 }}>
+                        {sizes &&
+                            sizes.map((item) => (
+                                <View
+                                    style={[
+                                        BGCOLOR('#FFFFFf'),
+                                        provideShadow(1),
+                                        { marginLeft: 5, padding: 5, borderRadius: 5 },
+                                        AIC(),
+                                    ]}
+                                >
+                                    <WrappedText
+                                        text={item.size.name}
+                                        textColor={mainColor}
+                                        fontFamily={FontFamily.Medium}
+                                    />
 
-                                <WrappedText
-                                    text={item.quantity + ' piece'}
-                                    textColor={mainColor}
-                                    fontFamily={FontFamily.Medium}
-                                />
-                            </View>
-                        ))}
-                </View>
+                                    <WrappedText
+                                        text={item.quantity + ' piece'}
+                                        textColor={mainColor}
+                                        fontFamily={FontFamily.Medium}
+                                    />
+                                </View>
+                            ))}
+                    </View>
+                )}
 
                 {/* <PhotoUpload photoError={''} setPhotoError={() => {}} /> */}
             </View>
-            <Border />
         </View>
     );
 };
