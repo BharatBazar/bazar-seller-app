@@ -30,7 +30,7 @@ interface ProvideSizeProps {
     setPopup: Function;
     avaialbleSize: IFilter[] | [];
     choosenSize: choosenSize[];
-    setChoosenSize: (a: choosenSize) => void;
+    setChoosenSize: (a: choosenSize[]) => void;
     colorId: string;
     shopId: string;
 }
@@ -152,10 +152,16 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 if (index == selectedSize.length - 1) {
                     if (Object.keys(error).length == 0) {
                         setPopup(false);
+                        setChoosenSize(selectedSize);
+                        setSelectedSize([]);
                     } else setError(error);
                 }
             });
-        else setPopup(false);
+        else {
+            setPopup(false);
+            setChoosenSize(selectedSize);
+            setSelectedSize([]);
+        }
     };
 
     const onPressDoLater = () => {
@@ -167,10 +173,14 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 subHeading: 'Are you sure you dont want to save created sizes and go back?',
                 onPressRightButton: () => {
                     setPopup(false);
+                    setChoosenSize(selectedSize.filter((item) => item.itemId.length > 0));
+                    setSelectedSize([]);
                 },
             });
         } else {
+            setChoosenSize(selectedSize);
             setPopup(false);
+            setSelectedSize([]);
         }
     };
 

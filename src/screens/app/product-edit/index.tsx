@@ -12,7 +12,7 @@ import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/hea
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
 import { APIgetProduct } from '@app/server/apis/product/product.api';
-import { IFilter, IProduct, IRProduct } from '@app/server/apis/product/product.interface';
+import { IClassifier, IFilter, IProduct, IRProduct } from '@app/server/apis/product/product.interface';
 import { IShop } from '@app/server/apis/shop/shop.interface';
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
@@ -47,8 +47,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [loader, setLoader] = React.useState<boolean>(false);
 
     const [filter, setFilter] = React.useState<IFilter[]>([]);
-    const [distribution, setDistribution] = React.useState<IFilter[]>([]);
+    const [distribution, setDistribution] = React.useState<IClassifier[]>([]);
     const [choosenColor, setChoosenColor] = React.useState<choosenColor[]>([]);
+
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
     const [productId, setProductId] = React.useState(_id || '');
 
@@ -165,6 +166,11 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     removeColorFromArray={(index: number) => {
                         const data = [...choosenColor];
                         data.splice(index, 1);
+                        setChoosenColor(data);
+                    }}
+                    updateColorInArray={(color: Partial<choosenColor>, index: number) => {
+                        const data = [...choosenColor];
+                        data[index] = { ...data[index], ...color };
                         setChoosenColor(data);
                     }}
                     chosenColor={choosenColor}

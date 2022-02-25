@@ -7,7 +7,7 @@ import ModalHOC from '../../../hoc/ModalHOC';
 
 import ModalHeader from '../../../component/ModalHeader';
 import { IClassifier, IFilter } from '../../../../server/apis/product/product.interface';
-import { choosenColor, ProductIdContext, provideDefaultColorState } from '../data-types';
+import { choosenColor, choosenSize, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, MT, MV, PH, PL, PR, PV } from '@app/common/styles';
 import Border from '@app/screens/components/border/Border';
@@ -31,6 +31,7 @@ export interface ChooseProductColorsProps {
     addColorsToChoosenArray: (color: choosenColor) => void;
     removeColorFromArray: (index: number) => void;
     shopId: string;
+    updateColorInArray: (color: Partial<choosenColor>, index: number) => void;
 }
 
 const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
@@ -42,13 +43,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     removeColorFromArray,
     avaialbleSize,
     shopId,
+    updateColorInArray,
 }) => {
     //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
     const [loader, setLoader] = React.useState(false);
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
     const [showSizePopup, setShowSizePopup] = React.useState(false);
-    const [currentColorId, setCurrentColorId] = React.useState('');
+    const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
 
     const openCamera = (color: IFilter) => {
         setShowImageSelect(false);
@@ -68,7 +70,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     };
 
     console.log('product DI', productId);
-    const createColorInServer = async (colorChoosen: IFilter) => {
+    const createColorInServer = async (colorChoosen: IFilter, index: number) => {
         try {
             setLoader(true);
             const color = await createProductColor({
@@ -84,7 +86,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             addColorsToChoosenArray(
                 provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId),
             );
-            setCurrentColorId(color.payload.colorId);
+            setCurrentColorIndex(chosenColor.length);
             setShowSizePopup(true);
         } catch (error) {
             setLoader(false);
@@ -104,11 +106,11 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         }
     };
 
-    const onPressColor = (selected: boolean, indexInSelectedColor: number, item: IFilter) => {
+    const onPressColor = (selected: boolean, indexInSelectedColor: number, item: IFilter, index: number) => {
         if (selected) {
             deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor);
         } else {
-            createColorInServer(item);
+            createColorInServer(item, index);
         }
     };
 
@@ -142,7 +144,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
                                         onPress={() => {
-                                            onPressColor(selected, indexInSelectedColor, item);
+                                            onPressColor(selected, indexInSelectedColor, item, index);
                                         }}
                                     >
                                         <View
@@ -190,11 +192,15 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 isVisible={showSizePopup}
                 setPopup={() => {
                     setShowSizePopup(false);
+                    setCurrentColorIndex(-1);
                 }}
-                choosenSize={[]}
-                setChoosenSize={() => {}}
+                choosenSize={currentColorIndex > -1 ? chosenColor[currentColorIndex].sizes : []}
+                setChoosenSize={(sizes: choosenSize[]) => {
+                    console.log('sized =>', sizes, currentColorIndex);
+                    updateColorInArray({ sizes }, currentColorIndex);
+                }}
                 shopId={shopId}
-                colorId={currentColorId}
+                colorId={currentColorIndex > -1 ? chosenColor[currentColorIndex]._id : ''}
             />
             {loader && <Loader />}
         </ModalHOC>
