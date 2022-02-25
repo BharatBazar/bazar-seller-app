@@ -20,7 +20,7 @@ import { showMessage } from 'react-native-flash-message';
 import { createProduct } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
-import { choosenColor, ProductIdContext } from './data-types';
+import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import ProvideSize from './size/ProvideSize';
 
 interface EditProductProps extends NavigationProps {
@@ -52,6 +52,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
     const [productId, setProductId] = React.useState(_id || '');
+    const [showSizePopup, setShowSizePopup] = React.useState(false);
+    const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
 
     const createProductInServer = async (data: Partial<IProduct>) => {
         try {
@@ -130,7 +132,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     containerStyle={[{ padding: DSP }]}
                     title={update ? 'Update Product' : 'Create Product'}
                 />
-                <ScrollView contentContainerStyle={[PH(0.5)]}>
+                <ScrollView contentContainerStyle={[PH(0.2)]}>
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle
                             title={distribution[0].name}
@@ -177,7 +179,24 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     colors={distribution.length > 0 ? distribution[0].values : []}
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                 />
-
+                <ProvideSize
+                    avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
+                    isVisible={showSizePopup}
+                    setPopup={() => {
+                        setShowSizePopup(false);
+                        setCurrentColorIndex(-1);
+                    }}
+                    choosenSize={currentColorIndex > -1 ? choosenColor[currentColorIndex].sizes : []}
+                    setChoosenSize={(sizes: choosenSize[]) => {
+                        // console.log('sized =>', sizes, currentColorIndex);
+                        // updateColorInArray({ sizes }, currentColorIndex);
+                        const data = [...choosenColor];
+                        data[currentColorIndex] = { ...data[currentColorIndex], sizes };
+                        setChoosenColor(data);
+                    }}
+                    shopId={shopId._id}
+                    colorId={currentColorIndex > -1 ? choosenColor[currentColorIndex]._id : ''}
+                />
                 {loader && <Loader />}
             </View>
         </ProductIdContext.Provider>
