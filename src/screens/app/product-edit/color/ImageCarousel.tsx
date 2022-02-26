@@ -4,7 +4,7 @@ import { BGCOLOR, MT, PH, PV } from '@app/common/styles';
 import WrappedText from '@app/screens/component/WrappedText';
 import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFeatherIconWithRightText';
 import * as React from 'react';
-import { View, FlatList, ListRenderItem, Animated, ScrollView } from 'react-native';
+import { View, FlatList, Animated, ScrollView, StyleSheet } from 'react-native';
 
 interface ImageCarouselProps {
     screens: string[];
@@ -14,19 +14,8 @@ interface ImageCarouselProps {
 
 const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, renderImage, itemWidth }) => {
     const scrollX = new Animated.Value(0);
-    const position = Animated.divide(scrollX, itemWidth);
-    var scrollValue = React.useRef(0);
-    var scrolled = React.useRef(0);
+
     const [currentIndex, setCurrentIndex] = React.useState(1);
-
-    const setSlideTimer = (x) => {
-        scrollValue.current = x + itemWidth;
-        scrolled.current = parseInt(x) / itemWidth;
-
-        if (scrolled.current == screens.length) {
-        } else {
-        }
-    };
 
     const onChange = ({ nativeEvent }) => {
         const active = Math.floor(nativeEvent.contentOffset.x / itemWidth) + 1;
@@ -34,7 +23,12 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, r
         if (active !== currentIndex) setCurrentIndex(active);
     };
 
-    const currentIndexx = position.interpolate({ inputRange: [0, screens.length], outputRange: [0, screens.length] });
+    const buttonProps = {
+        iconColor: '#FFFFFF',
+        containerStyle: [BGCOLOR(mainColor), styles.buttonStyle],
+        iconSize: fs14,
+        textStyle: { marginLeft: 5 },
+    };
 
     return (
         <View style={[MT(0.1)]}>
@@ -47,27 +41,9 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, r
                 onScroll={onChange}
                 contentContainerStyle={[PH(0.5)]}
             />
-            <View
-                style={{
-                    flexDirection: 'row',
-                    marginTop: 15,
-                    marginHorizontal: '5%',
-                    justifyContent: 'space-around',
-                    flex: 1,
-                }}
-            >
+            <View style={styles.bottomBarStyle}>
                 <ScrollView horizontal={true}>
-                    <View
-                        style={[
-                            BGCOLOR('#00000066'),
-                            {
-                                borderRadius: 30,
-                                paddingHorizontal: 10,
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                            },
-                        ]}
-                    >
+                    <View style={[BGCOLOR('#00000066'), styles.carouseIndexContainerStyle]}>
                         <WrappedText
                             text={currentIndex + '/' + screens.length}
                             textColor={'#FFF'}
@@ -77,38 +53,16 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, r
                     </View>
 
                     <ButtonFeatherIconRightText
-                        iconColor="#FFFFFF"
-                        containerStyle={[
-                            BGCOLOR(mainColor),
-                            {
-                                borderRadius: 30,
-                                paddingHorizontal: 15,
-                                paddingVertical: 5,
-                                marginLeft: 10,
-                            },
-                        ]}
-                        iconSize={fs14}
                         iconName="plus"
-                        textStyle={[{ marginLeft: 5 }]}
-                        onPress={() => {}}
                         buttonText={'Add More Images'}
+                        onPress={() => {}}
+                        {...buttonProps}
                     />
                     <ButtonFeatherIconRightText
-                        iconColor="#FFFFFF"
-                        containerStyle={[
-                            BGCOLOR(mainColor),
-                            {
-                                borderRadius: 30,
-                                paddingHorizontal: 15,
-                                paddingVertical: 5,
-                                marginLeft: 10,
-                            },
-                        ]}
-                        iconSize={fs14}
                         iconName="edit"
-                        textStyle={[{ marginLeft: 5 }]}
-                        onPress={() => {}}
                         buttonText={'Reorder Images'}
+                        onPress={() => {}}
+                        {...buttonProps}
                     />
                 </ScrollView>
             </View>
@@ -117,3 +71,25 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, r
 };
 
 export default ImageCarousel;
+
+const styles = StyleSheet.create({
+    buttonStyle: {
+        borderRadius: 30,
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        marginLeft: 10,
+    },
+    carouseIndexContainerStyle: {
+        borderRadius: 30,
+        paddingHorizontal: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    bottomBarStyle: {
+        flexDirection: 'row',
+        marginTop: 15,
+        marginHorizontal: '5%',
+        justifyContent: 'space-around',
+        flex: 1,
+    },
+});

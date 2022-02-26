@@ -188,8 +188,6 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     choosenSize={currentColorIndex > -1 ? choosenColor[currentColorIndex].sizes : []}
                     setChoosenSize={(sizes: choosenSize[]) => {
-                        // console.log('sized =>', sizes, currentColorIndex);
-                        // updateColorInArray({ sizes }, currentColorIndex);
                         const data = [...choosenColor];
                         data[currentColorIndex] = { ...data[currentColorIndex], sizes };
                         setChoosenColor(data);
