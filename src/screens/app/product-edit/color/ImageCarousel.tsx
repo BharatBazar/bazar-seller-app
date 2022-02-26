@@ -8,7 +8,7 @@ import { View, FlatList, ListRenderItem, Animated, ScrollView } from 'react-nati
 
 interface ImageCarouselProps {
     screens: string[];
-    renderImage: (item: any) => ListRenderItem<string> | null | undefined;
+    renderImage: (item: any) => any;
     itemWidth: number;
 }
 

@@ -36,10 +36,11 @@ const ButtonFeatherIconRightText: React.FC<ButtonFeatherIconRightTextProps> = ({
 }) => {
     return (
         <Ripple
-            style={[containerStyle, AIC(), FDR(), JCC()]}
+            style={[containerStyle, AIC(), FDR(), JCC(), { overflow: 'hidden' }]}
             onPress={() => {
                 onPress();
             }}
+            //rippleContainerBorderRadius={containerStyle ? containerStyle['borderRadius'] || 20 : 20}
         >
             <Icon name={iconName} color={iconColor || mainColor} size={iconSize || fs16} />
             <WrappedText

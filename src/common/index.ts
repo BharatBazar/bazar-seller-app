@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getHP, getWP } from './dimension';
 //const ratio = getHP(1) / getWP(1);
 
-const scale = getWP(10) / 375;
+const scale = getWP(10) / (Platform.OS == 'ios' ? 400 : 375);
 
 export function provideFontSize(fontSize: number) {
     const newSize = fontSize * scale;
