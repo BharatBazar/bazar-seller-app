@@ -49,9 +49,9 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
             <Border marginTop={10} borderStyle={[{ marginHorizontal: DSP * 1.5 }]} />
             <View style={{ marginTop: 10 }} />
             <ImageCarousel
-                screens={[DEFAULT_IMAGE_URL, DEFAULT_IMAGE_URL, DEFAULT_IMAGE_URL]}
+                screens={item.photos}
                 itemWidth={getWP(4)}
-                renderImage={() => (
+                renderImage={(item) => (
                     <View>
                         <ImageBackground
                             source={{ uri: DEFAULT_IMAGE_URL }}

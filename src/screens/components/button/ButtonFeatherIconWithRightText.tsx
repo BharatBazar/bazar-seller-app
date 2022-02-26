@@ -1,7 +1,7 @@
 import { FontFamily, fs10, fs12, fs14, fs16, fs20 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { AIC, FDR, JCC } from '@app/common/styles';
+import { AIC, BGCOLOR, BR, FDR, JCC, PV } from '@app/common/styles';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import WrappedText from '@app/screens/component/WrappedText';
 import * as React from 'react';
@@ -36,7 +36,16 @@ const ButtonFeatherIconRightText: React.FC<ButtonFeatherIconRightTextProps> = ({
 }) => {
     return (
         <Ripple
-            style={[containerStyle, AIC(), FDR(), JCC(), { overflow: 'hidden' }]}
+            style={[
+                BGCOLOR(mainColor),
+                PV(0.15),
+                BR(0.07),
+                containerStyle,
+                AIC(),
+                FDR(),
+                JCC(),
+                { overflow: 'hidden' },
+            ]}
             onPress={() => {
                 onPress();
             }}

@@ -14,13 +14,15 @@ import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import Ripple from 'react-native-material-ripple';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import { FontFamily, fs14, fs16 } from '@app/common';
+import { DEFAULT_IMAGE_URL, FontFamily, fs14, fs16 } from '@app/common';
 import ImageCropPicker from 'react-native-image-crop-picker';
-import { createProductColor, deleteProductColor } from '../../edit/product/component/generalConfig';
+import { createProductColor, deleteProductColor, updateProductColor } from '../../edit/product/component/generalConfig';
 import { color } from 'react-native-reanimated';
 import { showMessage } from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
 import ProvideSize from '../size/ProvideSize';
+import AddPhoto from '@app/screens/components/multimedia/AddPhoto';
+import AddPhotoPopup from '../photo';
 
 export interface ChooseProductColorsProps {
     setPopup: Function;
@@ -51,23 +53,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
-
-    const openCamera = (color: IFilter) => {
-        setShowImageSelect(false);
-        ImageCropPicker.openCamera({
-            width: 300,
-            height: 400,
-            cropping: true,
-            multiple: false,
-        })
-            .then((image) => {
-                console.log('image => ', image);
-                setShowImageSelect(false);
-            })
-            .catch((error) => {
-                setShowImageSelect(false);
-            });
-    };
+    const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);
 
     console.log('product DI', productId);
     const createColorInServer = async (colorChoosen: IFilter, index: number) => {
@@ -77,6 +63,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 color: colorChoosen._id,
                 parentId: productId ? productId : undefined,
                 shopId: shopId,
+                photos: [DEFAULT_IMAGE_URL],
             });
             setLoader(false);
             if (!productId) {
@@ -84,7 +71,9 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             }
             showMessage({ type: 'success', message: 'Product size created' });
             addColorsToChoosenArray(
-                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId),
+                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, [
+                    DEFAULT_IMAGE_URL,
+                ]),
             );
             setCurrentColorIndex(chosenColor.length);
             setShowSizePopup(true);
@@ -103,6 +92,24 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         } catch (error) {
             showMessage({ type: 'danger', message: error.message });
             setLoader(false);
+        }
+    };
+
+    const updateColorInServer = async (colorChoosen: Partial<choosenColor>) => {
+        try {
+            setLoader(true);
+            const color = await updateProductColor({
+                _id: colorChoosen._id,
+                ...colorChoosen,
+            });
+            setLoader(false);
+
+            showMessage({ type: 'success', message: 'Product size created' });
+            updateColorInArray({ photos: colorChoosen.photos }, currentColorIndex);
+            setCurrentColorIndex(-1);
+        } catch (error) {
+            setLoader(false);
+            showMessage({ type: 'danger', message: error.message });
         }
     };
 
@@ -190,9 +197,16 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             <ProvideSize
                 avaialbleSize={avaialbleSize}
                 isVisible={showSizePopup}
-                setPopup={() => {
+                setPopup={(a: boolean, triggerNextPopup: boolean) => {
                     setShowSizePopup(false);
-                    setCurrentColorIndex(-1);
+                    //console.log('trigger nect popup', triggerNextPopup);
+                    if (triggerNextPopup) {
+                        setTimeout(() => {
+                            setShowPhotoPopup(true);
+                        }, 500);
+                    } else {
+                        setCurrentColorIndex(-1);
+                    }
                 }}
                 choosenSize={currentColorIndex > -1 ? chosenColor[currentColorIndex].sizes : []}
                 setChoosenSize={(sizes: choosenSize[]) => {
@@ -201,6 +215,23 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 }}
                 shopId={shopId}
                 colorId={currentColorIndex > -1 ? chosenColor[currentColorIndex]._id : ''}
+            />
+            <AddPhotoPopup
+                existingPhotos={currentColorIndex > -1 ? chosenColor[currentColorIndex].photos : []}
+                isVisible={showPhotoPopup}
+                setPopup={() => {
+                    setShowPhotoPopup(false);
+                    setCurrentColorIndex(-1);
+                }}
+                updatePhotoArray={async (photos: [string]) => {
+                    setShowPhotoPopup(false);
+                    console.log('photos', chosenColor[currentColorIndex]._id, photos);
+                    updateColorInServer({ photos, _id: chosenColor[currentColorIndex]._id });
+                }}
+                onPressDoLater={async (photos: [string]) => {
+                    setShowPhotoPopup(false);
+                    updateColorInServer({ photos, _id: chosenColor[currentColorIndex]._id });
+                }}
             />
             {loader && <Loader />}
         </ModalHOC>

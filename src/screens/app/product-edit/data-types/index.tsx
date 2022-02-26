@@ -1,3 +1,4 @@
+import { DEFAULT_IMAGE_URL } from '@app/common';
 import { IFilter } from '@app/server/apis/product/product.interface';
 import React from 'react';
 
@@ -25,21 +26,28 @@ export interface choosenColor {
     //not in color array so basically its id will be compared
     color: IFilter;
     colors: IFilter[];
-    photos: string[];
+
     parentId: string;
     sizes: choosenSize[];
     identificationPhoto: string;
+    photos: string[];
 }
 
-export const provideDefaultColorState = (_id: string, color: IFilter, parentId: string): choosenColor => {
+export const provideDefaultColorState = (
+    _id: string,
+    color: IFilter,
+    parentId: string,
+    photos = [DEFAULT_IMAGE_URL],
+): choosenColor => {
     return {
         color,
         sizes: [],
-        photos: [],
+
         identificationPhoto: '',
         colors: [],
         _id,
         parentId: parentId,
+        photos: photos,
     };
 };
 

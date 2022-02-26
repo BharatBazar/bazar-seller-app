@@ -149,14 +149,14 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 }
                 if (index == selectedSize.length - 1) {
                     if (Object.keys(error).length == 0) {
-                        setPopup(false);
+                        setPopup(false, true);
                         setChoosenSize(selectedSize);
                         setSelectedSize([]);
                     } else setError(error);
                 }
             });
         else {
-            setPopup(false);
+            setPopup(false, true);
             setChoosenSize(selectedSize);
             setSelectedSize([]);
         }
@@ -184,7 +184,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
 
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
-            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP }}>
+            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP }}>
                 <TextRippleButton
                     onPress={() => {
                         onPressDoLater();
