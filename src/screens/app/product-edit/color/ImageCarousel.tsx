@@ -10,9 +10,15 @@ interface ImageCarouselProps {
     screens: string[];
     renderImage: (item: any) => any;
     itemWidth: number;
+    onPressDragSort: Function;
 }
 
-const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, renderImage, itemWidth }) => {
+const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
+    screens,
+    renderImage,
+    itemWidth,
+    onPressDragSort,
+}) => {
     const scrollX = new Animated.Value(0);
 
     const [currentIndex, setCurrentIndex] = React.useState(1);
@@ -61,7 +67,9 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({ screens, r
                     <ButtonFeatherIconRightText
                         iconName="edit"
                         buttonText={'Reorder Images'}
-                        onPress={() => {}}
+                        onPress={() => {
+                            onPressDragSort();
+                        }}
                         {...buttonProps}
                     />
                 </ScrollView>

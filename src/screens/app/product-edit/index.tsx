@@ -18,10 +18,12 @@ import { IShop } from '@app/server/apis/shop/shop.interface';
 import * as React from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { createProduct, deleteProductColor } from '../edit/product/component/generalConfig';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
+import { createProduct, deleteProductColor, updateProductColor } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
+import DragSort from './photo/DragSort';
 import ProvideSize from './size/ProvideSize';
 
 interface EditProductProps extends NavigationProps {
@@ -55,6 +57,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [productId, setProductId] = React.useState(_id || '');
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
+    const [currentDragStortIndex, setCurrentDragSortIndex] = React.useState(-1);
 
     const setAlertState = React.useContext(AlertContext);
 
@@ -137,6 +140,21 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     };
 
+    const updateColorInServer = async (index: number, item: Partial<choosenColor>) => {
+        try {
+            setLoader(true);
+            const color = await updateProductColor({ ...item });
+            let data = [...choosenColor];
+            data[index] = { ...data[index], ...item };
+            setChoosenColor(data);
+            setLoader(false);
+        } catch (error) {
+            showMessage({ type: 'danger', message: error.message });
+            setLoader(false);
+            setCurrentDragSortIndex(-1);
+        }
+    };
+
     const deleteColorFromServer = async (_id: string, index: number) => {
         setAlertState({
             isVisible: true,
@@ -148,6 +166,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         });
     };
 
+    console.log('drag sort', currentDragStortIndex);
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
             <View style={styles.container}>
@@ -184,6 +203,10 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     {choosenColor.map((item: choosenColor, index: number) => (
                         <EditSelectedColor
                             item={item}
+                            onPressDragSort={() => {
+                                console.log('index', index);
+                                setCurrentDragSortIndex(index);
+                            }}
                             key={index}
                             sizes={item.sizes}
                             onPressDeleteColor={() => {
@@ -232,6 +255,29 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 />
                 {loader && <Loader />}
             </View>
+            {currentDragStortIndex > -1 && (
+                <DragSort
+                    data={
+                        currentDragStortIndex > -1
+                            ? choosenColor[currentDragStortIndex].photos.map((item) => {
+                                  return { path: item };
+                              })
+                            : []
+                    }
+                    isVisible={currentDragStortIndex > -1}
+                    setPopup={() => {
+                        console.log('ser');
+                        setCurrentDragSortIndex(-1);
+                    }}
+                    setPhotosArrayAfterReordering={(photos: ImageOrVideo[]) => {
+                        updateColorInServer(currentDragStortIndex, {
+                            photos: photos.map((item) => item.path),
+                            _id: choosenColor[currentDragStortIndex]._id,
+                        });
+                        setCurrentDragSortIndex(-1);
+                    }}
+                />
+            )}
         </ProductIdContext.Provider>
     );
 };

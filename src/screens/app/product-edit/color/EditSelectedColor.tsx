@@ -16,9 +16,15 @@ interface EditSelectedColorProps {
     item: choosenColor;
     sizes: choosenSize[];
     onPressDeleteColor: Function;
+    onPressDragSort: Function;
 }
 
-const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ item, sizes, onPressDeleteColor }) => {
+const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
+    item,
+    sizes,
+    onPressDeleteColor,
+    onPressDragSort,
+}) => {
     console.log('sizes =>', sizes);
 
     const imageBackgroundStyle = [BR(0.1), HP(2), WP(6), MR(0.4)];
@@ -49,6 +55,9 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
             <Border marginTop={10} borderStyle={[{ marginHorizontal: DSP * 1.5 }]} />
             <View style={{ marginTop: 10 }} />
             <ImageCarousel
+                onPressDragSort={() => {
+                    onPressDragSort();
+                }}
                 screens={item.photos}
                 itemWidth={getWP(4)}
                 renderImage={(item) => (
