@@ -15,9 +15,10 @@ import ImageCarousel from './ImageCarousel';
 interface EditSelectedColorProps {
     item: choosenColor;
     sizes: choosenSize[];
+    onPressDeleteColor: Function;
 }
 
-const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ item, sizes }) => {
+const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ item, sizes, onPressDeleteColor }) => {
     console.log('sizes =>', sizes);
 
     const imageBackgroundStyle = [BR(0.1), HP(2), WP(6), MR(0.4)];
@@ -39,7 +40,9 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({ it
                     iconSize={20}
                     containerHeight={30}
                     containerStyle={[BGCOLOR('#FFF'), provideShadow(2)]}
-                    onPress={() => {}}
+                    onPress={() => {
+                        onPressDeleteColor();
+                    }}
                 />
             </View>
 

@@ -1,3 +1,4 @@
+import { AlertContext } from '@app/../App';
 import { fs16, fs20, NavigationProps } from '@app/common';
 import { black100, mainColor } from '@app/common/color';
 import { DSP, PH } from '@app/common/styles';
@@ -15,9 +16,9 @@ import { APIgetProduct } from '@app/server/apis/product/product.api';
 import { IClassifier, IFilter, IProduct, IRProduct } from '@app/server/apis/product/product.interface';
 import { IShop } from '@app/server/apis/shop/shop.interface';
 import * as React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
-import { createProduct } from '../edit/product/component/generalConfig';
+import { createProduct, deleteProductColor } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
@@ -54,6 +55,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [productId, setProductId] = React.useState(_id || '');
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
+
+    const setAlertState = React.useContext(AlertContext);
 
     const createProductInServer = async (data: Partial<IProduct>) => {
         try {
@@ -116,6 +119,35 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     // console.log('shop id', shopId);
 
+    const removeColorFromProduct = (index: number) => {
+        const data = [...choosenColor];
+        data.splice(index, 1);
+        setChoosenColor(data);
+    };
+
+    const deleteColorInServer = async (_id: string, index: number) => {
+        try {
+            setLoader(true);
+            const color = await deleteProductColor({ _id, parentId: productId ? productId : '' });
+            removeColorFromProduct(index);
+            setLoader(false);
+        } catch (error) {
+            showMessage({ type: 'danger', message: error.message });
+            setLoader(false);
+        }
+    };
+
+    const deleteColorFromServer = async (_id: string, index: number) => {
+        setAlertState({
+            isVisible: true,
+            heading: 'Delete Color',
+            subHeading: 'Are you sure you want to delete this product color?',
+            onPressRightButton: () => {
+                deleteColorInServer(_id, index);
+            },
+        });
+    };
+
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
             <View style={styles.container}>
@@ -150,7 +182,14 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         fontSize={fs16}
                     />
                     {choosenColor.map((item: choosenColor, index: number) => (
-                        <EditSelectedColor item={item} key={index} sizes={item.sizes} />
+                        <EditSelectedColor
+                            item={item}
+                            key={index}
+                            sizes={item.sizes}
+                            onPressDeleteColor={() => {
+                                deleteColorFromServer(item._id, index);
+                            }}
+                        />
                     ))}
                     <Border />
                 </ScrollView>
@@ -165,11 +204,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         const data = [...choosenColor, color];
                         setChoosenColor(data);
                     }}
-                    removeColorFromArray={(index: number) => {
-                        const data = [...choosenColor];
-                        data.splice(index, 1);
-                        setChoosenColor(data);
-                    }}
+                    removeColorFromArray={removeColorFromProduct}
                     updateColorInArray={(color: Partial<choosenColor>, index: number) => {
                         const data = [...choosenColor];
                         data[index] = { ...data[index], ...color };

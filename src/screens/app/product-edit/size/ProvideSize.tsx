@@ -60,8 +60,6 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
 
     const setAlertState = React.useContext(AlertContext);
 
-    console.log('shop id', shopId, colorId);
-
     const createSize = async (data: Partial<choosenSize>, index: number) => {
         try {
             setLoader(true);
