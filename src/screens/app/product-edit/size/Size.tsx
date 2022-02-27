@@ -20,9 +20,9 @@ interface SizeProps {
     size: choosenSize;
     setSize: (a: Partial<choosenSize>) => void;
     removeSize: Function;
-    createSize: Function;
+    createSize?: Function;
     updateSize: Function;
-    shopId: string;
+    shopId?: string;
     setLoader: Function;
 }
 
