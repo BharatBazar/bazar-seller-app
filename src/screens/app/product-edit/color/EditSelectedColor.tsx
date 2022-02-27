@@ -18,6 +18,7 @@ interface EditSelectedColorProps {
     onPressDeleteColor: Function;
     onPressDragSort: Function;
     onPressAddMoreImage: Function;
+    onClickEditSize: Function;
 }
 
 const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
@@ -26,6 +27,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onPressDeleteColor,
     onPressDragSort,
     onPressAddMoreImage,
+    onClickEditSize,
 }) => {
     console.log('sizes =>', item.photos);
 
@@ -107,7 +109,9 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                     </View>
                     <WrappedFeatherIcon
                         iconName="edit"
-                        onPress={() => {}}
+                        onPress={() => {
+                            onClickEditSize();
+                        }}
                         iconSize={15}
                         containerHeight={30}
                         containerStyle={[BGCOLOR('#FFF'), provideShadow(2)]}

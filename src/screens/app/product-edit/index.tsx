@@ -60,6 +60,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [currentDragStortIndex, setCurrentDragSortIndex] = React.useState(-1);
     const [currentAddMoreImage, setCurrentAddMoreImage] = React.useState(-1);
+    const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
 
     const setAlertState = React.useContext(AlertContext);
 
@@ -207,6 +208,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             onPressAddMoreImage={() => {
                                 setCurrentAddMoreImage(index);
                             }}
+                            onClickEditSize={() => {
+                                setCurrentProductSizeIndex(index);
+                            }}
                             item={item}
                             onPressDragSort={() => {
                                 console.log('index', index);
@@ -299,6 +303,27 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         setCurrentAddMoreImage(-1);
                     }}
                     openCamera={true}
+                />
+            )}
+            {cuurentProductSizeIndex > -1 && (
+                <ProvideSize
+                    showBack={true}
+                    avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
+                    isVisible={true}
+                    setPopup={(a: boolean, triggerNextPopup: boolean) => {
+                        setCurrentProductSizeIndex(-1);
+                    }}
+                    choosenSize={cuurentProductSizeIndex > -1 ? choosenColor[cuurentProductSizeIndex].sizes : []}
+                    setChoosenSize={(sizes: choosenSize[]) => {
+                        console.log('sized =>', sizes, cuurentProductSizeIndex);
+                        updateColorInServer(cuurentProductSizeIndex, {
+                            sizes,
+                            _id: choosenColor[cuurentProductSizeIndex]._id,
+                        });
+                        setCurrentProductSizeIndex(-1);
+                    }}
+                    shopId={shopId}
+                    colorId={cuurentProductSizeIndex > -1 ? choosenColor[cuurentProductSizeIndex]._id : ''}
                 />
             )}
         </ProductIdContext.Provider>

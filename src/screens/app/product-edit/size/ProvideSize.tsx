@@ -1,9 +1,10 @@
 import { AlertContext, LoaderContext } from '@app/../App';
 import { fs12, fs14 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
-import { AIC, colorTransparency, DSP, FDR, JCC, MT, MV } from '@app/common/styles';
+import { AIC, BGCOLOR, colorTransparency, DSP, FDR, JCC, MT, MV, provideShadow } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
@@ -33,6 +34,7 @@ interface ProvideSizeProps {
     setChoosenSize: (a: choosenSize[]) => void;
     colorId: string;
     shopId: string;
+    showBack?: boolean;
 }
 
 const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
@@ -43,6 +45,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     setChoosenSize,
     colorId,
     shopId,
+    showBack,
 }) => {
     const [selectedSize, setSelectedSize] = React.useState<choosenSize[]>([]);
 
@@ -185,21 +188,32 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP }}>
-                <TextRippleButton
-                    onPress={() => {
-                        onPressDoLater();
-                    }}
-                    buttonText="do later"
-                    fontSize={fs14}
-                    buttonTextColor={mainColor}
-                    containerStyle={{
-                        alignSelf: 'flex-end',
-                        backgroundColor: colorCode.CHAKRALOW(20),
-                        paddingHorizontal: '5%',
-                        paddingVertical: '1%',
-                        borderRadius: 4,
-                    }}
-                />
+                {showBack ? (
+                    <WrappedFeatherIcon
+                        iconName={'chevron-left'}
+                        onPress={() => {
+                            setPopup(false);
+                        }}
+                        iconColor={mainColor}
+                        containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
+                    />
+                ) : (
+                    <TextRippleButton
+                        onPress={() => {
+                            onPressDoLater();
+                        }}
+                        buttonText="do later"
+                        fontSize={fs14}
+                        buttonTextColor={mainColor}
+                        containerStyle={{
+                            alignSelf: 'flex-end',
+                            backgroundColor: colorCode.CHAKRALOW(20),
+                            paddingHorizontal: '5%',
+                            paddingVertical: '1%',
+                            borderRadius: 4,
+                        }}
+                    />
+                )}
                 <ScrollView>
                     <HeaderWithTitleAndSubHeading
                         borderNeeded={false}
