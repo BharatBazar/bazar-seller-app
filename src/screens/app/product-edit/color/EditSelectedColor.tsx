@@ -27,7 +27,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onPressDragSort,
     onPressAddMoreImage,
 }) => {
-    console.log('sizes =>', sizes);
+    console.log('sizes =>', item.photos);
 
     const imageBackgroundStyle = [BR(0.1), HP(2), WP(6), MR(0.4)];
     return (
@@ -65,24 +65,26 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                 }}
                 screens={item.photos}
                 itemWidth={getWP(4)}
-                renderImage={(item) => (
-                    <View>
-                        <ImageBackground
-                            source={{ uri: DEFAULT_IMAGE_URL }}
-                            imageStyle={imageBackgroundStyle}
-                            style={imageBackgroundStyle}
-                        >
-                            <WrappedFeatherIcon
-                                iconName="trash-2"
-                                iconSize={13}
-                                iconColor={'#FFF'}
-                                containerHeight={22}
-                                containerStyle={[BGCOLOR('#00000099'), { position: 'absolute', right: 7, top: 7 }]}
-                                onPress={() => {}}
-                            />
-                        </ImageBackground>
-                    </View>
-                )}
+                renderImage={(item) => {
+                    return (
+                        <View>
+                            <ImageBackground
+                                source={{ uri: item }}
+                                imageStyle={imageBackgroundStyle}
+                                style={imageBackgroundStyle}
+                            >
+                                <WrappedFeatherIcon
+                                    iconName="trash-2"
+                                    iconSize={13}
+                                    iconColor={'#FFF'}
+                                    containerHeight={22}
+                                    containerStyle={[BGCOLOR('#00000099'), { position: 'absolute', right: 7, top: 7 }]}
+                                    onPress={() => {}}
+                                />
+                            </ImageBackground>
+                        </View>
+                    );
+                }}
             />
 
             <View

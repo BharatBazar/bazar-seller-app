@@ -225,7 +225,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 }}
                 updatePhotoArray={async (photos: [string]) => {
                     setShowPhotoPopup(false);
-                    console.log('photos', chosenColor[currentColorIndex]._id, photos);
+                    //console.log('photos', chosenColor[currentColorIndex]._id, photos);
                     updateColorInServer({ photos, _id: chosenColor[currentColorIndex]._id });
                 }}
                 onPressDoLater={async (photos: [string]) => {

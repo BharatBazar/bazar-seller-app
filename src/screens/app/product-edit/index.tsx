@@ -87,9 +87,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         try {
             setLoader(true);
             const response: IRProduct = await APIgetProduct({ _id: _id, shopId: shopId });
-            console.log('response =>', response);
-            if (response.status == 1) {
-                console.log('response set ', response.payload.colors[1].sizes);
+            console.log('response =>', response.payload);
+            if (response) {
+                //console.log('response set ', response.payload.colors[1].sizes);
                 setProductId(response.payload._id);
                 setChoosenColor(response.payload.colors);
                 setLoader(false);
@@ -290,12 +290,13 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         setCurrentAddMoreImage(-1);
                     }}
                     existingPhotos={currentAddMoreImage > -1 ? choosenColor[currentAddMoreImage].photos : []}
-                    updatePhotoArray={(photos: ImageOrVideo[]) => {
+                    updatePhotoArray={(photos: string[]) => {
+                        console.log('update =>', 'phtotos=>', photos);
                         updateColorInServer(currentAddMoreImage, {
-                            photos: photos.map((item) => item.path),
+                            photos: photos,
                             _id: choosenColor[currentAddMoreImage]._id,
                         });
-                        setCurrentDragSortIndex(-1);
+                        setCurrentAddMoreImage(-1);
                     }}
                     openCamera={true}
                 />

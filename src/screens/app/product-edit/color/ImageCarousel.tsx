@@ -29,7 +29,7 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
     const onChange = ({ nativeEvent }) => {
         const active = Math.floor(nativeEvent.contentOffset.x / itemWidth) + 1;
 
-        if (active !== currentIndex) setCurrentIndex(active);
+        if (active !== currentIndex && active != 0) setCurrentIndex(active);
     };
 
     const buttonProps = {
@@ -39,13 +39,18 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
         textStyle: { marginLeft: 5 },
     };
 
+    console.log('screens', screens);
     return (
         <View style={[MT(0.1)]}>
             <FlatList
                 data={screens}
-                renderItem={(item) => renderImage(item)}
+                renderItem={({ item }) => renderImage(item)}
                 horizontal
-                keyExtractor={(item, index) => getId() + index.toString()}
+                keyExtractor={(item, index) => {
+                    let key = getId() + index.toString();
+                    console.log(key, 'key ');
+                    return key;
+                }}
                 scrollEnabled
                 showsHorizontalScrollIndicator={false}
                 onScroll={onChange}
