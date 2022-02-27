@@ -11,7 +11,6 @@ import React, { createRef } from 'react';
 import { TouchableOpacity, StyleSheet, View, Dimensions, SafeAreaView } from 'react-native';
 import { AnySizeDragSortableView } from 'react-native-drag-sort';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import FeatherIcon from 'react-native-vector-icons/Feather';
 
 const { width } = Dimensions.get('window');
 const headerViewHeight = 160;
@@ -22,16 +21,16 @@ const getW = (index, isWidth) => (isWidth ? (index % 3 === 0 ? width - 40 : (wid
 // const getW = (index, isWidth) => 150;
 
 interface DragSortProps {
-    data: ImageOrVideo[];
+    data: { path: string; _id: string }[];
     isVisible: boolean;
     setPopup: Function;
-    setPhotosArrayAfterReordering: (data: ImageOrVideo[]) => void;
+    setPhotosArrayAfterReordering: (data: { path: string; _id: string }[]) => void;
 }
 
 interface DragSortState {
     isVisible: boolean;
     movedKey: string | undefined;
-    items: ImageOrVideo[];
+    items: { path: string; _id: string }[];
 }
 
 export default class DragSort extends React.Component<DragSortProps, DragSortState> {
@@ -144,7 +143,7 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                         <AnySizeDragSortableView
                             ref={this.sortableViewRef}
                             dataSource={items}
-                            keyExtractor={(item: ImageOrVideo) => item.path}
+                            keyExtractor={(item: { path: string; _id: string }) => item._id}
                             renderItem={this._renderItem}
                             onDataChange={(data, callback) => {
                                 this.setState({ items: data }, () => {

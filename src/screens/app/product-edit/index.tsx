@@ -259,8 +259,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 <DragSort
                     data={
                         currentDragStortIndex > -1
-                            ? choosenColor[currentDragStortIndex].photos.map((item) => {
-                                  return { path: item };
+                            ? choosenColor[currentDragStortIndex].photos.map((item, index) => {
+                                  return { path: item, _id: new Date().getTime().toString() + index.toString() };
                               })
                             : []
                     }

@@ -7,7 +7,6 @@ import { fs14, fs15, fs20 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { getHP, getWP } from '@app/common/dimension';
-import { FlatList } from 'react-native-gesture-handler';
 import DragSort from './DragSort';
 import DeleteImagePopup from './DeleteImage';
 import Ripple from 'react-native-material-ripple';
