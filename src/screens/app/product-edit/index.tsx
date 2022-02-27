@@ -23,6 +23,7 @@ import { createProduct, deleteProductColor, updateProductColor } from '../edit/p
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
+import AddPhotoPopup from './photo';
 import DragSort from './photo/DragSort';
 import ProvideSize from './size/ProvideSize';
 
@@ -58,6 +59,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [currentDragStortIndex, setCurrentDragSortIndex] = React.useState(-1);
+    const [currentAddMoreImage, setCurrentAddMoreImage] = React.useState(-1);
 
     const setAlertState = React.useContext(AlertContext);
 
@@ -202,6 +204,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     />
                     {choosenColor.map((item: choosenColor, index: number) => (
                         <EditSelectedColor
+                            onPressAddMoreImage={() => {
+                                setCurrentAddMoreImage(index);
+                            }}
                             item={item}
                             onPressDragSort={() => {
                                 console.log('index', index);
@@ -276,6 +281,23 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         });
                         setCurrentDragSortIndex(-1);
                     }}
+                />
+            )}
+            {currentAddMoreImage > -1 && (
+                <AddPhotoPopup
+                    isVisible={currentAddMoreImage > -1}
+                    setPopup={() => {
+                        setCurrentAddMoreImage(-1);
+                    }}
+                    existingPhotos={currentAddMoreImage > -1 ? choosenColor[currentAddMoreImage].photos : []}
+                    updatePhotoArray={(photos: ImageOrVideo[]) => {
+                        updateColorInServer(currentAddMoreImage, {
+                            photos: photos.map((item) => item.path),
+                            _id: choosenColor[currentAddMoreImage]._id,
+                        });
+                        setCurrentDragSortIndex(-1);
+                    }}
+                    openCamera={true}
                 />
             )}
         </ProductIdContext.Provider>

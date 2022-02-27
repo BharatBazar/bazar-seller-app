@@ -21,10 +21,11 @@ import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFea
 export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
+    openCamera?: boolean;
 }
 
-const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoArray }) => {
-    const [photos, setPhotos] = React.useState<ImageOrVideo[]>([]);
+const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoArray, openCamera }) => {
+    const [photos, setPhotos] = React.useState<{ path: string; _id: string }[]>([]);
     const [showImageViewer, setShowImageViewer] = React.useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
     const [currentViewIndex, setCurrentViewIndex] = React.useState(0);
@@ -36,8 +37,8 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
         console.log('existing photo', existingPhotos);
         if (existingPhotos && existingPhotos.length > 0) {
             setPhotos([
-                ...existingPhotos.map((item) => {
-                    return { path: item };
+                ...existingPhotos.map((item, index) => {
+                    return { path: item, _id: new Date().getTime().toString() + index.toString() };
                 }),
             ]);
         }
@@ -49,13 +50,13 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
         setSelectedIndex(undefined);
     };
 
-    const addImageInArray = (image: ImageOrVideo[]) => {
+    const addImageInArray = (image: { path: string; _id: String }[]) => {
         let images = [...photos];
         images = [...images, ...image];
         setPhotos(images);
     };
 
-    const updateImageArrary = (index: number, file: ImageOrVideo) => {
+    const updateImageArrary = (index: number, file: { path: string; _id: String }) => {
         const photo = [...photos];
         photo[index] = file;
         setPhotos(photo);
@@ -120,7 +121,11 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
             <ScrollView>
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: DSP }}>
                     {photos.map((item, index) => renderItem(item, index))}
-                    <AddPhoto addImage={addImageInArray} containerStyle={{ marginTop: DSP, marginRight: getWP(0.3) }} />
+                    <AddPhoto
+                        openCamera={openCamera}
+                        addImage={addImageInArray}
+                        containerStyle={{ marginTop: DSP, marginRight: getWP(0.3) }}
+                    />
                 </View>
                 <View style={{ marginTop: DSP }} />
 
@@ -140,16 +145,18 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
                 )}
             </ScrollView>
             <Border />
-            <DragSort
-                isVisible={showReorderView}
-                setPopup={() => {
-                    setShowReorderView(false);
-                }}
-                data={photos}
-                setPhotosArrayAfterReordering={(images) => {
-                    setPhotos(images);
-                }}
-            />
+            {photos.length > 1 && (
+                <DragSort
+                    isVisible={showReorderView}
+                    setPopup={() => {
+                        setShowReorderView(false);
+                    }}
+                    data={photos}
+                    setPhotosArrayAfterReordering={(images) => {
+                        setPhotos(images);
+                    }}
+                />
+            )}
             <RightComponentButtonWithLeftText
                 buttonText={'continue'}
                 containerStyle={[MT(0.1)]}

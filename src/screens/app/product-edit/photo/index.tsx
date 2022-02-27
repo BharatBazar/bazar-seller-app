@@ -1,7 +1,8 @@
 import { DEFAULT_IMAGE_URL, fs14 } from '@app/common';
 import { colorCode, mainColor } from '@app/common/color';
-import { DSP, FLEX } from '@app/common/styles';
+import { BGCOLOR, DSP, FLEX, provideShadow } from '@app/common/styles';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
@@ -12,45 +13,59 @@ import PhotoUpload from './PhotoUpload';
 interface AddPhotoPopupProps {
     isVisible: boolean;
     setPopup: Function;
-    onPressDoLater: Function;
+
     existingPhotos: string[];
     updatePhotoArray: Function;
+    openCamera?: boolean;
 }
 
 const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
     isVisible,
     setPopup,
-    onPressDoLater,
     existingPhotos,
     updatePhotoArray,
+    openCamera,
 }) => {
     const [photo, setPhotos] = React.useState<string[]>([]);
 
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP }}>
-                <TextRippleButton
-                    onPress={() => {
-                        setPopup();
-                    }}
-                    buttonText="do later"
-                    fontSize={fs14}
-                    buttonTextColor={colorCode.CHAKRALOW(100)}
-                    containerStyle={{
-                        alignSelf: 'flex-end',
-                        backgroundColor: colorCode.CHAKRALOW(20),
-                        paddingHorizontal: '5%',
-                        paddingVertical: '1%',
-                        borderRadius: 4,
-                    }}
-                />
+                {openCamera ? (
+                    <WrappedFeatherIcon
+                        iconName={'chevron-left'}
+                        onPress={() => {
+                            setPopup(false);
+                        }}
+                        iconColor={mainColor}
+                        containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
+                    />
+                ) : (
+                    <TextRippleButton
+                        onPress={() => {
+                            setPopup();
+                        }}
+                        buttonText="do later"
+                        fontSize={fs14}
+                        buttonTextColor={colorCode.CHAKRALOW(100)}
+                        containerStyle={{
+                            alignSelf: 'flex-end',
+                            backgroundColor: colorCode.CHAKRALOW(20),
+                            paddingHorizontal: '5%',
+                            paddingVertical: '1%',
+                            borderRadius: 4,
+                        }}
+                    />
+                )}
 
                 <HeaderWithTitleAndSubHeading
                     borderNeeded={false}
                     heading="Add Photos"
                     subHeading="Please add more photos of the current product color"
                 />
+
                 <PhotoUpload
+                    openCamera={openCamera}
                     existingPhotos={existingPhotos}
                     updatePhotoArray={(photos: { path: string }[]) => {
                         updatePhotoArray(photos.map((item) => item.path));

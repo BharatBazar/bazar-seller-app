@@ -1,5 +1,6 @@
 import { FontFamily, fs10, fs14 } from '@app/common';
 import { mainColor } from '@app/common/color';
+import { getId } from '@app/common/helper';
 import { BGCOLOR, MT, PH, PV } from '@app/common/styles';
 import WrappedText from '@app/screens/component/WrappedText';
 import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFeatherIconWithRightText';
@@ -11,6 +12,7 @@ interface ImageCarouselProps {
     renderImage: (item: any) => any;
     itemWidth: number;
     onPressDragSort: Function;
+    onPressAddMoreImage: Function;
 }
 
 const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
@@ -18,6 +20,7 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
     renderImage,
     itemWidth,
     onPressDragSort,
+    onPressAddMoreImage,
 }) => {
     const scrollX = new Animated.Value(0);
 
@@ -42,6 +45,7 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
                 data={screens}
                 renderItem={(item) => renderImage(item)}
                 horizontal
+                keyExtractor={(item, index) => getId() + index.toString()}
                 scrollEnabled
                 showsHorizontalScrollIndicator={false}
                 onScroll={onChange}
@@ -61,7 +65,9 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
                     <ButtonFeatherIconRightText
                         iconName="plus"
                         buttonText={'Add More Images'}
-                        onPress={() => {}}
+                        onPress={() => {
+                            onPressAddMoreImage();
+                        }}
                         {...buttonProps}
                     />
                     <ButtonFeatherIconRightText

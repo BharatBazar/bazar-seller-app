@@ -15,7 +15,7 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 interface AddPhotoProps {
     addImage: Function;
     containerStyle?: ViewStyle[] | ViewStyle;
-    onPressDoLater: (photos: [string]) => void;
+    openCamera?: boolean;
 }
 
 interface IconTextButtonProps {
@@ -38,7 +38,7 @@ const IconTextButton: React.FunctionComponent<IconTextButtonProps> = ({ onPress,
     );
 };
 
-const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerStyle }) => {
+const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerStyle, openCamera }) => {
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
 
     const openImageSelector = async (selector: 'file' | 'camera') => {
@@ -79,6 +79,11 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerS
         }
     };
 
+    React.useEffect(() => {
+        if (openCamera) {
+            setShowImageSelect(true);
+        }
+    }, [openCamera]);
     return (
         <View style={[styles.photoContainer, containerStyle]}>
             <WrappedFeatherIcon
