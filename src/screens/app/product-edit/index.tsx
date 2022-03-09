@@ -26,6 +26,7 @@ import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import AddPhotoPopup from './photo';
 import DragSort from './photo/DragSort';
 import ProvideSize from './size/ProvideSize';
+import SizeUpdatePopup from './size/SizeUpdatePopup';
 
 interface EditProductProps extends NavigationProps {
     update?: boolean;
@@ -61,6 +62,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [currentDragStortIndex, setCurrentDragSortIndex] = React.useState(-1);
     const [currentAddMoreImage, setCurrentAddMoreImage] = React.useState(-1);
     const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
+    const [currentColorSizeIndex, setCurrentColorSizeIndex] = React.useState<string>('');
 
     const setAlertState = React.useContext(AlertContext);
 
@@ -169,7 +171,15 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         });
     };
 
-    console.log('drag sort', currentDragStortIndex);
+    const [currentColorIndexOnSizeClick, currentSizeIndexOnSizeClick] = React.useMemo(() => {
+        if (currentColorSizeIndex.length > 0) {
+            let a = currentColorSizeIndex.split('-');
+            return [+a[0], +a[1]];
+        } else {
+            return [-1, -1];
+        }
+    }, [currentColorSizeIndex]);
+
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
             <View style={styles.container}>
@@ -210,6 +220,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                             onClickEditSize={() => {
                                 setCurrentProductSizeIndex(index);
+                            }}
+                            onPressSingleSize={(sizeIndex: string) => {
+                                setCurrentColorSizeIndex(index + '-' + sizeIndex);
                             }}
                             item={item}
                             onPressDragSort={() => {
@@ -324,6 +337,31 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     shopId={shopId}
                     colorId={cuurentProductSizeIndex > -1 ? choosenColor[cuurentProductSizeIndex]._id : ''}
+                />
+            )}
+            {currentColorIndexOnSizeClick > -1 && (
+                <SizeUpdatePopup
+                    isVisible={true}
+                    setPopup={() => {
+                        setCurrentColorSizeIndex('');
+                    }}
+                    index={currentSizeIndexOnSizeClick}
+                    shopId={shopId._id}
+                    item={choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick]}
+                    updateSize={(size: choosenSize) => {
+                        console.log('update size');
+                        let colors = [...choosenColor];
+                        let a = { ...choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] };
+                        a = { ...a, ...size };
+                        choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] = a;
+                        console.log('a ===', a);
+                        setChoosenColor(colors);
+                    }}
+                    removeSize={() => {
+                        let colors = [...choosenColor];
+                        colors[currentColorIndexOnSizeClick].sizes.splice(currentSizeIndexOnSizeClick, 1);
+                        setChoosenColor(colors);
+                    }}
                 />
             )}
         </ProductIdContext.Provider>

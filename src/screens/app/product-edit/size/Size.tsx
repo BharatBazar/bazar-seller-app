@@ -18,7 +18,7 @@ import { LoaderContext } from '@app/../App';
 
 interface SizeProps {
     size: choosenSize;
-    setSize: (a: Partial<choosenSize>) => void;
+    setSize?: (a: Partial<choosenSize>) => void;
     removeSize: Function;
     createSize?: Function;
     updateSize: Function;

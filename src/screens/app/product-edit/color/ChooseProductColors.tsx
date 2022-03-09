@@ -105,7 +105,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             setLoader(false);
 
             showMessage({ type: 'success', message: 'Product size created' });
-            updateColorInArray({ photos: colorChoosen.photos }, currentColorIndex);
+            updateColorInArray({ ...colorChoosen }, currentColorIndex);
             setCurrentColorIndex(-1);
         } catch (error) {
             setLoader(false);

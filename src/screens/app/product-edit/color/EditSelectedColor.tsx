@@ -19,6 +19,7 @@ interface EditSelectedColorProps {
     onPressDragSort: Function;
     onPressAddMoreImage: Function;
     onClickEditSize: Function;
+    onPressSingleSize: Function;
 }
 
 const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
@@ -28,6 +29,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onPressDragSort,
     onPressAddMoreImage,
     onClickEditSize,
+    onPressSingleSize,
 }) => {
     console.log('sizes =>', item.photos);
 
@@ -121,14 +123,16 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                 {sizes && sizes.length > 0 && (
                     <View style={styles.editButtonContainerStyle}>
                         {sizes &&
-                            sizes.map((item) => (
+                            sizes.map((item, index) => (
                                 <ButtonFeatherIconRightText
                                     iconColor="#FFFFFF"
                                     containerStyle={[BGCOLOR(mainColor), styles.editButtonStyle]}
                                     iconSize={fs12}
                                     iconName="edit"
                                     textStyle={{ marginLeft: 5, textAlign: 'center' }}
-                                    onPress={() => {}}
+                                    onPress={() => {
+                                        onPressSingleSize(index);
+                                    }}
                                     buttonText={
                                         item.size.name + ' ' + item.size.description + '\n' + item.quantity + ' piece'
                                     }

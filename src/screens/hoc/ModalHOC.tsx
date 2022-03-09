@@ -44,6 +44,9 @@ const ModalHOC: React.FC<ModalProps> = ({
             onBackdropPress={() => {
                 setPopup();
             }}
+            onBackButtonPress={() => {
+                setPopup();
+            }}
             statusBarTranslucent={Platform.OS == 'android' ? statusBarTranlucent : false}
             backdropTransitionOutTiming={0}
         >
