@@ -70,6 +70,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [filterValues, setFilterValues] = React.useState<{}>({});
     const [productDetails, setProductDetails] = React.useState<IProduct | {}>({});
 
+    const [errors, setErrors] = React.useState<string[]>([]);
     const setAlertState = React.useContext(AlertContext);
 
     const createProductInServer = async (data: Partial<IProduct>) => {
@@ -211,7 +212,28 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         [filterValues],
     );
 
-    const checkError = () => {};
+    const checkError = () => {
+        let errors: string[] = [];
+        if (choosenColor.length > 0) {
+            choosenColor.map((item) => {
+                if (item.sizes.length == 0) {
+                    errors.push(item.color.name.toUpperCase() + ' color ' + 'does not have any size.');
+                }
+            });
+        } else {
+            errors.push('Please select a color for the product');
+        }
+        filter.map((item) => {
+            let filterSpec = filterValues[item.type];
+            console.log(filterValues, filterSpec);
+            if (item.mandatory && filterSpec && filterSpec.length == 0) {
+                errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
+            } else if (item.mandatory && !filterSpec) {
+                errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
+            }
+        });
+        setErrors(errors);
+    };
 
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
@@ -229,13 +251,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     containerStyle={[{ padding: DSP }]}
                     title={update ? 'Update Product' : 'Create Product'}
                 />
-                <CollapsibleErrorComponent
-                    error={[
-                        'No Size is provided to the red color of the product',
-                        'Please select value for Jeans Fitting filter',
-                        'errro3',
-                    ]}
-                />
+                {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
                 <ScrollView contentContainerStyle={[PH(0.2)]}>
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle
@@ -283,7 +299,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         buttonText={'Send for approval'}
                         containerStyle={[]}
                         onPress={() => {
-                            //setPopup(false);
+                            checkError();
                         }}
                     />
                 </View>

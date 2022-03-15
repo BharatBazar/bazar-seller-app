@@ -19,6 +19,7 @@ export interface IFilter {
     values: IClassifier[];
     filterLevel: number;
     _id: string;
+    mandatory: boolean;
 }
 
 export enum classifierTypes {
