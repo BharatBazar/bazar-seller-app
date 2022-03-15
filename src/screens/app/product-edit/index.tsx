@@ -1,7 +1,7 @@
 import { AlertContext } from '@app/../App';
 import { fs16, fs20, NavigationProps } from '@app/common';
 import { black100, mainColor } from '@app/common/color';
-import { DSP, PH } from '@app/common/styles';
+import { BGCOLOR, DSP, MV, PH, PV } from '@app/common/styles';
 import { NavigationKey } from '@app/labels';
 import Loader from '@app/screens/component/Loader';
 import StatusBar, { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
@@ -9,6 +9,8 @@ import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/header/HeaderWithBackButtonTitleAndrightButton';
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
@@ -19,10 +21,11 @@ import * as React from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import { createProduct, deleteProductColor, updateProductColor } from '../edit/product/component/generalConfig';
+import { border, createProduct, deleteProductColor, updateProductColor } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
+import Filter from './filter/Filter';
 import AddPhotoPopup from './photo';
 import DragSort from './photo/DragSort';
 import ProvideSize from './size/ProvideSize';
@@ -63,6 +66,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [currentAddMoreImage, setCurrentAddMoreImage] = React.useState(-1);
     const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
     const [currentColorSizeIndex, setCurrentColorSizeIndex] = React.useState<string>('');
+    const [filterValues, setFilterValues] = React.useState<{}>({});
+    const [productDetails, setProductDetails] = React.useState<IProduct | {}>({});
 
     const setAlertState = React.useContext(AlertContext);
 
@@ -95,6 +100,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 //console.log('response set ', response.payload.colors[1].sizes);
                 setProductId(response.payload._id);
                 setChoosenColor(response.payload.colors);
+                setProductDetails(response.payload);
                 setLoader(false);
             }
         } catch (error) {
@@ -116,6 +122,17 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             setLoader(false);
         }
     };
+
+    React.useEffect(() => {
+        let filtersV = {};
+        if (filter.length > 0 && Object.keys(productDetails).length > 0) {
+            filter.map((item) => {
+                filtersV[item.type] = productDetails[item.type];
+            });
+            console.log(filtersV, 'filter values');
+            setFilterValues(filtersV);
+        }
+    }, [productDetails, filter]);
 
     React.useEffect(() => {
         //console.log(update, _id, shopId);
@@ -180,6 +197,12 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     }, [currentColorSizeIndex]);
 
+    const setFilterValuesCallback = React.useCallback((key: string, value: IClassifier[]) => {
+        let filters = { ...filterValues };
+        filters[key] = value;
+        setFilterValues(filters);
+    }, []);
+
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
             <View style={styles.container}>
@@ -236,9 +259,17 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     ))}
-                    <Border />
+                    <Filter filters={filter} filterValues={filterValues} setFilterValues={setFilterValuesCallback} />
                 </ScrollView>
-
+                <View style={[{ paddingHorizontal: DSP }, PV(0.2), BGCOLOR('#FFFFFF'), border]}>
+                    <RightComponentButtonWithLeftText
+                        buttonText={'close'}
+                        containerStyle={[]}
+                        onPress={() => {
+                            //setPopup(false);
+                        }}
+                    />
+                </View>
                 <ChooseProductColors
                     isVisible={openChooseColor}
                     setPopup={() => {
@@ -373,6 +404,6 @@ export default EditProduct;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F4F4F4',
+        backgroundColor: '#FFFFFF',
     },
 });

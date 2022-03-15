@@ -41,11 +41,12 @@ const ButtonAddWithTitleAndSubTitle: React.FunctionComponent<ButtonAddWithTitleA
             }}
             style={[
                 FDR(),
-                BW(2),
+                BW(1),
                 BC(borderColor),
                 { marginTop: DSP, padding: DSP * 0.8 },
                 BR(0.1),
                 { overflow: 'hidden' },
+                BGCOLOR('#FFFFFF'),
             ]}
         >
             <View style={[FLEX(1.5), JCC()]}>
