@@ -33,7 +33,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
 }) => {
     console.log('sizes =>', item.photos);
 
-    const imageBackgroundStyle = [BR(0.1), HP(2), WP(6), MR(0.4)];
+    const imageBackgroundStyle = [BR(0.1), { height: 80, width: 120 }, MR(0.4)];
     return (
         <View style={[{ marginTop: DSP }, provideShadow(2), BR(0.2), BGCOLOR('#FFF')]}>
             <View style={[FDR(), JCC('space-between'), AIC(), { marginHorizontal: DSP * 1.5, marginTop: DSP * 0.8 }]}>
