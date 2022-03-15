@@ -13,6 +13,10 @@ import { IClassifier, IProduct } from '../../../../server/apis/product/product.i
 import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
 import { ToastHOC } from '../../../hoc/ToastHOC';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
+import { updateProduct } from '../../edit/product/component/generalConfig';
+import { showMessage } from 'react-native-flash-message';
+import { ProductIdContext } from '../data-types';
+import Loader from '@app/screens/component/Loader';
 
 export enum selectAction {
     add = 'Add',
@@ -26,7 +30,9 @@ interface Error {
 interface SingleFilterProps {
     filter: IFilter;
     index: number;
-    fitlerValues: IClassifier | IClassifier[];
+    filterValues: IClassifier[];
+    setFilterValues: (key: string, value: IClassifier[]) => void;
+
     // postDataToServer: IPostDataToServer;
     // productId: string;
     // errorValue: ErrorState;
@@ -34,80 +40,42 @@ interface SingleFilterProps {
 }
 const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
     filter,
-    fitlerValues,
+    filterValues,
     index,
+    setFilterValues,
     // postDataToServer,
     // productId,
     // errorValue,
     // setErrorValue,
 }) => {
+    const { productId } = React.useContext(ProductIdContext);
     const [showPopup, setPopup] = React.useState<boolean>(false);
-    const [selectedTags, setSelected] = React.useState<{ [key: string]: IClassifier }>({});
+
     const [loading, setLoader] = React.useState(false);
     const [error, setErrors] = React.useState<Partial<Error>>({});
 
-    const addData = (data: IClassifier) => {
-        const array = { ...selectedTags };
-        array[data._id] = data;
-        setSelected(array);
-    };
-
-    const deleteData = (data: IClassifier) => {
-        const array = { ...selectedTags };
-        delete array[data._id];
-        setSelected(array);
-    };
-
-    const getTypeDetails = () => {
-        let exist: IClassifier | undefined | IClassifier[] = fitlerValues || undefined;
-        if (exist) {
-            var isArr = exist instanceof Array;
-
-            if (!isArr) {
-                let data = {};
-                data[exist._id] = exist;
-                setSelected(data);
-            } else {
-                let data = {};
-
-                if (exist.length > 0) {
-                    exist.forEach((element, index) => {
-                        data[element._id] = element;
-                        if (exist.length - 1 == index) {
-                            setSelected(data);
-                        }
-                    });
-                } else {
-                    setSelected({});
-                }
-            }
-        } else {
-            setSelected({});
-        }
-    };
-
-    const addDataInServer = (filterValue: string) => {
-        // if (Object.keys(selectedTags).length == 0) {
-        //     setErrors({ generalError: 'Please select atleast one filter.' });
-        // } else {
-        setLoader(true);
+    const addDataInServer = async (filterValue: IClassifier) => {
         setErrors({});
 
-        const data = {};
-        data[filter.type] = [filterValue];
-
-        postDataToServer(
-            data,
-            () => {
-                setLoader(false);
-                //setLastSubmittedState({ lastTitle: productTitle, lastSubtitle: productSubTitle });
-            },
-            (error: string) => {
-                setLoader(false);
-                setErrors({ generalError: error });
-            },
-        );
-        //}
+        const data: Partial<IProduct> = {
+            _id: productId,
+        };
+        let filterValuee: IClassifier[] = filter.multiple
+            ? [...filterValues.map((item) => item._id), filterValue._id]
+            : [filterValue._id];
+        data[filter.type] = filterValuee;
+        console.log('data', data, filter);
+        try {
+            setLoader(true);
+            const response = await updateProduct(data);
+            if (response.status == 1) {
+                setFilterValues(filter.type, filter.multiple ? [...filterValues, filterValue] : [filterValue]);
+            }
+            setLoader(false);
+        } catch (error) {
+            showMessage({ type: 'danger', message: error.message });
+            setLoader(false);
+        }
     };
     const removeDataFromServer = async (filterValue: IClassifier) => {
         try {
@@ -116,13 +84,13 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
             setErrors({});
 
             const data = {};
-            data[filter.type] = filterValue._id;
+            data[filter.type] = value;
 
             const response = await APIDeleteFilter({ _id: productId, filter: data, multiple: filter.multiple });
             setLoader(false);
             if (response.status == 1) {
                 ToastHOC.successAlert('Filter value deleted!!');
-                deleteData(filterValue);
+                //deleteData(filterValue);
             }
         } catch (error) {
             setLoader(false);
@@ -132,42 +100,29 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
 
     const onSelect = (data: IClassifier) => {
         //  console.log('filter =>', filter, !selectedTags[data._id]);
-        if (!filter.multiple) {
-            if (selectedTags[data._id]) {
-                removeDataFromServer(data);
-            } else {
-                const array = {};
-                array[data._id] = data;
-                addDataInServer(data._id);
-                setSelected(array);
-            }
-        } else {
-            if (!selectedTags[data._id]) {
-                addData(data);
-                addDataInServer(data._id);
-            } else {
-                removeDataFromServer(data._id);
-                deleteData(data);
-            }
-        }
-    };
+        // if (!filter.multiple) {
+        //     if (selectedTags[data._id]) {
+        //         removeDataFromServer(data);
+        //     } else {
+        //         const array = {};
+        //         array[data._id] = data;
+        //         addDataInServer(data._id);
+        //         setSelected(array);
+        //     }
+        // } else {
 
-    React.useEffect(() => {
-        getTypeDetails();
-        // if (isArr && selectedTags && Object.values(selectedTags).length != fitlerValues.length) {
-        //     setSelected(getTypeDetails());
-        // } else if (!isArr && fitlerValues instanceof Object && selectedTags == {}) {
-        //     setSelected(getTypeDetails());
+        addDataInServer(data);
+
+        // if (!selectedTags[data._id]) {
+        //     addData(data);
+        //     addDataInServer(data._id);
+        // } else {
+        //     removeDataFromServer(data._id);
+        //     deleteData(data);
         // }
-        return () => {};
-    }, [fitlerValues]);
-
-    React.useEffect(() => {
-        if (Object.keys(selectedTags).length > 0) {
-            setErrors({});
-        }
-    }, [Object.keys(selectedTags).length]);
-
+        //}
+    };
+    console.log('fitler values', filterValues);
     return (
         <View
             key={index}
@@ -207,8 +162,8 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                     //setOpenChooseColor(true);
                 }}
             />
-            {selectedTags &&
-                Object.values(selectedTags).map((classifier: IClassifier, index: number) => {
+            {filterValues &&
+                filterValues.map((classifier: IClassifier, index: number) => {
                     return (
                         <ShowFilter
                             key={index}
@@ -216,7 +171,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                             onPress={(data) => {
                                 onSelect(data);
                             }}
-                            selected={selectedTags[classifier._id] != null}
+                            selected={true}
                         />
                     );
                 })}
@@ -229,9 +184,12 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                 description={filter.description}
                 placeholderText={filter.name}
                 data={filter.values}
-                selectedData={selectedTags}
+                selectedData={filterValues || []}
                 onSelect={onSelect}
+                onDelete={() => {}}
+                loading={loading}
             />
+            {/* {loading && <Loader />} */}
         </View>
     );
 };

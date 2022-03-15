@@ -29,7 +29,7 @@ const Filter: React.SFC<FilterProps> = ({ filters, setFilterValues, filterValues
                     filter={item}
                     index={index}
                     setFilterValues={setFilterValues}
-                    fitlerValues={filterValues[item.type]}
+                    filterValues={filterValues[item.type]}
                 />
             ))}
         </View>

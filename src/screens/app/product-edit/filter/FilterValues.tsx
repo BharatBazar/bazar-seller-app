@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Feather';
 import WrappedRectangleButton from '../../../component/WrappedRectangleButton';
 import { IClassifier } from '../../../../server/apis/product/product.interface';
 import Ripple from 'react-native-material-ripple';
+import Loader from '@app/screens/component/Loader';
 
 export const ShowFilter = ({
     selected,
@@ -54,8 +55,10 @@ interface ShowFilterModalProps {
     description: string;
     placeholderText: string;
     data: IClassifier[];
-    selectedData: { [key: string]: IClassifier };
+    selectedData: IClassifier[];
     onSelect: (data: IClassifier) => void;
+    onDelete: (data: IClassifier) => void;
+    loading: boolean;
 }
 
 const ShowFilterModal: React.SFC<ShowFilterModalProps> = ({
@@ -67,7 +70,10 @@ const ShowFilterModal: React.SFC<ShowFilterModalProps> = ({
     data,
     selectedData,
     onSelect,
+    onDelete,
+    loading,
 }) => {
+    console.log(selectedData, 'selectedAta');
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View
@@ -86,18 +92,23 @@ const ShowFilterModal: React.SFC<ShowFilterModalProps> = ({
                     style={{ height: getHP(5), marginTop: getHP(0.1) }}
                     keyExtractor={(item, index) => index.toString()}
                     renderItem={({ item, index }) => {
+                        let selected = selectedData.findIndex((value) => value._id == item._id) > -1;
                         return (
                             <ShowFilter
-                                selected={selectedData[item._id] != null}
+                                selected={selected}
                                 item={item}
                                 onPress={(data: IClassifier) => {
-                                    onSelect(data);
+                                    if (selected) {
+                                    } else {
+                                        onSelect(data);
+                                    }
                                 }}
                             />
                         );
                     }}
                 />
             </View>
+            {loading && <Loader />}
         </ModalHOC>
     );
 };

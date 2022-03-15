@@ -197,11 +197,15 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     }, [currentColorSizeIndex]);
 
-    const setFilterValuesCallback = React.useCallback((key: string, value: IClassifier[]) => {
-        let filters = { ...filterValues };
-        filters[key] = value;
-        setFilterValues(filters);
-    }, []);
+    const setFilterValuesCallback = React.useCallback(
+        (key: string, value: IClassifier[]) => {
+            let filters = { ...filterValues };
+            filters[key] = value;
+
+            setFilterValues(filters);
+        },
+        [filterValues],
+    );
 
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
