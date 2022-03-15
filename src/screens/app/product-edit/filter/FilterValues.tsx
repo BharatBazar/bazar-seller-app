@@ -99,6 +99,7 @@ const ShowFilterModal: React.SFC<ShowFilterModalProps> = ({
                                 item={item}
                                 onPress={(data: IClassifier) => {
                                     if (selected) {
+                                        onDelete(item);
                                     } else {
                                         onSelect(data);
                                     }

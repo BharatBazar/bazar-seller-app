@@ -83,12 +83,23 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
             setLoader(true);
             setErrors({});
 
-            const data = {};
-            data[filter.type] = value;
+            const data = {
+                _id: productId,
+            };
+            let selectedValue = filter.multiple
+                ? filterValues.filter((item) => item._id != filterValue._id).map((item) => item._id)
+                : [];
+            data[filter.type] = selectedValue;
 
-            const response = await APIDeleteFilter({ _id: productId, filter: data, multiple: filter.multiple });
-            setLoader(false);
+            //const response = await APIDeleteFilter({ _id: productId, filter: data, multiple: filter.multiple });
+            const response = await updateProduct(data);
+
             if (response.status == 1) {
+                setFilterValues(
+                    filter.type,
+                    filter.multiple ? filterValues.filter((item) => item._id != filterValue._id) : [],
+                );
+                setLoader(false);
                 ToastHOC.successAlert('Filter value deleted!!');
                 //deleteData(filterValue);
             }
@@ -99,28 +110,11 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
     };
 
     const onSelect = (data: IClassifier) => {
-        //  console.log('filter =>', filter, !selectedTags[data._id]);
-        // if (!filter.multiple) {
-        //     if (selectedTags[data._id]) {
-        //         removeDataFromServer(data);
-        //     } else {
-        //         const array = {};
-        //         array[data._id] = data;
-        //         addDataInServer(data._id);
-        //         setSelected(array);
-        //     }
-        // } else {
-
         addDataInServer(data);
+    };
 
-        // if (!selectedTags[data._id]) {
-        //     addData(data);
-        //     addDataInServer(data._id);
-        // } else {
-        //     removeDataFromServer(data._id);
-        //     deleteData(data);
-        // }
-        //}
+    const onDelete = (data: IClassifier) => {
+        removeDataFromServer(data);
     };
     console.log('fitler values', filterValues);
     return (
@@ -162,6 +156,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                     //setOpenChooseColor(true);
                 }}
             />
+            <View style={[MT(0.1)]} />
             {filterValues &&
                 filterValues.map((classifier: IClassifier, index: number) => {
                     return (
@@ -169,7 +164,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                             key={index}
                             item={classifier}
                             onPress={(data) => {
-                                onSelect(data);
+                                onDelete(classifier);
                             }}
                             selected={true}
                         />
@@ -186,7 +181,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                 data={filter.values}
                 selectedData={filterValues || []}
                 onSelect={onSelect}
-                onDelete={() => {}}
+                onDelete={onDelete}
                 loading={loading}
             />
             {/* {loading && <Loader />} */}
