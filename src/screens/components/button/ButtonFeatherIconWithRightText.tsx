@@ -40,11 +40,12 @@ const ButtonFeatherIconRightText: React.FC<ButtonFeatherIconRightTextProps> = ({
                 BGCOLOR(mainColor),
                 PV(0.15),
                 BR(0.07),
-                containerStyle,
+
                 AIC(),
                 FDR(),
                 JCC(),
                 { overflow: 'hidden' },
+                containerStyle,
             ]}
             onPress={() => {
                 onPress();

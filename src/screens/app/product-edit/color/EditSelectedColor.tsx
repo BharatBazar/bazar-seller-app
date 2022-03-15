@@ -150,15 +150,15 @@ export default EditSelectedColor;
 const styles = StyleSheet.create({
     editButtonStyle: {
         borderRadius: 4,
-        padding: 5,
+        //padding: 5,
         paddingHorizontal: 8,
+        paddingVertical: 6,
         marginLeft: 5,
         marginTop: 4,
     },
     editButtonContainerStyle: {
         flexWrap: 'wrap',
         flexDirection: 'row',
-
         marginTop: DSP * 0.4,
     },
 });
