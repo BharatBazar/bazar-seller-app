@@ -25,6 +25,7 @@ import { border, createProduct, deleteProductColor, updateProductColor } from '.
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
+import CollapsibleErrorComponent from './error/CollapsibleError';
 import Filter from './filter/Filter';
 import AddPhotoPopup from './photo';
 import DragSort from './photo/DragSort';
@@ -125,6 +126,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     React.useEffect(() => {
         let filtersV = {};
+        //When both product details and filter value are available
         if (filter.length > 0 && Object.keys(productDetails).length > 0) {
             filter.map((item) => {
                 filtersV[item.type] = productDetails[item.type];
@@ -188,6 +190,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         });
     };
 
+    // To prevent uncessary render used memoization for this calculation
     const [currentColorIndexOnSizeClick, currentSizeIndexOnSizeClick] = React.useMemo(() => {
         if (currentColorSizeIndex.length > 0) {
             let a = currentColorSizeIndex.split('-');
@@ -197,6 +200,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     }, [currentColorSizeIndex]);
 
+    // when filter value need to be updated
     const setFilterValuesCallback = React.useCallback(
         (key: string, value: IClassifier[]) => {
             let filters = { ...filterValues };
@@ -206,6 +210,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         },
         [filterValues],
     );
+
+    const checkError = () => {};
 
     return (
         <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
@@ -222,6 +228,13 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     )}
                     containerStyle={[{ padding: DSP }]}
                     title={update ? 'Update Product' : 'Create Product'}
+                />
+                <CollapsibleErrorComponent
+                    error={[
+                        'No Size is provided to the red color of the product',
+                        'Please select value for Jeans Fitting filter',
+                        'errro3',
+                    ]}
                 />
                 <ScrollView contentContainerStyle={[PH(0.2)]}>
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
@@ -267,7 +280,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 </ScrollView>
                 <View style={[{ paddingHorizontal: DSP }, PV(0.2), BGCOLOR('#FFFFFF'), border]}>
                     <RightComponentButtonWithLeftText
-                        buttonText={'close'}
+                        buttonText={'Send for approval'}
                         containerStyle={[]}
                         onPress={() => {
                             //setPopup(false);
