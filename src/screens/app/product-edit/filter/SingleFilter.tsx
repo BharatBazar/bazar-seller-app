@@ -64,7 +64,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
             ? [...filterValues.map((item) => item._id), filterValue._id]
             : [filterValue._id];
         data[filter.type] = filterValuee;
-        console.log('data', data, filter);
+        // console.log('data', data, filter);
         try {
             setLoader(true);
             const response = await updateProduct(data);

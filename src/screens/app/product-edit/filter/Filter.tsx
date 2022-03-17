@@ -12,11 +12,6 @@ interface FilterProps {
     filters: IFilter[];
     filterValues: { [key: string]: IClassifier[] };
     setFilterValues: (key: string, value: IClassifier[]) => void;
-    postDataToServer: IPostDataToServer;
-    productDetails: Partial<IProduct>;
-    productId: string;
-    errorValue: number;
-    setError: (value: number) => void;
 }
 
 const Filter: React.SFC<FilterProps> = ({ filters, setFilterValues, filterValues }) => {

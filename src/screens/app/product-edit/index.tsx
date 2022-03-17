@@ -15,15 +15,22 @@ import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/hea
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
 import { APIgetProduct } from '@app/server/apis/product/product.api';
-import { IClassifier, IFilter, IProduct, IRProduct } from '@app/server/apis/product/product.interface';
+import { IClassifier, IFilter, IProduct, IRProduct, productStatus } from '@app/server/apis/product/product.interface';
 import { IShop } from '@app/server/apis/shop/shop.interface';
 import * as React from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
-import { border, createProduct, deleteProductColor, updateProductColor } from '../edit/product/component/generalConfig';
+import {
+    border,
+    createProduct,
+    deleteProductColor,
+    updateProduct,
+    updateProductColor,
+} from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
+import ProductCompleteCTA from './component/ProductCompleteCTA';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import CollapsibleErrorComponent from './error/CollapsibleError';
 import Filter from './filter/Filter';
@@ -68,7 +75,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
     const [currentColorSizeIndex, setCurrentColorSizeIndex] = React.useState<string>('');
     const [filterValues, setFilterValues] = React.useState<{}>({});
-    const [productDetails, setProductDetails] = React.useState<IProduct | {}>({});
+    const [productDetails, setProductDetails] = React.useState<Partial<IProduct>>({});
 
     const [errors, setErrors] = React.useState<string[]>([]);
     const setAlertState = React.useContext(AlertContext);
@@ -180,6 +187,20 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     };
 
+    const updateProductInServer = async (data: Partial<IProduct>) => {
+        try {
+            setLoader(true);
+            const response: IRProduct = await updateProduct({ _id: productId, ...data });
+            if (response.status == 1) {
+                setProductDetails((productDetails) => ({ ...productDetails, ...data }));
+            }
+            setLoader(false);
+        } catch (error) {
+            showMessage({ type: 'danger', message: error.message });
+            setLoader(false);
+        }
+    };
+
     const deleteColorFromServer = async (_id: string, index: number) => {
         setAlertState({
             isVisible: true,
@@ -214,6 +235,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     const checkError = () => {
         let errors: string[] = [];
+        setLoader(true);
         if (choosenColor.length > 0) {
             choosenColor.map((item) => {
                 if (item.sizes.length == 0) {
@@ -232,7 +254,24 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
             }
         });
-        setErrors(errors);
+        setLoader(false);
+        if (errors.length > 0) setErrors(errors);
+        else {
+            setErrors(errors);
+            let status: productStatus = productDetails.status as productStatus;
+            let proStatus =
+                status === productStatus.INVENTORY
+                    ? productStatus.WAITINGFORAPPROVAL
+                    : status == productStatus.REJECTED
+                    ? productStatus.WAITINGFORAPPROVAL
+                    : status == productStatus.LIVE
+                    ? productStatus.INVENTORY
+                    : status == productStatus.OUTOFSTOCK
+                    ? productStatus.WAITINGFORAPPROVAL
+                    : productStatus.INVENTORY;
+
+            updateProductInServer({ status: proStatus });
+        }
     };
 
     return (
@@ -295,9 +334,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     <Filter filters={filter} filterValues={filterValues} setFilterValues={setFilterValuesCallback} />
                 </ScrollView>
                 <View style={[{ paddingHorizontal: DSP }, PV(0.2), BGCOLOR('#FFFFFF'), border]}>
-                    <RightComponentButtonWithLeftText
-                        buttonText={'Send for approval'}
-                        containerStyle={[]}
+                    <ProductCompleteCTA
+                        status={productDetails?.status}
                         onPress={() => {
                             checkError();
                         }}

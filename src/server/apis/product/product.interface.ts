@@ -1,7 +1,6 @@
 import { CommonApiResponse } from '../common.interface';
 
 export enum productStatus {
-    NOTCOMPLETED = 0,
     INVENTORY = 1,
     REJECTED = 2,
     OUTOFSTOCK = 3,
