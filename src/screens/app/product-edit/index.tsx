@@ -61,7 +61,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     },
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
-
+    const [updateFlow, setUpdate] = React.useState(update || false);
     const [filter, setFilter] = React.useState<IFilter[]>([]);
     const [distribution, setDistribution] = React.useState<IClassifier[]>([]);
     const [choosenColor, setChoosenColor] = React.useState<choosenColor[]>([]);
@@ -75,7 +75,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
     const [currentColorSizeIndex, setCurrentColorSizeIndex] = React.useState<string>('');
     const [filterValues, setFilterValues] = React.useState<{}>({});
-    const [productDetails, setProductDetails] = React.useState<Partial<IProduct>>({});
+    const [productDetails, setProductDetails] = React.useState<Partial<IProduct>>({ status: productStatus.INVENTORY });
 
     const [errors, setErrors] = React.useState<string[]>([]);
     const setAlertState = React.useContext(AlertContext);
@@ -135,11 +135,11 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     React.useEffect(() => {
         let filtersV = {};
         //When both product details and filter value are available
-        if (filter.length > 0 && Object.keys(productDetails).length > 0) {
+        if (updateFlow && filter.length > 0 && Object.keys(productDetails).length > 0) {
             filter.map((item) => {
                 filtersV[item.type] = productDetails[item.type];
             });
-            console.log(filtersV, 'filter values');
+            console.log(filtersV, 'filter values here');
             setFilterValues(filtersV);
         }
     }, [productDetails, filter]);
@@ -192,7 +192,10 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             setLoader(true);
             const response: IRProduct = await updateProduct({ _id: productId, ...data });
             if (response.status == 1) {
-                setProductDetails((productDetails) => ({ ...productDetails, ...data }));
+                setProductDetails({ ...productDetails, ...data });
+                if (!updateFlow) {
+                    setUpdate(true);
+                }
             }
             setLoader(false);
         } catch (error) {
@@ -288,7 +291,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         />
                     )}
                     containerStyle={[{ padding: DSP }]}
-                    title={update ? 'Update Product' : 'Create Product'}
+                    title={updateFlow ? 'Update Product' : 'Create Product'}
                 />
                 {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
                 <ScrollView contentContainerStyle={[PH(0.2)]}>
