@@ -18,6 +18,7 @@ export interface choosenSize {
     itemId: string; // simple id generated for product identification by user
     //idStatus: idCreationStatus; //
     shopId: string;
+    productId: string;
 }
 
 export interface choosenColor {

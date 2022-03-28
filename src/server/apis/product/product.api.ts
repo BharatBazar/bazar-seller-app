@@ -50,7 +50,7 @@ export async function APIUpdateProductColor(data: IProductColor): Promise<IRProd
 
 //Product size api
 
-export async function APICreateProductSize(data: choosenSize): Promise<IRProductSize> {
+export async function APICreateProductSize(data: Partial<choosenSize>): Promise<IRProductSize> {
     return axios.post('/size/create', data);
 }
 

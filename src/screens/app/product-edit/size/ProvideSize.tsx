@@ -23,7 +23,7 @@ import { View } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
 import WrappedSize from '../../edit/product/component/component/WrappedSize';
-import { choosenSize, provideDefaultSizeState } from '../data-types';
+import { choosenSize, ProductIdContext, provideDefaultSizeState } from '../data-types';
 import Size from './Size';
 
 interface ProvideSizeProps {
@@ -48,6 +48,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     showBack,
 }) => {
     const [selectedSize, setSelectedSize] = React.useState<choosenSize[]>([]);
+    const { productId } = React.useContext(ProductIdContext);
 
     const [loader, setLoader] = React.useState(false);
 
@@ -66,9 +67,10 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     const createSize = async (data: Partial<choosenSize>, index: number) => {
         try {
             setLoader(true);
-            let sizeData = {
+            let sizeData: Partial<choosenSize> = {
                 shopId: shopId,
                 parentId: colorId,
+                productId: productId,
 
                 ...data,
             };
