@@ -22,4 +22,5 @@ export const NavigationKey = {
     RESETPASSWORD: 'ResetPassword',
     PRODUCTSTATUS: 'ProductStatus',
     EDITDUKANMEMBER: 'EditDukanMember',
+    EditProductSize: 'EditProductSize',
 };

@@ -259,7 +259,7 @@ const Address: React.FC<AddressProps> = ({
             )}
             <View style={{ zIndex: -20 }}>
                 <TextInput
-                    keyboardType={'number-pad'}
+                    keyboardType={'default'}
                     placeholder={'Local Address in your words so that any one can reach your dukan'}
                     multiline={true}
                     onChangeText={(value) => {

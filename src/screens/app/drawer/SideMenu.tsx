@@ -35,7 +35,10 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
     const setUserDetails = async () => {
         try {
             const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
-            setUserDetail({ name: userDetails.name, phoneNumber: userDetails.phoneNumber });
+            setUserDetail({
+                name: userDetails.firstName + ' ' + userDetails.lastName,
+                phoneNumber: userDetails.phoneNumber,
+            });
         } catch (error) {}
     };
     React.useEffect(() => {

@@ -28,7 +28,6 @@ const TextButton: React.FC<TextButtonProps> = ({
     disabled,
     fade,
 }) => {
-    console.log('rerendering textbutton', textProps, text);
     return (
         <WrappedRectangleButton
             containerStyle={[

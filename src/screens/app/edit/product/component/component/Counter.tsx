@@ -37,9 +37,9 @@ class CounterComponent extends Component<Props, State> {
         return (
             <View style={[styles.container, containerStyle]}>
                 <TextButton
-                    text={'+'}
+                    text={'-'}
                     textProps={{ textColor: colorCode.WHITE }}
-                    onPress={() => this.setCounter('Increment')}
+                    onPress={() => this.setCounter('Decrement')}
                     containerStyle={styles.containerStyle}
                 />
                 <WrappedTextInput
@@ -55,11 +55,10 @@ class CounterComponent extends Component<Props, State> {
                     }}
                     textInputStyle={{ textAlign: 'center', fontSize: fs15 }}
                 />
-
                 <TextButton
-                    text={'-'}
+                    text={'+'}
                     textProps={{ textColor: colorCode.WHITE }}
-                    onPress={() => this.setCounter('Decrement')}
+                    onPress={() => this.setCounter('Increment')}
                     containerStyle={styles.containerStyle}
                 />
             </View>
@@ -70,6 +69,7 @@ class CounterComponent extends Component<Props, State> {
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        alignItems: 'center',
     },
     containerStyle: {
         alignItems: 'center',

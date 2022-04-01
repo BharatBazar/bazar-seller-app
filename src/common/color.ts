@@ -1,6 +1,6 @@
 import { colorTransparency } from './styles';
 
-const applyColorCode = (color: string, percentage: 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100) =>
+export const applyColorCode = (color: string, percentage: 10 | 20 | 30 | 40 | 50 | 60 | 70 | 80 | 90 | 100) =>
     color + colorTransparency[percentage];
 
 export const colorCode = {

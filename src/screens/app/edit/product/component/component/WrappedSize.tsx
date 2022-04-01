@@ -31,11 +31,7 @@ class WrappedSize extends Component<Props, State> {
                     JCC(),
                 ]}
                 onPress={() => {
-                    if (!selected) {
-                        onPress();
-                    } else {
-                        ToastHOC.infoAlert('You can deselect a size from delete seciton in size table.');
-                    }
+                    onPress();
                 }}
             >
                 <Text

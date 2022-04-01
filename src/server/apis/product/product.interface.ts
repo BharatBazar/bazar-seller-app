@@ -1,7 +1,6 @@
 import { CommonApiResponse } from '../common.interface';
 
 export enum productStatus {
-    NOTCOMPLETED = 0,
     INVENTORY = 1,
     REJECTED = 2,
     OUTOFSTOCK = 3,
@@ -17,6 +16,9 @@ export interface IFilter {
     multiple: boolean; // Multiple values can selected or not
     distributionLevel: number; // 0 means filter only and 1 means It is top level distribution like color 2 means inside distibution that is size or etc.
     values: IClassifier[];
+    filterLevel: number;
+    _id: string;
+    mandatory: boolean;
 }
 
 export enum classifierTypes {
@@ -67,6 +69,7 @@ export interface IProductColor {
     sizes: [IProductSize]; // will refer to jeans size table
     photos: [string];
     includedColor: [IClassifier];
+    shopId: string;
 }
 
 export interface IColorApp {
@@ -115,7 +118,10 @@ export interface IProducts extends CommonApiResponse {
 }
 
 export interface IRProductColor extends CommonApiResponse {
-    payload: IProductColor;
+    payload: {
+        colorId: string;
+        productId: string;
+    };
 }
 export interface IRProductSize extends CommonApiResponse {
     payload: IProductSize;

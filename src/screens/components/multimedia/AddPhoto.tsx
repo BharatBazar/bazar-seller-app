@@ -1,12 +1,12 @@
 import { fs13, fs14, fs15, fs20, fs28 } from '@app/common';
 import { mainColor } from '@app/common/color';
-import { getHP } from '@app/common/dimension';
+import { getHP, getWP } from '@app/common/dimension';
 import { AIC, BGCOLOR, BR, FDR, FLEX, HP, JCC, ML, PH, PV } from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import * as React from 'react';
-import { Image, View, StyleSheet } from 'react-native';
+import { Image, View, StyleSheet, ViewStyle } from 'react-native';
 import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import Ripple from 'react-native-material-ripple';
 import Modal from 'react-native-modal';
@@ -14,6 +14,8 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 interface AddPhotoProps {
     addImage: Function;
+    containerStyle?: ViewStyle[] | ViewStyle;
+    openCamera?: boolean;
 }
 
 interface IconTextButtonProps {
@@ -36,24 +38,8 @@ const IconTextButton: React.FunctionComponent<IconTextButtonProps> = ({ onPress,
     );
 };
 
-const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
+const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerStyle, openCamera }) => {
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
-
-    const openCamera = () => {
-        setShowImageSelect(false);
-        ImageCropPicker.openCamera({
-            width: 300,
-            height: 400,
-            cropping: true,
-            multiple: true,
-        })
-            .then((image) => {
-                setShowImageSelect(false);
-            })
-            .catch((error) => {
-                setShowImageSelect(false);
-            });
-    };
 
     const openImageSelector = async (selector: 'file' | 'camera') => {
         try {
@@ -93,8 +79,13 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage }) => {
         }
     };
 
+    React.useEffect(() => {
+        if (openCamera) {
+            setShowImageSelect(true);
+        }
+    }, [openCamera]);
     return (
-        <View style={[styles.photoContainer]}>
+        <View style={[styles.photoContainer, containerStyle]}>
             <WrappedFeatherIcon
                 iconName={'camera'}
                 iconSize={fs28}
@@ -150,10 +141,9 @@ const styles = StyleSheet.create({
         borderStyle: 'dashed',
         alignSelf: 'flex-start',
         borderWidth: 2,
-        paddingHorizontal: '2%',
-        paddingVertical: '4%',
+        height: getWP(2.5),
+        width: getWP(2.5),
         backgroundColor: undefined,
-        marginTop: getHP(0.2),
     },
     colorStyle: {
         height: getHP(0.2),

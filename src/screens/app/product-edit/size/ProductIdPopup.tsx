@@ -28,6 +28,7 @@ import { mainColor } from '@app/common/color';
 import { fs11, fs13, fs15, fs20 } from '@app/common';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import TextButton from '@app/screens/component/TextButton';
+import { showMessage } from 'react-native-flash-message';
 
 interface ProductIdPopupProps {
     isVisible: boolean;
@@ -62,11 +63,16 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
         >
             <View style={[BGCOLOR('#FFFFFF'), BR(0.1), PH(0.5), PV(0.2)]}>
                 <WrappedText text={'Unique identification code is'} fontSize={fs20} />
-                <WrappedText text={'Provide this id to the product.'} fontSize={fs11} textColor={'#8a8a8a'} />
+                <WrappedText
+                    text={'Provide this id to the product.'}
+                    fontSize={fs11}
+                    textColor={'#8a8a8a'}
+                    containerStyle={[MT(0.2)]}
+                />
                 <WrappedText
                     text={generatedId}
                     textColor={'#646464'}
-                    containerStyle={[BW(1), MT(0.1), BC('#EEEEEE'), BR(0.06), HP(0.4), BGCOLOR('#FFFFFF')]}
+                    containerStyle={[BW(1), MT(0.1), BC('#EEEEEE'), BR(0.06), HP(0.5), BGCOLOR('#FFFFFF')]}
                     fontSize={fs13}
                     textStyle={[ML(0.2)]}
                 />
@@ -82,7 +88,16 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
                         setId(id);
                     }}
                     placeholder={'enter item Id here'}
-                    style={[BW(1), BC('#EEEEEE'), BR(0.06), HP(0.4), BGCOLOR('#FFFFFF'), MT(0.1), PL(0.2)]}
+                    style={[
+                        BW(1),
+                        BC('#EEEEEE'),
+                        BR(0.06),
+                        HP(0.5),
+                        BGCOLOR('#FFFFFF'),
+                        MT(0.1),
+                        PL(0.2),
+                        { padding: 0 },
+                    ]}
                 />
 
                 <View style={[MT(0.3)]}>
@@ -91,7 +106,7 @@ const ProductIdPopup: React.FunctionComponent<ProductIdPopupProps> = ({
                             if (id == generatedId) {
                                 onPressRightButton(generatedId);
                             } else {
-                                ToastHOC.errorAlert('Entered id is not same as given id');
+                                showMessage({ type: 'danger', message: 'Please enter correct id' });
                             }
                         }}
                         containerStyle={[FDR(), JCC(), AIC(), BGCOLOR(mainColor), PH(0.5), PV(0.12), BR(0.05)]}

@@ -10,6 +10,7 @@ import {
     IRProductStatus,
 } from './product.interface';
 import axios from 'axios';
+import { choosenSize } from '@app/screens/app/product-edit/data-types';
 
 //Product apis
 
@@ -25,7 +26,7 @@ export async function APIdeleteProduct(data: { _id: string }): Promise<IRProduct
     return axios.delete('/delete?' + '_id=' + data._id);
 }
 
-export async function APIgetProduct(data: IProduct): Promise<IProduct> {
+export async function APIgetProduct(data: Partial<IProduct>): Promise<IRProduct> {
     return axios.post('/get', data);
 }
 
@@ -49,7 +50,7 @@ export async function APIUpdateProductColor(data: IProductColor): Promise<IRProd
 
 //Product size api
 
-export async function APICreateProductSize(data: IProductSize): Promise<IRProductSize> {
+export async function APICreateProductSize(data: Partial<choosenSize>): Promise<IRProductSize> {
     return axios.post('/size/create', data);
 }
 

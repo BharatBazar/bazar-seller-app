@@ -3,7 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { getHP, getWP } from './dimension';
 //const ratio = getHP(1) / getWP(1);
 
-const scale = getWP(10) / 375;
+const scale = getWP(10) / (Platform.OS == 'ios' ? 400 : 375);
 
 export function provideFontSize(fontSize: number) {
     const newSize = fontSize * scale;
@@ -114,3 +114,6 @@ export const FontFamily = {
     Bold: 'Roboto-Bold',
     Helvatica: 'Helvetica',
 };
+
+export const DEFAULT_IMAGE_URL =
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80';

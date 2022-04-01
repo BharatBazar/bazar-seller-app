@@ -1,12 +1,11 @@
-import { FontFamily, fs12, fs13, fs18 } from '@app/common';
+import { FontFamily, fs13 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { HP, WP, AIC, BGCOLOR, BR, BW, FDR, JCC, ML, PH, PV, FLEX, MV, MH, MT } from '@app/common/styles';
+import { WP, AIC, BGCOLOR, BR, FDR, JCC, ML, PH, PV, FLEX, MV, MH } from '@app/common/styles';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
-import TextButton from '@app/screens/component/TextButton';
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 import WrappedText from '@app/screens/component/WrappedText';
-import ModalHOC from '@app/screens/hoc/ModalHOC';
+
 import * as React from 'react';
 import { View } from 'react-native';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
