@@ -48,11 +48,12 @@ export default class Home extends React.Component<Props, State> {
             const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
 
             this.setState({ userDetails });
-            console.log('userDetails provided');
+            console.log('userDetails provided', userDetails);
             let response: IRGetShop = await getShop({
                 _id: userDetails.shop,
             });
             if (response.status == 1) {
+                console.log('Resposen', response);
                 this.setState({
                     shop: response.payload,
                     section: response.payload.category.map((cat, index) => {
@@ -117,7 +118,7 @@ export default class Home extends React.Component<Props, State> {
                                 subCategory1: [],
                             };
                         })}
-                        shopId={this.state.userDetails.shop}
+                        shopId={this.state.shop}
                         navigation={this.props.navigation}
                     />
                 ) : (
