@@ -1,28 +1,8 @@
 import * as React from 'react';
 import { View, ScrollView, Alert } from 'react-native';
-import { FontFamily, fs12, fs14, fs16, fs18, fs20, fs28, fs6, NavigationProps } from '../../common';
+import { FontFamily, fs14, fs18, fs28, NavigationProps } from '../../common';
 import { getHP, getWP } from '../../common/dimension';
-import {
-    AIC,
-    BC,
-    BGCOLOR,
-    BR,
-    BW,
-    colorTransparency,
-    DSP,
-    FDR,
-    FLEX,
-    HP,
-    JCC,
-    MH,
-    MT,
-    MV,
-    PA,
-    PH,
-    provideShadow,
-    PT,
-    PV,
-} from '../../common/styles';
+import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, JCC, MT, MV, PA, provideShadow } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import StatusBar from '../component/StatusBar';
 import { IshopMember, shopMemberRole } from '../../server/apis/shopMember/shopMember.interface';
@@ -30,8 +10,6 @@ import { borderColor, colorCode, errorColor, mainColor, messageColor } from '../
 import { IRGetShop, IRShopVerification, IShop, Shop, verificationStatus } from '../../server/apis/shop/shop.interface';
 import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
-import TextButton from '../component/TextButton';
-import { buttonContainerStyle, componentProps } from '../../common/containerStyles';
 import { NavigationKey } from '../../labels';
 import { border } from '../app/edit/product/component/generalConfig';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
@@ -39,10 +17,7 @@ import StepIndicator from 'react-native-step-indicator';
 import { CommonApiResponse } from '../../server/apis/common.interface';
 import { Storage, StorageItemKeys } from '../../storage';
 import Loader from '../component/Loader';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
-import { commonButtonProps } from '../components/button';
-import Border from '../components/border/Border';
 import AddMember from './add-dukan-member/AddMember';
 import MemberDetails from './add-dukan-member/MemberDetails';
 import { ShadowWrappper } from '../components/styles/common';

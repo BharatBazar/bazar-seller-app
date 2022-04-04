@@ -1,5 +1,4 @@
 import React from 'react';
-import { View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerActions, NavigationContainer } from '@react-navigation/native';
 import { NavigationKey } from '../labels';
@@ -28,7 +27,6 @@ import { getHP } from '../common/dimension';
 import ForgetPassword from '../screens/auth/SendOtp';
 import VerifyOTP from '../screens/auth/VerifyOTP';
 import ResetPassword from '../screens/auth/ResetPassword';
-import ProductTab from '@app/screens/app/listing/Tabs';
 import ProductDetails from '@app/screens/auth/ProductDetails';
 import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
 import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
