@@ -189,7 +189,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
 
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
-            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP }}>
+            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP }}>
                 {showBack ? (
                     <WrappedFeatherIcon
                         iconName={'chevron-left'}
