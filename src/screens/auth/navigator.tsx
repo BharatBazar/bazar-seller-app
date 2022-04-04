@@ -5,19 +5,14 @@ import SetPassword from './SetPassword';
 import AddDukanMembers from './add-dukan-member/AddDukanMembers';
 import { NavigationKey } from '../../labels';
 import React from 'react';
-import { View, KeyboardAvoidingView, Platform } from 'react-native';
+import { View } from 'react-native';
 import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import ProductDetails from './ProductDetails';
-import ProductSubCategory from './ProductSubCategory';
-import { AIC, BGCOLOR, BR, BTW, FDR, FLEX, H, HP, JCC, MT, provideShadow, PV, WP } from '../../common/styles';
-import { Bottom, Right } from '../../navigation/NavigationEffect';
+import { BGCOLOR, FLEX, provideShadow } from '../../common/styles';
+import { Right } from '../../navigation/NavigationEffect';
 import Address from './Address';
 import HeaderBar from '../component/HeaderBar';
-import { borderColor, colorCode } from '@app/common/color';
-import WrappedText from '../component/WrappedText';
 import EditDukanMember from './add-dukan-member/EditDukanMember';
-import Loader from '../component/Loader';
 
 const Stack = createStackNavigator();
 
@@ -109,7 +104,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                         }}
                     />
                 </Stack.Navigator>
-                {!update && (
+                {/* {!update && (
                     <KeyboardAvoidingView
                         style={[
                             //BGCOLOR('red'),
@@ -125,7 +120,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                         <WrappedText text="Step 1 of 5 completed" containerStyle={{ marginBottom: 5 }} />
                         <View style={[WP(5), H(10), BR(2), BGCOLOR(colorCode.SAFFRON)]} />
                     </KeyboardAvoidingView>
-                )}
+                )} */}
                 {/* <Loader /> */}
             </View>
         );
