@@ -1,4 +1,4 @@
-import { FontFamily, fs12, fs16, fs25, fs30 } from '@app/common';
+import { FontFamily, fs12, fs16, fs20, fs25, fs30 } from '@app/common';
 import { MT } from '@app/common/styles';
 import WrappedText from '@app/screens/component/WrappedText';
 import * as React from 'react';
@@ -25,14 +25,14 @@ const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSu
 }) => {
     return (
         <View style={headerContainerStyle}>
-            <WrappedText text={heading} fontFamily={FontFamily.Medium} fontSize={fs25} textStyle={headerStyle} />
+            <WrappedText text={heading} fontFamily={FontFamily.Medium} fontSize={fs20} textStyle={headerStyle} />
             {typeof subHeading === 'string' && (
                 <WrappedText
                     text={subHeading}
                     fontSize={fs12}
                     textColor={'#8a8a8a'}
                     fontFamily={FontFamily.Medium}
-                    containerStyle={[MT(0.05)]}
+                    containerStyle={{ marginTop: 2 }}
                 />
             )}
             {borderNeeded && <Border borderStyle={bottomBorderStyle} />}
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         borderTopWidth: 2,
         borderColor: '#500061',
         opacity: 0.1,
-        marginTop: '4%',
+        marginTop: '2%',
     },
 });
 
