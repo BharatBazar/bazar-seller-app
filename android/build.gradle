@@ -13,6 +13,11 @@ buildscript {
     repositories {
         google()
          mavenCentral()
+         //Added back after upgrade as build was not completing 
+        //Could not find com.henninghall.android:NumberPickerView:1.1.5. due to this
+      
+          jcenter()
+          //
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.2.2")
@@ -41,8 +46,15 @@ allprojects {
             }
         }
 
+ 
+  maven { url 'https://maven.google.com' }
+
         google()
-       
+
+        //Added back after upgrade as build was not completing 
+        //Could not find com.henninghall.android:NumberPickerView:1.1.5. due to this
+        jcenter()
+        //
         maven { url 'https://www.jitpack.io' }
     }
 }

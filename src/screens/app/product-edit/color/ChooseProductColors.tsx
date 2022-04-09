@@ -1,27 +1,24 @@
 import * as React from 'react';
-import { FlatList, ScrollView, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { getHP, getWP } from '../../../../common/dimension';
-import { colorCode, mainColor } from '../../../../common/color';
-
+import { colorCode } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
-
 import ModalHeader from '../../../component/ModalHeader';
-import { IClassifier, IFilter } from '../../../../server/apis/product/product.interface';
+import { IFilter } from '../../../../server/apis/product/product.interface';
 import { choosenColor, choosenSize, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
-import { AIC, BC, BGCOLOR, BR, BW, FDR, FLEX, JCC, MH, MT, MV, PH, PL, PR, PV } from '@app/common/styles';
+import { AIC, BC, BGCOLOR, BR, BW, FDR, MH, MT, MV, PL, PR } from '@app/common/styles';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import Ripple from 'react-native-material-ripple';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { DEFAULT_IMAGE_URL, FontFamily, fs14, fs16 } from '@app/common';
-import ImageCropPicker from 'react-native-image-crop-picker';
+
 import { createProductColor, deleteProductColor, updateProductColor } from '../../edit/product/component/generalConfig';
-import { color } from 'react-native-reanimated';
+
 import { showMessage } from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
 import ProvideSize from '../size/ProvideSize';
-import AddPhoto from '@app/screens/components/multimedia/AddPhoto';
 import AddPhotoPopup from '../photo';
 
 export interface ChooseProductColorsProps {
