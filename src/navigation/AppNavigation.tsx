@@ -14,7 +14,7 @@ import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/edit/Edit';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
-import { Easing } from 'react-native-reanimated';
+
 import { NavigationProps } from '../common';
 import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import { provideShadow } from '../common/styles';
@@ -30,6 +30,7 @@ import ResetPassword from '../screens/auth/ResetPassword';
 import ProductDetails from '@app/screens/auth/ProductDetails';
 import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
 import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
+import { Easing } from 'react-native';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();

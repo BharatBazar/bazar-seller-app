@@ -1,13 +1,11 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { ActivityIndicator, Alert, ScrollView, View } from 'react-native';
-import { sub } from 'react-native-reanimated';
-import { NavigationProps } from '../../../common';
+import { Alert, View } from 'react-native';
 import { NavigationKey } from '../../../labels';
 import { IProduct, IProducts, productStatus } from '../../../server/apis/product/product.interface';
 import { APIgetAllProduct } from '../../../server/apis/product/product.api';
 import ProductIdentifierView from './component/ProductIdentifierView';
-import { AIC, BGCOLOR, colorTransparency, FLEX, JCC, M, PH } from '@app/common/styles';
+import { AIC, BGCOLOR, colorTransparency, FLEX, JCC } from '@app/common/styles';
 import WrappedText from '@app/screens/component/WrappedText';
 import { FlatList } from 'react-native-gesture-handler';
 import Loader from '@app/screens/component/Loader';
