@@ -46,8 +46,8 @@ const App: () => Node = () => {
     );
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#000000' }}>
-            <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} />
+        <View style={{ flex: 1 }}>
+            {/* <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} /> */}
             <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
                     <AlertBox
