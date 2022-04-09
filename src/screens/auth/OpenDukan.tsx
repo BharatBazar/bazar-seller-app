@@ -102,7 +102,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             setLoader(false);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
-                await Storage.setItem(StorageItemKeys.Token, 'toker exist');
+                await Storage.setItem(StorageItemKeys.Token, 'token exist');
                 await Storage.setItem(StorageItemKeys.userDetail, currentAccountState.data);
                 let screen = '';
                 if (currentAccountState.notPasswordAvailable) {

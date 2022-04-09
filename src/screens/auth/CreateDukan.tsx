@@ -109,6 +109,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                   });
             if (response.status == 1) {
                 if (!this.state.update) {
+                    console.log("awaiting")  //add garvit
                     await Storage.setItem(StorageItemKeys.Token, 'token exists');
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);

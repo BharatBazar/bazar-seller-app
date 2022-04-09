@@ -71,7 +71,7 @@ const Address: React.FC<AddressProps> = ({
         if (pincode.length != 6) {
             setError({ pincode: 'Please provide valid pincode.' });
         } else {
-            setError({});
+            setError({});  
             try {
                 setLoader(1);
                 const a = await checkPincode(pincode);
@@ -93,6 +93,7 @@ const Address: React.FC<AddressProps> = ({
 
                 setError({ error: error.message });
             }
+            console.log("NOT ADDED");
         }
     };
 

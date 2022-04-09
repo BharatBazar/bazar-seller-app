@@ -2,8 +2,8 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 import { Storage, StorageItemKeys } from '../storage';
 
-export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.29.186:2112';
-
+// export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.29.186:2112';
+export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://10.0.2.2:2112';
 const handleError = (error: { isAxiosError: any; response: { data: any } }) => {
     let message = '';
 
@@ -19,6 +19,7 @@ function isNetworkError(err: { isAxiosError: any; response: { data: any } }) {
 
 export function initializeAxios() {
     axios.defaults.baseURL = apiEndPoint;
+    console.log("Hello Developer") // Add by G
     console.log(axios.interceptors.response.handlers, axios.interceptors.request.handlers);
     // if (axios.interceptors.request.handlers.length == 0) {
     //     axios.interceptors.request.use((value) => {
