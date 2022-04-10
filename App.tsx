@@ -8,7 +8,6 @@
 
 import React, { createContext } from 'react';
 import type { Node } from 'react';
-import 'react-native-gesture-handler';
 import { StatusBar } from 'react-native';
 import AppNavigation from './src/navigation/AppNavigation';
 import { initializeAxios } from './src/server';
