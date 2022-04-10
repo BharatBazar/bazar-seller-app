@@ -1,5 +1,5 @@
 import React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
 import { DrawerActions, NavigationContainer } from '@react-navigation/native';
 import { NavigationKey } from '../labels';
 import Welcome from '../screens/auth/Welcome';
@@ -31,7 +31,7 @@ import ProductDetails from '@app/screens/auth/ProductDetails';
 import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
 import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 const config: TransitionSpec = {
     animation: 'timing',

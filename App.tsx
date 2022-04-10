@@ -8,7 +8,8 @@
 
 import React, { createContext } from 'react';
 import type { Node } from 'react';
-import { StatusBar } from 'react-native';
+import 'react-native-gesture-handler';
+import { StatusBar, View } from 'react-native';
 import AppNavigation from './src/navigation/AppNavigation';
 import { initializeAxios } from './src/server';
 import useAlert, { defaultAlertState } from '@app/hooks/useAlert';
@@ -45,10 +46,10 @@ const App: () => Node = () => {
     );
 
     return (
-        <>
+        <View style={{ flex: 1, backgroundColor: '#000000' }}>
+            <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} />
             <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
-                    <StatusBar translucent={true} backgroundColor={'#00000000'} />
                     <AlertBox
                         {...alertState}
                         onPressLeftButton={() => {
@@ -63,7 +64,7 @@ const App: () => Node = () => {
             </LoaderContext.Provider>
             <FlashMessage position={'top'} />
             {loader && <Loader />}
-        </>
+        </View>
     );
 };
 
