@@ -8,29 +8,29 @@
 
 import React, { createContext } from 'react';
 import type { Node } from 'react';
-import 'react-native-gesture-handler';
-import { StatusBar, View } from 'react-native';
-import AppNavigation from './src/navigation/AppNavigation';
-import { initializeAxios } from './src/server';
-import useAlert, { defaultAlertState } from '@app/hooks/useAlert';
-import AlertBox from '@app/screens/components/popup/AlertBox';
-import FlashMessage from 'react-native-flash-message';
-import Loader from '@app/screens/component/Loader';
+//import 'react-native-gesture-handler';
+import { View } from 'react-native';
+// import AppNavigation from './src/navigation/AppNavigation';
+// import { initializeAxios } from './src/server';
+//import useAlert, { defaultAlertState } from '@app/hooks/useAlert';
+// import AlertBox from '@app/screens/components/popup/AlertBox';
+// import FlashMessage from 'react-native-flash-message';
+//import Loader from '@app/screens/component/Loader';
 
-export const AlertContext = createContext<Function>(() => {});
-export const LoaderContext = createContext<Function>(() => {});
+// export const AlertContext = createContext<Function>(() => {});
+// export const LoaderContext = createContext<Function>(() => {});
 
 const App: () => Node = () => {
-    const { alertState, setAlertState } = useAlert();
+    //const { alertState, setAlertState } = useAlert();
     const [loader, setLoader] = React.useState(false);
 
     async function initializeApp() {
         console.log('App initialization');
-        initializeAxios();
+        // initializeAxios();
     }
 
     React.useEffect(() => {
-        initializeApp();
+        //  initializeApp();
     }, []);
 
     const setLoaderCallback = React.useCallback(
@@ -46,9 +46,9 @@ const App: () => Node = () => {
     );
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: 'red' }}>
             {/* <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} /> */}
-            <LoaderContext.Provider value={setLoaderCallback}>
+            {/* <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
                     <AlertBox
                         {...alertState}
@@ -62,7 +62,7 @@ const App: () => Node = () => {
                     <AppNavigation />
                 </AlertContext.Provider>
             </LoaderContext.Provider>
-            <FlashMessage position={'top'} />
+            <FlashMessage position={'top'} /> */}
             {loader && <Loader />}
         </View>
     );
