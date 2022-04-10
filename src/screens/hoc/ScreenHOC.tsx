@@ -23,13 +23,6 @@ const ScreenHOC: React.FC<ScreenHOCProps> = ({
 }) => {
     return (
         <View style={[FLEX(1), BGCOLOR(screenColor)]}>
-            <StatusBar
-                barStyle={barStyle || 'dark-content'}
-                translucent={translucent}
-                backgroundColor={translucent ? '#0000001A' : statusbarColor || '#FFFFFF'}
-                animated={true}
-                showHideTransition={showHideTransition || 'fade'}
-            />
             <View style={{ paddingTop: STATUS_BAR_HEIGHT, backgroundColor: statusbarColor }} />
             {children && children}
         </View>
