@@ -2,22 +2,17 @@
 
 buildscript {
     ext {
-        
-         buildToolsVersion = "30.0.2"
+       buildToolsVersion = "30.0.2"
         minSdkVersion = 21
         compileSdkVersion = 30
         targetSdkVersion = 30
         ndkVersion = "21.4.7075529"
-        kotlinVersion = "1.5.31"
+        kotlinVersion = "1.5.0"  //gary add
     }
     repositories {
         google()
-         mavenCentral()
-         //Added back after upgrade as build was not completing 
-        //Could not find com.henninghall.android:NumberPickerView:1.1.5. due to this
-      
-          jcenter()
-          //
+        // jcenter()
+          mavenCentral()
     }
     dependencies {
         classpath("com.android.tools.build:gradle:4.2.2")
@@ -29,8 +24,7 @@ buildscript {
 
 allprojects {
     repositories {
-      
-        maven {
+       maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
         }
@@ -49,11 +43,19 @@ allprojects {
  
   maven { url 'https://maven.google.com' }
 
+        mavenCentral {
+            // We don't want to fetch react-native from Maven Central as there are
+            // older versions over there.
+            content {
+                excludeGroup "com.facebook.react"
+            }
+        }
+
         google()
 
         //Added back after upgrade as build was not completing 
         //Could not find com.henninghall.android:NumberPickerView:1.1.5. due to this
-        jcenter()
+        // jcenter() gary add
         //
         maven { url 'https://www.jitpack.io' }
     }

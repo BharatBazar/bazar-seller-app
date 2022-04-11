@@ -1,15 +1,12 @@
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { colorCode } from '../../common/color';
-import { AIC, BGCOLOR, BR, DSP, FLEX, JCC, MV, PA, PH, PV } from '../../common/styles';
-import WrappedRectangleButton from '../component/WrappedRectangleButton';
+import { AIC, DSP, FLEX, JCC, PA } from '../../common/styles';
 import WrappedText from '../component/WrappedText';
 import ScreenHOC from '../hoc/ScreenHOC';
 import { GlobalText, WelcomeText } from '../../common/customScreenText';
 import { FontFamily, fs12, fs14, fs40, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
-
-import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import { commonButtonProps } from '../components/button';
 
