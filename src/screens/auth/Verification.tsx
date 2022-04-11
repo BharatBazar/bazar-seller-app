@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Alert } from 'react-native';
+import { View, ScrollView, Alert, RefreshControl } from 'react-native';
 import { FontFamily, fs14, fs18, fs28, NavigationProps } from '../../common';
 import { getHP, getWP } from '../../common/dimension';
 import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, JCC, MT, MV, PA, provideShadow } from '../../common/styles';
@@ -146,6 +146,8 @@ const Verification: React.SFC<VerificationProps> = ({
     const [currentPosition, setCurrentPosition] = React.useState<number>(0);
     const [indicatorLabel, setLabels] = React.useState(labels);
     const [shop, setShop] = React.useState({});
+    const [refreshing, setRefreshing] = React.useState(false)
+
 
     const findCurrentPosition = async () => {
         const requestStatuss = verificationDetails.verificationStatus;
@@ -335,9 +337,21 @@ const Verification: React.SFC<VerificationProps> = ({
     };
 
     React.useEffect(() => {
+       
         loadVerificationDetail();
         getShopDetailsFromServer();
-    }, []);
+    }, [refreshing]);
+
+    const onRefreshIng = ()=>{
+        setRefreshing(true)
+        loadVerificationDetail()
+        getShopDetailsFromServer()
+        setRefreshing(false)
+    }
+
+    const onRefresh = React.useCallback(() => {
+      onRefreshIng()
+      }, []);
 
     if (loader) {
         return <Loader />;
@@ -346,7 +360,10 @@ const Verification: React.SFC<VerificationProps> = ({
             <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
                 <StatusBar />
                 <View style={[FLEX(1)]}>
-                    <ScrollView style={[{ marginBottom: 5 }]} showsVerticalScrollIndicator={false}>
+                    <ScrollView style={[{ marginBottom: 5 }]} showsVerticalScrollIndicator={false} refreshControl={<RefreshControl
+                    refreshing={false}
+                    onRefresh={onRefresh}
+                    />}>
                         <View style={[BGCOLOR('#FFFFFF'), , PA(DSP)]}>
                             <View style={[]}>
                                 <WrappedText text={'Dukan Verification'} fontSize={fs28} textColor={'#161616'} />

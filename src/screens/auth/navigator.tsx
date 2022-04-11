@@ -1,4 +1,4 @@
-import { createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import CreateDukan from './CreateDukan';
 import ShopDetails from './DukanDetails';
 import SetPassword from './SetPassword';
@@ -14,7 +14,7 @@ import Address from './Address';
 import HeaderBar from '../component/HeaderBar';
 import EditDukanMember from './add-dukan-member/EditDukanMember';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 interface Props extends NavigationProps {
     route: {
