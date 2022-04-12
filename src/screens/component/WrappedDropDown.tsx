@@ -6,9 +6,12 @@ import { fs12, fs14, fs20 } from '../../common';
 import { black50 } from '../../common/color';
 
 export interface WrappedDropDownProps {
+    open:boolean;
+    setOpen:boolean;
     data: { label?: string; value?: string }[];
     selectValue: string;
-    setValue: Function;
+    
+    setValue: Function; //GARY ADD OBJECT
     callBack?: Function;
     zIndex: number;
     arrowColor?: string;
@@ -52,6 +55,8 @@ const dropDownProps = {
 };
 
 const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
+    open,
+    setOpen,
     data,
     selectValue,
     setValue,
@@ -66,19 +71,29 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
 }) => {
     return (
         <DropDownPicker
+       
+        open={open}
+        setOpen={setOpen}
             controller={provideController}
             items={data}
             noBottomRadius={false}
             noTopRadius={false}
             defaultValue={data.length > 0 && (selectValue || undefined)}
+            bac
+            textStyle={{
+                fontSize: 15
+              }}
+              
             placeholder={placeholder}
-            onChangeItem={(item) => {
-                if (item.value != selectValue) {
-                    setValue(item.value);
+            // onChangeItem={(item) => {
+            //     if (item.value != selectValue) {
+            //         setValue(item.value);
 
-                    callBack();
-                }
-            }}
+            //         callBack();
+            //     }
+            // }}
+            setValue={setValue}
+            
             dropDownMaxHeight={dropDownMaxHeight}
             searchable={searchable}
             showArrow={true}
