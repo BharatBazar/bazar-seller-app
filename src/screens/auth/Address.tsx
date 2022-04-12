@@ -19,6 +19,7 @@ import { IAddress } from '../../server/apis/address/address.interface';
 import { NavigationKey } from '../../labels';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
+import axios from 'axios';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -46,7 +47,7 @@ const Address: React.FC<AddressProps> = ({
     },
 }) => {
     const [pincode, setPinCode] = React.useState<string>('');
-    const [area, setArea] = React.useState('w');   /// GARY ADD WE HAVE TO CHANGE THIS STATIC PROP
+    const [area, setArea] = React.useState('w'); /// GARY ADD WE HAVE TO CHANGE THIS STATIC PROP
     const [error, setError] = React.useState<Partial<Error>>({});
     const [areas, setAreas] = React.useState<{ label: string | undefined; value: string | undefined }[]>([]);
     const [state, setState] = React.useState<Partial<IAddress>>({});
@@ -54,8 +55,8 @@ const Address: React.FC<AddressProps> = ({
     const [localAddress, setLocalAddress] = React.useState('');
     const [loader, setLoader] = React.useState<number>(0);
     const [previousPin, setPreviousPin] = React.useState<undefined | string>(undefined);
-    const [open, setOpen] = React.useState<boolean>(false)
-    const [value, setValue] = React.useState(null)
+    const [open, setOpen] = React.useState<boolean>(false);
+    const [value, setValue] = React.useState(null);
 
     React.useEffect(() => {
         if (update) {
@@ -73,8 +74,9 @@ const Address: React.FC<AddressProps> = ({
         if (pincode.length != 6) {
             setError({ pincode: 'Please provide valid pincode.' });
         } else {
-            setError({});  
+            setError({});
             try {
+                console.log(axios.defaults.baseURL);
                 setLoader(1);
                 const a = await checkPincode(pincode);
                 setLoader(0);
@@ -95,7 +97,7 @@ const Address: React.FC<AddressProps> = ({
 
                 setError({ error: error.message });
             }
-            console.log("NOT ADDED");
+            console.log('NOT ADDED');
         }
     };
 
@@ -173,6 +175,7 @@ const Address: React.FC<AddressProps> = ({
                 <TextInput
                     keyboardType={'number-pad'}
                     placeholder={'Pincode'}
+                    placeholderTextColor={black50}
                     value={pincode}
                     onChangeText={(value) => {
                         if (value.length <= 6) setPinCode(value);
@@ -243,8 +246,8 @@ const Address: React.FC<AddressProps> = ({
                     </View>
                     <View style={[MT(0.2)]} />
                     <WrappedDropDown
-                    open={open}
-                    setOpen={setOpen}
+                        open={open}
+                        setOpen={setOpen}
                         data={areas}
                         value={value}
                         // setValue={area}
@@ -254,16 +257,16 @@ const Address: React.FC<AddressProps> = ({
                         zIndex={5000}
                         zIndexInverse={1000}
                         // selectValue={area}
-                        
+
                         setValue={(value: string) => {
-                            console.log("AREA VALUE",value);
+                            console.log('AREA VALUE', value);
                             setArea(value);
                         }}
                         searchable={true}
                         dropDownMaxHeight={250}
                         placeholder={'Area'}
                     />
-                    
+
                     {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}
                 </>
             )}

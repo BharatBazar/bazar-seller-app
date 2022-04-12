@@ -91,7 +91,7 @@ class AppNavigation extends React.Component {
                     <Stack.Screen name={NavigationKey.EditProductSize} component={ProvideSize} />
                     {/* <Stack.Screen name={NavigationKey.PRODUCTSTATUS} component={ProductTab} /> */}
                 </Stack.Navigator>
-                <Toast ref={(ref) => Toast.setRef(ref)} />
+                <Toast />
             </NavigationContainer>
         );
     }
