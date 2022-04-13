@@ -1,5 +1,5 @@
 import { fs13 } from './index';
-import { ViewStyle } from 'react-native';
+import { ViewStyle, StyleProp, TextStyle } from 'react-native';
 import { colorCode, black20, black50, errorColor } from './color';
 import { getHP, getWP } from './dimension';
 import { PH, PV, BR, colorTransparency } from './styles';
@@ -8,7 +8,7 @@ export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
 
 export const generalSpacing = getHP(0.3);
 
-export const textInputContainerStyle: ViewStyle = {
+export const textInputContainerStyle: StyleProp<TextStyle> = {
     height: getHP(0.5),
     borderWidth: 1,
     borderRadius: getHP(0.05),
@@ -17,6 +17,7 @@ export const textInputContainerStyle: ViewStyle = {
     flexDirection: 'row',
     marginTop: getHP(0.1),
     backgroundColor: colorCode.WHITE,
+    color: '#000',
 };
 
 export const buttonContainerStyle: ViewStyle = {
