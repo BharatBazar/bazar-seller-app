@@ -83,12 +83,14 @@ const Address: React.FC<AddressProps> = ({
                 const a = await checkPincode(pincode);
                 setLoader(0);
                 if (a.status == 1) {
-                    console.log(a);
+                   
                     setState(a.payload.state);
                     setCity(a.payload.city);
+                    console.log("AREA PAYLOAD",a.payload.area);
                     const areas = a.payload.area.map((item) => {
                         return { label: item.name, value: item._id };
                     });
+                    console.log("AREAS A2",areas);
                     setAreas(areas);
                     setPreviousPin(pincode);
                 }
@@ -160,6 +162,9 @@ const Address: React.FC<AddressProps> = ({
             submitDetails();
         }
     };
+    
+
+  
 
     return (
         <View style={[FLEX(1), PA(DSP), BGCOLOR('#FFFFFF'), update ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}>
@@ -247,7 +252,7 @@ const Address: React.FC<AddressProps> = ({
                         />
                     </View>
                     <View style={[MT(0.2)]} />
-          
+
                     <WrappedDropDown
                         open={open}
                         setOpen={setOpen}
@@ -260,12 +265,14 @@ const Address: React.FC<AddressProps> = ({
                         callBack={() => {}}
                         zIndex={5000}
                         zIndexInverse={1000}
+
                         selectValue={setValue}
                         placeholderTextColor={"black50"}
                         borderColor="#d3d3d3"
 
                         setValue={(value: string) => {
                             console.log('AREA VALUE', value);
+
                             setArea(value);
                         }}
                         onSelectItem={(item) => {
