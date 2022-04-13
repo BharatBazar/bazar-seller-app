@@ -243,7 +243,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             >
                 <HeaderText
                     step={update ? undefined : 'Step 1'}
-                    heading={CreateDukanText.HEADING}
+                    heading={update?CreateDukanText.UPDATE_HEADING:CreateDukanText.HEADING}
                     subHeading={CreateDukanText.MESSAGE}
                 />
                 {this.returnErrorText('serverError')}

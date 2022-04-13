@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import { black20, colorCode } from '../../common/color';
 import { BC, BR, BW, colorTransparency, DSP, HP, MT, P, PA, PH, PV } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
-import { ShopDetailsText } from '../../common/customScreenText';
+import { CreateDukanText, ShopDetailsText } from '../../common/customScreenText';
 import { fs12, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
@@ -113,7 +113,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         >
             <HeaderText
                 step={update ? undefined : 'Step 3'}
-                heading={'Dukan Details'}
+                heading={update?ShopDetailsText.UPDATE_DUKAN_HEADING:ShopDetailsText.DUKAN_HEADING}
                 subHeading={ShopDetailsText.MESSAGE}
             />
             {error['error'] && <ServerErrorText errorText={error['error']} />}

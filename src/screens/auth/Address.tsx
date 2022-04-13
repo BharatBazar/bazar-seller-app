@@ -20,6 +20,7 @@ import { NavigationKey } from '../../labels';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import axios from 'axios';
+import { ShopAddress } from '@app/common/customScreenText';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -170,7 +171,7 @@ const Address: React.FC<AddressProps> = ({
         <View style={[FLEX(1), PA(DSP), BGCOLOR('#FFFFFF'), update ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}>
             <HeaderText
                 step={update ? undefined : 'Step 4'}
-                heading={'Provide your dukan address'}
+                heading={update?ShopAddress.UPDATE_DUKAN_ADDRESS:ShopAddress.DUKAN_ADDRESS}
                 subHeading={
                     'Provide address where your dukan is located in the market so that customer can reach your dukan.'
                 }

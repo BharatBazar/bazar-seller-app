@@ -13,6 +13,7 @@ export const ErrorText = {
 
 export const CreateDukanText = {
     HEADING: 'Provide shop owner details.',
+    UPDATE_HEADING: 'Update shop owner details.',
     MESSAGE: 'Details provided here should be specifically of the main owner of the shop.',
     ownerMobileNumber: 'Owner mobile number',
     sendOtp: 'Send OTP',
@@ -30,6 +31,8 @@ export const CreateDukanText = {
 
 export const ShopDetailsText = {
     MESSAGE: 'Dukan details are important as these are your identity from which you are popular in your locality. ',
+    UPDATE_DUKAN_HEADING:'Update Dukan Details',
+    DUKAN_HEADING:'Dukan Details'
 };
 
 export const GlobalText = {
@@ -37,3 +40,8 @@ export const GlobalText = {
     companyMessage:
         "Join bharat bazar and be part of nation's as well as\nyour growth. It's time to unite and protect our local market.",
 };
+
+export const ShopAddress = {
+    UPDATE_DUKAN_ADDRESS:'Update Your Dukan Address',
+    DUKAN_ADDRESS:'Provide Your Dukan Address'
+}

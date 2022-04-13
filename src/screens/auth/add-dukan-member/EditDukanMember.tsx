@@ -269,7 +269,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 />
             </View>
             <View style={{ marginTop: 20 }}>
-                <WrappedText text={'Add ' + role} fontSize={fs20} />
+                <WrappedText text={ update?'Update '+role:'Add ' + role} fontSize={fs20} />
                 <WrappedText text={message || ''} containerStyle={[MT(0.05)]} textColor={messageColor} />
             </View>
             {returnErrorText('serverError')}
