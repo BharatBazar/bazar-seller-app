@@ -47,7 +47,7 @@ const Address: React.FC<AddressProps> = ({
     },
 }) => {
     const [pincode, setPinCode] = React.useState<string>('');
-    const [area, setArea] = React.useState('w'); /// GARY ADD WE HAVE TO CHANGE THIS STATIC PROP
+    const [area, setArea] = React.useState(''); /// GARY ADD WE HAVE TO CHANGE THIS STATIC PROP
     const [error, setError] = React.useState<Partial<Error>>({});
     const [areas, setAreas] = React.useState<{ label: string | undefined; value: string | undefined }[]>([]);
     const [state, setState] = React.useState<Partial<IAddress>>({});
@@ -69,6 +69,8 @@ const Address: React.FC<AddressProps> = ({
             checkPincodeInServer(details.pincode);
         }
     }, []);
+
+    console.log("VALUE",value);
 
     const checkPincodeInServer = async (pincode: string) => {
         if (pincode.length != 6) {
@@ -245,23 +247,35 @@ const Address: React.FC<AddressProps> = ({
                         />
                     </View>
                     <View style={[MT(0.2)]} />
+          
                     <WrappedDropDown
                         open={open}
                         setOpen={setOpen}
                         data={areas}
                         value={value}
+                        
                         // setValue={area}
                         arrowColor={black50}
                         header={'Select Area'}
                         callBack={() => {}}
                         zIndex={5000}
                         zIndexInverse={1000}
-                        // selectValue={area}
+                        selectValue={setValue}
+                        placeholderTextColor={"black50"}
+                        borderColor="#d3d3d3"
 
                         setValue={(value: string) => {
                             console.log('AREA VALUE', value);
                             setArea(value);
                         }}
+                        onSelectItem={(item) => {
+                            console.log(item.label);
+                            setValue(item.label)
+                            // setArea(item.label)
+                          }}
+                        onChangeValue={(value) => {
+                            console.log(value);
+                          }}
                         searchable={true}
                         dropDownMaxHeight={250}
                         placeholder={'Area'}
@@ -270,7 +284,7 @@ const Address: React.FC<AddressProps> = ({
                     {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}
                 </>
             )}
-            <View style={{ zIndex: -20 }}>
+            <View style={[MT(0.3),{ zIndex: -20 }]}>
                 <TextInput
                     keyboardType={'default'}
                     placeholder={'Local Address in your words so that any one can reach your dukan'}

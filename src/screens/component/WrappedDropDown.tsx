@@ -10,10 +10,12 @@ export interface WrappedDropDownProps {
     setOpen:boolean;
     data: { label?: string; value?: string }[];
     selectValue: string;
-    
-    setValue: Function; //GARY ADD OBJECT
+    placeholderTextColor:string;
+    setValue: any; //GARY ADD OBJECT
+    value:any;
     callBack?: Function;
     zIndex: number;
+    onSelectItem:Function;
     arrowColor?: string;
     header?: string;
     placeholder: string;
@@ -21,6 +23,7 @@ export interface WrappedDropDownProps {
     provideController?: Function;
     dropDownMaxHeight?: number;
     searchable?: boolean;
+    borderColor:string;
 }
 
 const dropDownProps = {
@@ -34,23 +37,33 @@ const dropDownProps = {
             borderTopLeftRadius: getHP(0.05),
             borderBottomRightRadius: getHP(0.05),
             borderBottomLeftRadius: getHP(0.05),
-        },
+            borderWidth:1,
+            borderColor:"#d3d3d3"
+            
+        }
     ],
     containerStyle: [H(getHP(0.45))],
     itemStyle: {
         justifyContent: 'flex-start',
+       
+
+        
     },
     dropDownStyle: [
-        BW(0),
+        BW(1),
         provideShadow(6),
         {
             borderTopRightRadius: getHP(0.05),
             borderTopLeftRadius: getHP(0.05),
             borderBottomRightRadius: getHP(0.05),
             borderBottomLeftRadius: getHP(0.05),
+            borderColor:"red"
+            
         },
     ],
     arrowSize: fs20,
+   
+    
     labelStyle: { letterSpacing: 0.5, color: black50, fontSize: fs12 },
 };
 
@@ -60,6 +73,10 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
     data,
     selectValue,
     setValue,
+    value,
+    borderColor,
+    onSelectItem,
+    placeholderTextColor,
     callBack = () => {},
     zIndex,
 
@@ -71,7 +88,8 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
 }) => {
     return (
         <DropDownPicker
-       
+      
+       placeholderTextColor={placeholderTextColor}
         open={open}
         setOpen={setOpen}
             controller={provideController}
@@ -79,21 +97,25 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             noBottomRadius={false}
             noTopRadius={false}
             defaultValue={data.length > 0 && (selectValue || undefined)}
-            bac
-            textStyle={{
-                fontSize: 15
+            searchContainerStyle={{
+                borderBottomColor:borderColor
+              }}
+              listChildContainerStyle={{
+                paddingLeft: 20
+              }}
+
+              dropDownContainerStyle={{
+                borderColor,
+               shadowColor:borderColor,
+               elevation:7,
+
+                
               }}
               
-            placeholder={placeholder}
-            // onChangeItem={(item) => {
-            //     if (item.value != selectValue) {
-            //         setValue(item.value);
-
-            //         callBack();
-            //     }
-            // }}
+              placeholder={value?value:"Area"}
+              autoScroll={true}
             setValue={setValue}
-            
+            value={value}
             dropDownMaxHeight={dropDownMaxHeight}
             searchable={searchable}
             showArrow={true}
@@ -101,9 +123,11 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             zIndexInverse={zIndexInverse}
             {...dropDownProps}
             arrowSize={fs14}
+            onSelectItem={onSelectItem}
             arrowStyle={{ height: fs14, width: fs14 }}
             arrowColor={black50}
         />
+       
         // </View>
         // <View style={[{ zIndex: zIndex }]}>
         // <WrappedText
