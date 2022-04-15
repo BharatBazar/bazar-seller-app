@@ -276,6 +276,7 @@ const AddDukanMembers: React.FC<AddDukanMembersProps> = ({
                             goNext();
                         }}
                         buttonText={'Submit details'}
+                        
                     />
                 )}
             </View>

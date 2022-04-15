@@ -54,6 +54,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         if (update) setDetails({ ...details });
     }, []);
     const [error, setError] = React.useState<error>({});
+    const [loading, setLoading] = React.useState(false)
     const componentProps = {
         buttonTextProps: {
             textColor: colorCode.WHITE,
@@ -67,6 +68,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
 
     async function submitDetails() {
         try {
+            setLoading(true)
             const response: IRShopUpdate = await updateShop(
                 update ? { ...shopDetails } : { ...shopDetails, _id: ownerDetails.shop },
             );
@@ -78,6 +80,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     updateCallback({ ...shopDetails });
                     navigation.goBack();
                 }
+                setLoading(false)
             } else {
                 setError({ error: response.message });
             }
@@ -115,6 +118,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                 step={update ? undefined : 'Step 3'}
                 heading={update?ShopDetailsText.UPDATE_DUKAN_HEADING:ShopDetailsText.DUKAN_HEADING}
                 subHeading={ShopDetailsText.MESSAGE}
+                
             />
             {error['error'] && <ServerErrorText errorText={error['error']} />}
             <View style={{ marginTop: getHP(0.2) }}>
@@ -149,6 +153,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     onPress={() => {
                         validateFields();
                     }}
+                    isLoading={loading}
                 />
             </View>
         </View>

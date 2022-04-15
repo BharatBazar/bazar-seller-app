@@ -176,8 +176,9 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     };
 
     const submitDetails = async () => {
-        setSignInButtonState(1);
+        
         try {
+            setSignInButtonState(2);
             const data = {
                 ...member,
                 role: role,
