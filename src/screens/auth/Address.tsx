@@ -288,7 +288,7 @@ const Address: React.FC<AddressProps> = ({
                           }}
                         searchable={true}
                         dropDownMaxHeight={250}
-                        placeholder={value?value:area}
+                        placeholder={value?value:area?area:"Area"}
                         // placeholder={details.area}
                     />
 
