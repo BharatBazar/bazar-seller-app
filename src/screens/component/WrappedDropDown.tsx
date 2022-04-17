@@ -112,7 +112,8 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
                 
               }}
               
-              placeholder={value?value:"Area"}
+            //   placeholder={value?value:"Area"}
+            placeholder={placeholder}
               autoScroll={true}
             setValue={setValue}
             value={value}

@@ -61,6 +61,8 @@ const Address: React.FC<AddressProps> = ({
 
     React.useEffect(() => {
         if (update) {
+           
+           
             setPinCode(details.pincode);
             setPreviousPin(details.pincode);
             setArea(details.area);
@@ -71,7 +73,7 @@ const Address: React.FC<AddressProps> = ({
         }
     }, []);
 
-    console.log("VALUE",value);
+    
 
     const checkPincodeInServer = async (pincode: string) => {
         if (pincode.length != 6) {
@@ -286,7 +288,8 @@ const Address: React.FC<AddressProps> = ({
                           }}
                         searchable={true}
                         dropDownMaxHeight={250}
-                        placeholder={'Area'}
+                        placeholder={value?value:area}
+                        // placeholder={details.area}
                     />
 
                     {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}

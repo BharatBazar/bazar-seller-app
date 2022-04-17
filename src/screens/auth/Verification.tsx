@@ -234,6 +234,7 @@ const Verification: React.SFC<VerificationProps> = ({
             });
 
             const shop = response.payload;
+     
             if (shop.owner) {
                 setOwnerDetails([{ ...shop.owner }]);
             }
@@ -294,7 +295,8 @@ const Verification: React.SFC<VerificationProps> = ({
                                 NavigationKey.ADDRESS,
                                 {
                                     localAddress: shop.localAddress,
-                                    area: shop.area._id,
+                                    // area: shop.area._id,
+                                    area: shop.area.name,
                                     city: shop.city._id,
                                     state: shop.state._id,
                                     pincode: shop.pincode,
