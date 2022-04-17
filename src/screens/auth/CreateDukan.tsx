@@ -341,7 +341,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 textColor={messageColor}
                             />
                             <TextButton
-                                text={CreateDukanText.SignIn}
+                                // text={CreateDukanText.SignIn}
+                                text={`Add ${firstName} as Owner`}
                                 textProps={componentProps.buttonTextProps}
                                 containerStyle={buttonContainerStyle}
                                 onPress={() => {

@@ -125,6 +125,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
             error['phoneNumber'] = 'Please enter correct ' + role + ' mobile number';
         }
         if (firstName.length < 3) {
+            
             error['firstName'] = 'Please enter correct ' + role + ' first name.';
         }
         if (lastName.length < 3) {
@@ -270,7 +271,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 />
             </View>
             <View style={{ marginTop: 20 }}>
-                <WrappedText text={ update?'Update '+role:'Add ' + role} fontSize={fs20} />
+                <WrappedText text={ update?'Update '+role+" details":'Add ' + role} fontSize={fs20} />
                 <WrappedText text={message || ''} containerStyle={[MT(0.05)]} textColor={messageColor} />
             </View>
             {returnErrorText('serverError')}
@@ -359,7 +360,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         )}
 
                         <TextButton
-                            text={update ? 'Update details' : CreateDukanText.SignIn}
+                            // text={update ? 'Update details' : CreateDukanText.SignIn}
+                            text={update ? `Update ${role} details` : `Add ${firstName} as ${role}`}
                             textProps={componentProps.buttonTextProps}
                             containerStyle={buttonContainerStyle}
                             onPress={() => {

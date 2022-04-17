@@ -449,7 +449,7 @@ const Verification: React.SFC<VerificationProps> = ({
                                             screen: NavigationKey.EDITDUKANMEMBER,
                                             update: true,
                                             message:
-                                                'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                                `Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.`,
                                             role: shopMemberRole.coOwner,
                                             addMember: (data: IshopMember) => {
                                                 console.log('add coowner', data, index);
@@ -497,7 +497,7 @@ const Verification: React.SFC<VerificationProps> = ({
                                             update: true,
                                             message:
                                                 'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                            role: shopMemberRole.coOwner,
+                                            role: shopMemberRole.worker,
                                             addMember: (data: IshopMember) => {
                                                 console.log('add coowner', data, index);
                                                 setWorker((worksetWorker) => {

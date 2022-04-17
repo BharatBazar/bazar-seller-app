@@ -27,6 +27,7 @@ export const CreateDukanText = {
     ownerEmailMessage:
         'If you have problem maintaining an email then you can provide email of another member from your family like you son, daughter etc who can inform you about important update.',
     SignIn: 'Sign-In',
+ 
 };
 
 export const ShopDetailsText = {
