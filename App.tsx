@@ -17,12 +17,17 @@ import AlertBox from '@app/screens/components/popup/AlertBox';
 import FlashMessage from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
 
+
 export const AlertContext = createContext<Function>(() => {});
 export const LoaderContext = createContext<Function>(() => {});
 
 const App: () => Node = () => {
     const { alertState, setAlertState } = useAlert();
     const [loader, setLoader] = React.useState(false);
+  
+
+  
+
 
     async function initializeApp() {
         console.log('App initialization');
@@ -59,7 +64,7 @@ const App: () => Node = () => {
                             setAlertState(defaultAlertState);
                         }}
                     />
-                    <AppNavigation />
+                    <AppNavigation  />
                 </AlertContext.Provider>
             </LoaderContext.Provider>
             <FlashMessage position={'top'} />
