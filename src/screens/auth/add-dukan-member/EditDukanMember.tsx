@@ -279,7 +279,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 <View style={[FDR(), AIC()]}>
                     <View style={{ flex: 1 }}>
                         <WrappedTextInput
-                            placeholder={role + ' mobile number'}
+                            // placeholder={role + ' mobile number'}
+                            placeholder={'Mobile Number'}
                             value={phoneNumber}
                             onChangeText={(phoneNumber) => {
                                 setField('phoneNumber', phoneNumber);
@@ -335,7 +336,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                             <View style={[FLEX(1)]}>
                                 <WrappedTextInput
                                     value={firstName}
-                                    placeholder={role + ' first name'}
+                                    // placeholder={role + ' first name'}
+                                    placeholder={'First Name'}
                                     onChangeText={(firstName) => setField('firstName', firstName)}
                                     errorText={error['firstName']}
                                     {...componentProps.textInputProps}
@@ -344,7 +346,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                             <View style={[FLEX(1), ML(0.1)]}>
                                 <WrappedTextInput
                                     value={lastName}
-                                    placeholder={role + ' last name'}
+                                    // placeholder={role + ' last name'}
+                                    placeholder={'Last Name'}
                                     onChangeText={(lastName) => setField('lastName', lastName)}
                                     errorText={error['lastName']}
                                     {...componentProps.textInputProps}
