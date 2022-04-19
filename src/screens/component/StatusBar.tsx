@@ -13,7 +13,7 @@ const StatusBar: React.FC<StatusBarProps> = ({ statusBarColor, statusBarStyle })
     return (
         <View
             style={{
-                height: STATUS_BAR_HEIGHT,
+                paddingTop: STATUS_BAR_HEIGHT,
                 backgroundColor: statusBarColor,
             }}
         />

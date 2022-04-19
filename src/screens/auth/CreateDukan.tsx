@@ -109,7 +109,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                   });
             if (response.status == 1) {
                 if (!this.state.update) {
-                    console.log("awaiting")  //add garvit
+                    console.log('awaiting'); //add garvit
                     await Storage.setItem(StorageItemKeys.Token, 'token exists');
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
@@ -243,7 +243,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             >
                 <HeaderText
                     step={update ? undefined : 'Step 1'}
-                    heading={update?CreateDukanText.UPDATE_HEADING:CreateDukanText.HEADING}
+                    heading={update ? CreateDukanText.UPDATE_HEADING : CreateDukanText.HEADING}
                     subHeading={CreateDukanText.MESSAGE}
                 />
                 {this.returnErrorText('serverError')}
@@ -342,7 +342,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                             />
                             <TextButton
                                 // text={CreateDukanText.SignIn}
-                                text={`Add ${firstName} as Owner`}
+                                text={`Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`}
                                 textProps={componentProps.buttonTextProps}
                                 containerStyle={buttonContainerStyle}
                                 onPress={() => {

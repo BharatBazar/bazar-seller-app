@@ -33,6 +33,7 @@ const AlertBox: React.FunctionComponent<AlertBoxProps> = ({
             onPressRightButton={() => {
                 onPressRightButton();
             }}
+            statusBarTranslucent={true}
             onPressLeftButton={onPressLeftButton}
         >
             <View style={[HP(0.3)]} />
