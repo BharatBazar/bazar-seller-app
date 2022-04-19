@@ -3,13 +3,12 @@ import { View, StyleSheet } from 'react-native';
 import { black20, colorCode } from '../../common/color';
 import { BC, BR, BW, colorTransparency, DSP, HP, MT, P, PA, PH, PV } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
-import { CreateDukanText, ShopDetailsText } from '../../common/customScreenText';
+import { ShopDetailsText } from '../../common/customScreenText';
 import { fs12, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import WrappedTextInput from '../component/WrappedTextInput';
 import { getHP, getWP } from '../../common/dimension';
 import TextButton from '../component/TextButton';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { updateShop } from '../../server/apis/shop/shop.api';
@@ -54,7 +53,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         if (update) setDetails({ ...details });
     }, []);
     const [error, setError] = React.useState<error>({});
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(false);
     const componentProps = {
         buttonTextProps: {
             textColor: colorCode.WHITE,
@@ -68,7 +67,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
 
     async function submitDetails() {
         try {
-            setLoading(true)
+            setLoading(true);
             const response: IRShopUpdate = await updateShop(
                 update ? { ...shopDetails } : { ...shopDetails, _id: ownerDetails.shop },
             );
@@ -80,7 +79,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     updateCallback({ ...shopDetails });
                     navigation.goBack();
                 }
-                setLoading(false)
+                setLoading(false);
             } else {
                 setError({ error: response.message });
             }
@@ -116,9 +115,8 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
         >
             <HeaderText
                 step={update ? undefined : 'Step 3'}
-                heading={update?ShopDetailsText.UPDATE_DUKAN_HEADING:ShopDetailsText.DUKAN_HEADING}
+                heading={update ? ShopDetailsText.UPDATE_DUKAN_HEADING : ShopDetailsText.DUKAN_HEADING}
                 subHeading={ShopDetailsText.MESSAGE}
-                
             />
             {error['error'] && <ServerErrorText errorText={error['error']} />}
             <View style={{ marginTop: getHP(0.2) }}>
@@ -128,6 +126,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     errorText={error['shopName']}
                     onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: name })}
                     {...componentProps.textInputProps}
+                    autoCapitalize={'words'}
                 />
                 <ShowInforTextBelowInput
                     text={
@@ -147,7 +146,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                 <TextPhotoAudioInputComponent />
 
                 <TextButton
-                    text={update ? 'Update details' : 'Submit details'}
+                    text={update ? 'Update dukan details' : 'Submit dukan details'}
                     textProps={componentProps.buttonTextProps}
                     containerStyle={[buttonContainerStyle, MT(0.4)]}
                     onPress={() => {

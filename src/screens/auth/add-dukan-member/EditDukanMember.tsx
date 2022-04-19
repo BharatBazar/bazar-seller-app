@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { fs12, fs13, fs20, fs24, mobileValidation, NavigationProps } from '../../../common';
-import { black20, black40, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
+import { FontFamily, fs12, fs13, fs20, fs24, mobileValidation, NavigationProps } from '../../../common';
+import {
+    black20,
+    black40,
+    borderColor,
+    colorCode,
+    mainColor,
+    messageColor,
+    subHeadingColor,
+} from '../../../common/color';
 import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BC, BGCOLOR, BW, DSP, FDR, FLEX, ML, MT, P, PA, provideShadow } from '../../../common/styles';
 import { buttonContainerStyle, textInputContainerStyle } from '../../../common/containerStyles';
@@ -125,7 +133,6 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
             error['phoneNumber'] = 'Please enter correct ' + role + ' mobile number';
         }
         if (firstName.length < 3) {
-            
             error['firstName'] = 'Please enter correct ' + role + ' first name.';
         }
         if (lastName.length < 3) {
@@ -177,7 +184,6 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     };
 
     const submitDetails = async () => {
-        
         try {
             setSignInButtonState(2);
             const data = {
@@ -259,7 +265,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
 
     return (
         <ScrollView
-            style={[BGCOLOR('#FFFFFF'), FLEX(1), PA(DSP), paddingTop ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}
+            style={[BGCOLOR('#FFFFFF'), FLEX(1)]}
+            contentContainerStyle={[PA(DSP), paddingTop ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}
         >
             <View style={[FDR(), AIC('flex-start')]}>
                 <WrappedFeatherIcon
@@ -271,7 +278,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 />
             </View>
             <View style={{ marginTop: 20 }}>
-                <WrappedText text={ update?'Update '+role+" details":'Add ' + role} fontSize={fs20} />
+                <WrappedText text={update ? 'Update ' + role + ' Details' : 'Add ' + role} fontSize={fs20} />
                 <WrappedText text={message || ''} containerStyle={[MT(0.05)]} textColor={messageColor} />
             </View>
             {returnErrorText('serverError')}
@@ -356,7 +363,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         </View>
                         {role == shopMemberRole.coOwner && (
                             <WrappedText
-                                text={'Co-owner name is important as it will shop on your customer dukan face'}
+                                text={'Co-owner name is important as it will show in your dukan details'}
                                 fontSize={10}
                                 textColor={messageColor}
                             />
@@ -364,7 +371,13 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
 
                         <TextButton
                             // text={update ? 'Update details' : CreateDukanText.SignIn}
-                            text={update ? `Update ${role} details` : `Add ${firstName} as ${role}`}
+                            text={
+                                update
+                                    ? `Update ${role.toLocaleLowerCase()} details`
+                                    : `Add ${
+                                          firstName.length > 0 ? firstName + ' as' : 'as'
+                                      } ${role.toLocaleLowerCase()} to your dukan`
+                            }
                             textProps={componentProps.buttonTextProps}
                             containerStyle={buttonContainerStyle}
                             onPress={() => {
@@ -375,6 +388,24 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         />
                     </>
                 )}
+
+                <View
+                    style={{
+                        padding: 10,
+                        borderWidth: 1,
+                        borderColor: borderColor,
+                        marginTop: 10,
+                        borderRadius: 5,
+                        backgroundColor: colorCode.CHAKRALOW(10),
+                    }}
+                >
+                    <WrappedText
+                        text={'Details provided here should be specifically of the ' + role + ' of the shop'}
+                        fontSize={10}
+                        textColor={mainColor}
+                        fontFamily={FontFamily.Bold}
+                    />
+                </View>
             </View>
         </ScrollView>
     );
