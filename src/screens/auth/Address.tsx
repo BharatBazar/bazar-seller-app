@@ -21,6 +21,7 @@ import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import axios from 'axios';
 import { ShopAddress } from '@app/common/customScreenText';
+import capatailize from '@app/common/capatalize';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -301,7 +302,7 @@ const Address: React.FC<AddressProps> = ({
                     placeholder={'Local Address in your words so that any one can reach your dukan'}
                     multiline={true}
                     onChangeText={(value) => {
-                        setLocalAddress(value);
+                        setLocalAddress(capatailize(value));
                     }}
                     value={localAddress}
                     style={[

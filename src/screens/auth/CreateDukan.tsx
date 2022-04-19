@@ -23,6 +23,7 @@ import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
+import capatailize from '@app/common/capatalize';
 
 export interface CreateDukanProps extends NavigationProps {
     route: {
@@ -66,6 +67,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
     constructor(props: CreateDukanProps) {
         super(props);
+      
 
         this.state = {
             otpSent: false,
@@ -76,7 +78,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             timer: -1,
             update: props.route.params && props.route.params.update,
         };
+
+      
     }
+    
 
     setField = (field: keyof formState, value: string) => {
         this.setState((prevState) => {
@@ -216,6 +221,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 textInputStyle: { fontSize: fs13, color: '#00000099' },
                 paddingLeft: getWP(0.2),
             },
+            
         };
 
         const { details } = this.props.route.params;
@@ -230,6 +236,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             update,
         } = this.state;
         //console.log(details.phoneNumber, phoneNumber, update);
+        
         return (
             <ScrollView
                 style={[
@@ -308,7 +315,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     <WrappedTextInput
                                         value={firstName}
                                         placeholder={CreateDukanText.ownerFirstName}
-                                        onChangeText={(firstName) => this.setField('firstName', firstName)}
+                                        onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
                                         errorText={error['firstNameError']}
                                         {...componentProps.textInputProps}
                                     />
@@ -317,7 +324,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     <WrappedTextInput
                                         value={lastName}
                                         placeholder={CreateDukanText.ownerLastName}
-                                        onChangeText={(lastName) => this.setField('lastName', lastName)}
+                                        onChangeText={(lastName) => this.setField('lastName', capatailize(lastName))}
                                         errorText={error['lastNameError']}
                                         {...componentProps.textInputProps}
                                     />

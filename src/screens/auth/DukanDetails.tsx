@@ -20,6 +20,7 @@ import ShowInforTextBelowInput from '../components/text/ShowInfoTextBelowInput';
 import TextPhotoAudioInputComponent from '../components/multimedia/TextPhotoAudioInput';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import { ToastHOC } from '../hoc/ToastHOC';
+import capatailize from '@app/common/capatalize';
 export interface ShopDetailsProps extends NavigationProps {
     route: {
         params: {
@@ -124,7 +125,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     value={shopDetails.shopName}
                     placeholder={'Dukan ka nam'}
                     errorText={error['shopName']}
-                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: name })}
+                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: capatailize(name) })}
                     {...componentProps.textInputProps}
                     autoCapitalize={'words'}
                 />
@@ -138,7 +139,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     value={shopDetails.shopDescription}
                     multiline={true}
                     errorText={error['shopDescription']}
-                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: name })}
+                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: capatailize(name) })}
                     {...componentProps.textInputProps}
                     textAlignVertical={'top'}
                     containerStyle={[HP(2), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}

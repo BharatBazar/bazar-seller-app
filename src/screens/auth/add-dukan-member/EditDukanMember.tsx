@@ -37,6 +37,7 @@ import {
 } from '@app/server/apis/shopMember/shopMember.interface';
 import { addShopMember, updateShopMember, verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
+import capatailize from '@app/common/capatalize';
 
 interface EditDukanMemberProps extends NavigationProps {
     selectedItem: member;
@@ -345,7 +346,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                                     value={firstName}
                                     // placeholder={role + ' first name'}
                                     placeholder={'First Name'}
-                                    onChangeText={(firstName) => setField('firstName', firstName)}
+                                    onChangeText={(firstName) => setField('firstName', capatailize(firstName))}
                                     errorText={error['firstName']}
                                     {...componentProps.textInputProps}
                                 />
@@ -355,7 +356,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                                     value={lastName}
                                     // placeholder={role + ' last name'}
                                     placeholder={'Last Name'}
-                                    onChangeText={(lastName) => setField('lastName', lastName)}
+                                    onChangeText={(lastName) => setField('lastName', capatailize(lastName))}
                                     errorText={error['lastName']}
                                     {...componentProps.textInputProps}
                                 />

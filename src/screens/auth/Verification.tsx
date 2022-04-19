@@ -217,7 +217,7 @@ const Verification: React.SFC<VerificationProps> = ({
 
     async function deleteShopFromServerStorage() {
         try {
-            console.log("DELETED");
+            
             setLoader(true);
             const response: CommonApiResponse = await deleteShop({
                 _id: ownerDetails.shop,
