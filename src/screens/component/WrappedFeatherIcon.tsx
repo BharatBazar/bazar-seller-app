@@ -23,6 +23,7 @@ const WrappedFeatherIcon: React.FC<WrappedFeatherIconProps> = ({
     iconName,
     iconSize,
     containerHeight,
+    
 }) => {
     return (
         <WrappedRoundButton

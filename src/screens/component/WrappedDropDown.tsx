@@ -98,7 +98,12 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             noTopRadius={false}
             defaultValue={data.length > 0 && (selectValue || undefined)}
             searchContainerStyle={{
-                borderBottomColor:borderColor
+                borderBottomColor:borderColor,
+                
+                
+              }}
+              searchTextInputStyle={{
+                borderColor: "#8a8a8a33"
               }}
               listChildContainerStyle={{
                 paddingLeft: 20

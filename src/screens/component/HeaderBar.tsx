@@ -1,4 +1,5 @@
 import useLogout from '@app/hooks/useLogout';
+import { NavigationKey } from '@app/labels';
 import React, { Component } from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
@@ -23,6 +24,8 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
     containerStyle,
     statusBarColor,
     headerBackgroundColor,
+    navigation
+  
 }) => {
     const setLogout = useLogout();
     return (
@@ -30,6 +33,18 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
             <View style={styles.statusbar} />
             <View style={[FDR(), AIC(), JCC('space-between'), PH(0.5)]}>
                 <View />
+
+                <WrappedFeatherIcon
+                                onPress={() => {
+                                   navigation.goBack()
+                                }}
+                                iconName={'arrow-left'}
+                                iconColor="#000"
+                                containerHeight={getHP(0.5)}
+                                containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
+                            />
+               
+                
                 <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
                     <WrappedText
                         text={'Create your dukan'}

@@ -13,6 +13,10 @@ import { Right } from '../../navigation/NavigationEffect';
 import Address from './Address';
 import HeaderBar from '../component/HeaderBar';
 import EditDukanMember from './add-dukan-member/EditDukanMember';
+import { CardStyleInterpolators } from '@react-navigation/stack';
+import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
+import { getHP } from '@app/common/dimension';
+import { colorCode } from '@app/common/color';
 
 const Stack = createNativeStackNavigator();
 
@@ -51,7 +55,12 @@ class AuthNavigation extends React.Component<Props, {}> {
                 )}
 
                 <Stack.Navigator
-                    screenOptions={{ headerShown: false }}
+                    screenOptions={{ headerShown: false ,
+                        // gestureEnabled:true,
+                        // gestureDirection:"horizontal",
+                        // cardStyleInterpolator:CardStyleInterpolators.forFadeFromBottomAndroid
+                       animation:"fade"
+                    }}
                     initialRouteName={screen || NavigationKey.CREATEDUKAN}
                 >
                     <Stack.Screen
@@ -60,6 +69,9 @@ class AuthNavigation extends React.Component<Props, {}> {
                         component={CreateDukan}
                         options={{
                             cardStyleInterpolator: Right,
+                          
+                            
+                            
                         }}
                     />
 
