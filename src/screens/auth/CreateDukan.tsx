@@ -67,7 +67,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
     constructor(props: CreateDukanProps) {
         super(props);
-      
 
         this.state = {
             otpSent: false,
@@ -78,10 +77,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             timer: -1,
             update: props.route.params && props.route.params.update,
         };
-
-      
     }
-    
 
     setField = (field: keyof formState, value: string) => {
         this.setState((prevState) => {
@@ -221,7 +217,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 textInputStyle: { fontSize: fs13, color: '#00000099' },
                 paddingLeft: getWP(0.2),
             },
-            
         };
 
         const { details } = this.props.route.params;
@@ -236,7 +231,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             update,
         } = this.state;
         //console.log(details.phoneNumber, phoneNumber, update);
-        
+
         return (
             <ScrollView
                 style={[
@@ -349,7 +344,11 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                             />
                             <TextButton
                                 // text={CreateDukanText.SignIn}
-                                text={`Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`}
+                                text={
+                                    update
+                                        ? 'Update details'
+                                        : `Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`
+                                }
                                 textProps={componentProps.buttonTextProps}
                                 containerStyle={buttonContainerStyle}
                                 onPress={() => {
