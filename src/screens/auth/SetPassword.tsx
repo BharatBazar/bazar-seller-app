@@ -160,7 +160,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
                     />
                 </View>
                 <TextButton
-                    text={'SET PASSWORD'}
+                    text={'Set Password'}
                     textProps={componentProps.buttonTextProps}
                     containerStyle={[buttonContainerStyle, MT(0.4)]}
                     onPress={() => {

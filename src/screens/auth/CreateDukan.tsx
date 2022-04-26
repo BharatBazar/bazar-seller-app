@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { AIC, FDR, MT, FLEX, ML, DSP } from '../../common/styles';
+import { AIC, FDR, MT, FLEX, ML, DSP, provideShadow, BGCOLOR } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 import WrappedText from '../component/WrappedText';
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
@@ -24,6 +24,8 @@ import HeaderText from './component/HeaderText';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import capatailize from '@app/common/capatalize';
+import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
+import { Alert } from 'react-native';
 
 export interface CreateDukanProps extends NavigationProps {
     route: {
@@ -60,6 +62,7 @@ export interface CreateDukanState {
     error: formError;
     timer: number;
     update?: boolean;
+    backButton?:boolean
 }
 
 class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
@@ -76,6 +79,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             error: {},
             timer: -1,
             update: props.route.params && props.route.params.update,
+            backButton:false
+           
         };
     }
 
@@ -130,6 +135,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         }
     };
 
+    
+
     validateFields = () => {
         const { formState, otpSent } = this.state;
         const { phoneNumber, otp, email, firstName, lastName } = formState;
@@ -151,7 +158,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         }
 
         if (Object.keys(error).length == 0) {
-            this.setState({ error: error });
+            
+           
             this.submitDetails();
         } else {
             this.setState({ error: error });
@@ -206,6 +214,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         if (this.state.update) {
             this.setState({ formState: { ...this.props.route.params.details, otp: '' } });
         }
+        
+      
     }
     render() {
         const componentProps = {
@@ -243,6 +253,20 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     },
                 ]}
             >
+
+                {this.state.backButton ?(
+                  Alert.alert("DONE")
+                ):(<WrappedFeatherIcon
+                    onPress={() => {
+                      this.props.navigation.goBack();
+                  }}
+                     
+                      iconName={'arrow-left'}
+                      iconColor="#000"
+                      containerHeight={getHP(0.5)}
+                      containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
+                  />)}
+                
                 <HeaderText
                     step={update ? undefined : 'Step 1'}
                     heading={update ? CreateDukanText.UPDATE_HEADING : CreateDukanText.HEADING}
@@ -313,6 +337,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                         onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
                                         errorText={error['firstNameError']}
                                         {...componentProps.textInputProps}
+                                        
                                     />
                                 </View>
                                 <View style={[FLEX(1), ML(0.1)]}>

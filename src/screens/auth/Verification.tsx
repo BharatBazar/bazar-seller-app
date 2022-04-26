@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Alert, RefreshControl } from 'react-native';
+import { View, ScrollView, Alert, RefreshControl, Text } from 'react-native';
 import { FontFamily, fs14, fs18, fs28, NavigationProps } from '../../common';
 import { getHP, getWP } from '../../common/dimension';
 import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, JCC, MT, MV, PA, provideShadow } from '../../common/styles';
@@ -583,8 +583,10 @@ const Verification: React.SFC<VerificationProps> = ({
                                         });
                                     }}
 
-                                    buttonText={' market'}
-                                />Remove my dukan from
+                                //     buttonText={' market'}
+                                // /><Text>Remove my dukan from</Text>
+                                buttonText={'Remove my dukan'}
+                                />
                             </View>
                         )}
                     </View>
