@@ -583,8 +583,8 @@ const Verification: React.SFC<VerificationProps> = ({
                                         });
                                     }}
 
-                                    buttonText={'Remove my dukan from market'}
-                                />
+                                    buttonText={' market'}
+                                />Remove my dukan from
                             </View>
                         )}
                     </View>

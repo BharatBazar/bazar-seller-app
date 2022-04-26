@@ -261,7 +261,7 @@ const Address: React.FC<AddressProps> = ({
                         zIndex={5000}
                         zIndexInverse={1000}
                         selectValue={setValue}
-                        placeholderTextColor={'black50'}
+                        placeholderTextColor={black50}
                         borderColor="#8a8a8a33"
                         setValue={(value: string) => {
                             console.log('AREA VALUE', value);
@@ -273,6 +273,7 @@ const Address: React.FC<AddressProps> = ({
                             setValue(item.label);
                             // setArea(item.label)
                         }}
+                       
                         onChangeValue={(value) => {
                             console.log(value);
                         }}
@@ -285,9 +286,9 @@ const Address: React.FC<AddressProps> = ({
                     {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}
                 </>
             )}
-            <View style={[MT(0.3), { zIndex: -20 }]}>
+            <View style={[MT(0.1), { zIndex: -20 }]}>
                 <TextInput
-                    autoCapitalize={'none'}
+                    autoCapitalize={"none"}
                     placeholder={'Local Address in your words so that any one can reach your dukan'}
                     multiline={true}
                     onChangeText={(value) => {

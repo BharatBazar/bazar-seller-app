@@ -63,7 +63,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                         setAlertState({
                             isVisible: true,
                             heading: 'Logout',
-                            subHeading: 'Are you sure you want to logout',
+                            subHeading: 'Are you sure you want to logout !',
                             onPressRightButton: () => {
                                 // deleteShopFromServerStorage();
                                 // console.log("delete");
