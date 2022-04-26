@@ -87,6 +87,14 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     setField = (field: keyof formState, value: string) => {
         this.setState((prevState) => {
             prevState.formState[field] = value;
+            // console.log("KKKKKKKKKK");this.state.formState
+        if(this.state.formState.email.length>0 && this.state.formState.firstName.length>0 && this.state.formState.lastName.length>0
+            && this.state.formState.otp.length>0 &&this.state.formState.phoneNumber.length>0   ){
+                this.setState({backButton:true})
+            }
+            else{
+                this.setState({backButton:false})
+            }
             return prevState;
         });
     };
@@ -182,6 +190,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         }
     }
 
+    
+
     componentDidUpdate() {
         if (this.state.timer == 0) {
             this.clearTimeOut();
@@ -255,7 +265,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             >
 
                 {this.state.backButton ?(
-                  Alert.alert("DONE")
+                 undefined
                 ):(<WrappedFeatherIcon
                     onPress={() => {
                       this.props.navigation.goBack();
