@@ -1,7 +1,7 @@
 import useLogout from '@app/hooks/useLogout';
 import { NavigationKey } from '@app/labels';
-import React, { Component } from 'react';
-import { View, StyleSheet, ViewStyle, Alert } from 'react-native';
+import React, { Component, useEffect } from 'react';
+import { View, StyleSheet, ViewStyle, Alert, Text } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { fs13, fs14, fs16, fs28 } from '../../common';
 import { borderColor, colorCode, mainColor } from '../../common/color';
@@ -11,13 +11,18 @@ import { commonButtonProps } from '../components/button';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import WrappedFeatherIcon from './WrappedFeatherIcon';
 import WrappedText from './WrappedText';
-import { AlertContext } from '@app/../App';
+import { AlertContext, HeaderContext } from '@app/../App';
 import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
+import { useFocusEffect, useNavigationContainerRef } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 interface Props {
     containerStyle?: ViewStyle | ViewStyle[];
     statusBarColor: string;
     headerBackgroundColor: string;
+    shopOwner?:boolean,
+    goBack?:any,
+    thisProps?:any
 }
 
 interface OnboardingHeaderProps {}
@@ -26,11 +31,20 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
     containerStyle,
     statusBarColor,
     headerBackgroundColor,
-    navigation
+    goBack,
+    thisProps,
+    
+    shopOwner
   
 }) => {
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
     const setLogout = useLogout();
+    const route = useRoute();
+    const { header,setHeader } = React.useContext(HeaderContext);
+
+ 
+    
+//    console.log("ROUTE ==>",  thisProps.navigation.getState().params);
     return (
         <View style={[styles.container, containerStyle, provideShadow(2)]}>
             <View style={styles.statusbar} />
@@ -47,6 +61,20 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                                 containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                             />
                 */}
+              {header?(
+                  <WrappedFeatherIcon
+                  onPress={() => {
+                    goBack()
+                    setHeader(false)
+                }}
+                   
+                    iconName={'arrow-left'}
+                    iconColor="#000"
+                    containerHeight={getHP(0.5)}
+                    containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
+                />
+              ):(<Text>BACKK</Text>)
+            }
                 
                 <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
                     <WrappedText
@@ -57,7 +85,8 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                     />
                 </View>
 
-                <WrappedFeatherIcon
+                {shopOwner?(<Text></Text>):(
+                    <WrappedFeatherIcon
                     iconName="log-out"
                     onPress={() => {
                         setAlertState({
@@ -73,6 +102,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                         });
                     }}
                 />
+                )}
             </View>
         </View>
     );

@@ -298,6 +298,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                             }}
                             {...componentProps.textInputProps}
                             errorText={error['phoneNumber']}
+                            keyBoard="numeric"
                         />
                     </View>
                 </View>

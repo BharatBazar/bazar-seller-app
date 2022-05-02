@@ -26,6 +26,8 @@ import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import capatailize from '@app/common/capatalize';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import { Alert } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
+
 
 export interface CreateDukanProps extends NavigationProps {
     route: {
@@ -36,6 +38,8 @@ export interface CreateDukanProps extends NavigationProps {
         };
     };
 }
+
+    
 
 type formState = {
     phoneNumber: string;
@@ -48,7 +52,7 @@ type formState = {
 type formError = {
     phoneNumber?: string;
     generalError?: string;
-    serverError?: string;
+    serverError?: string|null;
     firstNameError?: string;
     lastNameError?: string;
     emailError?: string;
@@ -62,7 +66,8 @@ export interface CreateDukanState {
     error: formError;
     timer: number;
     update?: boolean;
-    backButton?:boolean
+    backButton?:boolean;
+  
 }
 
 class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
@@ -79,11 +84,17 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             error: {},
             timer: -1,
             update: props.route.params && props.route.params.update,
-            backButton:false
+            backButton:false,
+  
            
         };
+
+    //  console.log(this.props.navigation.getState().routes);
+
+
     }
 
+    
     setField = (field: keyof formState, value: string) => {
         this.setState((prevState) => {
             prevState.formState[field] = value;
@@ -104,6 +115,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             this.setState({ timer: this.state.timer - 1 });
         }, 1000);
     };
+
+    
 
     clearTimeOut = () => {
         clearInterval(this.timer);
@@ -150,19 +163,34 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         const { phoneNumber, otp, email, firstName, lastName } = formState;
         let error: formError = {};
         if (otpSent && otp.length < 6) {
-            error['otpError'] = ErrorText.otpError;
+            // error['otpError'] = ErrorText.otpError;
+            // setTimeout(() => {
+            //     error["otpError"] = ""
+            // }, 1000);
         }
         if (!mobileValidation.test(phoneNumber)) {
-            error['phoneNumber'] = ErrorText.phoneNumberError;
+            // error['phoneNumber'] = ErrorText.phoneNumberError;
+            // setTimeout(() => {
+            //     error["phoneNumber"] = ""
+            // }, 1000);
         }
         if (!emailValidation.test(email)) {
-            error['emailError'] = ErrorText.emailError;
+            // error['emailError'] = ErrorText.emailError;
+            // setTimeout(() => {
+            //     error["emailError"] = ""
+            // }, 1000);
         }
         if (firstName.length < 3) {
-            error['firstNameError'] = ErrorText.firstNameError;
+            // error['firstNameError'] = ErrorText.firstNameError;
+            // setTimeout(() => {
+            //     error["firstNameError"] = ""
+            // }, 1000);
         }
         if (lastName.length < 3) {
-            error['lastNameError'] = ErrorText.lastNameError;
+            // error['lastNameError'] = ErrorText.lastNameError;
+            // setTimeout(() => {
+            //     error["lastNameError"] = ""
+            // }, 1000);
         }
 
         if (Object.keys(error).length == 0) {
@@ -173,6 +201,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             this.setState({ error: error });
         }
     };
+    
 
     async sendOtp() {
         try {
@@ -186,8 +215,13 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 this.setField('otp', response.payload);
             }
         } catch (error) {
-            this.setState({ otpSent: false, timer: -1, otpButtonState: -1, error: { serverError: error.message } });
-        }
+        
+                this.setState({ otpSent: false, timer: -1, otpButtonState: -1, error: { serverError: error.message } });
+                setTimeout(() => {
+                    this.setState({error:{}})
+                    
+                }, 1500);
+    }
     }
 
     
@@ -198,6 +232,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             this.setState({ otpButtonState: 0, timer: -1 });
         }
     }
+
+    
     checkPhoneNumber = (phoneNumber: string) => {
         if (mobileValidation.test(phoneNumber)) {
             this.setState((prevState) => {
@@ -205,6 +241,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 return prevState;
             });
             this.setField('otp', '');
+         
             this.sendOtp();
         } else {
             this.setState({ error: { ...this.state.error, phoneNumber: ErrorText.phoneNumberError } });
@@ -216,17 +253,20 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     }
 
     returnErrorText = (field: keyof formError) => {
-        const { error } = this.state;
-        return field in error ? <ServerErrorText errorText={error[field]} /> : <View />;
+    const { error } = this.state;
+        return field in error ? <ServerErrorText errorText={error[field]} /> : <View />;    
     };
 
     componentDidMount() {
         if (this.state.update) {
             this.setState({ formState: { ...this.props.route.params.details, otp: '' } });
         }
+
         
       
     }
+
+   
     render() {
         const componentProps = {
             buttonTextProps: {
@@ -238,6 +278,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 paddingLeft: getWP(0.2),
             },
         };
+   
 
         const { details } = this.props.route.params;
 
@@ -253,6 +294,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         //console.log(details.phoneNumber, phoneNumber, update);
 
         return (
+            
             <ScrollView
                 style={[
                     {
@@ -282,7 +324,14 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     heading={update ? CreateDukanText.UPDATE_HEADING : CreateDukanText.HEADING}
                     subHeading={CreateDukanText.MESSAGE}
                 />
-                {this.returnErrorText('serverError')}
+                {
+                this.state.formState.phoneNumber.length <10 ?
+                null:
+                (
+                    (this.returnErrorText('serverError'))
+                )
+                 
+                }
                 <View style={{}}>
                     <View style={[FDR(), AIC()]}>
                         <View style={{ flex: 1 }}>
@@ -297,6 +346,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 }}
                                 {...componentProps.textInputProps}
                                 errorText={error['phoneNumber']}
+                                maxLength={10}
+                                keyBoard="numeric"
                             />
                         </View>
                     </View>
@@ -344,7 +395,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     <WrappedTextInput
                                         value={firstName}
                                         placeholder={CreateDukanText.ownerFirstName}
-                                        onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
+                                        // onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
+                                        onChangeText={(firstName) => this.setField('firstName',firstName)}
+                                        autoCapitalize={"words"}
+
                                         errorText={error['firstNameError']}
                                         {...componentProps.textInputProps}
                                         
@@ -354,7 +408,9 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     <WrappedTextInput
                                         value={lastName}
                                         placeholder={CreateDukanText.ownerLastName}
-                                        onChangeText={(lastName) => this.setField('lastName', capatailize(lastName))}
+                                        // onChangeText={(lastName) => this.setField('lastName', capatailize(lastName))}
+                                        onChangeText={(lastName) => this.setField('lastName',lastName)}
+                                        autoCapitalize="words"
                                         errorText={error['lastNameError']}
                                         {...componentProps.textInputProps}
                                     />
@@ -370,6 +426,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 value={email}
                                 onChangeText={(email) => this.setField('email', email)}
                                 errorText={error['emailError']}
+                                autoCapitalize={"none"}
                                 {...componentProps.textInputProps}
                             />
                             <WrappedText

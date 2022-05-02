@@ -47,6 +47,8 @@ class AuthNavigation extends React.Component<Props, {}> {
                         statusBarColor={'#ffffff'}
                         headerBackgroundColor={'#ffffff'}
                         containerStyle={[provideShadow(2)]}
+                        goBack={()=>this.props.navigation.goBack()}
+                        thisProps = {this.props}
                     />
                 )}
 
@@ -57,6 +59,7 @@ class AuthNavigation extends React.Component<Props, {}> {
                         // gestureDirection:"horizontal",
                         // cardStyleInterpolator:CardStyleInterpolators.forFadeFromBottomAndroid
                         animation: 'fade',
+                       
                     }}
                     initialRouteName={screen || NavigationKey.CREATEDUKAN}
                 >
@@ -66,6 +69,12 @@ class AuthNavigation extends React.Component<Props, {}> {
                         component={CreateDukan}
                         options={{
                             animation: 'slide_from_right',
+                            // headerTitle:()=><HeaderBar    statusBarColor={'#ffffff'}
+                            // headerBackgroundColor={'#ffffff'}
+                            // containerStyle={[provideShadow(2)]}/>,
+                            // header:()=><HeaderBar shopOwner={true}/>,
+                            
+                            
                         }}
                     />
 
@@ -75,7 +84,12 @@ class AuthNavigation extends React.Component<Props, {}> {
                         initialParams={initialParams}
                         options={{
                             animation: 'slide_from_right',
+                          header:()=><HeaderBar statusBarColor={'#ffffff'}
+                          headerBackgroundColor={'#ffffff'}
+                          containerStyle={[provideShadow(2)]}/>
+                            
                         }}
+                        
                     />
                     <Stack.Screen
                         name={NavigationKey.SHOPDETAILS}
@@ -83,6 +97,9 @@ class AuthNavigation extends React.Component<Props, {}> {
                         initialParams={initialParams}
                         options={{
                             animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
                         }}
                     />
                     <Stack.Screen
@@ -91,6 +108,9 @@ class AuthNavigation extends React.Component<Props, {}> {
                         initialParams={initialParams}
                         options={{
                             animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
                         }}
                     />
                     <Stack.Screen
@@ -99,6 +119,9 @@ class AuthNavigation extends React.Component<Props, {}> {
                         initialParams={initialParams}
                         options={{
                             animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
                         }}
                     />
                     <Stack.Screen
@@ -107,6 +130,10 @@ class AuthNavigation extends React.Component<Props, {}> {
                         initialParams={initialParams}
                         options={{
                             animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
+                            
                         }}
                     />
                 </Stack.Navigator>

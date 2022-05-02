@@ -8,11 +8,14 @@ import WrappedText from '../../component/WrappedText';
 export interface ErrorTextProps {
     errorText?: string;
     marginTop?: number;
+   
 }
 
 const ServerErrorText: React.SFC<ErrorTextProps> = ({ errorText, marginTop }) => {
     return (
+        
         <WrappedText
+           
             text={errorText}
             textColor={errorColor}
             textStyle={{ marginTop: marginTop || getHP(0.2) }}
