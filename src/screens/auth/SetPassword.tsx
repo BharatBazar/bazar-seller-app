@@ -17,8 +17,8 @@ import { IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMem
 import API from '../../server/apis';
 import { NavigationKey } from '../../labels';
 import ServerErrorText from './component/errorText';
-import { useFocusEffect } from '@react-navigation/native';
-import { HeaderContext } from '@app/../App';
+// import { useFocusEffect } from '@react-navigation/native';
+// import { HeaderContext } from '@app/../App';
 
 export interface OpenDukanProps extends NavigationProps {
     route: {
@@ -73,19 +73,19 @@ const SetPassword: React.FC<OpenDukanProps> = ({
         if (response.status == 1) {
             await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SHOPDETAILS);
             navigation.replace(NavigationKey.SHOPDETAILS, { ownerDetails: ownerDetails });
-            setHeader(false)
+            // setHeader(false)
         } else {
             setError({ serverError: response.message });
         }
     };
 
-    const { setHeader } = React.useContext(HeaderContext);
-    useFocusEffect(
-        React.useCallback(()=>{
-    setHeader(true)
+    // const { setHeader } = React.useContext(HeaderContext);
+    // useFocusEffect(
+    //     React.useCallback(()=>{
+    // setHeader(true)
 
-        },[])
-    )
+    //     },[])
+    // )
 
     React.useEffect(() => {
         //navigation.navigate(NavigationKey.SHOPDETAILS);

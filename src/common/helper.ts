@@ -1,3 +1,4 @@
+import { useIsFocused } from '@react-navigation/native';
 import { Alert } from 'react-native';
 export const getId = () => {
     return new Date().getTime().toString();
@@ -94,3 +95,5 @@ export const provideAlert = ({
         },
     ]);
 };
+
+

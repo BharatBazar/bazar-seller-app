@@ -39,16 +39,14 @@ const dropDownProps = {
             borderBottomLeftRadius: getHP(0.05),
             borderWidth:1,
             borderColor:"#8a8a8a33",
-            minHeight:41
+            minHeight:41,
+            
             
         }
     ],
     containerStyle: [H(getHP(0.45))],
     itemStyle: {
         justifyContent: 'flex-start',
-       
-        
-     
        
 
         
@@ -106,19 +104,19 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
                 
                 
               }}
+              
              
               searchTextInputStyle={{
-                borderColor: "#8a8a8a33"
+                borderColor: "#8a8a8a33",
               }}
-              listChildContainerStyle={{
-                paddingLeft: 20,
-                
-              }}
+            
+
 
               dropDownContainerStyle={{
                 borderColor,
                shadowColor:borderColor,
                elevation:7,
+               backgroundColor:'red'
                
                 
               }}
@@ -129,8 +127,10 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             placeholderStyle={{
                 color:black50
             }}
+
+           
             
-              autoScroll={true}
+            autoScroll={true}
             setValue={setValue}
             value={value}
             dropDownMaxHeight={dropDownMaxHeight}

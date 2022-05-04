@@ -26,7 +26,8 @@ import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import capatailize from '@app/common/capatalize';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import { Alert } from 'react-native';
-import { useIsFocused } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
+
 
 
 export interface CreateDukanProps extends NavigationProps {
@@ -70,6 +71,7 @@ export interface CreateDukanState {
   
 }
 
+
 class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     private timer: NodeJS.Timeout;
 
@@ -89,7 +91,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
            
         };
 
-    //  console.log(this.props.navigation.getState().routes);
+    //  console.log(this.props.route);
 
 
     }
@@ -142,6 +144,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
                     this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
+                
                 } else {
                     this.props.route.params.updateCallback({ ...this.state.formState, role: shopMemberRole.Owner });
                     this.props.navigation.goBack();
@@ -201,6 +204,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             this.setState({ error: error });
         }
     };
+
+    
     
 
     async sendOtp() {
@@ -262,9 +267,11 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             this.setState({ formState: { ...this.props.route.params.details, otp: '' } });
         }
 
-        
       
     }
+
+
+
 
    
     render() {
@@ -279,8 +286,17 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             },
         };
    
-
+       
+     
         const { details } = this.props.route.params;
+
+
+        // useFocusEffect(
+        //     React.useCallback(()=>{
+        // setHeader(true)
+    
+        //     },[])
+        // )
 
         const {
             otpSent,

@@ -264,7 +264,7 @@ const Address: React.FC<AddressProps> = ({
                         placeholderTextColor={black50}
                         borderColor="#8a8a8a33"
                         setValue={(value: string) => {
-                            console.log('AREA VALUE', value);
+                            // console.log('AREA VALUE', value);
 
                             setArea(value);
                         }}

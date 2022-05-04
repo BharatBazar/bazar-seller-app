@@ -25,7 +25,7 @@ export const HeaderContext = createContext<any>(()=>{});
 const App: () => Node = () => {
     const { alertState, setAlertState } = useAlert();
     const [loader, setLoader] = React.useState(false);
-    const [header, setHeader] = React.useState(false)
+   
   
 
   
@@ -57,7 +57,7 @@ const App: () => Node = () => {
             <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} />
             <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
-                    <HeaderContext.Provider value={{setHeader,header}}>
+         
                     <AlertBox
                         {...alertState}
                         onPressLeftButton={() => {
@@ -68,7 +68,7 @@ const App: () => Node = () => {
                         }}
                     />
                     <AppNavigation  />
-                    </HeaderContext.Provider>
+            
                 </AlertContext.Provider>
             </LoaderContext.Provider>
             <FlashMessage position={'top'} />

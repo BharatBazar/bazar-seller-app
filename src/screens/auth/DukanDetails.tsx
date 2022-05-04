@@ -125,7 +125,9 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     value={shopDetails.shopName}
                     placeholder={'Dukan ka nam'}
                     errorText={error['shopName']}
-                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: capatailize(name) })}
+                    // onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: capatailize(name) })}
+                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: name })}
+       
                     {...componentProps.textInputProps}
                     autoCapitalize={'words'}
                 />
@@ -139,7 +141,9 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     value={shopDetails.shopDescription}
                     multiline={true}
                     errorText={error['shopDescription']}
-                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: capatailize(name) })}
+                    // onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: capatailize(name) })}
+                     onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: name })}
+                     autoCapitalize="words"
                     {...componentProps.textInputProps}
                     textAlignVertical={'top'}
                     containerStyle={[HP(2), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}

@@ -13,8 +13,8 @@ import WrappedFeatherIcon from './WrappedFeatherIcon';
 import WrappedText from './WrappedText';
 import { AlertContext, HeaderContext } from '@app/../App';
 import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
-import { useFocusEffect, useNavigationContainerRef } from '@react-navigation/native';
-import { useRoute } from '@react-navigation/native';
+import {useLinkTo, useNavigation, useRoute} from '@react-navigation/native';
+// import { useLo } from '@react-navigation/native';
 
 interface Props {
     containerStyle?: ViewStyle | ViewStyle[];
@@ -40,11 +40,12 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
     const setLogout = useLogout();
     const route = useRoute();
-    const { header,setHeader } = React.useContext(HeaderContext);
+ 
+    
 
  
     
-//    console.log("ROUTE ==>",  thisProps.navigation.getState().params);
+   console.log("ROUTE ==>", );
     return (
         <View style={[styles.container, containerStyle, provideShadow(2)]}>
             <View style={styles.statusbar} />
@@ -61,11 +62,11 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                                 containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                             />
                 */}
-              {header?(
+              {thisProps.route ==="CreateDukan"?(
                   <WrappedFeatherIcon
                   onPress={() => {
                     goBack()
-                    setHeader(false)
+             
                 }}
                    
                     iconName={'arrow-left'}
@@ -73,7 +74,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                     containerHeight={getHP(0.5)}
                     containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                 />
-              ):(<Text>BACKK</Text>)
+              ):(<Text>Back</Text>)
             }
                 
                 <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
