@@ -14,7 +14,17 @@ export interface WelcomeProps extends NavigationProps {}
 
 export interface WelcomeState {}
 
+
+
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
+    // constructor() {
+    //     super();
+    //     this.state = {
+    //       theme:Appearance.getColorScheme()
+    //     };
+    //     console.log(this.state.theme);
+    //   }
+
     render() {
         return (
             <ScreenHOC>

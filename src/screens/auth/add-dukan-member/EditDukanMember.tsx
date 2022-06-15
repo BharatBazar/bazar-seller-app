@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
 import { View, Alert } from 'react-native';
-import { fs12, fs13, fs20, fs24, mobileValidation, NavigationProps } from '../../../common';
-import { black20, black40, borderColor, colorCode, mainColor, messageColor } from '../../../common/color';
+import { FontFamily, fs12, fs13, fs20, fs24, mobileValidation, NavigationProps } from '../../../common';
+import {
+    black20,
+    black40,
+    borderColor,
+    colorCode,
+    mainColor,
+    messageColor,
+    subHeadingColor,
+} from '../../../common/color';
 import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BC, BGCOLOR, BW, DSP, FDR, FLEX, ML, MT, P, PA, provideShadow } from '../../../common/styles';
 import { buttonContainerStyle, textInputContainerStyle } from '../../../common/containerStyles';
@@ -29,6 +37,7 @@ import {
 } from '@app/server/apis/shopMember/shopMember.interface';
 import { addShopMember, updateShopMember, verifyShopMember } from '@app/server/apis/shopMember/shopMember.api';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
+import capatailize from '@app/common/capatalize';
 
 interface EditDukanMemberProps extends NavigationProps {
     selectedItem: member;
@@ -176,8 +185,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
     };
 
     const submitDetails = async () => {
-        setSignInButtonState(1);
         try {
+            setSignInButtonState(2);
             const data = {
                 ...member,
                 role: role,
@@ -257,7 +266,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
 
     return (
         <ScrollView
-            style={[BGCOLOR('#FFFFFF'), FLEX(1), PA(DSP), paddingTop ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}
+            style={[BGCOLOR('#FFFFFF'), FLEX(1)]}
+            contentContainerStyle={[PA(DSP), paddingTop ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}
         >
             <View style={[FDR(), AIC('flex-start')]}>
                 <WrappedFeatherIcon
@@ -269,7 +279,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 />
             </View>
             <View style={{ marginTop: 20 }}>
-                <WrappedText text={'Add ' + role} fontSize={fs20} />
+                <WrappedText text={update ? 'Update ' + role + ' Details' : 'Add ' + role} fontSize={fs20} />
                 <WrappedText text={message || ''} containerStyle={[MT(0.05)]} textColor={messageColor} />
             </View>
             {returnErrorText('serverError')}
@@ -277,7 +287,8 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                 <View style={[FDR(), AIC()]}>
                     <View style={{ flex: 1 }}>
                         <WrappedTextInput
-                            placeholder={role + ' mobile number'}
+                            // placeholder={role + ' mobile number'}
+                            placeholder={'Mobile Number'}
                             value={phoneNumber}
                             onChangeText={(phoneNumber) => {
                                 setField('phoneNumber', phoneNumber);
@@ -287,6 +298,7 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                             }}
                             {...componentProps.textInputProps}
                             errorText={error['phoneNumber']}
+                            keyBoard="numeric"
                         />
                     </View>
                 </View>
@@ -333,8 +345,9 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                             <View style={[FLEX(1)]}>
                                 <WrappedTextInput
                                     value={firstName}
-                                    placeholder={role + ' first name'}
-                                    onChangeText={(firstName) => setField('firstName', firstName)}
+                                    // placeholder={role + ' first name'}
+                                    placeholder={'First Name'}
+                                    onChangeText={(firstName) => setField('firstName', capatailize(firstName))}
                                     errorText={error['firstName']}
                                     {...componentProps.textInputProps}
                                 />
@@ -342,8 +355,9 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                             <View style={[FLEX(1), ML(0.1)]}>
                                 <WrappedTextInput
                                     value={lastName}
-                                    placeholder={role + ' last name'}
-                                    onChangeText={(lastName) => setField('lastName', lastName)}
+                                    // placeholder={role + ' last name'}
+                                    placeholder={'Last Name'}
+                                    onChangeText={(lastName) => setField('lastName', capatailize(lastName))}
                                     errorText={error['lastName']}
                                     {...componentProps.textInputProps}
                                 />
@@ -351,14 +365,21 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         </View>
                         {role == shopMemberRole.coOwner && (
                             <WrappedText
-                                text={'Co-owner name is important as it will shop on your customer dukan face'}
+                                text={'Co-owner name is important as it will show in your dukan details'}
                                 fontSize={10}
                                 textColor={messageColor}
                             />
                         )}
 
                         <TextButton
-                            text={update ? 'Update details' : CreateDukanText.SignIn}
+                            // text={update ? 'Update details' : CreateDukanText.SignIn}
+                            text={
+                                update
+                                    ? `Update ${role.toLocaleLowerCase()} details`
+                                    : `Add ${
+                                          firstName.length > 0 ? firstName + ' as' : 'as'
+                                      } ${role.toLocaleLowerCase()} to your dukan`
+                            }
                             textProps={componentProps.buttonTextProps}
                             containerStyle={buttonContainerStyle}
                             onPress={() => {
@@ -369,6 +390,24 @@ const EditDukanMember: React.FunctionComponent<EditDukanMemberProps> = ({
                         />
                     </>
                 )}
+
+                <View
+                    style={{
+                        padding: 10,
+                        borderWidth: 1,
+                        borderColor: borderColor,
+                        marginTop: 10,
+                        borderRadius: 5,
+                        backgroundColor: colorCode.CHAKRALOW(10),
+                    }}
+                >
+                    <WrappedText
+                        text={'Details provided here should be specifically of the ' + role + ' of the shop'}
+                        fontSize={10}
+                        textColor={mainColor}
+                        fontFamily={FontFamily.Bold}
+                    />
+                </View>
             </View>
         </ScrollView>
     );

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, ScrollView, Alert, RefreshControl } from 'react-native';
+import { View, ScrollView, Alert, RefreshControl, Text } from 'react-native';
 import { FontFamily, fs14, fs18, fs28, NavigationProps } from '../../common';
 import { getHP, getWP } from '../../common/dimension';
 import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, JCC, MT, MV, PA, provideShadow } from '../../common/styles';
@@ -22,6 +22,9 @@ import AddMember from './add-dukan-member/AddMember';
 import MemberDetails from './add-dukan-member/MemberDetails';
 import { ShadowWrappper } from '../components/styles/common';
 import ButtonFeatherIcon from '../components/button/ButtonFeatherIcon';
+import { AlertContext } from '@app/../App';
+import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
+
 export interface VerificationProps extends NavigationProps {
     route: {
         params: {
@@ -85,6 +88,7 @@ const SectionHorizontal = (propertyName: string, value: string) => (
     </View>
 );
 
+
 const showMemberDetails = (details: IshopMember[], role: shopMemberRole, dukanName: string, onPressEdit: Function) => {
     if (details.length == 0) {
         return <WrappedText text={'There is no ' + role + ' in your shop.'} />;
@@ -134,6 +138,7 @@ const Verification: React.SFC<VerificationProps> = ({
         params: { ownerDetails },
     },
 }) => {
+    const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
     const [verificationDetails, setVerificationDetails] = React.useState<
         Partial<{ isVerified: boolean; verificationStatus?: verificationStatus; remarks: string }>
     >({ verificationStatus: undefined, isVerified: false });
@@ -212,6 +217,7 @@ const Verification: React.SFC<VerificationProps> = ({
 
     async function deleteShopFromServerStorage() {
         try {
+            
             setLoader(true);
             const response: CommonApiResponse = await deleteShop({
                 _id: ownerDetails.shop,
@@ -234,6 +240,7 @@ const Verification: React.SFC<VerificationProps> = ({
             });
 
             const shop = response.payload;
+     
             if (shop.owner) {
                 setOwnerDetails([{ ...shop.owner }]);
             }
@@ -263,6 +270,7 @@ const Verification: React.SFC<VerificationProps> = ({
     };
 
     const shopDetails = (shop: Shop) => {
+       
         return (
             <View>
                 <View style={ShadowWrappper()}>
@@ -294,7 +302,8 @@ const Verification: React.SFC<VerificationProps> = ({
                                 NavigationKey.ADDRESS,
                                 {
                                     localAddress: shop.localAddress,
-                                    area: shop.area._id,
+                                    // area: shop.area._id,
+                                    area: shop.area.name,
                                     city: shop.city._id,
                                     state: shop.state._id,
                                     pincode: shop.pincode,
@@ -449,7 +458,7 @@ const Verification: React.SFC<VerificationProps> = ({
                                             screen: NavigationKey.EDITDUKANMEMBER,
                                             update: true,
                                             message:
-                                                'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
+                                                `Co-owner are basically person who is responsible for dukan growth like your son, partner, brother etc.`,
                                             role: shopMemberRole.coOwner,
                                             addMember: (data: IshopMember) => {
                                                 console.log('add coowner', data, index);
@@ -497,7 +506,7 @@ const Verification: React.SFC<VerificationProps> = ({
                                             update: true,
                                             message:
                                                 'Worker are basically person who is responsible for dukan growth like your son, partner, brother etc.',
-                                            role: shopMemberRole.coOwner,
+                                            role: shopMemberRole.worker,
                                             addMember: (data: IshopMember) => {
                                                 console.log('add coowner', data, index);
                                                 setWorker((worksetWorker) => {
@@ -545,22 +554,38 @@ const Verification: React.SFC<VerificationProps> = ({
                         ) : (
                             <View>
                                 <RightComponentButtonWithLeftText
+                                    // onPress={() => {
+                                    //     Alert.alert(
+                                    //         'Warning!',
+                                    //         'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
+                                    //         [
+                                    //             {
+                                    //                 text: 'Remove my dukan from market',
+                                    //                 onPress: deleteShopFromServerStorage,
+                                    //             },
+                                    //             {
+                                    //                 text: 'Cancel',
+                                    //             },
+                                    //         ],
+                                    //     );
+                                    // }}
+
+
                                     onPress={() => {
-                                        Alert.alert(
-                                            'Warning!',
-                                            'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
-                                            [
-                                                {
-                                                    text: 'Remove my dukan from market',
-                                                    onPress: deleteShopFromServerStorage,
-                                                },
-                                                {
-                                                    text: 'Cancel',
-                                                },
-                                            ],
-                                        );
+                                        setAlertState({
+                                            isVisible: true,
+                                            heading: 'Warning',
+                                            subHeading: 'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
+                                            onPressRightButton: () => {
+                                                deleteShopFromServerStorage();
+                                                // console.log("delete");
+                                            },
+                                        });
                                     }}
-                                    buttonText={'Remove my dukan from market'}
+
+                                //     buttonText={' market'}
+                                // /><Text>Remove my dukan from</Text>
+                                buttonText={'Remove my dukan'}
                                 />
                             </View>
                         )}

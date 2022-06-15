@@ -17,12 +17,19 @@ import AlertBox from '@app/screens/components/popup/AlertBox';
 import FlashMessage from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
 
+
 export const AlertContext = createContext<Function>(() => {});
 export const LoaderContext = createContext<Function>(() => {});
+export const HeaderContext = createContext<any>(()=>{});
 
 const App: () => Node = () => {
     const { alertState, setAlertState } = useAlert();
     const [loader, setLoader] = React.useState(false);
+   
+  
+
+  
+
 
     async function initializeApp() {
         console.log('App initialization');
@@ -50,6 +57,7 @@ const App: () => Node = () => {
             <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} />
             <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
+         
                     <AlertBox
                         {...alertState}
                         onPressLeftButton={() => {
@@ -59,7 +67,8 @@ const App: () => Node = () => {
                             setAlertState(defaultAlertState);
                         }}
                     />
-                    <AppNavigation />
+                    <AppNavigation  />
+            
                 </AlertContext.Provider>
             </LoaderContext.Provider>
             <FlashMessage position={'top'} />

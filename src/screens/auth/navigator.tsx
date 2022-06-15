@@ -47,11 +47,20 @@ class AuthNavigation extends React.Component<Props, {}> {
                         statusBarColor={'#ffffff'}
                         headerBackgroundColor={'#ffffff'}
                         containerStyle={[provideShadow(2)]}
+                        goBack={()=>this.props.navigation.goBack()}
+                        thisProps = {this.props}
                     />
                 )}
 
                 <Stack.Navigator
-                    screenOptions={{ headerShown: false }}
+                    screenOptions={{
+                        headerShown: false,
+                        // gestureEnabled:true,
+                        // gestureDirection:"horizontal",
+                        // cardStyleInterpolator:CardStyleInterpolators.forFadeFromBottomAndroid
+                        animation: 'fade',
+                       
+                    }}
                     initialRouteName={screen || NavigationKey.CREATEDUKAN}
                 >
                     <Stack.Screen
@@ -59,7 +68,13 @@ class AuthNavigation extends React.Component<Props, {}> {
                         initialParams={initialParams}
                         component={CreateDukan}
                         options={{
-                            cardStyleInterpolator: Right,
+                            animation: 'slide_from_right',
+                            // headerTitle:()=><HeaderBar    statusBarColor={'#ffffff'}
+                            // headerBackgroundColor={'#ffffff'}
+                            // containerStyle={[provideShadow(2)]}/>,
+                            // header:()=><HeaderBar shopOwner={true}/>,
+                            
+                            
                         }}
                     />
 
@@ -68,15 +83,23 @@ class AuthNavigation extends React.Component<Props, {}> {
                         component={SetPassword}
                         initialParams={initialParams}
                         options={{
-                            cardStyleInterpolator: Right,
+                            animation: 'slide_from_right',
+                          header:()=><HeaderBar statusBarColor={'#ffffff'}
+                          headerBackgroundColor={'#ffffff'}
+                          containerStyle={[provideShadow(2)]}/>
+                            
                         }}
+                        
                     />
                     <Stack.Screen
                         name={NavigationKey.SHOPDETAILS}
                         component={ShopDetails}
                         initialParams={initialParams}
                         options={{
-                            cardStyleInterpolator: Right,
+                            animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
                         }}
                     />
                     <Stack.Screen
@@ -84,7 +107,10 @@ class AuthNavigation extends React.Component<Props, {}> {
                         component={Address}
                         initialParams={initialParams}
                         options={{
-                            cardStyleInterpolator: Right,
+                            animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
                         }}
                     />
                     <Stack.Screen
@@ -92,7 +118,10 @@ class AuthNavigation extends React.Component<Props, {}> {
                         component={AddDukanMembers}
                         initialParams={initialParams}
                         options={{
-                            cardStyleInterpolator: Right,
+                            animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
                         }}
                     />
                     <Stack.Screen
@@ -100,7 +129,11 @@ class AuthNavigation extends React.Component<Props, {}> {
                         component={EditDukanMember}
                         initialParams={initialParams}
                         options={{
-                            cardStyleInterpolator: Right,
+                            animation: 'slide_from_right',
+                            header:()=><HeaderBar statusBarColor={'#ffffff'}
+                            headerBackgroundColor={'#ffffff'}
+                            containerStyle={[provideShadow(2)]}/>
+                            
                         }}
                     />
                 </Stack.Navigator>

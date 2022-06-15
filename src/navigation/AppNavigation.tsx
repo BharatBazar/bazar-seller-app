@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 import { DrawerActions, NavigationContainer } from '@react-navigation/native';
 import { NavigationKey } from '../labels';
 import Welcome from '../screens/auth/Welcome';
@@ -52,8 +52,10 @@ class AppNavigation extends React.Component {
                         //     open: config,
                         //     close: config,
                         // },
+                      
                     }}
                     initialRouteName={NavigationKey.SPLASH}
+                
                 >
                     <Stack.Screen name={NavigationKey.SPLASH} component={Splash} options={{ headerShown: false }} />
                     <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />

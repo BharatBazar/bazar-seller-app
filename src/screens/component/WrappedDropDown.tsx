@@ -38,7 +38,9 @@ const dropDownProps = {
             borderBottomRightRadius: getHP(0.05),
             borderBottomLeftRadius: getHP(0.05),
             borderWidth:1,
-            borderColor:"#d3d3d3"
+            borderColor:"#8a8a8a33",
+            minHeight:41,
+            
             
         }
     ],
@@ -57,7 +59,7 @@ const dropDownProps = {
             borderTopLeftRadius: getHP(0.05),
             borderBottomRightRadius: getHP(0.05),
             borderBottomLeftRadius: getHP(0.05),
-            borderColor:"red"
+            borderColor:"#8a8a8a33",
             
         },
     ],
@@ -88,7 +90,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
 }) => {
     return (
         <DropDownPicker
-      
+       
        placeholderTextColor={placeholderTextColor}
         open={open}
         setOpen={setOpen}
@@ -98,22 +100,37 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             noTopRadius={false}
             defaultValue={data.length > 0 && (selectValue || undefined)}
             searchContainerStyle={{
-                borderBottomColor:borderColor
+                borderBottomColor:borderColor,
+                
+                
               }}
-              listChildContainerStyle={{
-                paddingLeft: 20
+              
+             
+              searchTextInputStyle={{
+                borderColor: "#8a8a8a33",
               }}
+            
+
 
               dropDownContainerStyle={{
                 borderColor,
                shadowColor:borderColor,
                elevation:7,
-
+               backgroundColor:'red'
+               
                 
               }}
+            
               
-              placeholder={value?value:"Area"}
-              autoScroll={true}
+            //   placeholder={value?value:"Area"}
+            placeholder={placeholder}
+            placeholderStyle={{
+                color:black50
+            }}
+
+           
+            
+            autoScroll={true}
             setValue={setValue}
             value={value}
             dropDownMaxHeight={dropDownMaxHeight}
@@ -123,6 +140,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             zIndexInverse={zIndexInverse}
             {...dropDownProps}
             arrowSize={fs14}
+            // maxHeight={200}
             onSelectItem={onSelectItem}
             arrowStyle={{ height: fs14, width: fs14 }}
             arrowColor={black50}

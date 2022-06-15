@@ -20,6 +20,8 @@ import { NavigationKey } from '../../labels';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import axios from 'axios';
+import { ShopAddress } from '@app/common/customScreenText';
+import capatailize from '@app/common/capatalize';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -70,8 +72,6 @@ const Address: React.FC<AddressProps> = ({
         }
     }, []);
 
-    console.log("VALUE",value);
-
     const checkPincodeInServer = async (pincode: string) => {
         if (pincode.length != 6) {
             setError({ pincode: 'Please provide valid pincode.' });
@@ -83,14 +83,13 @@ const Address: React.FC<AddressProps> = ({
                 const a = await checkPincode(pincode);
                 setLoader(0);
                 if (a.status == 1) {
-                   
                     setState(a.payload.state);
                     setCity(a.payload.city);
-                    console.log("AREA PAYLOAD",a.payload.area);
+                    console.log('AREA PAYLOAD', a.payload.area);
                     const areas = a.payload.area.map((item) => {
                         return { label: item.name, value: item._id };
                     });
-                    console.log("AREAS A2",areas);
+                    console.log('AREAS A2', areas);
                     setAreas(areas);
                     setPreviousPin(pincode);
                 }
@@ -162,15 +161,12 @@ const Address: React.FC<AddressProps> = ({
             submitDetails();
         }
     };
-    
-
-  
 
     return (
         <View style={[FLEX(1), PA(DSP), BGCOLOR('#FFFFFF'), update ? { paddingTop: STATUS_BAR_HEIGHT + DSP } : {}]}>
             <HeaderText
                 step={update ? undefined : 'Step 4'}
-                heading={'Provide your dukan address'}
+                heading={update ? ShopAddress.UPDATE_DUKAN_ADDRESS : ShopAddress.DUKAN_ADDRESS}
                 subHeading={
                     'Provide address where your dukan is located in the market so that customer can reach your dukan.'
                 }
@@ -258,42 +254,41 @@ const Address: React.FC<AddressProps> = ({
                         setOpen={setOpen}
                         data={areas}
                         value={value}
-                        
                         // setValue={area}
                         arrowColor={black50}
                         header={'Select Area'}
                         callBack={() => {}}
                         zIndex={5000}
                         zIndexInverse={1000}
-
                         selectValue={setValue}
-                        placeholderTextColor={"black50"}
-                        borderColor="#d3d3d3"
-
+                        placeholderTextColor={black50}
+                        borderColor="#8a8a8a33"
                         setValue={(value: string) => {
-                            console.log('AREA VALUE', value);
+                            // console.log('AREA VALUE', value);
 
                             setArea(value);
                         }}
                         onSelectItem={(item) => {
                             console.log(item.label);
-                            setValue(item.label)
+                            setValue(item.label);
                             // setArea(item.label)
-                          }}
+                        }}
+                       
                         onChangeValue={(value) => {
                             console.log(value);
-                          }}
+                        }}
                         searchable={true}
                         dropDownMaxHeight={250}
-                        placeholder={'Area'}
+                        placeholder={value ? value : area ? area : 'Area'}
+                        // placeholder={details.area}
                     />
 
                     {error['area'] && <WrappedText text={error['area']} textColor={errorColor} />}
                 </>
             )}
-            <View style={[MT(0.3),{ zIndex: -20 }]}>
+            <View style={[MT(0.1), { zIndex: -20 }]}>
                 <TextInput
-                    keyboardType={'default'}
+                    autoCapitalize={"none"}
                     placeholder={'Local Address in your words so that any one can reach your dukan'}
                     multiline={true}
                     onChangeText={(value) => {

@@ -8,6 +8,8 @@ import { commonButtonProps } from '../../components/button';
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 import { FDR, FLEX, JCC, PV } from '@app/common/styles';
 import { mainColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
+import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 
 interface ModalWithHeaderAndButtonProps {
     heading?: string;
@@ -21,6 +23,7 @@ interface ModalWithHeaderAndButtonProps {
     headerContainerStyle?: ViewStyle | ViewStyle[];
     onPressLeftButton: Function;
     onPressRightButton: Function;
+    statusBarTranslucent: boolean;
 }
 
 const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButtonProps> = ({
@@ -35,6 +38,7 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
     headerContainerStyle,
     onPressLeftButton,
     onPressRightButton,
+    statusBarTranslucent,
 }) => {
     const ModalProps =
         Platform.OS === 'ios'
@@ -54,6 +58,7 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
             backdropTransitionOutTiming={0}
             style={modalStyle === 'centerPlaced' ? styles.modalCenter : styles.modalBottom}
             {...ModalProps}
+            statusBarTranslucent={statusBarTranslucent}
         >
             <View style={[contentContainerStyle]}>
                 {typeof heading === 'string' && (
@@ -98,10 +103,13 @@ const styles = StyleSheet.create({
     modalBottom: {
         justifyContent: 'flex-end',
         margin: 0,
+        flex: 1,
+        height: '100%',
     },
     modalCenter: {
         justifyContent: 'center',
         margin: 0,
+        flex: 1,
     },
 });
 

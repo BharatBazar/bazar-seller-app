@@ -23,7 +23,7 @@ function useLogout(successCallback = () => {}, failCallback = () => {}) {
                         await Storage.removeItem(value);
                     });
                     axios.defaults.headers.common['Auth-Token'] = undefined;
-                    axios.defaults.baseURL = '';
+                    //axios.defaults.baseURL = '';
                     //await EncryptedStorage.setItem(EncryptedStorageItemKeys.PIN, '');
                     //props.userDetailsUpdate(user);
                     navigation.reset({

@@ -77,7 +77,7 @@ const MemberDetails: React.FunctionComponent<MemberDetailsProps> = ({
                     fontSize={fs12}
                     containerStyle={[
                         BGCOLOR(mainColor),
-                        provideShadow(),
+                        provideShadow(0),
                         {
                             paddingHorizontal: 10,
                             paddingVertical: 4,
@@ -98,7 +98,7 @@ const MemberDetails: React.FunctionComponent<MemberDetailsProps> = ({
             <View style={[{ justifyContent: 'flex-end', flexDirection: 'row' }]}>
                 {role !== shopMemberRole.Owner && (
                     <ButtonFeatherIcon
-                        iconName="trash"
+                        iconName="trash-2"
                         onPress={() => {
                             setAlertState({
                                 isVisible: true,
