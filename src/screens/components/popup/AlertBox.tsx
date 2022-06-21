@@ -1,4 +1,5 @@
 import { BGCOLOR, BR, BTR, DSP, HP, MH, PA } from '@app/common/styles';
+import { BTRA, GENERAL_PADDING } from '@app/common/stylesheet';
 import * as React from 'react';
 import { View } from 'react-native';
 import ModalWithHeaderAndButton from './ModalWithHeader';
@@ -24,19 +25,19 @@ const AlertBox: React.FunctionComponent<AlertBoxProps> = ({
         <ModalWithHeaderAndButton
             heading={heading}
             subHeading={subHeading}
-            contentContainerStyle={[BGCOLOR('#FFFFFF'), PA(DSP), BR(0.1), MH(0.4)]}
+            contentContainerStyle={[BGCOLOR('#FFFFFF'), PA(GENERAL_PADDING * 1.2), BTRA()]}
             isVisible={isVisible}
             setPopup={() => {
                 setPopup(false);
             }}
-            modalStyle="centerPlaced"
+            modalStyle="bottomPlaced"
             onPressRightButton={() => {
                 onPressRightButton();
             }}
             statusBarTranslucent={true}
             onPressLeftButton={onPressLeftButton}
         >
-            <View style={[HP(0.3)]} />
+            <View />
         </ModalWithHeaderAndButton>
     );
 };

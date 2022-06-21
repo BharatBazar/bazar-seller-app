@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { Alert, Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { fs10, fs11, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
 import { black40, colorCode, mainColor } from '../../common/color';
-import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
+import { textInputContainerStyle } from '../../common/containerStyles';
 import { GlobalText } from '../../common/customScreenText';
 import { getHP, getWP } from '../../common/dimension';
-import { BGCOLOR, colorTransparency, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
+import { BGCOLOR, FDR, FLEX, MT, PH, provideShadow, PV } from '../../common/styles';
 import { NavigationKey } from '../../labels';
 import { shopMemberLogin } from '../../server/apis/shopMember/shopMember.api';
 import { IRShopMemberLogin, IshopMemberPopulated } from '../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../storage';
 import LineHeading from '../component/LineHeading';
-import StatusBar from '../component/StatusBar';
+import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import TextButton from '../component/TextButton';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import WrappedText from '../component/WrappedText';
@@ -23,6 +23,7 @@ import { commonButtonProps } from '../components/button';
 import Ripple from 'react-native-material-ripple';
 import TextRippleButton from '../components/button/TextRippleB';
 import { ToastHOC } from '../hoc/ToastHOC';
+import { PHA, PTA, PVA } from '@app/common/stylesheet';
 
 export interface OpenDukanProps extends NavigationProps {}
 
@@ -157,9 +158,8 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
 
     const privacyText = { fontSize: fs11, textColor: colorCode.BLACKLOW(40) };
     return (
-        <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
-            <StatusBar />
-            <View style={[PV(0.2), PH(0.5), BGCOLOR(colorCode.WHITE)]}>
+        <View style={[FLEX(1), BGCOLOR('#FFFFFF'), PTA(STATUS_BAR_HEIGHT)]}>
+            <View style={[PVA(), PHA(), BGCOLOR(colorCode.WHITE)]}>
                 <WrappedFeatherIcon
                     onPress={() => {
                         navigation.goBack();

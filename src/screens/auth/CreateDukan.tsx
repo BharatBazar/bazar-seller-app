@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { AIC, FDR, MT, FLEX, ML, DSP, provideShadow, BGCOLOR } from '../../common/styles';
+import { AIC, FDR, MT, FLEX, ML, BGCOLOR, HP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
-import WrappedText from '../component/WrappedText';
+
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
-import { fs13, NavigationProps } from '../../common';
+import { fs12, fs13, fs14, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
-import WrappedTextInput from '../component/WrappedTextInput';
+
 import { getHP, getWP } from '../../common/dimension';
-import TextButton from '../component/TextButton';
+
 import { createShopMember, triggerOtp, updateShopMember } from '../../server/apis/shopMember/shopMember.api';
 import {
     IRCheckPhoneNumber,
@@ -19,17 +19,14 @@ import {
 } from '../../server/apis/shopMember/shopMember.interface';
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
-import capatailize from '@app/common/capatalize';
-import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
-import { Alert } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-
-
-
+import { GENERAL_PADDING, MTA } from '@app/common/stylesheet';
+import TextButton from '../component/TextButton';
+import WrappedTextInput from '../component/WrappedTextInput';
+import WrappedText from '../component/WrappedText';
+import NormalCheckbox from '../components/checkbox/NormalCheckbox';
 export interface CreateDukanProps extends NavigationProps {
     route: {
         params: {
@@ -40,24 +37,24 @@ export interface CreateDukanProps extends NavigationProps {
     };
 }
 
-    
-
 type formState = {
     phoneNumber: string;
     otp: string;
     firstName: string;
     lastName: string;
     email: string;
+    gender: string;
 };
 
 type formError = {
     phoneNumber?: string;
     generalError?: string;
-    serverError?: string|null;
+    serverError?: string | null;
     firstNameError?: string;
     lastNameError?: string;
     emailError?: string;
     otpError?: string;
+    gender?: string;
 };
 export interface CreateDukanState {
     otpSent: boolean;
@@ -66,11 +63,10 @@ export interface CreateDukanState {
     formState: formState;
     error: formError;
     timer: number;
-    update?: boolean;
-    backButton?:boolean;
-  
-}
 
+    update?: boolean;
+    backButton?: boolean;
+}
 
 class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     private timer: NodeJS.Timeout;
@@ -82,32 +78,31 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             otpSent: false,
             signInButtonState: 0,
             otpButtonState: 1,
-            formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '' },
+            formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '', gender: 'M' },
             error: {},
             timer: -1,
             update: props.route.params && props.route.params.update,
-            backButton:false,
-  
-           
+            backButton: false,
         };
 
-    //  console.log(this.props.route);
-
-
+        //  console.log(this.props.route);
     }
 
-    
     setField = (field: keyof formState, value: string) => {
         this.setState((prevState) => {
             prevState.formState[field] = value;
             // console.log("KKKKKKKKKK");this.state.formState
-        if(this.state.formState.email.length>0 && this.state.formState.firstName.length>0 && this.state.formState.lastName.length>0
-            && this.state.formState.otp.length>0 &&this.state.formState.phoneNumber.length>0   ){
-                this.setState({backButton:true})
-            }
-            else{
-                this.setState({backButton:false})
-            }
+            // if (
+            //     this.state.formState.email.length > 0 &&
+            //     this.state.formState.firstName.length > 0 &&
+            //     this.state.formState.lastName.length > 0 &&
+            //     this.state.formState.otp.length > 0 &&
+            //     this.state.formState.phoneNumber.length > 0
+            // ) {
+            //     this.setState({ backButton: true });
+            // } else {
+            //     this.setState({ backButton: false });
+            // }
             return prevState;
         });
     };
@@ -117,8 +112,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             this.setState({ timer: this.state.timer - 1 });
         }, 1000);
     };
-
-    
 
     clearTimeOut = () => {
         clearInterval(this.timer);
@@ -143,8 +136,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
-                    this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
-                
+                    this.props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: NavigationKey.SETPASSWORD, params: { ownerDetails: {} } }],
+                    });
                 } else {
                     this.props.route.params.updateCallback({ ...this.state.formState, role: shopMemberRole.Owner });
                     this.props.navigation.goBack();
@@ -159,54 +154,47 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         }
     };
 
-    
-
     validateFields = () => {
         const { formState, otpSent } = this.state;
         const { phoneNumber, otp, email, firstName, lastName } = formState;
         let error: formError = {};
         if (otpSent && otp.length < 6) {
-            // error['otpError'] = ErrorText.otpError;
+            error['otpError'] = ErrorText.otpError;
             // setTimeout(() => {
             //     error["otpError"] = ""
             // }, 1000);
         }
         if (!mobileValidation.test(phoneNumber)) {
-            // error['phoneNumber'] = ErrorText.phoneNumberError;
+            error['phoneNumber'] = ErrorText.phoneNumberError;
             // setTimeout(() => {
             //     error["phoneNumber"] = ""
             // }, 1000);
         }
         if (!emailValidation.test(email)) {
-            // error['emailError'] = ErrorText.emailError;
+            error['emailError'] = ErrorText.emailError;
             // setTimeout(() => {
             //     error["emailError"] = ""
             // }, 1000);
         }
         if (firstName.length < 3) {
-            // error['firstNameError'] = ErrorText.firstNameError;
+            error['firstNameError'] = ErrorText.firstNameError;
             // setTimeout(() => {
             //     error["firstNameError"] = ""
             // }, 1000);
         }
         if (lastName.length < 3) {
-            // error['lastNameError'] = ErrorText.lastNameError;
+            error['lastNameError'] = ErrorText.lastNameError;
             // setTimeout(() => {
             //     error["lastNameError"] = ""
             // }, 1000);
         }
 
         if (Object.keys(error).length == 0) {
-            
-           
             this.submitDetails();
         } else {
             this.setState({ error: error });
         }
     };
-
-    
-    
 
     async sendOtp() {
         try {
@@ -220,16 +208,12 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 this.setField('otp', response.payload);
             }
         } catch (error) {
-        
-                this.setState({ otpSent: false, timer: -1, otpButtonState: -1, error: { serverError: error.message } });
-                setTimeout(() => {
-                    this.setState({error:{}})
-                    
-                }, 1500);
+            this.setState({ otpSent: false, timer: -1, otpButtonState: -1, error: { serverError: error.message } });
+            setTimeout(() => {
+                this.setState({ error: {} });
+            }, 1500);
+        }
     }
-    }
-
-    
 
     componentDidUpdate() {
         if (this.state.timer == 0) {
@@ -238,7 +222,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         }
     }
 
-    
     checkPhoneNumber = (phoneNumber: string) => {
         if (mobileValidation.test(phoneNumber)) {
             this.setState((prevState) => {
@@ -246,7 +229,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 return prevState;
             });
             this.setField('otp', '');
-         
+
             this.sendOtp();
         } else {
             this.setState({ error: { ...this.state.error, phoneNumber: ErrorText.phoneNumberError } });
@@ -258,22 +241,16 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
     }
 
     returnErrorText = (field: keyof formError) => {
-    const { error } = this.state;
-        return field in error ? <ServerErrorText errorText={error[field]} /> : <View />;    
+        const { error } = this.state;
+        return field in error ? <ServerErrorText errorText={error[field]} /> : <View />;
     };
 
     componentDidMount() {
         if (this.state.update) {
             this.setState({ formState: { ...this.props.route.params.details, otp: '' } });
         }
-
-      
     }
 
-
-
-
-   
     render() {
         const componentProps = {
             buttonTextProps: {
@@ -285,16 +262,13 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 paddingLeft: getWP(0.2),
             },
         };
-   
-       
-     
-        const { details } = this.props.route.params;
 
+        const { details } = this.props.route.params;
 
         // useFocusEffect(
         //     React.useCallback(()=>{
         // setHeader(true)
-    
+
         //     },[])
         // )
 
@@ -302,7 +276,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             otpSent,
             signInButtonState,
             otpButtonState,
-            formState: { phoneNumber, otp, firstName, email, lastName },
+            formState: { phoneNumber, otp, firstName, email, lastName, gender },
             error,
             timer,
             update,
@@ -310,44 +284,22 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         //console.log(details.phoneNumber, phoneNumber, update);
 
         return (
-            
             <ScrollView
                 style={[
                     {
                         flex: 1,
-                        padding: DSP,
-                        paddingTop: update ? STATUS_BAR_HEIGHT + DSP : DSP,
+                        padding: GENERAL_PADDING,
+                        paddingTop: update ? STATUS_BAR_HEIGHT + GENERAL_PADDING : GENERAL_PADDING,
                         backgroundColor: '#FFFFFF',
                     },
                 ]}
             >
-
-                {this.state.backButton ?(
-                 undefined
-                ):(<WrappedFeatherIcon
-                    onPress={() => {
-                      this.props.navigation.goBack();
-                  }}
-                     
-                      iconName={'arrow-left'}
-                      iconColor="#000"
-                      containerHeight={getHP(0.5)}
-                      containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
-                  />)}
-                
                 <HeaderText
                     step={update ? undefined : 'Step 1'}
                     heading={update ? CreateDukanText.UPDATE_HEADING : CreateDukanText.HEADING}
                     subHeading={CreateDukanText.MESSAGE}
                 />
-                {
-                this.state.formState.phoneNumber.length <10 ?
-                null:
-                (
-                    (this.returnErrorText('serverError'))
-                )
-                 
-                }
+                {this.state.formState.phoneNumber.length < 10 ? null : this.returnErrorText('serverError')}
                 <View style={{}}>
                     <View style={[FDR(), AIC()]}>
                         <View style={{ flex: 1 }}>
@@ -406,18 +358,50 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                         (update && phoneNumber != details.phoneNumber && otpSent) ||
                         (update && phoneNumber == details.phoneNumber)) && (
                         <>
+                            <WrappedText
+                                text={'Please provide your gender'}
+                                fontSize={fs12}
+                                textColor={messageColor}
+                                containerStyle={[MTA()]}
+                            />
+
+                            <View style={[FDR(), MTA()]}>
+                                <NormalCheckbox
+                                    placeholder={'Male'}
+                                    value={gender == 'M'}
+                                    containerStyle={[FLEX(1)]}
+                                    setValue={() => {
+                                        this.setField('gender', 'M');
+                                    }}
+                                />
+                                <NormalCheckbox
+                                    containerStyle={[FLEX(1)]}
+                                    placeholder={'Female'}
+                                    value={gender == 'F'}
+                                    setValue={() => {
+                                        this.setField('gender', 'F');
+                                    }}
+                                />
+                                <NormalCheckbox
+                                    containerStyle={[FLEX(1)]}
+                                    placeholder={'Other'}
+                                    value={gender == 'O'}
+                                    setValue={() => {
+                                        this.setField('gender', 'O');
+                                    }}
+                                />
+                            </View>
+
                             <View style={[FDR()]}>
                                 <View style={[FLEX(1)]}>
                                     <WrappedTextInput
                                         value={firstName}
                                         placeholder={CreateDukanText.ownerFirstName}
                                         // onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
-                                        onChangeText={(firstName) => this.setField('firstName',firstName)}
-                                        autoCapitalize={"words"}
-
+                                        onChangeText={(firstName) => this.setField('firstName', firstName)}
+                                        autoCapitalize={'words'}
                                         errorText={error['firstNameError']}
                                         {...componentProps.textInputProps}
-                                        
                                     />
                                 </View>
                                 <View style={[FLEX(1), ML(0.1)]}>
@@ -425,7 +409,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                         value={lastName}
                                         placeholder={CreateDukanText.ownerLastName}
                                         // onChangeText={(lastName) => this.setField('lastName', capatailize(lastName))}
-                                        onChangeText={(lastName) => this.setField('lastName',lastName)}
+                                        onChangeText={(lastName) => this.setField('lastName', lastName)}
                                         autoCapitalize="words"
                                         errorText={error['lastNameError']}
                                         {...componentProps.textInputProps}
@@ -437,12 +421,13 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 fontSize={10}
                                 textColor={messageColor}
                             />
+
                             <WrappedTextInput
                                 placeholder={CreateDukanText.ownerEmail}
                                 value={email}
                                 onChangeText={(email) => this.setField('email', email)}
                                 errorText={error['emailError']}
-                                autoCapitalize={"none"}
+                                autoCapitalize={'none'}
                                 {...componentProps.textInputProps}
                             />
                             <WrappedText

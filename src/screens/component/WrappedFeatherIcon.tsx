@@ -2,7 +2,7 @@ import * as React from 'react';
 import { ActivityIndicator, ViewStyle } from 'react-native';
 import { colorCode, mainColor } from '../../common/color';
 import WrappedRectangleButton from './WrappedRectangleButton';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from './WrappedRoundButton';
 import { fs20 } from '../../common';
 import { getHP } from '../../common/dimension';
@@ -23,7 +23,6 @@ const WrappedFeatherIcon: React.FC<WrappedFeatherIconProps> = ({
     iconName,
     iconSize,
     containerHeight,
-    
 }) => {
     return (
         <WrappedRoundButton

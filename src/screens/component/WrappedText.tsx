@@ -6,7 +6,7 @@ import { getHP } from '../../common/dimension';
 function WrappedText(props: {
     fontFamily?: string;
 
-    textStyle?: TextStyle;
+    textStyle?: TextStyle | TextStyle[];
     fontSize?: number;
 
     textColor?: string;
