@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import { fs10, fs11, fs13, fs28, mobileValidation, NavigationProps, passwordValidation } from '../../common';
 import { black40, colorCode, mainColor } from '../../common/color';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
@@ -157,8 +157,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
 
     const privacyText = { fontSize: fs11, textColor: colorCode.BLACKLOW(40) };
     return (
-        <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
-            <StatusBar />
+        <View style={[FLEX(1), BGCOLOR('#FFFFFF'), PT]}>
             <View style={[PV(0.2), PH(0.5), BGCOLOR(colorCode.WHITE)]}>
                 <WrappedFeatherIcon
                     onPress={() => {
