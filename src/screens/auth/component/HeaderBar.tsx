@@ -3,16 +3,16 @@ import { NavigationKey } from '@app/labels';
 import React from 'react';
 import { View, StyleSheet, ViewStyle, Text } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { FontFamily, fs16 } from '../../common';
-import { borderColor, colorCode, mainColor } from '../../common/color';
-import { getHP } from '../../common/dimension';
-import { AIC, BGCOLOR, FDR, JCC, PH, provideShadow, PV } from '../../common/styles';
-import WrappedFeatherIcon from './WrappedFeatherIcon';
-import WrappedText from './WrappedText';
+import { FontFamily, fs16 } from '../../../common';
+import { borderColor, colorCode, mainColor } from '../../../common/color';
+import { getHP } from '../../../common/dimension';
+import { AIC, BGCOLOR, FDR, JCC, PH, provideShadow, PV } from '../../../common/styles';
+import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
+import WrappedText from '../../component/WrappedText';
 import { AlertContext } from '@app/../App';
 import { IdefaultAlertState } from '@app/hooks/useAlert';
 import { useRoute } from '@react-navigation/native';
-import { STATUS_BAR_HEIGHT } from './StatusBar';
+import { STATUS_BAR_HEIGHT } from '../../component/StatusBar';
 import { GENERAL_PADDING } from '@app/common/stylesheet';
 
 interface OnboardingHeaderProps {
@@ -60,8 +60,8 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                     />
                 </View>
 
-                {shopOwner ? (
-                    <Text></Text>
+                {showBackButton ? (
+                    <View style={{ height: 50, width: 50 }} />
                 ) : (
                     <WrappedFeatherIcon
                         iconName="log-out"

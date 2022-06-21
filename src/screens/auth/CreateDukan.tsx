@@ -152,31 +152,31 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         const { phoneNumber, otp, email, firstName, lastName } = formState;
         let error: formError = {};
         if (otpSent && otp.length < 6) {
-            // error['otpError'] = ErrorText.otpError;
+            error['otpError'] = ErrorText.otpError;
             // setTimeout(() => {
             //     error["otpError"] = ""
             // }, 1000);
         }
         if (!mobileValidation.test(phoneNumber)) {
-            // error['phoneNumber'] = ErrorText.phoneNumberError;
+            error['phoneNumber'] = ErrorText.phoneNumberError;
             // setTimeout(() => {
             //     error["phoneNumber"] = ""
             // }, 1000);
         }
         if (!emailValidation.test(email)) {
-            // error['emailError'] = ErrorText.emailError;
+            error['emailError'] = ErrorText.emailError;
             // setTimeout(() => {
             //     error["emailError"] = ""
             // }, 1000);
         }
         if (firstName.length < 3) {
-            // error['firstNameError'] = ErrorText.firstNameError;
+            error['firstNameError'] = ErrorText.firstNameError;
             // setTimeout(() => {
             //     error["firstNameError"] = ""
             // }, 1000);
         }
         if (lastName.length < 3) {
-            // error['lastNameError'] = ErrorText.lastNameError;
+            error['lastNameError'] = ErrorText.lastNameError;
             // setTimeout(() => {
             //     error["lastNameError"] = ""
             // }, 1000);

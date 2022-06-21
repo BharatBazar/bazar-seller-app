@@ -27,7 +27,7 @@ export const CreateDukanText = {
     ownerLastName: 'Last Name',
     ownerNameMessage: 'Owner name is an important field it will appear on your public facing digital dukan.',
     // ownerEmail: 'Owner email or other active email',
-    ownerEmail: 'email or other active email',
+    ownerEmail: 'Email or other active email',
     ownerEmailMessage:
         'If you have problem maintaining an email then you can provide email of another member from your family like you son, daughter etc who can inform you about important update.',
     SignIn: 'Sign-In',

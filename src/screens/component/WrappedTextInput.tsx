@@ -30,9 +30,9 @@ interface Props {
     eyeButtonHeight?: number;
     paddingLeft?: number;
     multiline?: boolean;
-    keyBoard?:string|any;
+    keyBoard?: string | any;
     textAlignVertical?: 'center' | 'auto' | 'top' | 'bottom';
-    maxLength?:any
+    maxLength?: any;
 }
 
 interface State {
@@ -98,7 +98,6 @@ export default class WrappedTextInput extends Component<Props, State> {
                         secureTextEntry={secureTextEntry || false}
                         maxLength={maxLength}
                         keyboardType={keyBoard}
-                       
                     />
                     {eyeButton ? (
                         <WrappedRoundButton
@@ -122,11 +121,9 @@ export default class WrappedTextInput extends Component<Props, State> {
                     )}
                 </View>
                 {errorText ? (
-                   
                     <View style={[styles.errorContainer, errorContainer, { paddingLeft: 1 || 0, marginTop: 0 }]}>
-                    <Text style={styles.errorText}>{errorText}</Text>
-                </View>
-                  
+                        <Text style={styles.errorText}>{errorText}</Text>
+                    </View>
                 ) : (
                     <View />
                 )}
@@ -147,7 +144,7 @@ const styles = StyleSheet.create({
         flex: 9,
         color: '#1A202C',
         fontSize: fs13,
-        fontFamily: FontFamily.Regular,
+        fontFamily: FontFamily.Medium,
         padding: 0,
         height: '100%',
         width: '100%',

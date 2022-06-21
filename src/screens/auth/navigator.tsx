@@ -11,7 +11,7 @@ import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { BGCOLOR, FLEX, provideShadow } from '../../common/styles';
 import { Right } from '../../navigation/NavigationEffect';
 import Address from './Address';
-import HeaderBar from '../component/HeaderBar';
+import HeaderBar from './component/HeaderBar';
 import EditDukanMember from './add-dukan-member/EditDukanMember';
 
 const Stack = createNativeStackNavigator();
