@@ -26,7 +26,6 @@ import { GENERAL_PADDING, MTA } from '@app/common/stylesheet';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
 import WrappedText from '../component/WrappedText';
-import WrappedCheckBox from '../component/WrappedCheckBox';
 import NormalCheckbox from '../components/checkbox/NormalCheckbox';
 export interface CreateDukanProps extends NavigationProps {
     route: {
@@ -76,7 +75,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: true,
+            otpSent: false,
             signInButtonState: 0,
             otpButtonState: 1,
             formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '', gender: 'M' },
@@ -85,7 +84,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             update: props.route.params && props.route.params.update,
             backButton: false,
         };
-
+        this.props.navigation.reset({
+            index: 0,
+            routes: [{ name: NavigationKey.SETPASSWORD, params: { ownerDetails: {} } }],
+        });
         //  console.log(this.props.route);
     }
 
@@ -137,7 +139,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
-                    this.props.navigation.replace(NavigationKey.SETPASSWORD, { ownerDetails: response.payload });
                 } else {
                     this.props.route.params.updateCallback({ ...this.state.formState, role: shopMemberRole.Owner });
                     this.props.navigation.goBack();
@@ -360,7 +361,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 text={'Please provide your gender'}
                                 fontSize={fs12}
                                 textColor={messageColor}
-                                containerStyle={[MTA(30)]}
+                                containerStyle={[MTA()]}
                             />
 
                             <View style={[FDR(), MTA()]}>
@@ -389,12 +390,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                     }}
                                 />
                             </View>
-                            <WrappedText
-                                text={'Please provide your name.'}
-                                fontSize={fs12}
-                                textColor={messageColor}
-                                containerStyle={[MTA(30)]}
-                            />
+
                             <View style={[FDR()]}>
                                 <View style={[FLEX(1)]}>
                                     <WrappedTextInput
@@ -424,12 +420,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 fontSize={10}
                                 textColor={messageColor}
                             />
-                            <WrappedText
-                                text={'Please provide your active email address.'}
-                                fontSize={fs12}
-                                textColor={messageColor}
-                                containerStyle={[MTA(30)]}
-                            />
+
                             <WrappedTextInput
                                 placeholder={CreateDukanText.ownerEmail}
                                 value={email}

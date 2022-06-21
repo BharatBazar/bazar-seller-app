@@ -14,7 +14,8 @@ export const ErrorText = {
 export const CreateDukanText = {
     HEADING: 'Provide shop owner details.',
     UPDATE_HEADING: 'Update shop owner details.',
-    MESSAGE: 'Details provided here should be specifically of the main owner of the shop.',
+    MESSAGE:
+        'Details provided here should be specifically of the main owner of the shop.\n\nRest of the member can be added to dukan by the main member.\n\nYou can change this detail any time afterwards from app so feel free to make mistake 😃.',
     // ownerMobileNumber: 'Owner mobile number',
     ownerMobileNumber: 'Provide 10 digit mobile number',
     sendOtp: 'Send OTP',

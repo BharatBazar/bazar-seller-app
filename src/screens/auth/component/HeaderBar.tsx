@@ -42,7 +42,18 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
             <View style={[FDR(), AIC(), JCC('space-between'), PH(0.5)]}>
                 <WrappedFeatherIcon
                     onPress={() => {
-                        goBack();
+                        if (showBackButton) goBack();
+                        else {
+                            setAlertState({
+                                isVisible: true,
+                                heading: 'Logout',
+                                subHeading:
+                                    'Are you sure you want to logout ?\nYou can login with same number and continue on your account',
+                                onPressRightButton: () => {
+                                    setLogout();
+                                },
+                            });
+                        }
                     }}
                     iconName={showBackButton ? 'arrow-left' : 'x'}
                     iconColor="#000"

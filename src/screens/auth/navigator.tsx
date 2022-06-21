@@ -5,7 +5,7 @@ import SetPassword from './SetPassword';
 import AddDukanMembers from './add-dukan-member/AddDukanMembers';
 import { NavigationKey } from '../../labels';
 import React from 'react';
-import { View } from 'react-native';
+import { StatusBar, View } from 'react-native';
 import { NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { BGCOLOR, FLEX, provideShadow } from '../../common/styles';
@@ -40,6 +40,12 @@ const AuthNavigation = (props: Props) => {
     }
     let initialParams = ownerDetails || update ? { ownerDetails, ...params } : {};
 
+    React.useEffect(() => {
+        StatusBar.setBarStyle('dark-content');
+        return () => {
+            StatusBar.setBarStyle('light-content');
+        };
+    }, []);
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
             {!update && (
@@ -54,6 +60,7 @@ const AuthNavigation = (props: Props) => {
 
             <Stack.Navigator
                 screenListeners={(a) => {
+                    console.log('a', a);
                     if (a.route.name == NavigationKey.CREATEDUKAN) {
                         setShowBackButton(true);
                     } else if (!showBackButton) {

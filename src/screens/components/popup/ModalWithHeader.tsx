@@ -10,6 +10,7 @@ import { FDR, FLEX, JCC, PV } from '@app/common/styles';
 import { mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
+import { MTA } from '@app/common/stylesheet';
 
 interface ModalWithHeaderAndButtonProps {
     heading?: string;
@@ -52,12 +53,19 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
         <Modal
             isVisible={isVisible}
             useNativeDriver
+            useNativeDriverForBackdrop
             onBackdropPress={() => {
+                setPopup(false);
+            }}
+            onSwipeComplete={() => {
                 setPopup(false);
             }}
             backdropTransitionOutTiming={0}
             style={modalStyle === 'centerPlaced' ? styles.modalCenter : styles.modalBottom}
             {...ModalProps}
+            deviceHeight={STATUS_BAR_HEIGHT + getHP(10)}
+            swipeDirection={['down']}
+            //  swipeThreshold={200}
             statusBarTranslucent={statusBarTranslucent}
         >
             <View style={[contentContainerStyle]}>
@@ -70,7 +78,7 @@ const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButton
                     />
                 )}
                 {children}
-                <View style={[FDR()]}>
+                <View style={[FDR(), MTA()]}>
                     <RightComponentButtonWithLeftText
                         onPress={() => {
                             onPressLeftButton();
@@ -104,12 +112,13 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         margin: 0,
         flex: 1,
-        height: '100%',
+        backgroundColor: 'transparent',
     },
     modalCenter: {
         justifyContent: 'center',
         margin: 0,
         flex: 1,
+        backgroundColor: 'transparent',
     },
 });
 

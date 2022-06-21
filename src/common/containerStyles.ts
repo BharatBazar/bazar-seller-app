@@ -1,6 +1,6 @@
 import { fs13 } from './index';
 import { ViewStyle, StyleProp, TextStyle } from 'react-native';
-import { colorCode, black20, black50, errorColor } from './color';
+import { colorCode, black50, errorColor } from './color';
 import { getHP, getWP } from './dimension';
 import { PH, PV, BR, colorTransparency } from './styles';
 

@@ -16,20 +16,16 @@ import useAlert, { defaultAlertState } from '@app/hooks/useAlert';
 import AlertBox from '@app/screens/components/popup/AlertBox';
 import FlashMessage from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
-
+import { BGCOLOR, FLEX } from '@app/common/styles';
+import { colorCode } from '@app/common/color';
 
 export const AlertContext = createContext<Function>(() => {});
 export const LoaderContext = createContext<Function>(() => {});
-export const HeaderContext = createContext<any>(()=>{});
+export const HeaderContext = createContext<any>(() => {});
 
 const App: () => Node = () => {
     const { alertState, setAlertState } = useAlert();
     const [loader, setLoader] = React.useState(false);
-   
-  
-
-  
-
 
     async function initializeApp() {
         console.log('App initialization');
@@ -53,11 +49,10 @@ const App: () => Node = () => {
     );
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#000000' }}>
-            <StatusBar translucent={true} backgroundColor={'#00000000'} barStyle={'dark-content'} />
+        <View style={[FLEX(1), BGCOLOR(colorCode.BLACK)]}>
+            <StatusBar translucent backgroundColor={'transparent'} />
             <LoaderContext.Provider value={setLoaderCallback}>
                 <AlertContext.Provider value={setAlertState}>
-         
                     <AlertBox
                         {...alertState}
                         onPressLeftButton={() => {
@@ -67,8 +62,7 @@ const App: () => Node = () => {
                             setAlertState(defaultAlertState);
                         }}
                     />
-                    <AppNavigation  />
-            
+                    <AppNavigation />
                 </AlertContext.Provider>
             </LoaderContext.Provider>
             <FlashMessage position={'top'} />
