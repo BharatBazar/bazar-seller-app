@@ -10,6 +10,7 @@ import React from 'react';
 function useLogout(successCallback = () => {}, failCallback = () => {}) {
     const [logout, setLogout] = React.useState(false);
     const navigation = useNavigation();
+    console.log(logout, 'logout');
     React.useEffect(() => {
         const logOut = async () => {
             try {
@@ -36,6 +37,8 @@ function useLogout(successCallback = () => {}, failCallback = () => {}) {
                     });
                     setLogout(false);
                     successCallback();
+                } else {
+                    throw new Error('Could not find token');
                 }
             } catch (error) {
                 //crashError(error);

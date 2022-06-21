@@ -84,10 +84,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             update: props.route.params && props.route.params.update,
             backButton: false,
         };
-        this.props.navigation.reset({
-            index: 0,
-            routes: [{ name: NavigationKey.SETPASSWORD, params: { ownerDetails: {} } }],
-        });
+
         //  console.log(this.props.route);
     }
 
@@ -139,6 +136,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
+                    this.props.navigation.reset({
+                        index: 0,
+                        routes: [{ name: NavigationKey.SETPASSWORD, params: { ownerDetails: {} } }],
+                    });
                 } else {
                     this.props.route.params.updateCallback({ ...this.state.formState, role: shopMemberRole.Owner });
                     this.props.navigation.goBack();

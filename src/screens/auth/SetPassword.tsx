@@ -7,7 +7,7 @@ import { FLEX, PV, PH, MT, FDR, BGCOLOR, PA, DSP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle } from '../../common/containerStyles';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
+
 import HeaderText from './component/HeaderText';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import WrappedText from '../component/WrappedText';
@@ -17,8 +17,6 @@ import { IRSetPassword, IshopMember } from '../../server/apis/shopMember/shopMem
 import API from '../../server/apis';
 import { NavigationKey } from '../../labels';
 import ServerErrorText from './component/errorText';
-// import { useFocusEffect } from '@react-navigation/native';
-// import { HeaderContext } from '@app/../App';
 
 export interface OpenDukanProps extends NavigationProps {
     route: {
@@ -27,8 +25,6 @@ export interface OpenDukanProps extends NavigationProps {
         };
     };
 }
-
-
 
 type form = {
     password: string;
@@ -119,10 +115,8 @@ const SetPassword: React.FC<OpenDukanProps> = ({
         }
 
         if (Object.keys(error).length == 0) {
-           
             setError({});
             setPassword();
-            
         } else {
             setError(error);
         }
