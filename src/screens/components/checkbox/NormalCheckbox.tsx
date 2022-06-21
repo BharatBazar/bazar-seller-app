@@ -1,23 +1,21 @@
-import React, { Component } from 'react';
-import { StyleSheet, View, ViewStyle, StyleProp } from 'react-native';
+import { fs12, fs16 } from '@app/common';
+import { mainColor } from '@app/common/color';
+import { AIC, FDR, FLEX } from '@app/common/styles';
+import WrappedText from '@app/screens/component/WrappedText';
 import CheckBox from '@react-native-community/checkbox';
-import { mainColor } from '../../common/color';
-import { fs12, fs16 } from '../../common';
-import WrappedText from './WrappedText';
-import { AIC, FDR } from '@app/common/styles';
+import * as React from 'react';
+import { StyleSheet, View } from 'react-native';
 
-export interface WrappedCheckBoxProps {
+interface NormalCheckboxProps {
     value: boolean;
     placeholder?: string;
     setValue: (value: boolean) => void;
     containerStyle?: StyleProp<ViewStyle>;
 }
 
-export interface WrappedCheckBoxState {}
-
-const WrappedCheckBox = (props: WrappedCheckBoxProps) => {
+const NormalCheckbox: React.FunctionComponent<NormalCheckboxProps> = (props) => {
     const { value, placeholder, setValue, containerStyle } = props;
-    console.log(props);
+
     return (
         <View style={[FDR(), AIC(), containerStyle]}>
             <CheckBox
@@ -36,7 +34,7 @@ const WrappedCheckBox = (props: WrappedCheckBoxProps) => {
     );
 };
 
-export default WrappedCheckBox;
+export default NormalCheckbox;
 
 const styles = StyleSheet.create({
     placeholderStyle: {

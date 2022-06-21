@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { AIC, FDR, MT, FLEX, ML } from '../../common/styles';
+import { AIC, FDR, MT, FLEX, ML, BGCOLOR, HP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
 
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
-import { fs13, NavigationProps } from '../../common';
+import { fs12, fs13, fs14, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 
 import { getHP, getWP } from '../../common/dimension';
@@ -22,10 +22,12 @@ import { emailValidation, mobileValidation } from '../../common';
 import HeaderText from './component/HeaderText';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
-import { GENERAL_PADDING } from '@app/common/stylesheet';
+import { GENERAL_PADDING, MTA } from '@app/common/stylesheet';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
 import WrappedText from '../component/WrappedText';
+import WrappedCheckBox from '../component/WrappedCheckBox';
+import NormalCheckbox from '../components/checkbox/NormalCheckbox';
 export interface CreateDukanProps extends NavigationProps {
     route: {
         params: {
@@ -42,6 +44,7 @@ type formState = {
     firstName: string;
     lastName: string;
     email: string;
+    gender: string;
 };
 
 type formError = {
@@ -52,6 +55,7 @@ type formError = {
     lastNameError?: string;
     emailError?: string;
     otpError?: string;
+    gender?: string;
 };
 export interface CreateDukanState {
     otpSent: boolean;
@@ -60,6 +64,7 @@ export interface CreateDukanState {
     formState: formState;
     error: formError;
     timer: number;
+
     update?: boolean;
     backButton?: boolean;
 }
@@ -71,10 +76,10 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: false,
+            otpSent: true,
             signInButtonState: 0,
             otpButtonState: 1,
-            formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '' },
+            formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '', gender: 'M' },
             error: {},
             timer: -1,
             update: props.route.params && props.route.params.update,
@@ -269,7 +274,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             otpSent,
             signInButtonState,
             otpButtonState,
-            formState: { phoneNumber, otp, firstName, email, lastName },
+            formState: { phoneNumber, otp, firstName, email, lastName, gender },
             error,
             timer,
             update,
@@ -351,6 +356,45 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                         (update && phoneNumber != details.phoneNumber && otpSent) ||
                         (update && phoneNumber == details.phoneNumber)) && (
                         <>
+                            <WrappedText
+                                text={'Please provide your gender'}
+                                fontSize={fs12}
+                                textColor={messageColor}
+                                containerStyle={[MTA(30)]}
+                            />
+
+                            <View style={[FDR(), MTA()]}>
+                                <NormalCheckbox
+                                    placeholder={'Male'}
+                                    value={gender == 'M'}
+                                    containerStyle={[FLEX(1)]}
+                                    setValue={() => {
+                                        this.setField('gender', 'M');
+                                    }}
+                                />
+                                <NormalCheckbox
+                                    containerStyle={[FLEX(1)]}
+                                    placeholder={'Female'}
+                                    value={gender == 'F'}
+                                    setValue={() => {
+                                        this.setField('gender', 'F');
+                                    }}
+                                />
+                                <NormalCheckbox
+                                    containerStyle={[FLEX(1)]}
+                                    placeholder={'Other'}
+                                    value={gender == 'O'}
+                                    setValue={() => {
+                                        this.setField('gender', 'O');
+                                    }}
+                                />
+                            </View>
+                            <WrappedText
+                                text={'Please provide your name.'}
+                                fontSize={fs12}
+                                textColor={messageColor}
+                                containerStyle={[MTA(30)]}
+                            />
                             <View style={[FDR()]}>
                                 <View style={[FLEX(1)]}>
                                     <WrappedTextInput
@@ -379,6 +423,12 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                 text={CreateDukanText.ownerNameMessage}
                                 fontSize={10}
                                 textColor={messageColor}
+                            />
+                            <WrappedText
+                                text={'Please provide your active email address.'}
+                                fontSize={fs12}
+                                textColor={messageColor}
+                                containerStyle={[MTA(30)]}
                             />
                             <WrappedTextInput
                                 placeholder={CreateDukanText.ownerEmail}
