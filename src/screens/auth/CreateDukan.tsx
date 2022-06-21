@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
-import { AIC, FDR, MT, FLEX, ML, DSP, provideShadow, BGCOLOR } from '../../common/styles';
+import { AIC, FDR, MT, FLEX, ML } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
-import WrappedText from '../component/WrappedText';
+
 import { CreateDukanText, ErrorText } from '../../common/customScreenText';
 import { fs13, NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
-import WrappedTextInput from '../component/WrappedTextInput';
+
 import { getHP, getWP } from '../../common/dimension';
-import TextButton from '../component/TextButton';
+
 import { createShopMember, triggerOtp, updateShopMember } from '../../server/apis/shopMember/shopMember.api';
 import {
     IRCheckPhoneNumber,
@@ -19,15 +19,13 @@ import {
 } from '../../server/apis/shopMember/shopMember.interface';
 import ServerErrorText from './component/errorText';
 import { emailValidation, mobileValidation } from '../../common';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
-import capatailize from '@app/common/capatalize';
-import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
-import { Alert } from 'react-native';
-import { useRoute } from '@react-navigation/native';
-
+import { GENERAL_PADDING } from '@app/common/stylesheet';
+import TextButton from '../component/TextButton';
+import WrappedTextInput from '../component/WrappedTextInput';
+import WrappedText from '../component/WrappedText';
 export interface CreateDukanProps extends NavigationProps {
     route: {
         params: {
@@ -283,8 +281,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                 style={[
                     {
                         flex: 1,
-                        padding: DSP,
-                        paddingTop: update ? STATUS_BAR_HEIGHT + DSP : DSP,
+                        padding: GENERAL_PADDING,
+                        paddingTop: update ? STATUS_BAR_HEIGHT + GENERAL_PADDING : GENERAL_PADDING,
                         backgroundColor: '#FFFFFF',
                     },
                 ]}

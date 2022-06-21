@@ -16,7 +16,7 @@ export const CreateDukanText = {
     UPDATE_HEADING: 'Update shop owner details.',
     MESSAGE: 'Details provided here should be specifically of the main owner of the shop.',
     // ownerMobileNumber: 'Owner mobile number',
-    ownerMobileNumber: 'Mobile Number',
+    ownerMobileNumber: 'Provide 10 digit mobile number',
     sendOtp: 'Send OTP',
     resendOTp: 'Resend OTP',
     verificationOtp: 'Verification code',
@@ -31,13 +31,12 @@ export const CreateDukanText = {
     ownerEmailMessage:
         'If you have problem maintaining an email then you can provide email of another member from your family like you son, daughter etc who can inform you about important update.',
     SignIn: 'Sign-In',
- 
 };
 
 export const ShopDetailsText = {
     MESSAGE: 'Dukan details are important as these are your identity from which you are popular in your locality. ',
-    UPDATE_DUKAN_HEADING:'Update Dukan Details',
-    DUKAN_HEADING:'Dukan Details'
+    UPDATE_DUKAN_HEADING: 'Update Dukan Details',
+    DUKAN_HEADING: 'Dukan Details',
 };
 
 export const GlobalText = {
@@ -47,6 +46,6 @@ export const GlobalText = {
 };
 
 export const ShopAddress = {
-    UPDATE_DUKAN_ADDRESS:'Update Your Dukan Address',
-    DUKAN_ADDRESS:'Provide Your Dukan Address'
-}
+    UPDATE_DUKAN_ADDRESS: 'Update Your Dukan Address',
+    DUKAN_ADDRESS: 'Provide Your Dukan Address',
+};

@@ -35,7 +35,7 @@ const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) =>
                 text={heading}
                 fontSize={fs21}
                 textColor={'#000'}
-                textStyle={{ marginTop: getHP(0.05) }}
+                textStyle={{ marginTop: 5 }}
                 fontFamily={FontFamily.Medium}
             />
             {typeof subHeading === 'string' && (
@@ -43,7 +43,7 @@ const HeaderText: React.SFC<ErrorTextProps> = ({ step, heading, subHeading }) =>
                     text={subHeading}
                     fontSize={fs12}
                     textColor={colorCode.BLACKLOW(50)}
-                    textStyle={{ marginTop: getHP(0.1) }}
+                    textStyle={{ marginTop: 5 }}
                     fontFamily={FontFamily.Regular}
                 />
             )}
