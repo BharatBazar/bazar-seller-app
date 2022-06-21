@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
         flex: 9,
         color: '#1A202C',
         fontSize: fs13,
-        fontFamily: FontFamily.Medium,
+        fontFamily: FontFamily.Light,
         padding: 0,
         height: '100%',
         width: '100%',
