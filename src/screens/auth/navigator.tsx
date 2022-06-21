@@ -25,119 +25,98 @@ interface Props extends NavigationProps {
         };
     };
 }
-class AuthNavigation extends React.Component<Props, {}> {
-    render() {
-        let params = {};
-        console.log('App parameter', this.props.route.params);
-        if (this.props.route.params) {
-            console.log(this.props.route.params);
-            var { ownerDetails, screen, update } = this.props.route.params;
-            params = this.props.route.params;
-        } else {
-            var ownerDetails = undefined;
-            var screen = undefined;
-            var update = undefined;
-        }
-        let initialParams = ownerDetails || update ? { ownerDetails, ...params } : {};
+const AuthNavigation = (props: Props) => {
+    const [showBackButton, setShowBackButton] = React.useState(false);
 
-        return (
-            <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
-                {!update && (
-                    <HeaderBar
-                        statusBarColor={'#ffffff'}
-                        headerBackgroundColor={'#ffffff'}
-                        containerStyle={[provideShadow(2)]}
-                        goBack={()=>this.props.navigation.goBack()}
-                        thisProps = {this.props}
-                    />
-                )}
+    let params = {};
 
-                <Stack.Navigator
-                    screenOptions={{
-                        headerShown: false,
-                        // gestureEnabled:true,
-                        // gestureDirection:"horizontal",
-                        // cardStyleInterpolator:CardStyleInterpolators.forFadeFromBottomAndroid
-                        animation: 'fade',
-                       
+    if (props.route.params) {
+        var { ownerDetails, screen, update } = props.route.params;
+        params = props.route.params;
+    } else {
+        var ownerDetails = undefined;
+        var screen = undefined;
+        var update = undefined;
+    }
+    let initialParams = ownerDetails || update ? { ownerDetails, ...params } : {};
+
+    return (
+        <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
+            {!update && (
+                <HeaderBar
+                    statusBarColor={'#ffffff'}
+                    headerBackgroundColor={'#ffffff'}
+                    containerStyle={[provideShadow(2)]}
+                    goBack={() => props.navigation.goBack()}
+                    showBackButton={showBackButton}
+                />
+            )}
+
+            <Stack.Navigator
+                screenListeners={(a) => {
+                    if (a.route.name == NavigationKey.CREATEDUKAN) {
+                        setShowBackButton(true);
+                    } else if (!showBackButton) {
+                        setShowBackButton(false);
+                    }
+                }}
+                screenOptions={{
+                    headerShown: false,
+                    animation: 'fade',
+                }}
+                initialRouteName={screen || NavigationKey.CREATEDUKAN}
+            >
+                <Stack.Screen
+                    name={NavigationKey.CREATEDUKAN}
+                    initialParams={initialParams}
+                    component={CreateDukan}
+                    options={{
+                        animation: 'slide_from_right',
                     }}
-                    initialRouteName={screen || NavigationKey.CREATEDUKAN}
-                >
-                    <Stack.Screen
-                        name={NavigationKey.CREATEDUKAN}
-                        initialParams={initialParams}
-                        component={CreateDukan}
-                        options={{
-                            animation: 'slide_from_right',
-                            // headerTitle:()=><HeaderBar    statusBarColor={'#ffffff'}
-                            // headerBackgroundColor={'#ffffff'}
-                            // containerStyle={[provideShadow(2)]}/>,
-                            // header:()=><HeaderBar shopOwner={true}/>,
-                            
-                            
-                        }}
-                    />
+                />
 
-                    <Stack.Screen
-                        name={NavigationKey.SETPASSWORD}
-                        component={SetPassword}
-                        initialParams={initialParams}
-                        options={{
-                            animation: 'slide_from_right',
-                          header:()=><HeaderBar statusBarColor={'#ffffff'}
-                          headerBackgroundColor={'#ffffff'}
-                          containerStyle={[provideShadow(2)]}/>
-                            
-                        }}
-                        
-                    />
-                    <Stack.Screen
-                        name={NavigationKey.SHOPDETAILS}
-                        component={ShopDetails}
-                        initialParams={initialParams}
-                        options={{
-                            animation: 'slide_from_right',
-                            header:()=><HeaderBar statusBarColor={'#ffffff'}
-                            headerBackgroundColor={'#ffffff'}
-                            containerStyle={[provideShadow(2)]}/>
-                        }}
-                    />
-                    <Stack.Screen
-                        name={NavigationKey.ADDRESS}
-                        component={Address}
-                        initialParams={initialParams}
-                        options={{
-                            animation: 'slide_from_right',
-                            header:()=><HeaderBar statusBarColor={'#ffffff'}
-                            headerBackgroundColor={'#ffffff'}
-                            containerStyle={[provideShadow(2)]}/>
-                        }}
-                    />
-                    <Stack.Screen
-                        name={NavigationKey.ADDDUKANMEMBERS}
-                        component={AddDukanMembers}
-                        initialParams={initialParams}
-                        options={{
-                            animation: 'slide_from_right',
-                            header:()=><HeaderBar statusBarColor={'#ffffff'}
-                            headerBackgroundColor={'#ffffff'}
-                            containerStyle={[provideShadow(2)]}/>
-                        }}
-                    />
-                    <Stack.Screen
-                        name={NavigationKey.EDITDUKANMEMBER}
-                        component={EditDukanMember}
-                        initialParams={initialParams}
-                        options={{
-                            animation: 'slide_from_right',
-                            header:()=><HeaderBar statusBarColor={'#ffffff'}
-                            headerBackgroundColor={'#ffffff'}
-                            containerStyle={[provideShadow(2)]}/>
-                            
-                        }}
-                    />
-                </Stack.Navigator>
-                {/* {!update && (
+                <Stack.Screen
+                    name={NavigationKey.SETPASSWORD}
+                    component={SetPassword}
+                    initialParams={initialParams}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name={NavigationKey.SHOPDETAILS}
+                    component={ShopDetails}
+                    initialParams={initialParams}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name={NavigationKey.ADDRESS}
+                    component={Address}
+                    initialParams={initialParams}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name={NavigationKey.ADDDUKANMEMBERS}
+                    component={AddDukanMembers}
+                    initialParams={initialParams}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name={NavigationKey.EDITDUKANMEMBER}
+                    component={EditDukanMember}
+                    initialParams={initialParams}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
+            </Stack.Navigator>
+            {/* {!update && (
                     <KeyboardAvoidingView
                         style={[
                             //BGCOLOR('red'),
@@ -154,10 +133,9 @@ class AuthNavigation extends React.Component<Props, {}> {
                         <View style={[WP(5), H(10), BR(2), BGCOLOR(colorCode.SAFFRON)]} />
                     </KeyboardAvoidingView>
                 )} */}
-                {/* <Loader /> */}
-            </View>
-        );
-    }
-}
+            {/* <Loader /> */}
+        </View>
+    );
+};
 
 export default AuthNavigation;

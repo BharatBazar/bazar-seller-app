@@ -1,10 +1,12 @@
 import { ViewStyle, TextStyle } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
 import { FontFamily } from '.';
 import { getHP } from './dimension';
 
 export const GENERAL_PADDING = 15;
 export const GENERAL_HEIGHT = getHP(0.8);
 export const GENERAL_BORDER_RADIUS = 15;
+export const STATUS_BAR_HEIGHT = getStatusBarHeight();
 
 export const PHA = (value?: number | string): ViewStyle => {
     return { paddingHorizontal: value || GENERAL_PADDING };
