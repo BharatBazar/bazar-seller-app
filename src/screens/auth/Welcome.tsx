@@ -14,8 +14,6 @@ export interface WelcomeProps extends NavigationProps {}
 
 export interface WelcomeState {}
 
-
-
 class Welcome extends React.Component<WelcomeProps, WelcomeState> {
     // constructor() {
     //     super();
@@ -56,7 +54,7 @@ class Welcome extends React.Component<WelcomeProps, WelcomeState> {
                         />
                         <RightComponentButtonWithLeftText
                             onPress={() => {
-                                this.props.navigation.navigate(NavigationKey.AUTHNAVIGATOR);
+                                this.props.navigation.replace(NavigationKey.AUTHNAVIGATOR);
                             }}
                             {...commonButtonProps}
                             buttonText={WelcomeText.SHOP_NOT_EXIST}

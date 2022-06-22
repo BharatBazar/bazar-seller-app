@@ -65,12 +65,14 @@ const SetPassword: React.FC<OpenDukanProps> = ({
             phoneNumber: ownerDetails.phoneNumber,
             password: formData.password,
         });
+        console.log('Respinse', response);
         setSetPasswordButton(0);
         if (response.status == 1) {
             await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SHOPDETAILS);
             navigation.replace(NavigationKey.SHOPDETAILS, { ownerDetails: ownerDetails });
             // setHeader(false)
         } else {
+            setSetPasswordButton(0);
             setError({ serverError: response.message });
         }
     };

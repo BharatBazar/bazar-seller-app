@@ -50,6 +50,7 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
 }) => {
     const [shopDetails, setDetails] = React.useState<shopDetails>({ shopName: '', shopDescription: '' });
 
+    console.log('Owner Details', ownerDetails);
     React.useEffect(() => {
         if (update) setDetails({ ...details });
     }, []);
@@ -83,8 +84,10 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                 setLoading(false);
             } else {
                 setError({ error: response.message });
+                setLoading(false);
             }
         } catch (error) {
+            setLoading(false);
             ToastHOC.errorAlert(error.message);
         }
     }
@@ -127,7 +130,6 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     errorText={error['shopName']}
                     // onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: capatailize(name) })}
                     onChangeText={(name: string) => setDetails({ ...shopDetails, shopName: name })}
-       
                     {...componentProps.textInputProps}
                     autoCapitalize={'words'}
                 />
@@ -142,8 +144,8 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
                     multiline={true}
                     errorText={error['shopDescription']}
                     // onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: capatailize(name) })}
-                     onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: name })}
-                     autoCapitalize="words"
+                    onChangeText={(name: string) => setDetails({ ...shopDetails, shopDescription: name })}
+                    autoCapitalize="words"
                     {...componentProps.textInputProps}
                     textAlignVertical={'top'}
                     containerStyle={[HP(2), marTop, BW(0.4), BC(black20), PV(0.05), PH(0.1), BR(0.05)]}

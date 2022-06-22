@@ -13,7 +13,8 @@ import { AlertContext } from '@app/../App';
 import { IdefaultAlertState } from '@app/hooks/useAlert';
 import { useRoute } from '@react-navigation/native';
 import { STATUS_BAR_HEIGHT } from '../../component/StatusBar';
-import { GENERAL_PADDING, PHA } from '@app/common/stylesheet';
+import { GENERAL_PADDING, PHA, PTA, PVA } from '@app/common/stylesheet';
+import SignupProgressBar from './ProgressBar';
 
 interface OnboardingHeaderProps {
     containerStyle?: ViewStyle | ViewStyle[];
@@ -22,6 +23,7 @@ interface OnboardingHeaderProps {
     shopOwner?: boolean;
     goBack?: any;
     showBackButton: boolean;
+    step: number;
 }
 
 const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
@@ -30,6 +32,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
     headerBackgroundColor,
     goBack,
     showBackButton,
+    step,
 
     shopOwner,
 }) => {
@@ -42,8 +45,9 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
             <View style={[FDR(), AIC(), JCC('space-between'), PHA()]}>
                 <WrappedFeatherIcon
                     onPress={() => {
-                        if (showBackButton) goBack();
-                        else {
+                        if (showBackButton) {
+                            goBack();
+                        } else {
                             setAlertState({
                                 isVisible: true,
                                 heading: 'Logout',
@@ -60,8 +64,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                     containerHeight={getHP(0.5)}
                     containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                 />
-
-                <View style={[BGCOLOR(headerBackgroundColor), AIC(), PV(0.2)]}>
+                <View style={[BGCOLOR(headerBackgroundColor), AIC()]}>
                     <WrappedText
                         text={'Create your dukan'}
                         textColor={mainColor}
@@ -94,6 +97,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                     />
                 )} */}
             </View>
+            <SignupProgressBar step={step} />
         </View>
     );
 };

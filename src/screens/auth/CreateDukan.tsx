@@ -84,8 +84,6 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
             update: props.route.params && props.route.params.update,
             backButton: false,
         };
-
-        //  console.log(this.props.route);
     }
 
     setField = (field: keyof formState, value: string) => {
@@ -138,7 +136,12 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
                     this.props.navigation.reset({
                         index: 0,
-                        routes: [{ name: NavigationKey.SETPASSWORD, params: { ownerDetails: {} } }],
+                        routes: [
+                            {
+                                name: NavigationKey.SETPASSWORD,
+                                params: { ownerDetails: { ...response.payload } },
+                            },
+                        ],
                     });
                 } else {
                     this.props.route.params.updateCallback({ ...this.state.formState, role: shopMemberRole.Owner });
@@ -285,6 +288,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
         return (
             <ScrollView
+                keyboardShouldPersistTaps={true}
                 style={[
                     {
                         flex: 1,
