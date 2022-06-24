@@ -1,24 +1,22 @@
+import * as React from 'react';
+import { ScrollView, View } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import { fs14 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
 import { BGCOLOR, BTR, DSP, FDR, FLEX, ML, MT, PA } from '@app/common/styles';
+
+import ModalHOC from '@app/screens/hoc/ModalHOC';
+import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
+import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
+
+import CatalogueItem from './CatalogueItem';
+import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
+import { getHP } from '@app/common/dimension';
+import { isArrayEqual } from '@app/common/helper';
 import Loader from '@app/screens/component/Loader';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import ModalHOC from '@app/screens/hoc/ModalHOC';
-import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
-import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { updateShop } from '@app/server/apis/shop/shop.api';
-import { IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
-import { Storage, StorageItemKeys } from '@app/storage';
-import * as React from 'react';
-import { ScrollView, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import CatalogueItem from './CatalogueItem';
-import { showMessage, hideMessage } from 'react-native-flash-message';
-import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
-import { getHP } from '@app/common/dimension';
-import { isArrayEqual } from '@app/common/helper';
 interface CataloguePopupProps {
     isVisible: boolean;
     setPopup: Function;
@@ -113,6 +111,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
             setPopup={() => {
                 successCallback(false);
             }}
+            statusBarTranlucent={true}
             showErrorMessage={error}
         >
             <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden', maxHeight: getHP(8) }]}>

@@ -29,6 +29,11 @@ import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
 import Catalogue from './dukan-catalogue/CatalogueSelect';
 import { NavigationKey } from '@app/labels';
+import { PHA, PVA } from '@app/common/stylesheet';
+import { FlatList } from 'react-native-gesture-handler';
+import { getId } from '@app/common/helper';
+import CatalogueCardVertical from './component/CatalogueCardVertical';
+import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -138,6 +143,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         });
         const { category, subCategory, subCategory1 } = response1.payload;
         setSelectedCategory([...category]);
+
         if (subCategory.length > 0) setSubCategory([...subCategory]);
         if (subCategory1.length > 0) setSubCategory1([...subCategory1]);
 
@@ -199,10 +205,21 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             : [];
     };
 
+    const [currentIndex, setCurrentIndex] = React.useState(1);
+
+    const onChange = ({ nativeEvent }) => {
+        const active = Math.floor(nativeEvent.contentOffset.x / 200) + 1;
+
+        if (active !== currentIndex && active != 0) setCurrentIndex(active);
+    };
+
     return (
         <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
             <View style={[MT(0.1)]} />
-            <View style={{ paddingHorizontal: '5%', paddingVertical: '2%' }}>
+            <ItemsYouSell items={data} />
+
+            <Border />
+            <View style={[PHA()]}>
                 <WrappedText
                     text={'In which category does your dukan exist?'}
                     fontSize={fs20}
@@ -211,15 +228,14 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 />
                 <WrappedText
                     text={
-                        'select category in which you sell your dukan product in the market. For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
+                        'Select category in which you sell your dukan product in the market.'
+                        //    For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
                     }
                     textAlign="center"
                     containerStyle={[MT(0.15)]}
                     textColor={subHeadingColor}
                 />
             </View>
-
-            <Border />
 
             <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
                 {data.map((item, index) => {

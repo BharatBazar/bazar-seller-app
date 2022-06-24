@@ -1,3 +1,4 @@
+import { font_family_type } from './stylesheet';
 import { Platform, PixelRatio } from 'react-native';
 import { getHP, getWP } from './dimension';
 //const ratio = getHP(1) / getWP(1);
@@ -102,9 +103,6 @@ export const passwordValidation = [
 ];
 
 export const FontFamily = {
-    FontsFreeNetSFProDisplayMedium: Platform.OS == 'ios' ? 'Roboto-Medium' : 'FontsFree-Net-SFProDisplay-Medium',
-    FontsFreeNetSFProDisplayBold: Platform.OS == 'ios' ? 'Roboto-Bold' : 'FontsFree-Net-SFProDisplay-Bold',
-    FontsFreeNetSFProDisplayRegular: Platform.OS == 'ios' ? 'Roboto-Regular' : 'FontsFree-Net-SFProDisplay-Regular',
     Regular: 'Roboto-Regular',
     Thin: 'Roboto-Thin',
     Light: 'Roboto_Light',
@@ -113,6 +111,8 @@ export const FontFamily = {
     Bold: 'Roboto-Bold',
     Helvatica: 'Helvetica',
 };
+
+export type font_family_type = 'Regular' | 'Thin' | 'Light' | 'Black' | 'Medium' | 'Bold' | 'Helvatica';
 
 export const DEFAULT_IMAGE_URL =
     'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cHJvZHVjdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80';

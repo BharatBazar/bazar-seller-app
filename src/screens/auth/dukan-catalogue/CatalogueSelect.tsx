@@ -149,6 +149,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
             setPopup={() => {
                 successCallback(false);
             }}
+            statusBarTranlucent={true}
             showErrorMessage={error}
         >
             <View style={[BGCOLOR('#FFFFFF'), PA(DSP), BTR(20), { overflow: 'hidden', maxHeight: getHP(9) }]}>

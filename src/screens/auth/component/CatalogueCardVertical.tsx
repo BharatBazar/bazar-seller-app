@@ -55,7 +55,7 @@ const CatalogueCardVertical: React.SFC<CatalogueCardVerticalProps> = ({
                     textAlign="center"
                 />
                 <WrappedText
-                    text={item.description + item.description + item.description}
+                    text={item.description}
                     textColor={colorCode.BLACKLOW(40)}
                     fontSize={fs10}
                     textStyle={{ marginTop: getHP(0.05) }}

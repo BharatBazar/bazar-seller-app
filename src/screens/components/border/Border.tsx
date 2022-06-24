@@ -1,4 +1,5 @@
 import { mainColor } from '@app/common/color';
+import { GENERAL_PADDING } from '@app/common/stylesheet';
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle } from 'react-native';
 
@@ -8,7 +9,15 @@ interface BorderProps {
 }
 
 const Border: React.FunctionComponent<BorderProps> = ({ marginTop, borderStyle }) => {
-    return <View style={[styles.borderStyle, borderStyle, { marginTop: marginTop != undefined ? marginTop : '4%' }]} />;
+    return (
+        <View
+            style={[
+                styles.borderStyle,
+                borderStyle,
+                { marginTop: marginTop != undefined ? marginTop : GENERAL_PADDING },
+            ]}
+        />
+    );
 };
 
 export default Border;
