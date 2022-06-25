@@ -47,8 +47,8 @@ const CarouselWithNumberIndicator: React.FunctionComponent<CarouselWithNumberInd
 
     return (
         <View style={[wrapperContainerStyle]}>
-            <View style={[FDR(), JCC('space-between')]}>
-                <GeneralText text={'Items you are selling'} fontSize={fs20} textAlign="center" fontFamily={'Medium'} />
+            <View style={[FDR(), JCC('space-between'), AIC()]}>
+                <GeneralText text={'Items you are selling'} fontSize={fs16} textAlign="center" fontFamily={'Medium'} />
                 <WrappedText
                     text={currentIndex + '/' + items.length}
                     textColor={'#FFF'}
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
         backgroundColor: black30,
 
         paddingVertical: '2%',
-        marginTop: GENERAL_PADDING,
+
         paddingHorizontal: '5%',
     },
 });

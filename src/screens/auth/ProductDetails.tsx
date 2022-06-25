@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { AIC, BR, DSP, JCC, MT, PH } from '../../common/styles';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { AIC, BGCOLOR, BR, DSP, JCC, MT, PH } from '../../common/styles';
 import {
     categoryType,
     IProductCatalogue,
@@ -12,8 +12,8 @@ import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.ap
 import { IRGetShopCatalogue, IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interface';
 import { getShopCatalgoue, updateShop } from '../../server/apis/shop/shop.api';
 
-import { colorCode, subHeadingColor } from '../../common/color';
-import { FontFamily, fs20, NavigationProps } from '../../common';
+import { colorCode, mainColor, subHeadingColor } from '../../common/color';
+import { FontFamily, fs16, fs20, NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 
 import WrappedText from '../component/WrappedText';
@@ -29,11 +29,12 @@ import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
 import Catalogue from './dukan-catalogue/CatalogueSelect';
 import { NavigationKey } from '@app/labels';
-import { PHA, PVA } from '@app/common/stylesheet';
+import { GENERAL_PADDING, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { getId } from '@app/common/helper';
 import CatalogueCardVertical from './component/CatalogueCardVertical';
 import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
+import HeaderWithBackButtonTitleAndrightButton from '../components/header/HeaderWithBackButtonTitleAndrightButton';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -164,6 +165,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         //   updateCatalogueDetails({ category: [], subCategory: [], subCategory1: [] });
         fetchProductDetails({ categoryType: categoryType.Category, active: true });
         //getShopDetails();
+        StatusBar.setBarStyle('light-content');
 
         return () => {};
     }, []);
@@ -214,81 +216,84 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
-            <View style={[MT(0.1)]} />
-            <ItemsYouSell items={data} />
-
-            <Border />
-            <View style={[PHA()]}>
+        <View style={{ flex: 1, backgroundColor: '#FDFDFF' }}>
+            <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING)]}>
                 <WrappedText
-                    text={'In which category does your dukan exist?'}
+                    text={'Select Category'}
                     fontSize={fs20}
+                    textColor={'#ffffff'}
                     textAlign="center"
                     fontFamily={FontFamily.Medium}
                 />
-                <WrappedText
-                    text={
-                        'Select category in which you sell your dukan product in the market.'
-                        //    For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
-                    }
-                    textAlign="center"
-                    containerStyle={[MT(0.15)]}
-                    textColor={subHeadingColor}
-                />
             </View>
+            <ScrollView style={{}}>
+                <View style={[MT(0.1)]} />
+                <ItemsYouSell items={data} />
 
-            <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
-                {data.map((item, index) => {
-                    const isSelected = selectedCategory.includes(item._id);
-                    const indx = selectedCategory.findIndex((id) => id == item._id);
-                    const currentIndex = indx == -1 ? selectedCategory.length : indx;
-                    return (
-                        <CatalogueItem
-                            key={item._id + index.toString()}
-                            item={item}
-                            selected={isSelected}
-                            containerStyle={styles.productCategory}
-                            onPressEdit={() => {
-                                setCurrentCatalogueIndex(index);
-                                setCurrentSelectedIndex(currentIndex + 1);
-                            }}
-                            children={isSelected && item.subCategoryExist ? provideChildren(indx, item.child) : []}
-                            onPressCategory={() => {
-                                if (!isSelected) {
-                                    if (item.subCategoryExist) {
-                                        setCurrentCatalogueIndex(index);
-                                        setCurrentSelectedIndex(currentIndex + 1);
+                <Border marginTop={0} />
+
+                <View style={[PHA(), MTA()]}>
+                    <WrappedText text={'Select item you sell'} fontSize={fs16} fontFamily={FontFamily.Medium} />
+                    <WrappedText
+                        text={
+                            'Select category in which you sell your dukan product in the market.'
+                            //    For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
+                        }
+                        textColor={subHeadingColor}
+                    />
+                    <View style={[MTA()]} />
+                    {data.map((item, index) => {
+                        const isSelected = selectedCategory.includes(item._id);
+                        const indx = selectedCategory.findIndex((id) => id == item._id);
+                        const currentIndex = indx == -1 ? selectedCategory.length : indx;
+                        return (
+                            <CatalogueItem
+                                key={item._id + index.toString()}
+                                item={item}
+                                selected={isSelected}
+                                containerStyle={styles.productCategory}
+                                onPressEdit={() => {
+                                    setCurrentCatalogueIndex(index);
+                                    setCurrentSelectedIndex(currentIndex + 1);
+                                }}
+                                children={isSelected && item.subCategoryExist ? provideChildren(indx, item.child) : []}
+                                onPressCategory={() => {
+                                    if (!isSelected) {
+                                        if (item.subCategoryExist) {
+                                            setCurrentCatalogueIndex(index);
+                                            setCurrentSelectedIndex(currentIndex + 1);
+                                        } else {
+                                        }
                                     } else {
+                                        if (
+                                            subCategory.length >= currentIndex + 1 &&
+                                            subCategory[currentIndex].length > 0
+                                        ) {
+                                            setAlertState({
+                                                isVisible: true,
+                                                heading: 'Remove ' + item.name + ' catalogue',
+                                                subHeading:
+                                                    'Are you sure you want to remove ' +
+                                                    item.name +
+                                                    ' catalogue' +
+                                                    ' from your shop it will delete all your saved data under this catalogue?',
+                                                onPressRightButton: () => {
+                                                    onePressDelete(item._id, item.subCategoryExist);
+                                                },
+                                            });
+                                        } else {
+                                            onePressDelete(item._id, item.subCategoryExist);
+                                        }
                                     }
-                                } else {
-                                    if (
-                                        subCategory.length >= currentIndex + 1 &&
-                                        subCategory[currentIndex].length > 0
-                                    ) {
-                                        setAlertState({
-                                            isVisible: true,
-                                            heading: 'Remove ' + item.name + ' catalogue',
-                                            subHeading:
-                                                'Are you sure you want to remove ' +
-                                                item.name +
-                                                ' catalogue' +
-                                                ' from your shop it will delete all your saved data under this catalogue?',
-                                            onPressRightButton: () => {
-                                                onePressDelete(item._id, item.subCategoryExist);
-                                            },
-                                        });
-                                    } else {
-                                        onePressDelete(item._id, item.subCategoryExist);
-                                    }
-                                }
-                            }}
-                        />
-                    );
-                })}
+                                }}
+                            />
+                        );
+                    })}
+                </View>
             </ScrollView>
             <Border />
             <RightComponentButtonWithLeftText
-                buttonText={'Submit'}
+                buttonText={'Continue'}
                 onPress={async () => {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
                     await Storage.setItem(StorageItemKeys.currentScreen, false);
