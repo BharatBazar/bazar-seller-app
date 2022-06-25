@@ -37,13 +37,14 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     selectedTree,
     index,
 }) => {
+    console.log(selectedTree, item.child, 'tree');
     const [showChildPopup, setShowChildPopup] = React.useState(false);
 
     const ComponentType = selected ? View : Ripple;
 
     const renderSelectedItems = () => {
-        if (selectedTree.length > index + 1 && selectedTree[index + 1].length > 0) {
-            let items = item.child.filter((data) => selectedTree[index + 1].includes(data._id));
+        if (selectedTree.length > 0 && selectedTree[0].length > 0) {
+            let items = item.child.filter((data) => selectedTree[0].includes(data._id));
             return (
                 <View>
                     <WrappedText
@@ -86,7 +87,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                     if (item.child.length > 0) {
                         setShowChildPopup(true);
                     } else {
-                        onPressCategory();
+                        onPressCategory(item._id);
                     }
                 }
             }}
@@ -149,10 +150,12 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 setPopup={() => {
                     setShowChildPopup(false);
                 }}
-                catalgoueTree={[...selectedTree.slice(1)]}
+                catalgoueTree={selectedTree && selectedTree.length > 1 ? [...selectedTree.slice(1)] : []}
                 parentCatalogue={item}
-                successCallback={(item: string | string[]) => {
+                callBack={(item: string | string[]) => {
+                    console.log('item');
                     onPressCategory(item);
+                    // setShowChildPopup(false);
                 }}
             />
         </ComponentType>

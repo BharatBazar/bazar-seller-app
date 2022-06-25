@@ -121,24 +121,30 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     //So we have to carefully update index
     const updateCatalogueDetails = async (data: string[]) => {
         try {
+            console.log(data, 'Data');
             if (data) {
                 setLoader(true);
                 const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-                let datasend = { ...data, _id: ownerDetails.shop };
+                let datasend = { sellingItems: data, _id: ownerDetails.shop };
 
                 const response: IRUpdateShopCatalogue = await updateShopCatalogue(datasend);
-
+                console.log('respinse update', response);
                 if (response.status == 1) {
                     setLoader(false);
-                    setSelectedCategory(response.payload.sellingItems);
+                    setSelectedCategory(response.payload.selectedCategory);
+                    setSellingItem(response.payload.sellingItems);
                 } else {
                     setLoader(false);
                     setError(response.message);
                 }
             } else {
+                setLoader(false);
                 ToastHOC.errorAlert('Please provide data');
             }
-        } catch (error) {}
+        } catch (error) {
+            setLoader(false);
+            ToastHOC.errorAlert(error.message);
+        }
     };
 
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
@@ -151,7 +157,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             const response1: IRGetShopCatalogue = await getShopCatalgoue({
                 _id: ownerDetails.shop,
             });
-            setSelectedCategory(response1.payload.catalogueTree);
+
+            setSelectedCategory([
+                ...response1.payload.selectedCategory,
+                response1.payload.sellingItems.map((item) => item._id),
+            ]);
             setSellingItem(response1.payload.sellingItems);
 
             const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
@@ -245,7 +255,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                     />
                     <View style={[MTA()]} />
                     {data.map((item, index) => {
-                        const isSelected = selectedCategory.length > 0 ? selectedCategory[0].includes(item._id) : false;
+                        const isSelected =
+                            selectedCategory && selectedCategory.length > 0
+                                ? selectedCategory[0].includes(item._id)
+                                : false;
                         const indx = isSelected ? selectedCategory[0].findIndex((id) => id == item._id) : -1;
                         const currentIndex = indx == -1 ? 0 : indx;
                         return (
@@ -269,6 +282,8 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                         } else {
                                             data = [...data, ...item];
                                         }
+
+                                        console.log('data', data);
                                         updateCatalogueDetails(data);
                                     }
                                     // if (!isSelected) {

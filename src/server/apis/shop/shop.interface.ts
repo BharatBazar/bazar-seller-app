@@ -78,7 +78,7 @@ export interface IRGetShop extends CommonApiResponse {
 export interface IRGetShopCatalogue extends CommonApiResponse {
     payload: {
         sellingItems: IProductCatalogue[];
-        catalogueTree: string[][];
+        selectedCategory: string[][];
     };
 }
 
@@ -120,7 +120,8 @@ export interface updateShopData {
 
 export interface IRUpdateShopCatalogue extends CommonApiResponse {
     payload: {
-        sellingItems: string[][];
+        sellingItems: IProductCatalogue[];
+        selectedCategory: string[][];
     };
 }
 export interface IRShopUpdate extends CommonApiResponse {

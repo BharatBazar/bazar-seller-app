@@ -3,6 +3,7 @@ import { subHeadingColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
 import { isArrayEqual } from '@app/common/helper';
 import { BGCOLOR, BTR, DSP, FDR, FLEX, JCC, ML, MT, PA, provideShadow } from '@app/common/styles';
+import { FastImageWrapper } from '@app/screens/component/FastImage';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
@@ -28,7 +29,7 @@ interface CatalogueProps {
     setPopup: Function;
     catalgoueTree: string[][];
 
-    successCallback: Function;
+    callBack: (item: string[] | string) => void;
     parentCatalogue: IProductCatalogue;
 }
 
@@ -38,7 +39,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     parentCatalogue,
     catalgoueTree,
 
-    successCallback,
+    callBack,
 }) => {
     // All the parent catalogue or subcategory like mens, women etc
     // const [parentCatalogue, setParentCatalogue] = React.useState<IProductCatalogue[]>([]);
@@ -91,7 +92,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
 
         console.log(response1.payload);
         if (response1.status == 1) {
-            response1.payload.sort((a, b) => sortFunction(a, b, subCategory ? subCategory : []));
+            response1.payload.sort((a, b) => sortFunction(a, b, []));
             setCurrentItem([...response1.payload]);
             setLoader(false);
         } else {
@@ -149,7 +150,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
             refer={(ref) => (modalRef.current = ref)}
             isVisible={isVisible}
             setPopup={() => {
-                successCallback(false);
+                setPopup(false);
             }}
             statusBarTranlucent={true}
             showErrorMessage={error}
@@ -159,16 +160,16 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                     <View style={[FDR()]}>
                         <WrappedFeatherIcon
                             onPress={() => {
-                                successCallback(false);
+                                setPopup(false);
                             }}
                             iconName="chevron-left"
                             containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(1)]}
                         />
 
                         {currentCatalogue && (
-                            <FastImage
+                            <FastImageWrapper
                                 source={{ uri: currentCatalogue.image }}
-                                style={{ height: 50, width: 50, marginLeft: 20 }}
+                                imageStyle={{ height: 50, width: 50, marginLeft: 20 }}
                             />
                         )}
                         <View style={[ML(0.6), FLEX(1)]}>
@@ -202,6 +203,12 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     index={0}
                                     selectedTree={[...catalgoueTree.slice(1)]}
                                     onPressCategory={() => {
+                                        if (isSelected) {
+                                        } else {
+                                            if (item.child.length == 0) callBack(item._id);
+                                            else {
+                                            }
+                                        }
                                         // if (!isSelected) {
                                         //     if (item.subCategoryExist) {
                                         //         setCurrentCatalogueIndex(index);
@@ -241,14 +248,14 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                             if (selectedCategory.length == 0) {
                                 modalRef.current?.showError('Please select atleast one category', 'danger');
                             } else {
-                                successCallback(true, selectedCategory, subCategory1);
+                                callBack();
                             }
                         }}
                         disabled={buttonDisabled}
                         containerStyle={[MT(0.2)]}
                     />
                 </View>
-                <CataloguePopup
+                {/* <CataloguePopup
                     parentCatalogue={currentItem[currentCatalogueIndex]}
                     isVisible={currentSelectedIndex > 0 ? true : false}
                     setPopup={() => {
@@ -261,7 +268,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                 : []
                             : []
                     }
-                    successCallback={(selected: boolean, selectedSubCategory: string[]) => {
+                    callBack={(selected: boolean, selectedSubCategory: string[]) => {
                         if (selected) {
                             subCategory1[currentSelectedIndex - 1] = [...selectedSubCategory];
                             if (isArrayEqual(selectedSubCategory, subCategory1[currentSelectedIndex - 1])) {
@@ -286,7 +293,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                             setCurrentSelectedIndex(0);
                         }
                     }}
-                />
+                /> */}
                 {loader && <Loader />}
             </View>
         </ModalHOC>
