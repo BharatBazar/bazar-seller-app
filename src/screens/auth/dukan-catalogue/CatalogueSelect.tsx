@@ -26,18 +26,18 @@ import CataloguePopup from './CataloguePopup';
 interface CatalogueProps {
     isVisible: boolean;
     setPopup: Function;
-    parentCatalogue: IProductCatalogue;
-    subCategory1: string[][];
-    subCategory: string[];
+    catalgoueTree: string[][];
+
     successCallback: Function;
+    parentCatalogue: IProductCatalogue;
 }
 
 const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     isVisible,
     setPopup,
     parentCatalogue,
-    subCategory,
-    subCategory1,
+    catalgoueTree,
+
     successCallback,
 }) => {
     // All the parent catalogue or subcategory like mens, women etc
@@ -83,12 +83,12 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     const getCatalogueDetails = async () => {
         setLoader(true);
 
-        setSelectedCategory(subCategory ? [...subCategory] : []);
+        // setSelectedCategory();
         const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
             active: true,
             parent: parentCatalogue._id,
-            categoryType: categoryType.SubCategory,
         });
+
         console.log(response1.payload);
         if (response1.status == 1) {
             response1.payload.sort((a, b) => sortFunction(a, b, subCategory ? subCategory : []));
@@ -101,9 +101,11 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
-        return subCategory1 && subCategory1.length >= currentSelectedIndex && subCategory1[currentSelectedIndex]
-            ? items.filter((item) => subCategory1[currentSelectedIndex].includes(item._id))
-            : [];
+        // return subCategory1 && subCategory1.length >= currentSelectedIndex && subCategory1[currentSelectedIndex]
+        //     ? items.filter((item) => subCategory1[currentSelectedIndex].includes(item._id))
+        //     : [];
+
+        return [];
     };
 
     //While updating full subCategory and subCategory1 is going
@@ -126,7 +128,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     };
 
     const deleteCatalogue = async (indx: number, id: string) => {
-        if (subCategory1.length >= indx) subCategory1.splice(indx, 1);
+        // if (subCategory1.length >= indx) subCategory1.splice(indx, 1);
 
         setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
     };
@@ -189,32 +191,33 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                 <ScrollView contentContainerStyle={{ paddingHorizontal: 10 }}>
                     <View style={[]}>
                         {currentItem.map((item, index) => {
-                            const isSelected = selectedCategory.includes(item._id);
-                            let indx = selectedCategory.findIndex((id) => id == item._id);
-                            indx = indx == -1 ? selectedCategory.length : indx;
-                            console.log('isSelected', isSelected);
+                            const isSelected = catalgoueTree.length > 0 ? catalgoueTree[0].includes(item._id) : false;
+                            const indx = isSelected ? catalgoueTree[0].findIndex((id) => id == item._id) : -1;
+                            const currentIndex = indx == -1 ? 0 : indx;
+
                             return (
                                 <CatalogueItem
                                     key={item._id + index.toString()}
                                     item={item}
+                                    index={0}
+                                    selectedTree={[...catalgoueTree.slice(1)]}
                                     onPressCategory={() => {
-                                        if (!isSelected) {
-                                            if (item.subCategoryExist) {
-                                                setCurrentCatalogueIndex(index);
-                                                setCurrentSelectedIndex(indx + 1);
-                                            } else {
-                                                subCategory1.push([]);
-                                                setSelectedCategory((sC) => {
-                                                    sC.push(item._id);
-
-                                                    return [...sC];
-                                                });
-                                                setButtonDisabled(false);
-                                            }
-                                        } else {
-                                            deleteCatalogue(indx, item._id);
-                                            setButtonDisabled(false);
-                                        }
+                                        // if (!isSelected) {
+                                        //     if (item.subCategoryExist) {
+                                        //         setCurrentCatalogueIndex(index);
+                                        //         setCurrentSelectedIndex(indx + 1);
+                                        //     } else {
+                                        //         subCategory1.push([]);
+                                        //         setSelectedCategory((sC) => {
+                                        //             sC.push(item._id);
+                                        //             return [...sC];
+                                        //         });
+                                        //         setButtonDisabled(false);
+                                        //     }
+                                        // } else {
+                                        //     deleteCatalogue(indx, item._id);
+                                        //     setButtonDisabled(false);
+                                        // }
                                     }}
                                     onPressEdit={
                                         item.subCategoryExist
@@ -225,9 +228,6 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                             : undefined
                                     }
                                     selected={isSelected}
-                                    children={
-                                        isSelected && item.subCategoryExist ? provideChildren(indx, item.child) : []
-                                    }
                                 />
                             );
                         })}

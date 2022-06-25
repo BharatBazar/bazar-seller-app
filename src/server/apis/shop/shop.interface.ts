@@ -68,9 +68,7 @@ export interface IShop {
     rating: Number;
     noOfRating: Number;
 
-    category: IProductCatalogue[];
-    subCategory: IProductCatalogue[][];
-    subCategory1: IProductCatalogue[][][];
+    sellingItems: IProductCatalogue[];
     shopMemberOnBoardingDone: boolean;
 }
 export interface IRGetShop extends CommonApiResponse {
@@ -79,9 +77,8 @@ export interface IRGetShop extends CommonApiResponse {
 
 export interface IRGetShopCatalogue extends CommonApiResponse {
     payload: {
-        category: string[];
-        subCategory: string[][];
-        subCategory1: string[][][];
+        sellingItems: IProductCatalogue[];
+        catalogueTree: string[][];
     };
 }
 
@@ -98,9 +95,7 @@ export interface updateShopData {
     addressOfShop: string;
     membersDetailSkipped: boolean;
     isTerminated: boolean;
-    category: string[];
-    subCategory: string[][];
-    subCategory1: string[][][];
+    sellingItems: string[];
 
     shopDescription: string;
 
@@ -123,6 +118,11 @@ export interface updateShopData {
     shopMemberOnBoardingDone: boolean;
 }
 
+export interface IRUpdateShopCatalogue extends CommonApiResponse {
+    payload: {
+        sellingItems: string[][];
+    };
+}
 export interface IRShopUpdate extends CommonApiResponse {
     payload: Shop;
 }

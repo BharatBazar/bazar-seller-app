@@ -15,6 +15,10 @@ export async function updateShop(data: Partial<updateShopData>): Promise<IRShopU
     return axios.patch('/shop/update', data);
 }
 
+export async function updateShopCatalogue(data: Partial<updateShopData>): Promise<IRShopUpdate> {
+    return axios.patch('/shop/updateCatalogue', data);
+}
+
 export async function getShop(data: { _id: string }): Promise<IRGetShop> {
     return axios.post('/shop/get', data);
 }
