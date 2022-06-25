@@ -121,7 +121,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     //So we have to carefully update index
     const updateCatalogueDetails = async (data: string[]) => {
         try {
-            console.log(data, 'Data');
+            // console.log(data, 'Data');
             if (data) {
                 setLoader(true);
                 const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
@@ -131,7 +131,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 console.log('respinse update', response);
                 if (response.status == 1) {
                     setLoader(false);
-                    setSelectedCategory(response.payload.selectedCategory);
+                    setSelectedCategory([
+                        ...response.payload.selectedCategory,
+                        response.payload.sellingItems.map((item) => item._id),
+                    ]);
                     setSellingItem(response.payload.sellingItems);
                 } else {
                     setLoader(false);
@@ -162,6 +165,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 ...response1.payload.selectedCategory,
                 response1.payload.sellingItems.map((item) => item._id),
             ]);
+            console.log('respionse1', response1.payload.selectedCategory);
             setSellingItem(response1.payload.sellingItems);
 
             const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
@@ -273,47 +277,44 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     setCurrentCatalogueIndex(index);
                                     setCurrentSelectedIndex(currentIndex + 1);
                                 }}
-                                onPressCategory={(item: string | string[]) => {
-                                    if (isSelected) {
+                                onPressCategory={(id: string | string[]) => {
+                                    let data = [...sellingItem.map((item) => item._id)];
+                                    if (typeof id == 'string') {
+                                        data.push(id);
                                     } else {
-                                        let data = [...sellingItem.map((item) => item._id)];
-                                        if (typeof item == 'string') {
-                                            data.push(item);
-                                        } else {
-                                            data = [...data, ...item];
-                                        }
-
-                                        console.log('data', data);
-                                        updateCatalogueDetails(data);
+                                        data = [...data, ...id];
                                     }
-                                    // if (!isSelected) {
-                                    //     if (item.child.length > 0) {
-                                    //         setCurrentCatalogueIndex(index);
-                                    //         setCurrentSelectedIndex(currentIndex + 1);
-                                    //     } else {
-                                    //     }
-                                    // } else {
-                                    //     if (
-                                    //         subCategory.length >= currentIndex + 1 &&
-                                    //         subCategory[currentIndex].length > 0
-                                    //     ) {
-                                    //         setAlertState({
-                                    //             isVisible: true,
-                                    //             heading: 'Remove ' + item.name + ' catalogue',
-                                    //             subHeading:
-                                    //                 'Are you sure you want to remove ' +
-                                    //                 item.name +
-                                    //                 ' catalogue' +
-                                    //                 ' from your shop it will delete all your saved data under this catalogue?',
-                                    //             onPressRightButton: () => {
-                                    //                 onePressDelete(item._id, item.subCategoryExist);
-                                    //             },
-                                    //         });
-                                    //     } else {
-                                    //         onePressDelete(item._id, item.subCategoryExist);
-                                    //     }
-                                    // }
+
+                                    console.log('data', data);
+                                    updateCatalogueDetails(data);
                                 }}
+                                // if (!isSelected) {
+                                //     if (item.child.length > 0) {
+                                //         setCurrentCatalogueIndex(index);
+                                //         setCurrentSelectedIndex(currentIndex + 1);
+                                //     } else {
+                                //     }
+                                // } else {
+                                //     if (
+                                //         subCategory.length >= currentIndex + 1 &&
+                                //         subCategory[currentIndex].length > 0
+                                //     ) {
+                                //         setAlertState({
+                                //             isVisible: true,
+                                //             heading: 'Remove ' + item.name + ' catalogue',
+                                //             subHeading:
+                                //                 'Are you sure you want to remove ' +
+                                //                 item.name +
+                                //                 ' catalogue' +
+                                //                 ' from your shop it will delete all your saved data under this catalogue?',
+                                //             onPressRightButton: () => {
+                                //                 onePressDelete(item._id, item.subCategoryExist);
+                                //             },
+                                //         });
+                                //     } else {
+                                //         onePressDelete(item._id, item.subCategoryExist);
+                                //     }
+                                // }
                             />
                         );
                     })}

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { black100, black60, colorCode, mainColor } from '../../../common/color';
 import { AIC, BGCOLOR, BR, FDR, ML, MR, MT, PH, provideShadow, PV } from '../../../common/styles';
 import Icon from 'react-native-vector-icons/Feather';
-import { View, ViewStyle } from 'react-native';
+import { TouchableOpacity, View, ViewStyle } from 'react-native';
 import { getHP, getWP } from '../../../common/dimension';
 import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
@@ -37,14 +37,14 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     selectedTree,
     index,
 }) => {
-    console.log(selectedTree, item.child, 'tree');
+    //(selectedTree, item.child, 'tree');
     const [showChildPopup, setShowChildPopup] = React.useState(false);
 
-    const ComponentType = selected ? View : Ripple;
+    const ComponentType = selected ? View : TouchableOpacity;
 
     const renderSelectedItems = () => {
-        if (selectedTree.length > 0 && selectedTree[0].length > 0) {
-            let items = item.child.filter((data) => selectedTree[0].includes(data._id));
+        if (selectedTree.length > 1 && selectedTree[1].length > 0) {
+            let items = item.child.filter((data) => selectedTree[1].includes(data._id));
             return (
                 <View>
                     <WrappedText
@@ -71,6 +71,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
 
     return (
         <ComponentType
+            key={item._id}
             style={[
                 PH(0.2),
                 FDR(),
@@ -82,6 +83,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 { borderRadius: getWP(0.3), backgroundColor: selected ? colorCode.CHAKRALOW(20) : colorCode.WHITE },
             ]}
             onPress={() => {
+                // console.log('itemmm', item.name, 'idd');
                 if (selected) {
                 } else {
                     if (item.child.length > 0) {
@@ -146,6 +148,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
             )}
 
             <Catalogue
+                key={item._id}
                 isVisible={showChildPopup}
                 setPopup={() => {
                     setShowChildPopup(false);
@@ -153,7 +156,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 catalgoueTree={selectedTree && selectedTree.length > 1 ? [...selectedTree.slice(1)] : []}
                 parentCatalogue={item}
                 callBack={(item: string | string[]) => {
-                    console.log('item');
+                    // console.log('item', item);
                     onPressCategory(item);
                     // setShowChildPopup(false);
                 }}

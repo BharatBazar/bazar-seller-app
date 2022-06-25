@@ -90,7 +90,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
             parent: parentCatalogue._id,
         });
 
-        console.log(response1.payload);
+        // console.log(response1.payload);
         if (response1.status == 1) {
             response1.payload.sort((a, b) => sortFunction(a, b, []));
             setCurrentItem([...response1.payload]);
@@ -202,13 +202,18 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     item={item}
                                     index={0}
                                     selectedTree={[...catalgoueTree.slice(1)]}
-                                    onPressCategory={() => {
+                                    onPressCategory={(id) => {
                                         if (isSelected) {
                                         } else {
-                                            if (item.child.length == 0) callBack(item._id);
-                                            else {
-                                            }
+                                            callBack(id);
                                         }
+                                        // console.log('itemmm', id, item.name, isSelected, item.child);
+                                        // if (isSelected) {
+                                        // } else {
+                                        //     if (item.child.length == 0) callBack(id);
+                                        //     else {
+                                        //     }
+                                        // }
                                         // if (!isSelected) {
                                         //     if (item.subCategoryExist) {
                                         //         setCurrentCatalogueIndex(index);
@@ -248,7 +253,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                             if (selectedCategory.length == 0) {
                                 modalRef.current?.showError('Please select atleast one category', 'danger');
                             } else {
-                                callBack();
+                                // callBack();
                             }
                         }}
                         disabled={buttonDisabled}
