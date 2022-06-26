@@ -1,14 +1,17 @@
+import { AlertContext } from '@app/../App';
 import { fs10, fs14 } from '@app/common';
 import { black100, black40, borderColor, mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { AIC, BGCOLOR, provideShadow } from '@app/common/styles';
+import { AIC, AS, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
 import { GENERAL_PADDING, MBA, MTA, PBA, PVA } from '@app/common/stylesheet';
+import { IdefaultAlertState } from '@app/hooks/useAlert';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
+import ButtonIconsIcons from '@app/screens/components/button/ButtonIconIcons';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 
 import * as React from 'react';
-import { View, ViewStyle } from 'react-native';
+import { Button, View, ViewStyle } from 'react-native';
 import { productData } from '../ProductDetails';
 
 interface SellingItemProps {
@@ -18,6 +21,8 @@ interface SellingItemProps {
 }
 
 const SellingItem: React.FunctionComponent<SellingItemProps> = ({ item, containerStyle }) => {
+    const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
+
     return (
         <View
             style={[
@@ -30,15 +35,35 @@ const SellingItem: React.FunctionComponent<SellingItemProps> = ({ item, containe
                 containerStyle,
             ]}
         >
-            <GeneralText text={'Under'} fontSize={fs10} fontFamily={'Medium'} textColor={mainColor} />
-            <GeneralText
-                text={item.path.reduce((a, b) => a + (a.length > 0 ? ' --> ' : '') + b.name, '')}
-                fontSize={fs10}
-                textAlign="center"
-                fontFamily={'Medium'}
-                textColor={mainColor}
-            />
-
+            <View style={[FDR(), JCC('space-between'), AIC()]}>
+                <View style={[FLEX(1)]}>
+                    <GeneralText text={'Under'} fontSize={fs10} fontFamily={'Medium'} textColor={mainColor} />
+                    <GeneralText
+                        text={item.path.reduce((a, b) => a + (a.length > 0 ? ' --> ' : '') + b.name, '')}
+                        fontSize={fs10}
+                        fontFamily={'Medium'}
+                        textColor={mainColor}
+                    />
+                </View>
+                <ButtonIconsIcons
+                    iconName="trash"
+                    containerStyle={[AS('flex-end'), BGCOLOR('#FFFFFF'), provideShadow(2)]}
+                    onPress={() => {
+                        setAlertState({
+                            isVisible: true,
+                            heading: 'Remove ' + item.name + ' catalogue',
+                            subHeading:
+                                'Are you sure you want to remove ' +
+                                item.name +
+                                ' catalogue' +
+                                ' from your shop it will delete all your saved data under this catalogue?',
+                            onPressRightButton: () => {
+                                // onePressDelete(item._id, item.subCategoryExist);
+                            },
+                        });
+                    }}
+                />
+            </View>
             <FastImageWrapper
                 source={{ uri: item.image }}
                 imageStyle={{

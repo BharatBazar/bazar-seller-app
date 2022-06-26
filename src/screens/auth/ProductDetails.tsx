@@ -64,11 +64,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     const [subCategory, setSubCategory] = React.useState<string[][]>([]);
     const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
 
-    const [currentCatelogueIndex, setCurrentCatalogueIndex] = React.useState<number>(0);
-
-    //Current selected item from the child category
-    const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
-
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
     const submitDetails = async (data: updateShopData) => {
@@ -240,8 +235,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 <View style={[MT(0.1)]} />
                 <ItemsYouSell items={sellingItem} />
 
-                <Border marginTop={0} />
-
                 <View style={[PHA(), MTA()]}>
                     <WrappedText text={'Select item you sell'} fontSize={fs16} fontFamily={FontFamily.Medium} />
                     <WrappedText
@@ -251,14 +244,14 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                         }
                         textColor={subHeadingColor}
                     />
-                    <View style={[MTA()]} />
+
                     {data.map((item, index) => {
                         const isSelected =
                             selectedCategory && selectedCategory.length > 0
                                 ? selectedCategory[0].includes(item._id)
                                 : false;
                         const indx = isSelected ? selectedCategory[0].findIndex((id) => id == item._id) : -1;
-                        const currentIndex = indx == -1 ? 0 : indx;
+
                         return (
                             <CatalogueItem
                                 selectedTree={selectedCategory}
@@ -314,33 +307,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     setSellingItem(data);
                                     // updateCatalogueDetails(data);
                                 }}
-                                // if (!isSelected) {
-                                //     if (item.child.length > 0) {
-                                //         setCurrentCatalogueIndex(index);
-                                //         setCurrentSelectedIndex(currentIndex + 1);
-                                //     } else {
-                                //     }
-                                // } else {
-                                //     if (
-                                //         subCategory.length >= currentIndex + 1 &&
-                                //         subCategory[currentIndex].length > 0
-                                //     ) {
-                                //         setAlertState({
-                                //             isVisible: true,
-                                //             heading: 'Remove ' + item.name + ' catalogue',
-                                //             subHeading:
-                                //                 'Are you sure you want to remove ' +
-                                //                 item.name +
-                                //                 ' catalogue' +
-                                //                 ' from your shop it will delete all your saved data under this catalogue?',
-                                //             onPressRightButton: () => {
-                                //                 onePressDelete(item._id, item.subCategoryExist);
-                                //             },
-                                //         });
-                                //     } else {
-                                //         onePressDelete(item._id, item.subCategoryExist);
-                                //     }
-                                // }
                             />
                         );
                     })}

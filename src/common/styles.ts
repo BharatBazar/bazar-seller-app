@@ -58,6 +58,10 @@ export const BGCOLOR = (color?: string): ViewStyle => {
     return { backgroundColor: color || '#ffffff' };
 };
 
+export const AS = (value?: 'auto' | FlexAlignType | undefined): ViewStyle => {
+    return { alignSelf: value || 'center' };
+};
+
 export const FLEX = (FLEX: number) => {
     return { flex: FLEX };
 };
