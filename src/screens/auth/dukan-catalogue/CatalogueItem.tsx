@@ -8,14 +8,14 @@ import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
 import { FontFamily, fs12, fs14 } from '../../../common';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import Ripple from 'react-native-material-ripple';
+
 import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 import Catalogue from './CatalogueSelect';
 
 export interface CatalogueItemProps {
     item: IProductCatalogue;
     containerStyle?: ViewStyle | ViewStyle[];
-    onPressCategory: (item: string | string[]) => void;
+    onPressCategory: (path: string[]) => void;
     onPressEdit?: Function;
     //selectedItems: IProductCatalogue[];
     selected: boolean;
@@ -39,7 +39,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
 }) => {
     const [showChildPopup, setShowChildPopup] = React.useState(false);
 
-    const ComponentType = selected ? View : TouchableOpacity;
+    //const ComponentType = selected ? View : TouchableOpacity;
 
     const renderSelectedItems = () => {
         if (selectedTree.length > 1 && selectedTree[1].length > 0) {
@@ -69,7 +69,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     };
 
     return (
-        <ComponentType
+        <TouchableOpacity
             key={item._id}
             style={[
                 PH(0.2),
@@ -82,13 +82,13 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 { borderRadius: getWP(0.3), backgroundColor: selected ? colorCode.CHAKRALOW(20) : colorCode.WHITE },
             ]}
             onPress={() => {
-                // console.log('itemmm', item.name, 'idd');
+                console.log('itemmm', item.name, selected);
                 if (selected) {
                 } else {
                     if (item.child.length > 0) {
                         setShowChildPopup(true);
                     } else {
-                        onPressCategory(item._id);
+                        onPressCategory([item._id]);
                     }
                 }
             }}
@@ -120,7 +120,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 )}
             </View>
 
-            {selected && onPressEdit && item.child.length > 0 && (
+            {selected && item.child.length > 0 && (
                 <ButtonFeatherIcon
                     iconName="edit"
                     containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
@@ -147,20 +147,21 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
             )}
 
             <Catalogue
-                key={item._id}
+                // key={item._id}
                 isVisible={showChildPopup}
                 setPopup={() => {
                     setShowChildPopup(false);
                 }}
                 catalgoueTree={selectedTree && selectedTree.length > 1 ? selectedTree.slice(1) : []}
                 parentCatalogue={item}
-                callBack={(item: string | string[]) => {
+                callBack={(path: string[]) => {
                     // console.log('item', item);
-                    onPressCategory(item);
+
+                    onPressCategory(path);
                     // setShowChildPopup(false);
                 }}
             />
-        </ComponentType>
+        </TouchableOpacity>
     );
 };
 

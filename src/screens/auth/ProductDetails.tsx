@@ -131,10 +131,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 console.log('respinse update', response);
                 if (response.status == 1) {
                     setLoader(false);
-                    setSelectedCategory([
-                        ...response.payload.selectedCategory,
-                        response.payload.sellingItems.map((item) => item._id),
-                    ]);
+                    // setSelectedCategory([
+                    //     ...response.payload.selectedCategory,
+                    //     response.payload.sellingItems.map((item) => item._id),
+                    // ]);
                     setSellingItem(response.payload.sellingItems);
                 } else {
                     setLoader(false);
@@ -277,16 +277,28 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     setCurrentCatalogueIndex(index);
                                     setCurrentSelectedIndex(currentIndex + 1);
                                 }}
-                                onPressCategory={(id: string | string[]) => {
-                                    let data = [...sellingItem.map((item) => item._id)];
-                                    if (typeof id == 'string') {
-                                        data.push(id);
-                                    } else {
-                                        data = [...data, ...id];
-                                    }
+                                onPressCategory={(path: string[]) => {
+                                    let newpath = [item._id, ...path];
 
-                                    console.log('data', data);
-                                    updateCatalogueDetails(data);
+                                    console.log('before', selectedCategory);
+                                    setSelectedCategory((selectedCat) => {
+                                        newpath.map((item, index) => {
+                                            if (selectedCat.length < index + 1) selectedCat.push([item]);
+                                            else if (!selectedCat[index].includes(item)) selectedCat[index].push(item);
+                                        });
+
+                                        console.log(selectedCat);
+
+                                        return [...selectedCat];
+                                    });
+
+                                    let data = [...sellingItem.map((item) => item._id)];
+
+                                    data = [...data, newpath[newpath.length - 1]];
+
+                                    console.log('data', newpath);
+
+                                    // updateCatalogueDetails(data);
                                 }}
                                 // if (!isSelected) {
                                 //     if (item.child.length > 0) {

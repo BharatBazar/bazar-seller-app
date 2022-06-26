@@ -29,7 +29,7 @@ interface CatalogueProps {
     setPopup: Function;
     catalgoueTree: string[][];
 
-    callBack: (item: string[] | string) => void;
+    callBack: (path: string[]) => void;
     parentCatalogue: IProductCatalogue;
 }
 
@@ -195,18 +195,18 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                             const isSelected = catalgoueTree.length > 0 ? catalgoueTree[0].includes(item._id) : false;
                             const indx = isSelected ? catalgoueTree[0].findIndex((id) => id == item._id) : -1;
                             const currentIndex = indx == -1 ? 0 : indx;
-
+                            console.log(item.name, isSelected);
                             return (
                                 <CatalogueItem
                                     key={item._id + index.toString()}
                                     item={item}
                                     index={0}
-                                    selectedTree={[...catalgoueTree]}
-                                    onPressCategory={(id) => {
-                                        if (isSelected) {
-                                        } else {
-                                            callBack(id);
-                                        }
+                                    selectedTree={catalgoueTree}
+                                    onPressCategory={(path) => {
+                                        console.log('isSelected', isSelected, path, item.name);
+
+                                        callBack(item.child.length > 0 ? [item._id, ...path] : [item._id]);
+
                                         // console.log('itemmm', id, item.name, isSelected, item.child);
                                         // if (isSelected) {
                                         // } else {
