@@ -12,9 +12,10 @@ import SellingItem from './SellingItem';
 interface ItemsYouSellProps {
     items: IProductCatalogue[];
     heading?: string;
+    onPressDelete: (item: string) => void;
 }
 
-const ItemsYouSell: React.FunctionComponent<ItemsYouSellProps> = ({ items, heading }) => {
+const ItemsYouSell: React.FunctionComponent<ItemsYouSellProps> = ({ items, heading, onPressDelete }) => {
     if (items.length > 0)
         return (
             <View style={[PHA()]}>
@@ -25,6 +26,7 @@ const ItemsYouSell: React.FunctionComponent<ItemsYouSellProps> = ({ items, headi
                     renderItem={(item) => (
                         <SellingItem
                             item={item}
+                            onPressDelete={onPressDelete}
                             containerStyle={[W(getWP(4.4)), PHA(getWP(0.3)), MLA(getWP(0.1)), MRA(getWP(0.2)), BRA()]}
                         />
                     )}

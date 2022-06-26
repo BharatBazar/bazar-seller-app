@@ -108,7 +108,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     //While updating full subCategory and subCategory1 is going
     //So we have to carefully update index
-    const updateCatalogueDetails = async (data: string[]) => {
+    const updateCatalogueDetails = async (data: string[], reload?: boolean) => {
         try {
             // console.log(data, 'Data');
             if (data) {
@@ -124,7 +124,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                     //     ...response.payload.selectedCategory,
                     //     response.payload.sellingItems.map((item) => item._id),
                     // ]);
-                    setSellingItem(response.payload.sellingItems);
+                    // setSellingItem(response.payload.sellingItems);
+                    if (reload) {
+                        fetchProductDetails({ parent: { $exists: false }, active: true });
+                    }
                 } else {
                     setLoader(false);
                     setError(response.message);
@@ -174,52 +177,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
         return () => {};
     }, []);
 
-    const selectedCategoryLength = React.useRef<number>(0);
-    // React.useEffect(() => {
-    //     if (selectedCategory.length > selectedCategoryLength.current) {
-    //         selectedCategoryLength.current = selectedCategory.length;
-    //     } else if (selectedCategory.length < selectedCategoryLength.current) {
-    //         updateCatalogueDetails();
-    //         selectedCategoryLength.current = selectedCategory.length;
-    //     }
-    // }, [selectedCategory]);
-
-    const onePressDelete = (id: string, subCategoryExist: boolean) => {
-        setAlertState(defaultAlertState);
-        const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
-        if (subCategory.length >= indexInSelectedArray + 1) {
-            setSubCategory((subCategory) => {
-                let sc = subCategory.filter((item, indx) => indexInSelectedArray != indx);
-                return [...sc];
-            });
-        }
-        if (subCategoryExist && subCategory1.length >= indexInSelectedArray + 1) {
-            setSubCategory1((subCategory1) => {
-                let sc = subCategory1.filter((item, indx) => indexInSelectedArray != indx);
-
-                return [...sc];
-            });
-        }
-        setSelectedCategory((selectedCategory) => {
-            let sc = selectedCategory.filter((_id) => _id != id);
-            return [...sc];
-        });
-    };
-
-    const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
-        // return subCategory && subCategory.length >= currentSelectedIndex && subCategory[currentSelectedIndex]
-        //     ? items.filter((item) => subCategory[currentSelectedIndex].includes(item._id))
-        //     : [];
-    };
-
-    const [currentIndex, setCurrentIndex] = React.useState(1);
-
-    const onChange = ({ nativeEvent }) => {
-        const active = Math.floor(nativeEvent.contentOffset.x / 200) + 1;
-
-        if (active !== currentIndex && active != 0) setCurrentIndex(active);
-    };
-
     return (
         <View style={{ flex: 1, backgroundColor: '#FDFDFF' }}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING)]}>
@@ -233,7 +190,21 @@ const ProductDetails: React.SFC<ProductDetail> = ({
             </View>
             <ScrollView style={{}}>
                 <View style={[MT(0.1)]} />
-                <ItemsYouSell items={sellingItem} />
+                <ItemsYouSell
+                    items={sellingItem}
+                    onPressDelete={(id: String) => {
+                        let data = [...sellingItem];
+                        let indx = data.findIndex((item) => item._id == id);
+                        indx > -1 && data.splice(indx, 1);
+                        // data = [...data, newpath[newpath.length - 1]];
+
+                        setSellingItem(data);
+                        updateCatalogueDetails(
+                            data.map((item) => item._id),
+                            true,
+                        );
+                    }}
+                />
 
                 <View style={[PHA(), MTA()]}>
                     <WrappedText text={'Select item you sell'} fontSize={fs16} fontFamily={FontFamily.Medium} />
@@ -283,6 +254,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     // data = [...data, newpath[newpath.length - 1]];
 
                                     setSellingItem(data);
+                                    updateCatalogueDetails(data.map((item) => item._id));
                                 }}
                                 onPressCategory={(path: IProductCatalogue[]) => {
                                     let newpath = [item, ...path];
@@ -305,7 +277,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     data = [...data, newpath[newpath.length - 1]];
 
                                     setSellingItem(data);
-                                    // updateCatalogueDetails(data);
+                                    updateCatalogueDetails(data.map((item) => item._id));
                                 }}
                             />
                         );

@@ -16,11 +16,11 @@ import { productData } from '../ProductDetails';
 
 interface SellingItemProps {
     item: IProductCatalogue;
-
+    onPressDelete: Function;
     containerStyle: ViewStyle | ViewStyle[];
 }
 
-const SellingItem: React.FunctionComponent<SellingItemProps> = ({ item, containerStyle }) => {
+const SellingItem: React.FunctionComponent<SellingItemProps> = ({ item, containerStyle, onPressDelete }) => {
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
 
     return (
@@ -58,7 +58,7 @@ const SellingItem: React.FunctionComponent<SellingItemProps> = ({ item, containe
                                 ' catalogue' +
                                 ' from your shop it will delete all your saved data under this catalogue?',
                             onPressRightButton: () => {
-                                // onePressDelete(item._id, item.subCategoryExist);
+                                onPressDelete(item._id);
                             },
                         });
                     }}
