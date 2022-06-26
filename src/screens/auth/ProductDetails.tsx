@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
-import { AIC, BR, DSP, JCC, MT, PH } from '../../common/styles';
+import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
+import { AIC, BGCOLOR, BR, DSP, JCC, MT, PH } from '../../common/styles';
 import {
     categoryType,
     IProductCatalogue,
@@ -9,11 +9,16 @@ import {
 } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 
-import { IRGetShopCatalogue, IRShopUpdate, updateShopData } from '../../server/apis/shop/shop.interface';
-import { getShopCatalgoue, updateShop } from '../../server/apis/shop/shop.api';
+import {
+    IRGetShopCatalogue,
+    IRShopUpdate,
+    IRUpdateShopCatalogue,
+    updateShopData,
+} from '../../server/apis/shop/shop.interface';
+import { getShopCatalgoue, updateShop, updateShopCatalogue } from '../../server/apis/shop/shop.api';
 
-import { colorCode, subHeadingColor } from '../../common/color';
-import { FontFamily, fs20, NavigationProps } from '../../common';
+import { colorCode, mainColor, subHeadingColor } from '../../common/color';
+import { FontFamily, fs16, fs20, NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 
 import WrappedText from '../component/WrappedText';
@@ -29,11 +34,13 @@ import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
 import Catalogue from './dukan-catalogue/CatalogueSelect';
 import { NavigationKey } from '@app/labels';
-import { PHA, PVA } from '@app/common/stylesheet';
+import { GENERAL_PADDING, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
 import { FlatList } from 'react-native-gesture-handler';
 import { getId } from '@app/common/helper';
 import CatalogueCardVertical from './component/CatalogueCardVertical';
 import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
+import HeaderWithBackButtonTitleAndrightButton from '../components/header/HeaderWithBackButtonTitleAndrightButton';
+import { ToastHOC } from '../hoc/ToastHOC';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -56,11 +63,13 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
     const [loader, setLoader] = React.useState(false);
-    const [selectedCategory, setSelectedCategory] = React.useState<string[]>([]);
+    const [selectedCategory, setSelectedCategory] = React.useState<string[][]>([]);
+    const [sellingItem, setSellingItem] = React.useState<IProductCatalogue[]>([]);
     //Selected current catalogue by a shop
 
     const [subCategory, setSubCategory] = React.useState<string[][]>([]);
     const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
+
     const [currentCatelogueIndex, setCurrentCatalogueIndex] = React.useState<number>(0);
 
     //Current selected item from the child category
@@ -110,73 +119,82 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     //While updating full subCategory and subCategory1 is going
     //So we have to carefully update index
-    const updateCatalogueDetails = async (data?: updateShopData) => {
-        setLoader(true);
-        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-        let datasend = data
-            ? { ...data, _id: ownerDetails.shop }
-            : {
-                  category: [...selectedCategory],
-                  subCategory1: [...subCategory1],
-                  subCategory: [...subCategory],
-                  _id: ownerDetails.shop,
-              };
+    const updateCatalogueDetails = async (data: string[]) => {
+        try {
+            // console.log(data, 'Data');
+            if (data) {
+                setLoader(true);
+                const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+                let datasend = { sellingItems: data, _id: ownerDetails.shop };
 
-        const response: IRShopUpdate = await updateShop(datasend);
-
-        if (response.status == 1) {
+                const response: IRUpdateShopCatalogue = await updateShopCatalogue(datasend);
+                console.log('respinse update', response);
+                if (response.status == 1) {
+                    setLoader(false);
+                    setSelectedCategory([
+                        ...response.payload.selectedCategory,
+                        response.payload.sellingItems.map((item) => item._id),
+                    ]);
+                    setSellingItem(response.payload.sellingItems);
+                } else {
+                    setLoader(false);
+                    setError(response.message);
+                }
+            } else {
+                setLoader(false);
+                ToastHOC.errorAlert('Please provide data');
+            }
+        } catch (error) {
             setLoader(false);
-        } else {
-            setLoader(false);
-            setError(response.message);
+            ToastHOC.errorAlert(error.message);
         }
     };
 
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
-        setLoader(true);
-        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
+        try {
+            setLoader(true);
+            const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
-        //getting all the current selected catalogue of an shop with the parent catalogue or top
-        //category populated
-        const response1: IRGetShopCatalogue = await getShopCatalgoue({
-            _id: ownerDetails.shop,
-        });
-        const { category, subCategory, subCategory1 } = response1.payload;
-        setSelectedCategory([...category]);
+            //getting all the current selected catalogue of an shop with the parent catalogue or top
+            //category populated
+            const response1: IRGetShopCatalogue = await getShopCatalgoue({
+                _id: ownerDetails.shop,
+            });
 
-        if (subCategory.length > 0) setSubCategory([...subCategory]);
-        if (subCategory1.length > 0) setSubCategory1([...subCategory1]);
+            setSelectedCategory([
+                ...response1.payload.selectedCategory,
+                response1.payload.sellingItems.map((item) => item._id),
+            ]);
+            console.log('respionse1', response1.payload.selectedCategory);
+            setSellingItem(response1.payload.sellingItems);
 
-        const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
-        if (response.status == 1) {
-            response.payload.sort((a: IProductCatalogue, b: IProductCatalogue) => sortFunction(a, b, category));
+            const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
+
+            setLoader(false);
 
             setData([...response.payload]);
-
-            setLoader(false);
-        } else {
-            setError(response.message);
-            setLoader(false);
-        }
+        } catch (error) {}
     };
 
     useEffect(() => {
         //   updateCatalogueDetails({ category: [], subCategory: [], subCategory1: [] });
-        fetchProductDetails({ categoryType: categoryType.Category, active: true });
+        fetchProductDetails({ parent: { $exists: false }, active: true });
         //getShopDetails();
+        StatusBar.setBarStyle('light-content');
 
         return () => {};
     }, []);
 
     const selectedCategoryLength = React.useRef<number>(0);
-    React.useEffect(() => {
-        if (selectedCategory.length > selectedCategoryLength.current) {
-            selectedCategoryLength.current = selectedCategory.length;
-        } else if (selectedCategory.length < selectedCategoryLength.current) {
-            updateCatalogueDetails();
-            selectedCategoryLength.current = selectedCategory.length;
-        }
-    }, [selectedCategory]);
+    // React.useEffect(() => {
+    //     if (selectedCategory.length > selectedCategoryLength.current) {
+    //         selectedCategoryLength.current = selectedCategory.length;
+    //     } else if (selectedCategory.length < selectedCategoryLength.current) {
+    //         updateCatalogueDetails();
+    //         selectedCategoryLength.current = selectedCategory.length;
+    //     }
+    // }, [selectedCategory]);
+
     const onePressDelete = (id: string, subCategoryExist: boolean) => {
         setAlertState(defaultAlertState);
         const indexInSelectedArray = selectedCategory.findIndex((_id) => id == _id);
@@ -200,9 +218,9 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     };
 
     const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
-        return subCategory && subCategory.length >= currentSelectedIndex && subCategory[currentSelectedIndex]
-            ? items.filter((item) => subCategory[currentSelectedIndex].includes(item._id))
-            : [];
+        // return subCategory && subCategory.length >= currentSelectedIndex && subCategory[currentSelectedIndex]
+        //     ? items.filter((item) => subCategory[currentSelectedIndex].includes(item._id))
+        //     : [];
     };
 
     const [currentIndex, setCurrentIndex] = React.useState(1);
@@ -214,81 +232,97 @@ const ProductDetails: React.SFC<ProductDetail> = ({
     };
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#FFFFFF', paddingTop: STATUS_BAR_HEIGHT }}>
-            <View style={[MT(0.1)]} />
-            <ItemsYouSell items={data} />
-
-            <Border />
-            <View style={[PHA()]}>
+        <View style={{ flex: 1, backgroundColor: '#FDFDFF' }}>
+            <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING)]}>
                 <WrappedText
-                    text={'In which category does your dukan exist?'}
+                    text={'Select Category'}
                     fontSize={fs20}
+                    textColor={'#ffffff'}
                     textAlign="center"
                     fontFamily={FontFamily.Medium}
                 />
-                <WrappedText
-                    text={
-                        'Select category in which you sell your dukan product in the market.'
-                        //    For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
-                    }
-                    textAlign="center"
-                    containerStyle={[MT(0.15)]}
-                    textColor={subHeadingColor}
-                />
             </View>
+            <ScrollView style={{}}>
+                <View style={[MT(0.1)]} />
+                <ItemsYouSell items={sellingItem} />
 
-            <ScrollView style={{}} contentContainerStyle={[PH(0.4)]}>
-                {data.map((item, index) => {
-                    const isSelected = selectedCategory.includes(item._id);
-                    const indx = selectedCategory.findIndex((id) => id == item._id);
-                    const currentIndex = indx == -1 ? selectedCategory.length : indx;
-                    return (
-                        <CatalogueItem
-                            key={item._id + index.toString()}
-                            item={item}
-                            selected={isSelected}
-                            containerStyle={styles.productCategory}
-                            onPressEdit={() => {
-                                setCurrentCatalogueIndex(index);
-                                setCurrentSelectedIndex(currentIndex + 1);
-                            }}
-                            children={isSelected && item.subCategoryExist ? provideChildren(indx, item.child) : []}
-                            onPressCategory={() => {
-                                if (!isSelected) {
-                                    if (item.subCategoryExist) {
-                                        setCurrentCatalogueIndex(index);
-                                        setCurrentSelectedIndex(currentIndex + 1);
+                <Border marginTop={0} />
+
+                <View style={[PHA(), MTA()]}>
+                    <WrappedText text={'Select item you sell'} fontSize={fs16} fontFamily={FontFamily.Medium} />
+                    <WrappedText
+                        text={
+                            'Select category in which you sell your dukan product in the market.'
+                            //    For example if you sell anything that is used by mens select men as category. same for women if you sell anything that does not comes under any men or women category select other. If you sell multiple items in different category select more then one. '
+                        }
+                        textColor={subHeadingColor}
+                    />
+                    <View style={[MTA()]} />
+                    {data.map((item, index) => {
+                        const isSelected =
+                            selectedCategory && selectedCategory.length > 0
+                                ? selectedCategory[0].includes(item._id)
+                                : false;
+                        const indx = isSelected ? selectedCategory[0].findIndex((id) => id == item._id) : -1;
+                        const currentIndex = indx == -1 ? 0 : indx;
+                        return (
+                            <CatalogueItem
+                                selectedTree={selectedCategory}
+                                index={index}
+                                key={item._id + index.toString()}
+                                item={item}
+                                selected={isSelected}
+                                containerStyle={styles.productCategory}
+                                onPressEdit={() => {
+                                    setCurrentCatalogueIndex(index);
+                                    setCurrentSelectedIndex(currentIndex + 1);
+                                }}
+                                onPressCategory={(id: string | string[]) => {
+                                    let data = [...sellingItem.map((item) => item._id)];
+                                    if (typeof id == 'string') {
+                                        data.push(id);
                                     } else {
+                                        data = [...data, ...id];
                                     }
-                                } else {
-                                    if (
-                                        subCategory.length >= currentIndex + 1 &&
-                                        subCategory[currentIndex].length > 0
-                                    ) {
-                                        setAlertState({
-                                            isVisible: true,
-                                            heading: 'Remove ' + item.name + ' catalogue',
-                                            subHeading:
-                                                'Are you sure you want to remove ' +
-                                                item.name +
-                                                ' catalogue' +
-                                                ' from your shop it will delete all your saved data under this catalogue?',
-                                            onPressRightButton: () => {
-                                                onePressDelete(item._id, item.subCategoryExist);
-                                            },
-                                        });
-                                    } else {
-                                        onePressDelete(item._id, item.subCategoryExist);
-                                    }
-                                }
-                            }}
-                        />
-                    );
-                })}
+
+                                    console.log('data', data);
+                                    updateCatalogueDetails(data);
+                                }}
+                                // if (!isSelected) {
+                                //     if (item.child.length > 0) {
+                                //         setCurrentCatalogueIndex(index);
+                                //         setCurrentSelectedIndex(currentIndex + 1);
+                                //     } else {
+                                //     }
+                                // } else {
+                                //     if (
+                                //         subCategory.length >= currentIndex + 1 &&
+                                //         subCategory[currentIndex].length > 0
+                                //     ) {
+                                //         setAlertState({
+                                //             isVisible: true,
+                                //             heading: 'Remove ' + item.name + ' catalogue',
+                                //             subHeading:
+                                //                 'Are you sure you want to remove ' +
+                                //                 item.name +
+                                //                 ' catalogue' +
+                                //                 ' from your shop it will delete all your saved data under this catalogue?',
+                                //             onPressRightButton: () => {
+                                //                 onePressDelete(item._id, item.subCategoryExist);
+                                //             },
+                                //         });
+                                //     } else {
+                                //         onePressDelete(item._id, item.subCategoryExist);
+                                //     }
+                                // }
+                            />
+                        );
+                    })}
+                </View>
             </ScrollView>
             <Border />
             <RightComponentButtonWithLeftText
-                buttonText={'Submit'}
+                buttonText={'Continue'}
                 onPress={async () => {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
                     await Storage.setItem(StorageItemKeys.currentScreen, false);
@@ -296,68 +330,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 }}
                 containerStyle={{ margin: DSP }}
             />
-            <Catalogue
-                isVisible={currentSelectedIndex > 0 ? true : false}
-                setPopup={() => {
-                    setCurrentSelectedIndex(0);
-                }}
-                subCategory={
-                    subCategory.length >= currentSelectedIndex
-                        ? subCategory[currentSelectedIndex - 1]
-                            ? [...subCategory[currentSelectedIndex - 1]]
-                            : []
-                        : []
-                }
-                subCategory1={
-                    subCategory1.length >= currentSelectedIndex
-                        ? subCategory1[currentSelectedIndex - 1]
-                            ? [...subCategory1[currentSelectedIndex - 1]]
-                            : [[]]
-                        : [[]]
-                }
-                parentCatalogue={data[currentCatelogueIndex]}
-                successCallback={(selected: boolean, subCat: string[], subCate1: [string[]]) => {
-                    if (selected) {
-                        if (subCat)
-                            setSubCategory((sc) => {
-                                if (subCategory.length >= currentSelectedIndex)
-                                    sc[currentSelectedIndex - 1] = subCat || [];
-                                else {
-                                    sc.push(subCat);
-                                }
 
-                                return [...sc];
-                            });
-                        if (subCate1)
-                            setSubCategory1((sc1) => {
-                                if (subCategory1.length >= currentSelectedIndex) {
-                                    sc1[currentSelectedIndex - 1] = subCate1 || [[]];
-                                } else {
-                                    sc1.push(subCate1);
-                                }
-                                return [...sc1];
-                            });
-
-                        const currentSelectedItem = selectedCategory.find(
-                            (item) => item == data[currentCatelogueIndex]._id,
-                        );
-
-                        if (currentSelectedItem) {
-                            setCurrentSelectedIndex(0);
-                            updateCatalogueDetails();
-                        } else {
-                            setSelectedCategory((c) => {
-                                c.push(data[currentCatelogueIndex]._id);
-                                return [...c];
-                            });
-                            setCurrentSelectedIndex(0);
-                            updateCatalogueDetails();
-                        }
-                    } else {
-                        setCurrentSelectedIndex(0);
-                    }
-                }}
-            />
             {loader && <Loader />}
         </View>
     );

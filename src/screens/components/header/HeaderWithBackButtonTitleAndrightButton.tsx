@@ -1,6 +1,7 @@
 import { fs14, fs18, fs20 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { BGCOLOR, FDR, FLEX, JCC, PV } from '@app/common/styles';
+import { PVA } from '@app/common/stylesheet';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import { useNavigation } from '@react-navigation/native';
@@ -14,15 +15,12 @@ interface HeaderWithBackButtonTitleAndrightButtonProps {
     containerStyle?: ViewStyle | ViewStyle[];
 }
 
-const HeaderWithBackButtonTitleAndrightButton: React.FunctionComponent<HeaderWithBackButtonTitleAndrightButtonProps> = ({
-    onPressBack,
-    title,
-    rightComponent,
-    containerStyle,
-}) => {
+const HeaderWithBackButtonTitleAndrightButton: React.FunctionComponent<
+    HeaderWithBackButtonTitleAndrightButtonProps
+> = ({ onPressBack, title, rightComponent, containerStyle }) => {
     const navigation = useNavigation();
     return (
-        <View style={[{ paddingVertical: 10 }, FDR(), JCC('space-between'), BGCOLOR(mainColor), containerStyle]}>
+        <View style={[PVA(), FDR(), JCC('space-between'), BGCOLOR(mainColor), containerStyle]}>
             <View style={[FDR()]}>
                 <WrappedFeatherIcon
                     iconName="chevron-left"
