@@ -1,8 +1,7 @@
 import { fs14 } from '@app/common';
 import { subHeadingColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { isArrayEqual } from '@app/common/helper';
-import { BGCOLOR, BTR, DSP, FDR, FLEX, JCC, ML, MT, PA, provideShadow } from '@app/common/styles';
+import { BGCOLOR, BTR, DSP, FDR, FLEX, ML, MT, PA, provideShadow } from '@app/common/styles';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -10,19 +9,16 @@ import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErrorMessage';
-import { generalContainerStyle } from '@app/screens/components/styles/common';
+
 import ModalHOC from '@app/screens/hoc/ModalHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
-import { categoryType, IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { getShopCatalgoue, updateShop } from '@app/server/apis/shop/shop.api';
-import { IRGetShopCatalogue, IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
+import { IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
+import { updateShop } from '@app/server/apis/shop/shop.api';
+import { IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
 import { Storage, StorageItemKeys } from '@app/storage';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
-import FastImage from 'react-native-fast-image';
-import { showMessage } from 'react-native-flash-message';
 import CatalogueItem from './CatalogueItem';
-import CataloguePopup from './CataloguePopup';
 
 interface CatalogueProps {
     isVisible: boolean;

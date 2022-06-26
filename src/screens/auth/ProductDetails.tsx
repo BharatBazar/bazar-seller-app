@@ -2,11 +2,7 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
 import { AIC, BGCOLOR, BR, DSP, JCC, MT, PH } from '../../common/styles';
-import {
-    categoryType,
-    IProductCatalogue,
-    IRGetProductCatalogue,
-} from '../../server/apis/catalogue/catalogue.interface';
+import { IProductCatalogue, IRGetProductCatalogue } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 
 import {
@@ -32,14 +28,11 @@ import CatalogueItem from './dukan-catalogue/CatalogueItem';
 import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
 import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
-import Catalogue from './dukan-catalogue/CatalogueSelect';
+
 import { NavigationKey } from '@app/labels';
 import { GENERAL_PADDING, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
-import { FlatList } from 'react-native-gesture-handler';
-import { getId } from '@app/common/helper';
-import CatalogueCardVertical from './component/CatalogueCardVertical';
+
 import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
-import HeaderWithBackButtonTitleAndrightButton from '../components/header/HeaderWithBackButtonTitleAndrightButton';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { removeElementFromArray } from '@app/utilities/array';
 
