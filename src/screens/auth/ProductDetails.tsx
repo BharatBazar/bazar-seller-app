@@ -277,14 +277,15 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     setCurrentCatalogueIndex(index);
                                     setCurrentSelectedIndex(currentIndex + 1);
                                 }}
-                                onPressCategory={(path: string[]) => {
-                                    let newpath = [item._id, ...path];
+                                onPressCategory={(path: IProductCatalogue[]) => {
+                                    let newpath = [item, ...path];
 
                                     console.log('before', selectedCategory);
                                     setSelectedCategory((selectedCat) => {
                                         newpath.map((item, index) => {
-                                            if (selectedCat.length < index + 1) selectedCat.push([item]);
-                                            else if (!selectedCat[index].includes(item)) selectedCat[index].push(item);
+                                            if (selectedCat.length < index + 1) selectedCat.push([item._id]);
+                                            else if (!selectedCat[index].includes(item._id))
+                                                selectedCat[index].push(item._id);
                                         });
 
                                         console.log(selectedCat);
@@ -292,12 +293,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                         return [...selectedCat];
                                     });
 
-                                    let data = [...sellingItem.map((item) => item._id)];
+                                    let data = [...sellingItem];
 
                                     data = [...data, newpath[newpath.length - 1]];
 
-                                    console.log('data', newpath);
-
+                                    setSellingItem(data);
                                     // updateCatalogueDetails(data);
                                 }}
                                 // if (!isSelected) {

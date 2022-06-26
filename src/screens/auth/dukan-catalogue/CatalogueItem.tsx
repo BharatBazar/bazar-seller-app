@@ -88,7 +88,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                     if (item.child.length > 0) {
                         setShowChildPopup(true);
                     } else {
-                        onPressCategory([item._id]);
+                        onPressCategory([item]);
                     }
                 }
             }}

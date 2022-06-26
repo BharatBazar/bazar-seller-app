@@ -205,7 +205,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     onPressCategory={(path) => {
                                         console.log('isSelected', isSelected, path, item.name);
 
-                                        callBack(item.child.length > 0 ? [item._id, ...path] : [item._id]);
+                                        callBack(item.child.length > 0 ? [item, ...path] : [item]);
 
                                         // console.log('itemmm', id, item.name, isSelected, item.child);
                                         // if (isSelected) {
