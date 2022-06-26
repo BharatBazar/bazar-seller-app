@@ -37,7 +37,6 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     selectedTree,
     index,
 }) => {
-    console.log(selectedTree, item.name, 'tree', selectedTree.slice(1).length, selectedTree.length);
     const [showChildPopup, setShowChildPopup] = React.useState(false);
 
     const ComponentType = selected ? View : TouchableOpacity;

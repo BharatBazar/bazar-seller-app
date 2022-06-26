@@ -6,12 +6,14 @@ import { GENERAL_PADDING, MBA, MTA, PBA, PVA } from '@app/common/stylesheet';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
+
 import * as React from 'react';
 import { View, ViewStyle } from 'react-native';
 import { productData } from '../ProductDetails';
 
 interface SellingItemProps {
     item: IProductCatalogue;
+
     containerStyle: ViewStyle | ViewStyle[];
 }
 
