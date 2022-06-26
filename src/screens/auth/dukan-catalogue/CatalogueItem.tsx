@@ -15,8 +15,8 @@ import Catalogue from './CatalogueSelect';
 export interface CatalogueItemProps {
     item: IProductCatalogue;
     containerStyle?: ViewStyle | ViewStyle[];
-    onPressCategory: (path: string[]) => void;
-    onPressEdit?: Function;
+    onPressCategory: (path: IProductCatalogue[]) => void;
+    onPressDelete: (path: IProductCatalogue[]) => void;
     //selectedItems: IProductCatalogue[];
     selected: boolean;
 
@@ -31,10 +31,11 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     item,
     onPressCategory,
 
-    onPressEdit,
+    onPressDelete,
     selected,
 
     selectedTree,
+
     index,
 }) => {
     const [showChildPopup, setShowChildPopup] = React.useState(false);
@@ -71,6 +72,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
     return (
         <TouchableOpacity
             key={item._id}
+            disabled={selected}
             style={[
                 PH(0.2),
                 FDR(),
@@ -130,10 +132,12 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                     }}
                 />
             )}
-            {selected && (
+            {selected && item.child.length == 0 && (
                 <ButtonFeatherIcon
                     iconName="x"
-                    onPress={() => {}}
+                    onPress={() => {
+                        onPressDelete([item]);
+                    }}
                     containerStyle={[provideShadow(1), BGCOLOR('#FFFFFF'), ML(0.3)]}
                 />
             )}
@@ -154,7 +158,10 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 }}
                 catalgoueTree={selectedTree && selectedTree.length > 1 ? selectedTree.slice(1) : []}
                 parentCatalogue={item}
-                callBack={(path: string[]) => {
+                onPressDelete={(path) => {
+                    onPressDelete(path);
+                }}
+                callBack={(path: IProductCatalogue[]) => {
                     // console.log('item', item);
 
                     onPressCategory(path);

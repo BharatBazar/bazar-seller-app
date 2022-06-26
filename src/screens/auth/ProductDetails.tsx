@@ -41,6 +41,7 @@ import CatalogueCardVertical from './component/CatalogueCardVertical';
 import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
 import HeaderWithBackButtonTitleAndrightButton from '../components/header/HeaderWithBackButtonTitleAndrightButton';
 import { ToastHOC } from '../hoc/ToastHOC';
+import { removeElementFromArray } from '@app/utilities/array';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -273,9 +274,29 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                 item={item}
                                 selected={isSelected}
                                 containerStyle={styles.productCategory}
-                                onPressEdit={() => {
-                                    setCurrentCatalogueIndex(index);
-                                    setCurrentSelectedIndex(currentIndex + 1);
+                                onPressDelete={(path: IProductCatalogue[]) => {
+                                    let newpath = [item, ...path];
+
+                                    console.log('before', selectedCategory);
+                                    setSelectedCategory((selectedCat) => {
+                                        newpath.map((item, index) => {
+                                            if (selectedCat.length < index + 1) {
+                                            } else if (selectedCat[index].includes(item._id)) {
+                                                removeElementFromArray(selectedCat[index], item._id);
+                                            }
+                                        });
+
+                                        //  console.log(selectedCat);
+
+                                        return [...selectedCat];
+                                    });
+
+                                    let data = [...sellingItem];
+                                    let indx = data.findIndex((item) => item._id == newpath[newpath.length - 1]._id);
+                                    indx > -1 && data.splice(indx, 1);
+                                    // data = [...data, newpath[newpath.length - 1]];
+
+                                    setSellingItem(data);
                                 }}
                                 onPressCategory={(path: IProductCatalogue[]) => {
                                     let newpath = [item, ...path];

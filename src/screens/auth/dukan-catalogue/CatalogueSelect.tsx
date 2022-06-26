@@ -29,7 +29,8 @@ interface CatalogueProps {
     setPopup: Function;
     catalgoueTree: string[][];
 
-    callBack: (path: string[]) => void;
+    callBack: (path: IProductCatalogue[]) => void;
+    onPressDelete: (path: IProductCatalogue[]) => void;
     parentCatalogue: IProductCatalogue;
 }
 
@@ -38,7 +39,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     setPopup,
     parentCatalogue,
     catalgoueTree,
-
+    onPressDelete,
     callBack,
 }) => {
     // All the parent catalogue or subcategory like mens, women etc
@@ -202,43 +203,14 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     item={item}
                                     index={0}
                                     selectedTree={catalgoueTree}
+                                    onPressDelete={(path) => {
+                                        onPressDelete(item.child.length > 0 ? [item, ...path] : [item]);
+                                    }}
                                     onPressCategory={(path) => {
                                         console.log('isSelected', isSelected, path, item.name);
 
                                         callBack(item.child.length > 0 ? [item, ...path] : [item]);
-
-                                        // console.log('itemmm', id, item.name, isSelected, item.child);
-                                        // if (isSelected) {
-                                        // } else {
-                                        //     if (item.child.length == 0) callBack(id);
-                                        //     else {
-                                        //     }
-                                        // }
-                                        // if (!isSelected) {
-                                        //     if (item.subCategoryExist) {
-                                        //         setCurrentCatalogueIndex(index);
-                                        //         setCurrentSelectedIndex(indx + 1);
-                                        //     } else {
-                                        //         subCategory1.push([]);
-                                        //         setSelectedCategory((sC) => {
-                                        //             sC.push(item._id);
-                                        //             return [...sC];
-                                        //         });
-                                        //         setButtonDisabled(false);
-                                        //     }
-                                        // } else {
-                                        //     deleteCatalogue(indx, item._id);
-                                        //     setButtonDisabled(false);
-                                        // }
                                     }}
-                                    onPressEdit={
-                                        item.subCategoryExist
-                                            ? () => {
-                                                  setCurrentCatalogueIndex(index);
-                                                  setCurrentSelectedIndex(indx + 1);
-                                              }
-                                            : undefined
-                                    }
                                     selected={isSelected}
                                 />
                             );
