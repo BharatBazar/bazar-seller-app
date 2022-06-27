@@ -1,5 +1,5 @@
 import React from 'react';
-import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { DrawerActions, NavigationContainer } from '@react-navigation/native';
 import { NavigationKey } from '../labels';
 import Welcome from '../screens/auth/Welcome';
@@ -31,8 +31,9 @@ import ProductDetails from '@app/screens/auth/ProductDetails';
 import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
 import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
 import { Easing } from 'react-native';
+import { GENERAL_PADDING, MLA, MRA } from '@app/common/stylesheet';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 const config: TransitionSpec = {
     animation: 'timing',
@@ -41,110 +42,104 @@ const config: TransitionSpec = {
         easing: Easing.linear,
     },
 };
-class AppNavigation extends React.Component {
-    render() {
-        return (
-            <NavigationContainer>
-                <Stack.Navigator
-                    screenOptions={{
-                        headerShown: false,
-                        // transitionSpec: {
-                        //     open: config,
-                        //     close: config,
-                        // },
-                      
+const AppNavigation = () => {
+    return (
+        <NavigationContainer>
+            <Stack.Navigator
+                screenOptions={{
+                    headerShown: false,
+                    // transitionSpec: {
+                    //     open: config,
+                    //     close: config,
+                    // },
+                }}
+                initialRouteName={NavigationKey.SPLASH}
+            >
+                <Stack.Screen name={NavigationKey.SPLASH} component={Splash} options={{ headerShown: false }} />
+                <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
+                <Stack.Screen
+                    name={NavigationKey.AUTHNAVIGATOR}
+                    component={AuthNavigation}
+                    options={{
+                        animation: 'slide_from_right',
                     }}
-                    initialRouteName={NavigationKey.SPLASH}
-                
-                >
-                    <Stack.Screen name={NavigationKey.SPLASH} component={Splash} options={{ headerShown: false }} />
-                    <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
-                    <Stack.Screen
-                        name={NavigationKey.AUTHNAVIGATOR}
-                        component={AuthNavigation}
-                        options={{
-                            cardStyleInterpolator: Right,
-                        }}
-                    />
-                    <Stack.Screen name={NavigationKey.VERIFICATION} component={Verification} />
-                    <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
-                    <Stack.Screen name={NavigationKey.BHARATBAZARHOME} component={BharatBazarHome} />
-                    <Stack.Screen name={NavigationKey.PRODUCTSEARCH} component={ProdcutSearch} />
-                    <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />
-                    <Stack.Screen name={NavigationKey.PRODUCTDETAILS} component={ProductDetails} />
-                    <Stack.Screen name={NavigationKey.PRODUCTSUBCATEGORY} component={ProductSubCategory} />
-                    <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
-                    <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
-                    <Stack.Screen name={NavigationKey.FORGETPASSWORD} component={ForgetPassword} />
-                    <Stack.Screen
-                        name={NavigationKey.VERIFYOTP}
-                        component={VerifyOTP}
-                        options={{
-                            cardStyleInterpolator: Fade,
-                        }}
-                    />
-                    <Stack.Screen
-                        name={NavigationKey.RESETPASSWORD}
-                        component={ResetPassword}
-                        options={{
-                            cardStyleInterpolator: Fade,
-                        }}
-                    />
-                    <Stack.Screen name={NavigationKey.EditProductSize} component={ProvideSize} />
-                    {/* <Stack.Screen name={NavigationKey.PRODUCTSTATUS} component={ProductTab} /> */}
-                </Stack.Navigator>
-                <Toast />
-            </NavigationContainer>
-        );
-    }
-}
+                />
+                <Stack.Screen name={NavigationKey.VERIFICATION} component={Verification} />
+                <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
+                <Stack.Screen name={NavigationKey.BHARATBAZARHOME} component={BharatBazarHome} />
+                <Stack.Screen name={NavigationKey.PRODUCTSEARCH} component={ProdcutSearch} />
+                <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />
+                <Stack.Screen name={NavigationKey.PRODUCTDETAILS} component={ProductDetails} />
+                <Stack.Screen name={NavigationKey.PRODUCTSUBCATEGORY} component={ProductSubCategory} />
+                <Stack.Screen name={NavigationKey.CREATEPRODUCT} component={CreateProduct} />
+                <Stack.Screen name={NavigationKey.PRODUCTCATEGORY} component={ProductCategory} />
+                <Stack.Screen name={NavigationKey.FORGETPASSWORD} component={ForgetPassword} />
+                <Stack.Screen
+                    name={NavigationKey.VERIFYOTP}
+                    component={VerifyOTP}
+                    options={{
+                        animation: 'fade',
+                    }}
+                />
+                <Stack.Screen
+                    name={NavigationKey.RESETPASSWORD}
+                    component={ResetPassword}
+                    options={{
+                        animation: 'fade',
+                    }}
+                />
+                <Stack.Screen name={NavigationKey.EditProductSize} component={ProvideSize} />
+                {/* <Stack.Screen name={NavigationKey.PRODUCTSTATUS} component={ProductTab} /> */}
+            </Stack.Navigator>
+            <Toast />
+        </NavigationContainer>
+    );
+};
 
-interface BharatBazarHomeProps extends NavigationProps {}
-
-class BharatBazarHome extends React.Component<BharatBazarHomeProps, {}> {
-    render() {
-        return (
-            <Drawer.Navigator
-                drawerStyle={{
+const BharatBazarHome = (props: NavigationProps) => {
+    return (
+        <Drawer.Navigator
+            drawerContent={(props) => <SideMenu {...props} />}
+            screenOptions={{
+                drawerStyle: {
                     width: '85%',
                     marginTop: STATUS_BAR_HEIGHT,
                     borderTopRightRadius: getHP(0.1),
                     borderBottomRightRadius: getHP(0.1),
-                }}
-                drawerContent={(props) => <SideMenu {...props} />}
-                screenOptions={{
-                    headerShown: true,
-                    headerStyle: {
-                        paddingHorizontal: '5%',
-                        backgroundColor: colorCode.CHAKRALOW(70),
-                        ...provideShadow(2),
-                    },
-                    headerLeft: () => (
-                        <MaterialIcon
-                            name={'menu'}
-                            size={25}
-                            color={colorCode.WHITE}
-                            onPress={() => {
-                                this.props.navigation.dispatch(DrawerActions.openDrawer());
-                            }}
-                        />
-                    ),
-                    headerRight: () => (
-                        <MaterialIcon
-                            name={'search'}
-                            size={25}
-                            color={colorCode.WHITE}
-                            onPress={() => this.props.navigation.navigate(NavigationKey.PRODUCTSEARCH)}
-                        />
-                    ),
-                    title: 'Bharat Bazar',
-                    headerTitleStyle: { color: colorCode.WHITE },
-                }}
-            >
-                <Drawer.Screen name={NavigationKey.HOME} component={Home} />
-            </Drawer.Navigator>
-        );
-    }
-}
+                },
+                headerShown: true,
+                headerStyle: {
+                    backgroundColor: colorCode.CHAKRALOW(70),
+                    ...provideShadow(2),
+                },
+                headerLeftContainerStyle: { ...MLA() },
+                headerRightContainerStyle: { ...MRA() },
+
+                headerLeft: () => (
+                    <MaterialIcon
+                        name={'menu'}
+                        size={25}
+                        color={colorCode.WHITE}
+                        onPress={() => {
+                            props.navigation.dispatch(DrawerActions.openDrawer());
+                        }}
+                    />
+                ),
+                headerRight: () => (
+                    <MaterialIcon
+                        name={'search'}
+                        size={25}
+                        color={colorCode.WHITE}
+                        onPress={() => props.navigation.navigate(NavigationKey.PRODUCTSEARCH)}
+                    />
+                ),
+                title: 'Bharat Bazar',
+                headerTitleStyle: { color: colorCode.WHITE },
+            }}
+        >
+            <Drawer.Screen name={NavigationKey.HOME} component={Home} />
+        </Drawer.Navigator>
+    );
+};
 
 export default AppNavigation;

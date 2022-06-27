@@ -7,20 +7,24 @@ import { colorCode } from '../../../common/color';
 import { BGCOLOR } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
 import { getShop } from '../../../server/apis/shop/shop.api';
-import { IRGetShop, Shop } from '../../../server/apis/shop/shop.interface';
+import { IRGetShop, IShop, Shop } from '../../../server/apis/shop/shop.interface';
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
 import { product } from '../../../server/apis/catalogue/catalogue.interface';
 import AccordionHOC from './component/Accordion';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../../storage';
+import Loader from '@app/screens/component/Loader';
+import { getHP } from '@app/common/dimension';
 
 interface Props extends NavigationProps {}
 
 interface ISection {
-    category: product;
-    subCategory: product[];
-    subCategory1: product[][];
+    sellingItems: {
+        name: string;
+        image: string;
+        path: { name: string }[];
+    };
 }
 interface State {
     activeSections: number[];
@@ -29,133 +33,75 @@ interface State {
     userDetails: Partial<IshopMember>;
 }
 
-export default class Home extends React.Component<Props, State> {
-    state = {
-        activeSections: [],
-        shop: {},
-        userDetails: {},
-        section: [],
-    };
+const Home = (props: Props) => {
+    const [shop, setShop] = React.useState<Partial<IShop>>({});
+    const [userDetails, setUserDetails] = React.useState({});
+    const [loader, setLoader] = React.useState(false);
 
-    setSections = (sections: number[]) => {
-        this.setState({
-            activeSections: sections.includes(undefined) ? [] : sections,
-        });
-    };
-
-    getShopDetails = async () => {
+    const getShopDetails = async () => {
         try {
+            setLoader(true);
             const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
 
-            this.setState({ userDetails });
+            setUserDetails(userDetails);
             console.log('userDetails provided', userDetails);
             let response: IRGetShop = await getShop({
                 _id: userDetails.shop,
             });
+            setLoader(false);
             if (response.status == 1) {
-                console.log('Resposen', response);
-                this.setState({
-                    shop: response.payload,
-                    section: response.payload.category.map((cat, index) => {
-                        return {
-                            category: cat,
-                            subCategory: response.payload.subCategory[index],
-                            subCategory1: response.payload.subCategory1[index],
-                        };
-                    }),
-                });
+                setShop(response.payload);
             } else {
+                throw new Error(response.message);
             }
         } catch (error) {
+            setLoader(false);
             console.log('error =>', error);
         }
     };
 
-    componentDidMount() {
-        this.getShopDetails();
-    }
+    React.useEffect(() => {
+        getShopDetails();
+    }, []);
 
-    renderHeader = (section: ISection, _, isActive: boolean) => {
-        console.log('render Header', this.state.userDetails);
-        return (
-            <Animatable.View
-                duration={400}
-                // style={[styles.header, isActive ? styles.active : styles.inactive]}
-                // transition="backgroundColor"
-            >
-                <ShowSubCategory
-                    item={section.category}
-                    touch={!section.category.subCategoryExist}
-                    onPress={() => {
-                        this.props.navigation.navigate(NavigationKey.PRODUCT, {
-                            itemType: section.category.name,
-                            shopId: this.state.userDetails.shop,
-                            category: section.category.name,
-                            subCategory: '',
-                            subCategory1: '',
-                        });
-                    }}
-                    active={isActive}
+    return (
+        <View style={styles.container}>
+            <View style={[BGCOLOR(colorCode.WHITE), { borderBottomWidth: 1, borderColor: colorCode.BLACKLOW(10) }]}>
+                <WrappedText
+                    text={'Product you sell in bharat bazar from your dukan'}
+                    containerStyle={{ margin: '5%' }}
+                    textColor={colorCode.BLACKLOW(40)}
                 />
-            </Animatable.View>
-        );
-    };
-
-    renderContent = (section: ISection, _: any, isActive: boolean) => {
-        return (
-            <Animatable.View
-                duration={400}
-                style={[styles.content, isActive ? styles.active : styles.inactive]}
-                transition="backgroundColor"
-            >
-                {section.category.subCategoryExist ? (
-                    <AccordionHOC
-                        category={section.category.name}
-                        section={section.subCategory.map((cat, index) => {
-                            return {
-                                category: cat,
-                                subCategory: section.subCategory1[index] || [],
-                                subCategory1: [],
-                            };
-                        })}
-                        shopId={this.state.shop}
-                        navigation={this.props.navigation}
-                    />
-                ) : (
-                    <View />
-                )}
-            </Animatable.View>
-        );
-    };
-
-    render() {
-        const { activeSections, userDetails } = this.state;
-
-        return (
-            <View style={styles.container}>
-                <View style={[BGCOLOR(colorCode.WHITE), { borderBottomWidth: 1, borderColor: colorCode.BLACKLOW(10) }]}>
-                    <WrappedText
-                        text={'Product you sell in bharat bazar from your dukan'}
-                        containerStyle={{ margin: '5%' }}
-                        textColor={colorCode.BLACKLOW(40)}
-                    />
-                </View>
-                <ScrollView>
-                    <Accordion
-                        activeSections={activeSections}
-                        sections={this.state.section}
-                        touchableComponent={TouchableOpacity}
-                        renderHeader={this.renderHeader}
-                        renderContent={this.renderContent}
-                        duration={400}
-                        onChange={this.setSections}
-                        renderAsFlatList={false}
-                    />
-                </ScrollView>
             </View>
-        );
-    }
-}
+            <ScrollView>
+                {shop?.sellingItems?.map((item, index) => (
+                    <ShowSubCategory
+                        key={index}
+                        item={item}
+                        touch={true}
+                        onPress={() => {
+                            console.log('propes', this.props);
+                            // props.navigation.navigate(NavigationKey.PRODUCT, {
+                            //     itemType: section.category.name,
+                            //     shopId: this.props.shopId,
+                            //     category: this.props.category,
+                            //     subCategory: section.category.name,
+                            //     subCategory1: '',
+                            // });
+                        }}
+                        active={true}
+                        paddingVertical={'1%'}
+                        height={getHP(0.5)}
+                        //paddingLeft={getWP(1)}
+                    />
+                ))}
+            </ScrollView>
+            {loader && <Loader />}
+        </View>
+    );
+};
+
+export default Home;
 
 const styles = StyleSheet.create({
     container: {
