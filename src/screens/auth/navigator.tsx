@@ -13,8 +13,6 @@ import Address from './Address';
 import HeaderBar from './component/HeaderBar';
 import EditDukanMember from './add-dukan-member/EditDukanMember';
 
-import SignupProgressBar from './component/ProgressBar';
-
 const Stack = createNativeStackNavigator();
 
 interface Props extends NavigationProps {

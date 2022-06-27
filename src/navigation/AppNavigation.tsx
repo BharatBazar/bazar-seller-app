@@ -19,7 +19,6 @@ import { NavigationProps } from '../common';
 import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import { provideShadow } from '../common/styles';
 import Toast from 'react-native-toast-message';
-import { Fade, Right } from './NavigationEffect';
 import Splash from '../screens/startup/SplashScreen';
 import { SideMenu } from '../screens/app/drawer/SideMenu';
 import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';

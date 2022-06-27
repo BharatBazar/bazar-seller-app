@@ -65,7 +65,7 @@ export const PRA = (value?: number | string): ViewStyle => {
 };
 
 export const BRA = (value?: number): ViewStyle => {
-    return { borderRadius: value || GENERAL_PADDING };
+    return { borderRadius: value || GENERAL_BORDER_RADIUS };
 };
 
 export const HA = (value?: number): ViewStyle => {

@@ -5,11 +5,12 @@ import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import WrappedText from '../../component/WrappedText';
 import Icon from 'react-native-vector-icons/Feather';
-import { fs20 } from '../../../common';
+import { fs10, fs20 } from '../../../common';
 import { product } from '../../../server/apis/catalogue/catalogue.interface';
 import { FastImageWrapper } from '../../component/FastImage';
 import { AIC, BGCOLOR, BR, FDR, H, HP, ML, provideShadow, W } from '../../../common/styles';
 import * as Animatable from 'react-native-animatable';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 type ViewOrTouchProps = {
     children: React.ReactChild;
@@ -57,6 +58,7 @@ const ShowSubCategory: React.FC<ShowSubCategoryProps> = ({
             containerStyle={[
                 {
                     height: height || getHP(0.8),
+                    justifyContent: 'center',
                     backgroundColor: colorCode.WHITE,
                     paddingLeft: paddingLeft || '5%',
                     borderBottomWidth: 0.5,
@@ -68,6 +70,7 @@ const ShowSubCategory: React.FC<ShowSubCategoryProps> = ({
             <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between' }}>
                 <View style={[FDR(), AIC()]}>
                     {/* <View style={[HP(0.2), W(getHP(0.2)), BR(2), BGCOLOR(mainColor)]} /> */}
+
                     <FastImageWrapper
                         source={{ uri: item.image }}
                         imageStyle={{
@@ -78,7 +81,13 @@ const ShowSubCategory: React.FC<ShowSubCategoryProps> = ({
                         resizeMode={'cover'}
                     />
                     <View style={[ML(0.4)]}>
-                        <WrappedText text={item.name} textColor={colorCode.BLACKLOW(60)} />
+                        {/* <GeneralText
+                                text={item.path.reduce((a, b) => a + (a.length > 0 ? ' --> ' : '') + b.name, '')}
+                                fontSize={fs10}
+                                fontFamily={'Medium'}
+                                textColor={mainColor}
+                            /> */}
+                        <WrappedText text={item.type} textColor={colorCode.BLACKLOW(60)} />
                         {/* <WrappedText text={'0'} textColor={colorCode.BLACK} /> */}
                     </View>
                 </View>

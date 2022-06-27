@@ -1,21 +1,20 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
-import * as Animatable from 'react-native-animatable';
-import Accordion from 'react-native-collapsible/Accordion';
-import { NavigationProps } from '../../../common';
-import { colorCode } from '../../../common/color';
-import { BGCOLOR } from '../../../common/styles';
-import { NavigationKey } from '../../../labels';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { fs12, fs14, NavigationProps } from '../../../common';
+import { black100, colorCode, mainColor, subHeadingColor } from '../../../common/color';
+import { BGCOLOR, FDR, FLEX, JCC, provideShadow, PV } from '../../../common/styles';
 import { getShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, IShop, Shop } from '../../../server/apis/shop/shop.interface';
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
-import { product } from '../../../server/apis/catalogue/catalogue.interface';
-import AccordionHOC from './component/Accordion';
-import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
+import { IshopMember, shopMemberRole } from '../../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../../storage';
 import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
+import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
+import { BRA, MHA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { NavigationKey } from '@app/labels';
 
 interface Props extends NavigationProps {}
 
@@ -35,7 +34,7 @@ interface State {
 
 const Home = (props: Props) => {
     const [shop, setShop] = React.useState<Partial<IShop>>({});
-    const [userDetails, setUserDetails] = React.useState({});
+    const [userDetails, setUserDetails] = React.useState<Partial<IshopMember>>({});
     const [loader, setLoader] = React.useState(false);
 
     const getShopDetails = async () => {
@@ -73,7 +72,7 @@ const Home = (props: Props) => {
                     textColor={colorCode.BLACKLOW(40)}
                 />
             </View>
-            <ScrollView>
+            <ScrollView style={[FLEX(1)]} contentContainerStyle={[FLEX(1)]}>
                 {shop?.sellingItems?.map((item, index) => (
                     <ShowSubCategory
                         key={index}
@@ -95,6 +94,55 @@ const Home = (props: Props) => {
                         //paddingLeft={getWP(1)}
                     />
                 ))}
+
+                {userDetails.role == shopMemberRole.Owner && shop.membersDetailSkipped && (
+                    <WrappedText
+                        text={'Product you sell in bharat bazar from your dukan'}
+                        containerStyle={{ margin: '5%' }}
+                        textColor={colorCode.BLACKLOW(40)}
+                    />
+                )}
+                {userDetails.role == shopMemberRole.Owner && shop.coOwner?.length == 0 && (
+                    <WrappedText
+                        text={'Added co-owner to your shop'}
+                        containerStyle={{ margin: '5%' }}
+                        textColor={colorCode.BLACKLOW(40)}
+                    />
+                )}
+                {userDetails.role == shopMemberRole.Owner && shop.worker?.length == 0 && (
+                    <View>
+                        <GeneralButtonWithNormalBg
+                            backgroundColor={'#FFF'}
+                            buttonText={'Add worker to your dukan'}
+                            onPress={() => {
+                                props.navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                    screen: NavigationKey.EDITDUKANMEMBER,
+                                    update: true,
+                                    message: 'Worker is someone whom you hire to help in handling of your shop',
+                                    role: shopMemberRole.worker,
+                                    addMember: (data: IshopMember) => {
+                                        console.log('add coowner', data);
+                                        //  setWorker((wosetWorker) => {
+                                        //      wosetWorker.push(data);
+                                        //      return [...wosetWorker];
+                                        //  });
+                                    },
+                                    shop: shop._id,
+                                    paddingTop: true,
+                                });
+                            }}
+                            textColor={subHeadingColor}
+                            textStyle={{ fontSize: fs14 }}
+                            leftToTextComponent={() => (
+                                <Icon name={'person-add'} size={getHP(0.3)} color={subHeadingColor} />
+                            )}
+                            rightToTextComponent={() => (
+                                <Icon name={'chevron-right'} size={getHP(0.3)} color={subHeadingColor} />
+                            )}
+                            containerStyle={[PVA(), MTA(), FDR(), provideShadow(3), JCC('space-between'), PHA()]}
+                        />
+                    </View>
+                )}
             </ScrollView>
             {loader && <Loader />}
         </View>
