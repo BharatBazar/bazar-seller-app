@@ -25,7 +25,7 @@ import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import { Storage, StorageItemKeys } from '@app/storage';
 import Loader from '../component/Loader';
 import CatalogueItem from './dukan-catalogue/CatalogueItem';
-import { defaultAlertState, IdefaultAlertState } from '@app/hooks/useAlert';
+import { IdefaultAlertState } from '@app/hooks/useAlert';
 import { AlertContext } from '@app/../App';
 import { showMessage } from 'react-native-flash-message';
 
@@ -157,7 +157,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 ...response1.payload.selectedCategory,
                 response1.payload.sellingItems.map((item) => item._id),
             ]);
-            console.log('respionse1', response1.payload.selectedCategory);
+            //console.log('respionse1', response1.payload.selectedCategory);
             setSellingItem(response1.payload.sellingItems);
 
             const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
@@ -263,11 +263,10 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                     setSelectedCategory((selectedCat) => {
                                         newpath.map((item, index) => {
                                             if (selectedCat.length < index + 1) selectedCat.push([item._id]);
-                                            else if (!selectedCat[index].includes(item._id))
-                                                selectedCat[index].push(item._id);
+                                            else selectedCat[index].push(item._id);
                                         });
 
-                                        console.log(selectedCat);
+                                        //  console.log(selectedCat);
 
                                         return [...selectedCat];
                                     });

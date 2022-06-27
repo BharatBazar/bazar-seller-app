@@ -13,9 +13,7 @@ import { FlashErrorMessageType } from '@app/screens/components/datatype/flastErr
 import ModalHOC from '@app/screens/hoc/ModalHOC';
 import { getProductCatalogueAPI } from '@app/server/apis/catalogue/catalogue.api';
 import { IProductCatalogue, IRGetProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
-import { updateShop } from '@app/server/apis/shop/shop.api';
-import { IRShopUpdate, updateShopData } from '@app/server/apis/shop/shop.interface';
-import { Storage, StorageItemKeys } from '@app/storage';
+
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import CatalogueItem from './CatalogueItem';
@@ -51,10 +49,6 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     //It is basically all the child for the current selected or top category item
     const [currentItem, setCurrentItem] = React.useState<IProductCatalogue[]>([]);
 
-    //Current selected item from the child category
-    const [currentSelectedIndex, setCurrentSelectedIndex] = React.useState(0);
-    const [currentCatalogueIndex, setCurrentCatalogueIndex] = React.useState(0);
-    const [buttonDisabled, setButtonDisabled] = React.useState(true);
     const modalRef = React.useRef<null | FlashErrorMessageType>(null);
 
     const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
@@ -98,44 +92,10 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
         }
     };
 
-    const provideChildren = (currentSelectedIndex: number, items: IProductCatalogue[]) => {
-        // return subCategory1 && subCategory1.length >= currentSelectedIndex && subCategory1[currentSelectedIndex]
-        //     ? items.filter((item) => subCategory1[currentSelectedIndex].includes(item._id))
-        //     : [];
-
-        return [];
-    };
-
-    //While updating full subCategory and subCategory1 is going
-    //So we have to carefully update index
-    const updateCatalogueDetails = async (data: updateShopData) => {
-        setLoader(true);
-        const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-
-        const response: IRShopUpdate = await updateShop({
-            ...data,
-            _id: ownerDetails.shop,
-        });
-
-        if (response.status == 1) {
-            setLoader(false);
-        } else {
-            setLoader(false);
-            setError(response.message);
-        }
-    };
-
-    const deleteCatalogue = async (indx: number, id: string) => {
-        // if (subCategory1.length >= indx) subCategory1.splice(indx, 1);
-
-        setSelectedCategory([...selectedCategory.filter((_id) => _id != id)]);
-    };
-
     React.useEffect(() => {
         if (isVisible) getCatalogueDetails();
         else {
             setSelectedCategory([]);
-            setButtonDisabled(true);
         }
     }, [isVisible]);
 
@@ -216,57 +176,14 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                 <Border />
                 <View style={[]}>
                     <RightComponentButtonWithLeftText
-                        buttonText="Continue"
+                        buttonText="Close"
                         onPress={() => {
-                            if (selectedCategory.length == 0) {
-                                modalRef.current?.showError('Please select atleast one category', 'danger');
-                            } else {
-                                // callBack();
-                            }
+                            setPopup(false);
                         }}
-                        disabled={buttonDisabled}
                         containerStyle={[MT(0.2)]}
                     />
                 </View>
-                {/* <CataloguePopup
-                    parentCatalogue={currentItem[currentCatalogueIndex]}
-                    isVisible={currentSelectedIndex > 0 ? true : false}
-                    setPopup={() => {
-                        setCurrentSelectedIndex(0);
-                    }}
-                    alreadySelectedCategory={
-                        subCategory1 && subCategory1.length >= currentSelectedIndex
-                            ? subCategory1[currentSelectedIndex - 1]
-                                ? [...subCategory1[currentSelectedIndex - 1]]
-                                : []
-                            : []
-                    }
-                    callBack={(selected: boolean, selectedSubCategory: string[]) => {
-                        if (selected) {
-                            subCategory1[currentSelectedIndex - 1] = [...selectedSubCategory];
-                            if (isArrayEqual(selectedSubCategory, subCategory1[currentSelectedIndex - 1])) {
-                                setButtonDisabled(false);
-                            }
-                            const currentSelectedItem = selectedCategory.find(
-                                (item) => item == currentItem[currentCatalogueIndex]._id,
-                            );
-                            console.log('current sele', currentSelectedItem);
-                            if (!currentSelectedItem) {
-                                setSelectedCategory((selectedCategory) => {
-                                    selectedCategory.push(currentItem[currentCatalogueIndex]._id);
-                                    return [...selectedCategory];
-                                });
-                                setCurrentSelectedIndex(0);
-                                if (!buttonDisabled) setButtonDisabled(false);
-                            } else {
-                                //setSelectedCategory((selectedCategory) => selectedCategory);
-                                setCurrentSelectedIndex(0);
-                            }
-                        } else {
-                            setCurrentSelectedIndex(0);
-                        }
-                    }}
-                /> */}
+
                 {loader && <Loader />}
             </View>
         </ModalHOC>
