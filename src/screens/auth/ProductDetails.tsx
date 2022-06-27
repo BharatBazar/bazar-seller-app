@@ -25,9 +25,6 @@ import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import { Storage, StorageItemKeys } from '@app/storage';
 import Loader from '../component/Loader';
 import CatalogueItem from './dukan-catalogue/CatalogueItem';
-import { IdefaultAlertState } from '@app/hooks/useAlert';
-import { AlertContext } from '@app/../App';
-import { showMessage } from 'react-native-flash-message';
 
 import { NavigationKey } from '@app/labels';
 import { GENERAL_PADDING, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
@@ -35,6 +32,7 @@ import { GENERAL_PADDING, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
 import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { removeElementFromArray } from '@app/utilities/array';
+import { LoaderContext } from '@app/../App';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -48,42 +46,13 @@ interface selected {}
 
 export interface productData extends IProductCatalogue, selected {}
 
-const ProductDetails: React.SFC<ProductDetail> = ({
-    navigation,
-    route: {
-        params: { ownerDetails },
-    },
-}) => {
+const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params } }) => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
-    const [loader, setLoader] = React.useState(false);
     const [selectedCategory, setSelectedCategory] = React.useState<string[][]>([]);
     const [sellingItem, setSellingItem] = React.useState<IProductCatalogue[]>([]);
-    //Selected current catalogue by a shop
 
-    const [subCategory, setSubCategory] = React.useState<string[][]>([]);
-    const [subCategory1, setSubCategory1] = React.useState<string[][][]>([]);
-
-    const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
-
-    const submitDetails = async (data: updateShopData) => {
-        setLoader(true);
-
-        const response: IRShopUpdate = await updateShop({
-            ...data,
-            _id: ownerDetails.shop,
-        });
-        setLoader(false);
-        if (response.status == 1) {
-            showMessage({
-                message: 'Dukan catalogue updated',
-                type: 'success',
-            });
-            //  navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY, { ownerDetails: ownerDetails });
-        } else {
-            setError(response.message);
-        }
-    };
+    const setLoaderCallBack = React.useContext(LoaderContext);
 
     const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
         const indexOfA = selectedCategory.findIndex((item) => item == a._id);
@@ -108,43 +77,39 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
     //While updating full subCategory and subCategory1 is going
     //So we have to carefully update index
-    const updateCatalogueDetails = async (data: string[], reload?: boolean) => {
+    const updateCatalogueDetails = async (data: string[], reload?: boolean, successCallBack?: Function) => {
         try {
-            // console.log(data, 'Data');
             if (data) {
-                setLoader(true);
+                setLoaderCallBack(true);
                 const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
                 let datasend = { sellingItems: data, _id: ownerDetails.shop };
 
                 const response: IRUpdateShopCatalogue = await updateShopCatalogue(datasend);
                 console.log('respinse update', response);
                 if (response.status == 1) {
-                    setLoader(false);
-                    // setSelectedCategory([
-                    //     ...response.payload.selectedCategory,
-                    //     response.payload.sellingItems.map((item) => item._id),
-                    // ]);
-                    // setSellingItem(response.payload.sellingItems);
+                    successCallBack && successCallBack();
                     if (reload) {
                         fetchProductDetails({ parent: { $exists: false }, active: true });
+                    } else {
+                        setLoaderCallBack(false);
                     }
                 } else {
-                    setLoader(false);
+                    setLoaderCallBack(false);
                     setError(response.message);
                 }
             } else {
-                setLoader(false);
+                setLoaderCallBack(false);
                 ToastHOC.errorAlert('Please provide data');
             }
         } catch (error) {
-            setLoader(false);
+            setLoaderCallBack(false);
             ToastHOC.errorAlert(error.message);
         }
     };
 
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
         try {
-            setLoader(true);
+            setLoaderCallBack(true);
             const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
 
             //getting all the current selected catalogue of an shop with the parent catalogue or top
@@ -162,16 +127,15 @@ const ProductDetails: React.SFC<ProductDetail> = ({
 
             const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
 
-            setLoader(false);
+            setLoaderCallBack(false);
 
             setData([...response.payload]);
         } catch (error) {}
     };
 
     useEffect(() => {
-        //   updateCatalogueDetails({ category: [], subCategory: [], subCategory1: [] });
         fetchProductDetails({ parent: { $exists: false }, active: true });
-        //getShopDetails();
+
         StatusBar.setBarStyle('light-content');
 
         return () => {};
@@ -196,9 +160,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                         let data = [...sellingItem];
                         let indx = data.findIndex((item) => item._id == id);
                         indx > -1 && data.splice(indx, 1);
-                        // data = [...data, newpath[newpath.length - 1]];
 
-                        setSellingItem(data);
                         updateCatalogueDetails(
                             data.map((item) => item._id),
                             true,
@@ -221,7 +183,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                             selectedCategory && selectedCategory.length > 0
                                 ? selectedCategory[0].includes(item._id)
                                 : false;
-                        const indx = isSelected ? selectedCategory[0].findIndex((id) => id == item._id) : -1;
 
                         return (
                             <CatalogueItem
@@ -234,49 +195,55 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                                 onPressDelete={(path: IProductCatalogue[]) => {
                                     let newpath = [item, ...path];
 
-                                    console.log('before', selectedCategory);
-                                    setSelectedCategory((selectedCat) => {
-                                        newpath.map((item, index) => {
-                                            if (selectedCat.length < index + 1) {
-                                            } else if (selectedCat[index].includes(item._id)) {
-                                                removeElementFromArray(selectedCat[index], item._id);
-                                            }
-                                        });
-
-                                        //  console.log(selectedCat);
-
-                                        return [...selectedCat];
-                                    });
-
                                     let data = [...sellingItem];
                                     let indx = data.findIndex((item) => item._id == newpath[newpath.length - 1]._id);
                                     indx > -1 && data.splice(indx, 1);
                                     // data = [...data, newpath[newpath.length - 1]];
 
-                                    setSellingItem(data);
-                                    updateCatalogueDetails(data.map((item) => item._id));
+                                    updateCatalogueDetails(
+                                        data.map((item) => item._id),
+                                        false,
+                                        () => {
+                                            setSellingItem(data);
+                                            setSelectedCategory((selectedCat) => {
+                                                newpath.map((item, index) => {
+                                                    if (selectedCat.length < index + 1) {
+                                                    } else if (selectedCat[index].includes(item._id)) {
+                                                        removeElementFromArray(selectedCat[index], item._id);
+                                                    }
+                                                });
+
+                                                //  console.log(selectedCat);
+
+                                                return [...selectedCat];
+                                            });
+                                        },
+                                    );
                                 }}
                                 onPressCategory={(path: IProductCatalogue[]) => {
                                     let newpath = [item, ...path];
-
-                                    console.log('before', selectedCategory);
-                                    setSelectedCategory((selectedCat) => {
-                                        newpath.map((item, index) => {
-                                            if (selectedCat.length < index + 1) selectedCat.push([item._id]);
-                                            else selectedCat[index].push(item._id);
-                                        });
-
-                                        //  console.log(selectedCat);
-
-                                        return [...selectedCat];
-                                    });
 
                                     let data = [...sellingItem];
 
                                     data = [...data, newpath[newpath.length - 1]];
 
-                                    setSellingItem(data);
-                                    updateCatalogueDetails(data.map((item) => item._id));
+                                    updateCatalogueDetails(
+                                        data.map((item) => item._id),
+                                        false,
+                                        () => {
+                                            setSelectedCategory((selectedCat) => {
+                                                newpath.map((item, index) => {
+                                                    if (selectedCat.length < index + 1) selectedCat.push([item._id]);
+                                                    else selectedCat[index].push(item._id);
+                                                });
+
+                                                //  console.log(selectedCat);
+
+                                                return [...selectedCat];
+                                            });
+                                            setSellingItem(data);
+                                        },
+                                    );
                                 }}
                             />
                         );
@@ -293,8 +260,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({
                 }}
                 containerStyle={{ margin: DSP }}
             />
-
-            {loader && <Loader />}
         </View>
     );
 };

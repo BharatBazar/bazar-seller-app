@@ -3,6 +3,8 @@ import { Component } from 'react';
 import { Platform, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
 import FlashMessage, { MessageType } from 'react-native-flash-message';
+import { getHP } from '@app/common/dimension';
+import { STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 export interface ModalProps {
     isVisible: boolean;
     setPopup: Function;
@@ -47,6 +49,7 @@ const ModalHOC: React.FC<ModalProps> = ({
             onBackButtonPress={() => {
                 setPopup();
             }}
+            deviceHeight={getHP(10) + STATUS_BAR_HEIGHT}
             statusBarTranslucent={Platform.OS == 'android' ? statusBarTranlucent : false}
             backdropTransitionOutTiming={0}
         >

@@ -36,17 +36,17 @@ const App: () => Node = () => {
         initializeApp();
     }, []);
 
-    const setLoaderCallback = React.useCallback(
-        (loaderComingValue: boolean) => {
-            if (loaderComingValue) {
-                if (loader) {
-                }
+    const setLoaderCallback = React.useCallback((loaderComingValue: boolean) => {
+        console.log('laoder value', loaderComingValue);
+        if (loaderComingValue) {
+            if (loader) {
             } else {
-                setLoader(false);
+                setLoader(true);
             }
-        },
-        [loader],
-    );
+        } else {
+            setLoader(false);
+        }
+    }, []);
 
     return (
         <View style={[FLEX(1), BGCOLOR(colorCode.BLACK)]}>

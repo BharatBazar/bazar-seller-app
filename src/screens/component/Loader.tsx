@@ -9,30 +9,28 @@ interface LoaderProps {
     containerStyle?: ViewStyle | ViewStyle[];
 }
 
-export default class Loader extends React.Component<LoaderProps, {}> {
-    render() {
-        const containerStyle = this.props.containerStyle;
+const Loader = ({ containerStyle, backgroundColor }: LoaderProps) => {
+    return (
+        <View
+            style={[
+                {
+                    zIndex: 999,
+                    elevation: 1000,
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    backgroundColor: backgroundColor || '#000000' + colorTransparency[20],
+                },
+                containerStyle,
+            ]}
+        >
+            <ActivityIndicator color={'#FFF'} size={'large'} />
+        </View>
+    );
+};
 
-        return (
-            <View
-                style={[
-                    {
-                        zIndex: 999,
-                        elevation: 1000,
-                        position: 'absolute',
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        backgroundColor: this.props.backgroundColor || '#000000' + colorTransparency[20],
-                    },
-                    containerStyle,
-                ]}
-            >
-                <ActivityIndicator color={'#FFF'} size={'large'} />
-            </View>
-        );
-    }
-}
+export default Loader;
