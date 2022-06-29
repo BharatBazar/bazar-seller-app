@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, ViewStyle } from 'react-native';
 import Modal from 'react-native-modal';
 import FlashMessage, { MessageType } from 'react-native-flash-message';
 import { getHP } from '@app/common/dimension';
@@ -12,6 +12,7 @@ export interface ModalProps {
     showErrorMessage?: string;
     refer?: any;
     statusBarTranlucent?: boolean;
+    modalStyle?: ViewStyle | ViewStyle[];
 }
 
 const ModalHOC: React.FC<ModalProps> = ({
@@ -21,6 +22,7 @@ const ModalHOC: React.FC<ModalProps> = ({
     showErrorMessage,
     refer,
     statusBarTranlucent,
+    modalStyle,
 }) => {
     const flastRef = React.useRef<FlashMessage>(null);
 
@@ -42,7 +44,7 @@ const ModalHOC: React.FC<ModalProps> = ({
         <Modal
             isVisible={isVisible}
             useNativeDriver
-            style={styles.view}
+            style={modalStyle || styles.view}
             onBackdropPress={() => {
                 setPopup();
             }}

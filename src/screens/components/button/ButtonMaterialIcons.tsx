@@ -6,7 +6,7 @@ import * as React from 'react';
 import { ViewStyle } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export interface ButtonIconsIconsProps {
+export interface ButtonMaterialIconsProps {
     onPress: Function;
     iconName: string;
     iconSize?: number;
@@ -15,7 +15,7 @@ export interface ButtonIconsIconsProps {
     containerStyle?: ViewStyle | ViewStyle[];
 }
 
-const ButtonIconsIcons: React.FC<ButtonIconsIconsProps> = ({
+const ButtonMaterialIcons: React.FC<ButtonMaterialIconsProps> = ({
     onPress,
     containerStyle,
     iconColor,
@@ -36,4 +36,4 @@ const ButtonIconsIcons: React.FC<ButtonIconsIconsProps> = ({
     );
 };
 
-export default ButtonIconsIcons;
+export default ButtonMaterialIcons;

@@ -12,6 +12,7 @@ interface ButtonPairProps {
     onPressLeftButton: Function;
     onPressRightButton: Function;
     fontSize?: number;
+    alignMent?: 'row' | 'column';
 }
 
 const ButtonPair: React.FunctionComponent<ButtonPairProps> = ({
@@ -20,9 +21,10 @@ const ButtonPair: React.FunctionComponent<ButtonPairProps> = ({
     onPressLeftButton,
     onPressRightButton,
     fontSize,
+    alignMent = 'row',
 }) => {
     return (
-        <View style={[FDR(), MTA()]}>
+        <View style={alignMent == 'row' ? [FDR(), MTA()] : [MTA(), FDR('column-reverse')]}>
             <RightComponentButtonWithLeftText
                 onPress={() => {
                     onPressLeftButton();
@@ -33,7 +35,7 @@ const ButtonPair: React.FunctionComponent<ButtonPairProps> = ({
                 fontSize={fontSize}
                 buttonTextColor={mainColor}
                 borderColor={mainColor}
-                containerStyle={[FLEX(1), JCC()]}
+                containerStyle={[JCC(), alignMent == 'column' ? MTA() : FLEX(1)]}
             />
             <RightComponentButtonWithLeftText
                 onPress={() => {
@@ -42,8 +44,8 @@ const ButtonPair: React.FunctionComponent<ButtonPairProps> = ({
                 buttonText={rightButtonText || 'Confirm'}
                 borderWidth={0}
                 fontSize={fontSize}
-                marginLeft={10}
-                containerStyle={[FLEX(1), JCC()]}
+                marginLeft={alignMent == 'row' ? 10 : 0}
+                containerStyle={[JCC(), alignMent == 'row' ? FLEX(1) : {}]}
             />
         </View>
     );

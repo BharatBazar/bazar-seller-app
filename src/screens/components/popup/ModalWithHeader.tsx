@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Platform, View, StyleSheet, ViewStyle, ScrollView, TextStyle } from 'react-native';
+import { Platform, View, StyleSheet, ViewStyle, ScrollView, TextStyle, Dimensions } from 'react-native';
 import Modal from 'react-native-modal';
 import HeaderWithTitleAndSubHeading from '../header/HeaderWithTitleAndSubHeading';
 
@@ -62,7 +62,7 @@ const ModalWithHeaderAndTwoButton: React.FunctionComponent<ModalWithHeaderAndTwo
             backdropTransitionOutTiming={0}
             style={modalStyle === 'centerPlaced' ? styles.modalCenter : styles.modalBottom}
             {...ModalProps}
-            deviceHeight={STATUS_BAR_HEIGHT + getHP(10)}
+            deviceHeight={Dimensions.get('window').height}
             swipeDirection={['down']}
             //  swipeThreshold={200}
             statusBarTranslucent={statusBarTranslucent}

@@ -101,7 +101,28 @@ const Home = (props: Props) => {
                         heading={'Add co-owner account'}
                         subHeading={'You have not added any co-owner account in your shop'}
                         leftButtonText={'Will do it later from settings'}
-                        rightButtonText={'Add Worker Account'}
+                        rightButtonText={'Add Co-owner Account'}
+                        onPressLeftButton={() => {
+                            props.navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                screen: NavigationKey.EDITDUKANMEMBER,
+                                update: true,
+                                message:
+                                    'Co-owner is partner in your shop and shares same responsibility as you like your brother, son,daughter etc.',
+                                role: shopMemberRole.coOwner,
+                                addMember: (data: IshopMember) => {
+                                    setShop((shop) => {
+                                        shop.coOwner?.push(data);
+                                        return { ...shop };
+                                    });
+                                },
+                                shop: shop._id,
+                                paddingTop: true,
+                            });
+                        }}
+                        onPressRightButton={() => {
+                            {
+                            }
+                        }}
                     />
                 )}
                 {userDetails.role == shopMemberRole.Owner && shop.worker?.length == 0 && (
@@ -110,6 +131,26 @@ const Home = (props: Props) => {
                         subHeading={'You have not added any worker account in your shop'}
                         leftButtonText={'Will do it later from settings'}
                         rightButtonText={'Add Worker Account'}
+                        onPressLeftButton={() => {
+                            props.navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
+                                screen: NavigationKey.EDITDUKANMEMBER,
+                                update: true,
+                                message: 'Worker is someone whom you hire to help in handling of your shop',
+                                role: shopMemberRole.worker,
+                                addMember: (data: IshopMember) => {
+                                    setShop((shop) => {
+                                        shop.coOwner?.push(data);
+                                        return { ...shop };
+                                    });
+                                },
+                                shop: shop._id,
+                                paddingTop: true,
+                            });
+                        }}
+                        onPressRightButton={() => {
+                            {
+                            }
+                        }}
                     />
                 )}
             </ScrollView>

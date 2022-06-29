@@ -6,7 +6,7 @@ import { AIC, AS, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/sty
 import { GENERAL_PADDING, MBA, MTA, PBA, PVA } from '@app/common/stylesheet';
 import { IdefaultAlertState } from '@app/hooks/useAlert';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
-import ButtonIconsIcons from '@app/screens/components/button/ButtonIconIcons';
+import ButtonIconsIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 
