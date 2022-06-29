@@ -549,22 +549,6 @@ const Verification: React.SFC<VerificationProps> = ({
                     ) : (
                         <View>
                             <RightComponentButtonWithLeftText
-                                // onPress={() => {
-                                //     Alert.alert(
-                                //         'Warning!',
-                                //         'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
-                                //         [
-                                //             {
-                                //                 text: 'Remove my dukan from market',
-                                //                 onPress: deleteShopFromServerStorage,
-                                //             },
-                                //             {
-                                //                 text: 'Cancel',
-                                //             },
-                                //         ],
-                                //     );
-                                // }}
-
                                 onPress={() => {
                                     setAlertState({
                                         isVisible: true,
@@ -573,12 +557,9 @@ const Verification: React.SFC<VerificationProps> = ({
                                             'By deleting your dukan all your data related to your dukan like member, dukan details will be deleted',
                                         onPressRightButton: () => {
                                             deleteShopFromServerStorage();
-                                            // console.log("delete");
                                         },
                                     });
                                 }}
-                                //     buttonText={' market'}
-                                // /><Text>Remove my dukan from</Text>
                                 buttonText={'Remove my dukan'}
                             />
                         </View>

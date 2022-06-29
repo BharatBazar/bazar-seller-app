@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { fs12, fs14, NavigationProps } from '../../../common';
-import { black100, colorCode, mainColor, subHeadingColor } from '../../../common/color';
+import { fs14, NavigationProps } from '../../../common';
+import { colorCode, subHeadingColor } from '../../../common/color';
 import { BGCOLOR, FDR, FLEX, JCC, provideShadow, PV } from '../../../common/styles';
 import { getShop } from '../../../server/apis/shop/shop.api';
 import { IRGetShop, IShop, Shop } from '../../../server/apis/shop/shop.interface';
@@ -12,9 +12,10 @@ import { Storage, StorageItemKeys } from '../../../storage';
 import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
 import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
-import { BRA, MHA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
+import { MTA, PHA, PVA } from '@app/common/stylesheet';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationKey } from '@app/labels';
+import AddShopMemberBanner from './component/AddShopMemberBanner';
 
 interface Props extends NavigationProps {}
 
@@ -79,7 +80,7 @@ const Home = (props: Props) => {
                         item={item}
                         touch={true}
                         onPress={() => {
-                            console.log('propes', this.props);
+                            //console.log('propes', this.props);
                             // props.navigation.navigate(NavigationKey.PRODUCT, {
                             //     itemType: section.category.name,
                             //     shopId: this.props.shopId,
@@ -95,53 +96,21 @@ const Home = (props: Props) => {
                     />
                 ))}
 
-                {userDetails.role == shopMemberRole.Owner && shop.membersDetailSkipped && (
-                    <WrappedText
-                        text={'Product you sell in bharat bazar from your dukan'}
-                        containerStyle={{ margin: '5%' }}
-                        textColor={colorCode.BLACKLOW(40)}
-                    />
-                )}
                 {userDetails.role == shopMemberRole.Owner && shop.coOwner?.length == 0 && (
-                    <WrappedText
-                        text={'Added co-owner to your shop'}
-                        containerStyle={{ margin: '5%' }}
-                        textColor={colorCode.BLACKLOW(40)}
+                    <AddShopMemberBanner
+                        heading={'Add co-owner account'}
+                        subHeading={'You have not added any co-owner account in your shop'}
+                        leftButtonText={'Will do it later from settings'}
+                        rightButtonText={'Add Worker Account'}
                     />
                 )}
                 {userDetails.role == shopMemberRole.Owner && shop.worker?.length == 0 && (
-                    <View>
-                        <GeneralButtonWithNormalBg
-                            backgroundColor={'#FFF'}
-                            buttonText={'Add worker to your dukan'}
-                            onPress={() => {
-                                props.navigation.navigate(NavigationKey.AUTHNAVIGATOR, {
-                                    screen: NavigationKey.EDITDUKANMEMBER,
-                                    update: true,
-                                    message: 'Worker is someone whom you hire to help in handling of your shop',
-                                    role: shopMemberRole.worker,
-                                    addMember: (data: IshopMember) => {
-                                        console.log('add coowner', data);
-                                        //  setWorker((wosetWorker) => {
-                                        //      wosetWorker.push(data);
-                                        //      return [...wosetWorker];
-                                        //  });
-                                    },
-                                    shop: shop._id,
-                                    paddingTop: true,
-                                });
-                            }}
-                            textColor={subHeadingColor}
-                            textStyle={{ fontSize: fs14 }}
-                            leftToTextComponent={() => (
-                                <Icon name={'person-add'} size={getHP(0.3)} color={subHeadingColor} />
-                            )}
-                            rightToTextComponent={() => (
-                                <Icon name={'chevron-right'} size={getHP(0.3)} color={subHeadingColor} />
-                            )}
-                            containerStyle={[PVA(), MTA(), FDR(), provideShadow(3), JCC('space-between'), PHA()]}
-                        />
-                    </View>
+                    <AddShopMemberBanner
+                        heading={'Add worker account'}
+                        subHeading={'You have not added any worker account in your shop'}
+                        leftButtonText={'Will do it later from settings'}
+                        rightButtonText={'Add Worker Account'}
+                    />
                 )}
             </ScrollView>
             {loader && <Loader />}

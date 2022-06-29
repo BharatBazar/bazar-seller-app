@@ -18,6 +18,7 @@ interface RightComponentButtonWithLeftTextProps {
     borderWidth?: number;
     marginTop?: number;
     marginLeft?: number;
+    fontSize?: number;
     disabled?: boolean;
 }
 
@@ -35,6 +36,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
     marginTop,
     marginLeft,
     disabled,
+    fontSize,
 }) => {
     const buttonColor = backgroundColor || mainColor;
     return (
@@ -66,7 +68,7 @@ const RightComponentButtonWithLeftText: React.FunctionComponent<RightComponentBu
             <WrappedText
                 text={buttonText}
                 textColor={buttonTextColor || '#FFFFFF'}
-                fontSize={fs14}
+                fontSize={fontSize || fs14}
                 fontFamily={FontFamily.Medium}
                 containerStyle={{ marginTop: 0 }}
             />

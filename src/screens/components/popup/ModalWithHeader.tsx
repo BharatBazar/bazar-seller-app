@@ -5,14 +5,13 @@ import HeaderWithTitleAndSubHeading from '../header/HeaderWithTitleAndSubHeading
 
 import RightComponentButtonWithLeftText from '../../components/button/RightComponentButtonWithLeftText';
 import { commonButtonProps } from '../../components/button';
-import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 import { FDR, FLEX, JCC, PV } from '@app/common/styles';
 import { mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import { MTA } from '@app/common/stylesheet';
 
-interface ModalWithHeaderAndButtonProps {
+interface ModalWithHeaderAndTwoButtonProps {
     heading?: string;
     subHeading?: string;
     isVisible: boolean;
@@ -27,7 +26,7 @@ interface ModalWithHeaderAndButtonProps {
     statusBarTranslucent: boolean;
 }
 
-const ModalWithHeaderAndButton: React.FunctionComponent<ModalWithHeaderAndButtonProps> = ({
+const ModalWithHeaderAndTwoButton: React.FunctionComponent<ModalWithHeaderAndTwoButtonProps> = ({
     isVisible,
     setPopup,
     heading,
@@ -122,4 +121,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ModalWithHeaderAndButton;
+export default ModalWithHeaderAndTwoButton;
