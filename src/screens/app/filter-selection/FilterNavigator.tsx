@@ -1,5 +1,11 @@
-import { FDR, FLEX, JCC } from '@app/common/styles';
+import { fs12, fs16 } from '@app/common';
+import { getWP } from '@app/common/dimension';
+import { AIC, FDR, FLEX, JCC } from '@app/common/styles';
+import { GENERAL_PADDING, PHA } from '@app/common/stylesheet';
+import Border from '@app/screens/components/border/Border';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
+import ProgressBar from '@app/screens/components/progressbar/ProgressBar';
+import GeneralText from '@app/screens/components/text/GeneralText';
 import { IFilter } from '@app/server/apis/product/product.interface';
 import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -18,34 +24,16 @@ interface FilterNavigatorProps {
 let navref = createNavigationContainerRef();
 
 const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ filters, currentIndex, setCurrentIndex }) => {
-    let prevIndex = React.useRef(currentIndex).current;
+    const prevIndex = React.useRef(currentIndex);
     React.useEffect(() => {
-        console.log(navref, navref.isReady());
-        if (currentIndex > prevIndex) navref.navigate('FilterScreen', { filter: filters[currentIndex] });
-        else if (currentIndex < prevIndex) navref.navigate('FilterScreen', { filter: filters[currentIndex] });
+        if (currentIndex > prevIndex.current) navref.navigate('FilterScreen', { filter: filters[currentIndex] });
+        else if (currentIndex < prevIndex.current) navref.navigate('FilterScreen', { filter: filters[currentIndex] });
 
-        prevIndex = currentIndex;
+        prevIndex.current = currentIndex;
     }, [currentIndex]);
     return (
         <View style={[FLEX(1)]}>
-            <View style={[FDR(), JCC('space-between')]}>
-                {currentIndex > 0 && (
-                    <ButtonMaterialIcons
-                        onPress={() => {
-                            setCurrentIndex(currentIndex - 1);
-                        }}
-                        iconName="chevron-left"
-                    />
-                )}
-                {currentIndex != filters.length - 1 && (
-                    <ButtonMaterialIcons
-                        iconName="chevron-right"
-                        onPress={() => {
-                            setCurrentIndex(currentIndex + 1);
-                        }}
-                    />
-                )}
-            </View>
+            <Border />
             <NavigationContainer independent ref={navref}>
                 <FilterStackNavigator.Navigator screenOptions={{ headerShown: false }}>
                     <FilterStackNavigator.Screen
