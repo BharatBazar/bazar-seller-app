@@ -4,7 +4,7 @@ import { getHP } from '@app/common/dimension';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import * as React from 'react';
 import { ViewStyle } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export interface ButtonMaterialIconsProps {
     onPress: Function;

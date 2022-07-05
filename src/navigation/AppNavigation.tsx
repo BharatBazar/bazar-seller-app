@@ -56,7 +56,13 @@ const AppNavigation = () => {
                 initialRouteName={NavigationKey.SPLASH}
             >
                 <Stack.Screen name={NavigationKey.SPLASH} component={Splash} />
-                <Stack.Screen name={NavigationKey.SELECTFILTER} component={SelectFilter} />
+                <Stack.Screen
+                    name={NavigationKey.SELECTFILTER}
+                    component={SelectFilter}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
                 <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} />
                 <Stack.Screen
                     name={NavigationKey.AUTHNAVIGATOR}
