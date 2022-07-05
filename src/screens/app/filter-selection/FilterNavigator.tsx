@@ -16,21 +16,28 @@ import FilterValues from './FilterValues';
 const FilterStackNavigator = createNativeStackNavigator();
 
 interface FilterNavigatorProps {
-    filters: IFilter[];
+    filter: IFilter;
     currentIndex: number;
-    setCurrentIndex: Function;
+    selectedValues: string[];
+    setSelectedValue: Function;
 }
 
 let navref = createNavigationContainerRef();
 
-const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ filters, currentIndex, setCurrentIndex }) => {
+const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({
+    filter,
+    currentIndex,
+    selectedValues,
+    setSelectedValue,
+}) => {
     const prevIndex = React.useRef(currentIndex);
     React.useEffect(() => {
-        if (currentIndex > prevIndex.current) navref.navigate('FilterScreen', { filter: filters[currentIndex] });
-        else if (currentIndex < prevIndex.current) navref.navigate('FilterScreen', { filter: filters[currentIndex] });
+        if (currentIndex > prevIndex.current) navref.navigate('FilterScreen', { filter: filter });
+        else if (currentIndex < prevIndex.current) navref.navigate('FilterScreen', { filter: filter });
 
         prevIndex.current = currentIndex;
     }, [currentIndex]);
+
     return (
         <View style={[FLEX(1)]}>
             <Border />
@@ -40,7 +47,11 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ filter
                         name={'FilterScreen'}
                         component={FilterValues}
                         options={{ animation: 'slide_from_right' }}
-                        initialParams={{ filter: filters[currentIndex] }}
+                        initialParams={{
+                            filter: filter,
+                            selectedValues: selectedValues,
+                            setSelectedValue: setSelectedValue,
+                        }}
                     />
                 </FilterStackNavigator.Navigator>
             </NavigationContainer>

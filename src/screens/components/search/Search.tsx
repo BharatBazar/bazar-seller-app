@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { View, TextInput, ViewStyle } from 'react-native';
 
-import { getHP } from '../../../../common/dimension';
-import { AIC, BC, BR, BW, FDR, MH } from '../../../../common/styles';
+import { getHP } from '@app/common/dimension';
+import { AIC, BC, BR, BW, FDR, MH } from '@app/common/styles';
 import Icon from 'react-native-vector-icons/Feather';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { fs20, NavigationProps } from '../../../../common';
-export interface SearchComponentProps {
+import { fs20, NavigationProps } from '@app/common';
+export interface SearchProps {
     containerStyle?: ViewStyle[] | ViewStyle;
     placeholder: string;
 }
 
-const SearchComponent: React.FC<SearchComponentProps> = ({ containerStyle, placeholder }) => {
+const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder }) => {
     const [searchedText, setSearchText] = React.useState('');
     return (
         <View
@@ -55,4 +55,4 @@ const SearchComponent: React.FC<SearchComponentProps> = ({ containerStyle, place
     );
 };
 
-export default SearchComponent;
+export default GeneralSearch;

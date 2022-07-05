@@ -17,31 +17,218 @@ import FilterNavigator from './FilterNavigator';
 
 const filtersEx = [
     {
+        _id: 1,
         name: 'Size',
         description: 'This filter contain size related details',
-        value: ['28', '29', '30'],
+        value: [
+            {
+                _id: '610cdb761ef524d134701e03',
+                active: true,
+                name: '28',
+                description: 'cm',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'size',
+                parent: {
+                    $oid: '60d83d423e80c9369689e1e2',
+                },
+                createdAt: {
+                    $date: '2021-08-06T06:49:26.456Z',
+                },
+                updatedAt: {
+                    $date: '2021-08-07T07:00:14.180Z',
+                },
+                __v: 0,
+            },
+            {
+                _id: '610cdb851ef524d134701e04',
+                active: true,
+                name: '29',
+                description: 'cm',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'size',
+                parent: {
+                    $oid: '60d83d423e80c9369689e1e2',
+                },
+                createdAt: {
+                    $date: '2021-08-06T06:49:41.225Z',
+                },
+                updatedAt: {
+                    $date: '2021-08-07T06:58:32.147Z',
+                },
+                __v: 0,
+            },
+            {
+                _id: '610cdb8d1ef524d134701e05',
+                active: true,
+                name: '30',
+                description: 'cm',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'size',
+                parent: {
+                    $oid: '60d83d423e80c9369689e1e2',
+                },
+                createdAt: {
+                    $date: '2021-08-06T06:49:49.970Z',
+                },
+                updatedAt: {
+                    $date: '2021-08-07T07:00:29.654Z',
+                },
+                __v: 0,
+            },
+            {
+                _id: '610cdb991ef524d134701e06',
+                active: true,
+                name: '32',
+                description: 'cm',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'size',
+                parent: {
+                    $oid: '60d83d423e80c9369689e1e2',
+                },
+                createdAt: {
+                    $date: '2021-08-06T06:50:01.653Z',
+                },
+                updatedAt: {
+                    $date: '2021-08-07T07:03:59.498Z',
+                },
+                __v: 0,
+            },
+            {
+                _id: '610cdba41ef524d134701e07',
+                active: true,
+                name: '31',
+                description: 'cm',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'size',
+                parent: {
+                    $oid: '60d83d423e80c9369689e1e2',
+                },
+                createdAt: {
+                    $date: '2021-08-06T06:50:12.864Z',
+                },
+                updatedAt: {
+                    $date: '2021-08-07T07:01:36.590Z',
+                },
+                __v: 0,
+            },
+        ],
         unit: 'cm',
+        selectAll: true,
+        key: 'size',
+
         type: 'multiselect',
     },
     {
+        _id: 2,
         name: 'Brands',
         description: 'This filter contain size related details',
-        value: ['Adidas', 'Nike'],
+        value: [
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Puma',
+                description: 'Puma is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Nike',
+                description: 'Nike is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Adidas',
+                description: 'Adidas is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+        ],
         type: 'SearchDropDown',
+        showSearch: true,
+        key: 'brands',
     },
     {
+        _id: 3,
         name: 'Categories',
         description: 'This filter contain size related details',
-        value: ['Damaged', 'All'],
+        value: [
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Puma',
+                description: 'Puma is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Nike',
+                description: 'Nike is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Adidas',
+                description: 'Adidas is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+        ],
         type: 'Multiselectdropdown',
+        selectAll: true,
+        key: 'categories',
     },
     {
+        _id: 4,
         name: 'Colors',
         description: 'This filter contain size related details',
-        value: ['green', 'red', 'blue'],
+        value: [
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Puma',
+                description: 'Puma is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Nike',
+                description: 'Nike is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+            {
+                _id: '610cdbfd1ef524d134701e08',
+
+                active: true,
+                name: 'Adidas',
+                description: 'Adidas is a well renowned brand. It is established in 2004.',
+                image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
+                type: 'brand',
+            },
+        ],
         type: 'Multiselecttags',
+        selectAll: true,
+        key: 'colors',
     },
-    {},
 ];
 interface SelectFilterProps extends NavigationProps {}
 
@@ -53,6 +240,7 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
 }) => {
     const [filters, setfilters] = React.useState<IFilter[]>(filtersEx);
     const [currentIndex, setCurrentIndex] = React.useState(0);
+    const [selectedValues, setSelectedValues] = React.useState({});
 
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF'), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING)]}>
@@ -93,7 +281,17 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
                 />
             </View>
 
-            <FilterNavigator setCurrentIndex={setCurrentIndex} currentIndex={currentIndex} filters={filters} />
+            <FilterNavigator
+                currentIndex={currentIndex}
+                filter={filters[currentIndex]}
+                selectedValues={selectedValues[filters[currentIndex].key]}
+                setSelectedValue={(value) => {
+                    setSelectedValues((item) => {
+                        item[filters[currentIndex].key] = value;
+                        return { ...item };
+                    });
+                }}
+            />
             {/* </View> */}
             <GeneralButtonWithNormalBg
                 backgroundColor={mainColor}
