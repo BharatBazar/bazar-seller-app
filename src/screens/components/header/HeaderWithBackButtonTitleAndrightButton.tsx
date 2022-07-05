@@ -21,15 +21,14 @@ const HeaderWithBackButtonTitleAndrightButton: React.FunctionComponent<
     const navigation = useNavigation();
     return (
         <View style={[PVA(), FDR(), JCC('space-between'), BGCOLOR(mainColor), containerStyle]}>
-            <View style={[FDR()]}>
-                <WrappedFeatherIcon
-                    iconName="chevron-left"
-                    iconColor="#FFF"
-                    onPress={onPressBack ? onPressBack : () => navigation.goBack()}
-                />
-            </View>
+            <WrappedFeatherIcon
+                iconName="chevron-left"
+                iconColor="#FFF"
+                onPress={onPressBack ? onPressBack : () => navigation.goBack()}
+            />
+
             <WrappedText text={title} textColor="#FFF" fontSize={fs18} />
-            {rightComponent && rightComponent()}
+            {rightComponent ? rightComponent() : <View style={{ height: 30, width: 30 }} />}
         </View>
     );
 };

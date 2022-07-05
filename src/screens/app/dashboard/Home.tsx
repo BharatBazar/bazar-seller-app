@@ -19,20 +19,6 @@ import AddShopMemberBanner from './component/AddShopMemberBanner';
 
 interface Props extends NavigationProps {}
 
-interface ISection {
-    sellingItems: {
-        name: string;
-        image: string;
-        path: { name: string }[];
-    };
-}
-interface State {
-    activeSections: number[];
-    shop: Shop;
-    section: ISection[];
-    userDetails: Partial<IshopMember>;
-}
-
 const Home = (props: Props) => {
     const [shop, setShop] = React.useState<Partial<IShop>>({});
     const [userDetails, setUserDetails] = React.useState<Partial<IshopMember>>({});
@@ -80,14 +66,9 @@ const Home = (props: Props) => {
                         item={item}
                         touch={true}
                         onPress={() => {
-                            //console.log('propes', this.props);
-                            // props.navigation.navigate(NavigationKey.PRODUCT, {
-                            //     itemType: section.category.name,
-                            //     shopId: this.props.shopId,
-                            //     category: this.props.category,
-                            //     subCategory: section.category.name,
-                            //     subCategory1: '',
-                            // });
+                            props.navigation.navigate(NavigationKey.SELECTFILTER, {
+                                item: item,
+                            });
                         }}
                         active={true}
                         paddingVertical={'1%'}

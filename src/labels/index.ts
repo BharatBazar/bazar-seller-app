@@ -23,4 +23,5 @@ export const NavigationKey = {
     PRODUCTSTATUS: 'ProductStatus',
     EDITDUKANMEMBER: 'EditDukanMember',
     EditProductSize: 'EditProductSize',
+    SELECTFILTER: 'SelectFilter',
 };

@@ -31,6 +31,7 @@ import ProductSubCategory from '@app/screens/auth/ProductSubCategory';
 import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
 import { Easing } from 'react-native';
 import { GENERAL_PADDING, MLA, MRA } from '@app/common/stylesheet';
+import SelectFilter from '@app/screens/app/filter-selection/SelectFilter';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -54,8 +55,9 @@ const AppNavigation = () => {
                 }}
                 initialRouteName={NavigationKey.SPLASH}
             >
-                <Stack.Screen name={NavigationKey.SPLASH} component={Splash} options={{ headerShown: false }} />
-                <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} options={{ headerShown: false }} />
+                <Stack.Screen name={NavigationKey.SPLASH} component={Splash} />
+                <Stack.Screen name={NavigationKey.SELECTFILTER} component={SelectFilter} />
+                <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} />
                 <Stack.Screen
                     name={NavigationKey.AUTHNAVIGATOR}
                     component={AuthNavigation}
