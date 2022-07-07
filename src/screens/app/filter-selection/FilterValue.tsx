@@ -38,6 +38,7 @@ const FilterValue: React.FC<FilterValueProps> = ({
                 { flex: 1 },
 
                 AIC(),
+                MTA(),
                 PVA(),
                 { borderBottomWidth: 0.5, borderColor: borderColor },
                 { borderRadius: getWP(0.3), backgroundColor: selected ? colorCode.CHAKRALOW(20) : colorCode.WHITE },

@@ -21,53 +21,28 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
     setSelectedValues,
     index,
 }) => {
-    const [selectedValue, setSelectedValue] = React.useState(selectedValues || []);
-
-    const componentUnmountTrigger = React.useCallback(() => {
-        console.log('unmount', filter.name, selectedValue, setSelectedValues);
-        setSelectedValues(selectedValue, index);
-    }, [selectedValue]);
-    React.useEffect(() => {
-        return componentUnmountTrigger;
-    }, []);
-
-    console.log(selectedValue);
     return (
-        <View style={[FLEX(1), BGCOLOR('#FFF'), PVA(), WP(10)]}>
-            <HeaderWithTitleAndSubHeading
+        <View style={[FLEX(1), BGCOLOR('#FFF'), WP(10)]}>
+            {/* <HeaderWithTitleAndSubHeading
                 heading={filter.name}
                 subHeading={filter.description}
                 headerContainerStyle={[PHA()]}
                 borderNeeded={false}
-            />
-
-            <ScrollView
-                pagingEnabled
-                snapToStart
-                style={{ maxHeight: 500 }}
-                stickyHeaderIndices={[0]}
-                contentContainerStyle={[]}
-            >
-                {filter.showSearch && (
-                    <GeneralSearch
-                        containerStyle={[MHA(), MTA(), BGCOLOR('#FFFFFF')]}
-                        placeholder={'Search ' + filter.name}
-                    />
-                )}
-                <View style={[PHA(), MTA()]}>
+            /> */}
+            {filter.showSearch && (
+                <GeneralSearch
+                    containerStyle={[MHA(), MTA(), BGCOLOR('#FFFFFF')]}
+                    placeholder={'Search ' + filter.name}
+                />
+            )}
+            <ScrollView style={{ maxHeight: 500 }} contentContainerStyle={[]}>
+                <View style={[PHA()]}>
                     {filter.value.map((item, index) => (
                         <FilterValue
                             item={item}
-                            selected={selectedValue.includes(index)}
+                            selected={selectedValues.includes(index)}
                             onPress={() => {
-                                setSelectedValue((values) => {
-                                    if (values.includes(index)) {
-                                        removeElementFromArray(values, index);
-                                    } else {
-                                        values.push(index);
-                                    }
-                                    return [...values];
-                                });
+                                setSelectedValues(index);
                             }}
                         />
                     ))}

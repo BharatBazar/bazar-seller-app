@@ -1,9 +1,11 @@
 import { fs12, fs13, fs16, NavigationProps } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
-import { GENERAL_PADDING, MTA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import { GENERAL_PADDING, MHA, MTA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import Border from '@app/screens/components/border/Border';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
+import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { IFilter } from '@app/server/apis/product/product.interface';
@@ -109,7 +111,7 @@ const filtersEx = [
             },
         ],
         unit: 'cm',
-        selectAll: true,
+        defaultSelectAll: true,
         key: 'size',
 
         type: 'multiselect',
@@ -185,7 +187,7 @@ const filtersEx = [
             },
         ],
         type: 'Multiselectdropdown',
-        selectAll: true,
+        defaultSelectAll: true,
         key: 'categories',
     },
     {
@@ -222,7 +224,7 @@ const filtersEx = [
             },
         ],
         type: 'Multiselecttags',
-        selectAll: true,
+        defaultSelectAll: true,
         key: 'colors',
     },
 ];
@@ -237,8 +239,37 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
     const [filters, setfilters] = React.useState<IFilter[]>(filtersEx);
 
     return (
-        <View style={[FLEX(1), BGCOLOR('#FFFFFF'), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING)]}>
-            <FilterNavigator />
+        <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
+            <View
+                style={[
+                    FDR(),
+                    AIC(),
+                    BGCOLOR('#FFF'),
+                    provideShadow(10),
+                    PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING),
+                    PVA(),
+                    PHA(),
+                ]}
+            >
+                <ButtonMaterialIcons
+                    onPress={() => {
+                        navigation.goBack();
+                    }}
+                    containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(2)]}
+                    iconName={'chevron-left'}
+                />
+                <HeaderWithTitleAndSubHeading
+                    heading={item.name}
+                    subHeading={'select filter values for each filter'}
+                    borderNeeded={false}
+                    headerContainerStyle={[MHA()]}
+                />
+            </View>
+            <FilterNavigator
+                goBack={() => {
+                    navigation.goBack();
+                }}
+            />
             {/* </View> */}
             <GeneralButtonWithNormalBg
                 backgroundColor={mainColor}

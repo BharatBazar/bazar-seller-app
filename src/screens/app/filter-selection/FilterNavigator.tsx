@@ -16,14 +16,12 @@ import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIc
 import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
 
 import GeneralText from '@app/screens/components/text/GeneralText';
+import { removeElementFromArray } from '@app/utilities/array';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
 interface FilterNavigatorProps {
-    filter: IFilter;
-    currentIndex: number;
-    selectedValues: string[];
-    setSelectedValue: Function;
+    goBack: Function;
 }
 
 let navref = createNavigationContainerRef();
@@ -243,22 +241,22 @@ const filtersEx = [
     },
 ];
 
-const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = () => {
+const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack }) => {
     const listRef = React.useRef(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [selectedValues, setSelectedValues] = React.useState({});
 
-    const onChange = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-        const active = Math.ceil(nativeEvent.contentOffset.x / getWP(10));
+    // const onChange = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    //     const active = Math.ceil(nativeEvent.contentOffset.x / getWP(10));
 
-        if (active !== currentIndex) setCurrentIndex(active);
-    };
+    //     if (active !== currentIndex) setCurrentIndex(active);
+    // };
 
     console.log('current INdex', currentIndex);
 
     return (
-        <View style={[FLEX(1)]}>
+        <View style={[FLEX(1), MTA()]}>
             <View style={[FDR(), JCC('space-between'), PHA()]}>
                 <ButtonMaterialIcons
                     onPress={() => {
@@ -267,10 +265,9 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = () => {
                                 animated: true,
                                 offset: (currentIndex - 1) * getWP(10),
                             });
-
-                            // setCurrentIndex(currentIndex - 1);
+                            setCurrentIndex(currentIndex - 1);
                         } else {
-                            //  navigation.goBack();
+                            goBack();
                         }
                     }}
                     containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(2)]}
@@ -282,42 +279,59 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = () => {
                         fontFamily={'Medium'}
                         fontSize={fs16}
                         textColor={mainColor}
-                        text={'Mens_catalogue'}
+                        text={filtersEx[currentIndex].name}
                     />
 
                     <GeneralText
                         containerStyle={[AIC(), JCC(), MTA(2)]}
                         fontFamily={'Medium'}
                         fontSize={fs12}
-                        text={'Select filter value for each filter.'}
+                        text={filtersEx[currentIndex].description}
                     />
                 </View>
                 <ButtonMaterialIcons
                     iconName="chevron-right"
                     containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(2)]}
                     onPress={() => {
-                        listRef.current.scrollToOffset({
-                            animated: true,
-                            offset: (currentIndex + 1) * getWP(10),
-                        });
-                        // setCurrentIndex(currentIndex + 1);
+                        if (currentIndex != filtersEx.length - 1) {
+                            listRef.current.scrollToOffset({
+                                animated: true,
+                                offset: (currentIndex + 1) * getWP(10),
+                            });
+
+                            setCurrentIndex(currentIndex + 1);
+                        }
                     }}
                 />
             </View>
             <Border />
             <FlatList
+                scrollEnabled={false}
                 ref={listRef}
                 horizontal={true}
                 data={filtersEx}
                 showsHorizontalScrollIndicator={false}
-                onScroll={onChange}
+                //  onScroll={onChange}
                 pagingEnabled
+                keyExtractor={(item, index) => item._id.toString()}
                 // snapToInterval={getWP(10)}
                 renderItem={({ item }) => (
                     <FilterValues
                         filter={item}
-                        selectedValues={[]}
-                        setSelectedValues={setSelectedValues}
+                        selectedValues={selectedValues[filtersEx[currentIndex].key] || []}
+                        setSelectedValues={(index: number) =>
+                            setSelectedValues((selectedValues) => {
+                                let values = selectedValues[filtersEx[currentIndex].key] || [];
+                                if (values.includes(index)) {
+                                    removeElementFromArray(values, index);
+                                } else {
+                                    values.push(index);
+                                }
+
+                                selectedValues[filtersEx[currentIndex].key] = values;
+                                return { ...selectedValues };
+                            })
+                        }
                         index={currentIndex}
                     />
                 )}
