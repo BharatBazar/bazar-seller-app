@@ -1,19 +1,17 @@
 import { getWP } from '@app/common/dimension';
 
 import Border from '@app/screens/components/border/Border';
-import { IFilter } from '@app/server/apis/product/product.interface';
-import { createNavigationContainerRef, NavigationContainer } from '@react-navigation/native';
+import { createNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { Animated, FlatList, ScrollView, View } from 'react-native';
-import FilterValue from './FilterValue';
+import { FlatList, View } from 'react-native';
+
 import FilterValues from './FilterValues';
-import { fs12, fs13, fs16, NavigationProps } from '@app/common';
+import { fs12, fs16 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
-import { GENERAL_PADDING, MTA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import { MTA, PHA } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
-import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
 
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { removeElementFromArray } from '@app/utilities/array';
@@ -254,7 +252,42 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     // };
 
     console.log('current INdex', currentIndex);
+    const list = React.useMemo(
+        () => (
+            <FlatList
+                scrollEnabled={false}
+                ref={listRef}
+                horizontal={true}
+                data={filtersEx}
+                showsHorizontalScrollIndicator={false}
+                //  onScroll={onChange}
+                pagingEnabled
+                keyExtractor={(item, index) => item._id.toString()}
+                // snapToInterval={getWP(10)}
+                renderItem={({ item, index }) => (
+                    <FilterValues
+                        filter={item}
+                        selectedValues={selectedValues[item.key] || []}
+                        setSelectedValues={(indexOfValue: number) =>
+                            setSelectedValues((selectedValues) => {
+                                let values = selectedValues[item.key] || [];
+                                if (values.includes(indexOfValue)) {
+                                    removeElementFromArray(values, indexOfValue);
+                                } else {
+                                    values.push(indexOfValue);
+                                }
 
+                                selectedValues[item.key] = values;
+                                return { ...selectedValues };
+                            })
+                        }
+                        index={currentIndex}
+                    />
+                )}
+            />
+        ),
+        [selectedValues, setSelectedValues],
+    );
     return (
         <View style={[FLEX(1), MTA()]}>
             <View style={[FDR(), JCC('space-between'), PHA()]}>
@@ -305,38 +338,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 />
             </View>
             <Border />
-            <FlatList
-                scrollEnabled={false}
-                ref={listRef}
-                horizontal={true}
-                data={filtersEx}
-                showsHorizontalScrollIndicator={false}
-                //  onScroll={onChange}
-                pagingEnabled
-                keyExtractor={(item, index) => item._id.toString()}
-                // snapToInterval={getWP(10)}
-                renderItem={({ item }) => (
-                    <FilterValues
-                        filter={item}
-                        selectedValues={selectedValues[filtersEx[currentIndex].key] || []}
-                        setSelectedValues={(index: number) =>
-                            setSelectedValues((selectedValues) => {
-                                let values = selectedValues[filtersEx[currentIndex].key] || [];
-                                if (values.includes(index)) {
-                                    removeElementFromArray(values, index);
-                                } else {
-                                    values.push(index);
-                                }
-
-                                selectedValues[filtersEx[currentIndex].key] = values;
-                                return { ...selectedValues };
-                            })
-                        }
-                        index={currentIndex}
-                    />
-                )}
-            />
-
+            {list}
             {/* <NavigationContainer independent ref={navref}>
                 <FilterStackNavigator.Navigator screenOptions={{ headerShown: false }}>
                     <FilterStackNavigator.Screen

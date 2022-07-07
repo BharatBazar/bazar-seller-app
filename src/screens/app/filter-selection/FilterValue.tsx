@@ -1,17 +1,16 @@
 import * as React from 'react';
-import { black100, black60, borderColor, colorCode, mainColor } from '../../../common/color';
-import { AIC, BGCOLOR, BR, FDR, ML, MR, MT, PH, provideShadow, PV } from '../../../common/styles';
-import Icon from 'react-native-vector-icons/Feather';
 import { TouchableOpacity, View, ViewStyle } from 'react-native';
+import { black100, black60, borderColor, colorCode } from '../../../common/color';
+import { AIC, BGCOLOR, FDR, ML, PH, provideShadow } from '../../../common/styles';
+import Icon from 'react-native-vector-icons/Feather';
+
 import { getHP, getWP } from '../../../common/dimension';
 import { FastImageWrapper } from '../../component/FastImage';
 import WrappedText from '../../component/WrappedText';
 import { FontFamily, fs12, fs14 } from '../../../common';
-import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 
 import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 import { IFilter } from '@app/server/apis/product/product.interface';
-import { border } from '../edit/product/component/generalConfig';
 import { MTA, PVA } from '@app/common/stylesheet';
 
 export interface FilterValueProps {

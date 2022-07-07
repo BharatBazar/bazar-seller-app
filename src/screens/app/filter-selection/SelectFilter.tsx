@@ -1,13 +1,12 @@
-import { fs12, fs13, fs16, NavigationProps } from '@app/common';
+import { NavigationProps } from '@app/common';
 import { mainColor } from '@app/common/color';
-import { AIC, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
-import { GENERAL_PADDING, MHA, MTA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
-import Border from '@app/screens/components/border/Border';
+import { AIC, BGCOLOR, FDR, FLEX, provideShadow } from '@app/common/styles';
+import { GENERAL_PADDING, MHA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 
-import GeneralText from '@app/screens/components/text/GeneralText';
 import { IFilter } from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { View } from 'react-native';

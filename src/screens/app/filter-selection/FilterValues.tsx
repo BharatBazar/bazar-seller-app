@@ -1,11 +1,9 @@
-import { BGCOLOR, FLEX, WP } from '@app/common/styles';
-import { MHA, MTA, PHA, PVA } from '@app/common/stylesheet';
-import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
-import GeneralSearch from '@app/screens/components/search/Search';
-import { IFilter } from '@app/server/apis/product/product.interface';
-import { removeElementFromArray } from '@app/utilities/array';
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
+import { BGCOLOR, FLEX, WP } from '@app/common/styles';
+import { MHA, MTA, PHA } from '@app/common/stylesheet';
+import GeneralSearch from '@app/screens/components/search/Search';
+import { IFilter } from '@app/server/apis/product/product.interface';
 import FilterValue from './FilterValue';
 
 interface FilterValuesProps {
