@@ -1,26 +1,39 @@
-import { BGCOLOR, FLEX } from '@app/common/styles';
+import { BGCOLOR, FLEX, WP } from '@app/common/styles';
 import { MHA, MTA, PHA, PVA } from '@app/common/stylesheet';
-import WrappedText from '@app/screens/component/WrappedText';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import GeneralSearch from '@app/screens/components/search/Search';
 import { IFilter } from '@app/server/apis/product/product.interface';
 import { removeElementFromArray } from '@app/utilities/array';
 import * as React from 'react';
-import { ScrollView, TextInput, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import FilterValue from './FilterValue';
 
 interface FilterValuesProps {
-    route: { params: { filter: IFilter; selectedValues: string[]; setSelectedValues: Function } };
+    filter: IFilter;
+    selectedValues: string[];
+    setSelectedValues: Function;
+    index: number;
 }
 
 const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
-    route: {
-        params: { filter, selectedValues, setSelectedValues: Function },
-    },
+    filter,
+    selectedValues,
+    setSelectedValues,
+    index,
 }) => {
     const [selectedValue, setSelectedValue] = React.useState(selectedValues || []);
+
+    const componentUnmountTrigger = React.useCallback(() => {
+        console.log('unmount', filter.name, selectedValue, setSelectedValues);
+        setSelectedValues(selectedValue, index);
+    }, [selectedValue]);
+    React.useEffect(() => {
+        return componentUnmountTrigger;
+    }, []);
+
+    console.log(selectedValue);
     return (
-        <View style={[FLEX(1), BGCOLOR('#FFF'), PVA()]}>
+        <View style={[FLEX(1), BGCOLOR('#FFF'), PVA(), WP(10)]}>
             <HeaderWithTitleAndSubHeading
                 heading={filter.name}
                 subHeading={filter.description}
@@ -28,21 +41,30 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                 borderNeeded={false}
             />
 
-            <ScrollView style={{ maxHeight: 200 }} stickyHeaderIndices={[0]} contentContainerStyle={[]}>
+            <ScrollView
+                pagingEnabled
+                snapToStart
+                style={{ maxHeight: 500 }}
+                stickyHeaderIndices={[0]}
+                contentContainerStyle={[]}
+            >
                 {filter.showSearch && (
-                    <GeneralSearch containerStyle={[MHA(), MTA()]} placeholder={'Search ' + filter.name} />
+                    <GeneralSearch
+                        containerStyle={[MHA(), MTA(), BGCOLOR('#FFFFFF')]}
+                        placeholder={'Search ' + filter.name}
+                    />
                 )}
-                <View style={[PHA(5)]}>
-                    {filter.value.map((item) => (
+                <View style={[PHA(), MTA()]}>
+                    {filter.value.map((item, index) => (
                         <FilterValue
                             item={item}
-                            selected={selectedValue && selectedValue.includes(item._id)}
+                            selected={selectedValue.includes(index)}
                             onPress={() => {
                                 setSelectedValue((values) => {
-                                    if (values.includes(item._id)) {
-                                        removeElementFromArray(values, item._id);
+                                    if (values.includes(index)) {
+                                        removeElementFromArray(values, index);
                                     } else {
-                                        values.push(item._id);
+                                        values.push(index);
                                     }
                                     return [...values];
                                 });
