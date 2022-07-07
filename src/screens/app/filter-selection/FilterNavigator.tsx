@@ -8,13 +8,14 @@ import { FlatList, View } from 'react-native';
 
 import FilterValues from './FilterValues';
 import { fs12, fs16 } from '@app/common';
-import { mainColor } from '@app/common/color';
+import { disabledColor, mainColor, subHeadingColor } from '@app/common/color';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
-import { MTA, PHA } from '@app/common/stylesheet';
+import { MTA, PHA, PTA } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { removeElementFromArray } from '@app/utilities/array';
+import ProgressBar from '@app/screens/components/progressbar/ProgressBar';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
@@ -289,9 +290,12 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         [selectedValues, setSelectedValues],
     );
     return (
-        <View style={[FLEX(1), MTA()]}>
-            <View style={[FDR(), JCC('space-between'), PHA()]}>
+        <View style={[FLEX(1)]}>
+            <ProgressBar totalStep={filtersEx.length} height={10} step={currentIndex + 1} totalWidth={getWP(10)} />
+
+            <View style={[FDR(), JCC('space-between'), PHA(), PTA()]}>
                 <ButtonMaterialIcons
+                    disabled={currentIndex == 0}
                     onPress={() => {
                         if (currentIndex != 0) {
                             listRef.current.scrollToOffset({
@@ -303,7 +307,10 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                             goBack();
                         }
                     }}
-                    containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(2)]}
+                    containerStyle={[
+                        BGCOLOR(currentIndex == 0 ? disabledColor : '#FFFFFF'),
+                        provideShadow(currentIndex == 0 ? 0 : 2),
+                    ]}
                     iconName={currentIndex == 0 ? 'close' : 'chevron-left'}
                 />
                 <View>
@@ -338,24 +345,8 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 />
             </View>
             <Border />
+
             {list}
-            {/* <NavigationContainer independent ref={navref}>
-                <FilterStackNavigator.Navigator screenOptions={{ headerShown: false }}>
-                    <FilterStackNavigator.Screen
-                        name={'FilterScreen'}
-                        component={FilterValues}
-                        options={{
-                            animation: currentIndex >= prevIndex.current ? 'slide_from_right' : 'slide_from_left',
-                        }}
-                        initialParams={{
-                            filter: filter,
-                            selectedValues: selectedValues,
-                            setSelectedValues: setSelectedValue,
-                            index: currentIndex,
-                        }}
-                    />
-                </FilterStackNavigator.Navigator>
-            </NavigationContainer> */}
         </View>
     );
 };

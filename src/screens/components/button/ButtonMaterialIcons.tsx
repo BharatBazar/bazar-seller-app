@@ -13,6 +13,7 @@ export interface ButtonMaterialIconsProps {
     containerHeight?: number;
     iconColor?: string;
     containerStyle?: ViewStyle | ViewStyle[];
+    disabled?: boolean;
 }
 
 const ButtonMaterialIcons: React.FC<ButtonMaterialIconsProps> = ({
@@ -22,9 +23,11 @@ const ButtonMaterialIcons: React.FC<ButtonMaterialIconsProps> = ({
     iconName,
     iconSize,
     containerHeight,
+    disabled,
 }) => {
     return (
         <WrappedRoundButton
+            disabled={disabled}
             containerStyle={[containerStyle]}
             onPress={() => {
                 onPress();
