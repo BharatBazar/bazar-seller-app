@@ -91,10 +91,7 @@ const ShowSubCategory: React.FC<ShowSubCategoryProps> = ({
                         {/* <WrappedText text={'0'} textColor={colorCode.BLACK} /> */}
                     </View>
                 </View>
-                <Animatable.View
-                    style={{ transform: [{ rotate: active ? '-90deg' : !touch ? '90deg' : '0deg' }] }}
-                    transition={'rotation'}
-                >
+                <Animatable.View transition={'rotation'}>
                     <Icon
                         name={'chevron-right'}
                         size={height ? height * 0.4 : getHP(0.3)}
