@@ -16,6 +16,11 @@ import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIc
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { removeElementFromArray } from '@app/utilities/array';
 import ProgressBar from '@app/screens/components/progressbar/ProgressBar';
+import AsyncStorage from '@react-native-community/async-storage';
+import { Storage, StorageItemKeys } from '@app/storage';
+import { IshopMember } from '@app/server/apis/shopMember/shopMember.interface';
+import { updateSelectedFilterValues } from '@app/server/apis/filter/filter.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
@@ -241,7 +246,7 @@ const filtersEx = [
 ];
 
 const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack }) => {
-    const listRef = React.useRef(null);
+    const listRef = React.useRef<FlatList>(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [selectedValues, setSelectedValues] = React.useState({});
@@ -251,6 +256,23 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
 
     //     if (active !== currentIndex) setCurrentIndex(active);
     // };
+
+    const [loader, setLoader] = React.useState(false);
+    const saveSelectedFilterValues = async (callback?: Function) => {
+        setLoader(true);
+        const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
+        try {
+            const response = await updateSelectedFilterValues({ _id: userDetails.shop, ...selectedValues });
+            setLoader(false);
+            if (callback) {
+                callback();
+            }
+            ToastHOC.successAlert(response.message);
+        } catch (error) {
+            setLoader(false);
+            ToastHOC.errorAlert(error.message);
+        }
+    };
 
     console.log('current INdex', currentIndex);
     const list = React.useMemo(
@@ -298,7 +320,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                     disabled={currentIndex == 0}
                     onPress={() => {
                         if (currentIndex != 0) {
-                            listRef.current.scrollToOffset({
+                            listRef?.current?.scrollToOffset({
                                 animated: true,
                                 offset: (currentIndex - 1) * getWP(10),
                             });
@@ -334,12 +356,17 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                     containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(2)]}
                     onPress={() => {
                         if (currentIndex != filtersEx.length - 1) {
-                            listRef.current.scrollToOffset({
-                                animated: true,
-                                offset: (currentIndex + 1) * getWP(10),
-                            });
-
-                            setCurrentIndex(currentIndex + 1);
+                            if (selectedValues[filtersEx[currentIndex].key]) {
+                                saveSelectedFilterValues(() => {
+                                    setCurrentIndex(currentIndex + 1);
+                                });
+                                listRef?.current?.scrollToOffset({
+                                    animated: true,
+                                    offset: (currentIndex + 1) * getWP(10),
+                                });
+                            } else {
+                                ToastHOC.errorAlert('Please selected atleast one value');
+                            }
                         }
                     }}
                 />
