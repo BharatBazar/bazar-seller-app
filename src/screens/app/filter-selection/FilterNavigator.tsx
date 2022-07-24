@@ -10,7 +10,7 @@ import FilterValues from './FilterValues';
 import { fs12, fs16 } from '@app/common';
 import { disabledColor, mainColor, subHeadingColor } from '@app/common/color';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
-import { MTA, PHA, PTA } from '@app/common/stylesheet';
+import { MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 
 import GeneralText from '@app/screens/components/text/GeneralText';
@@ -21,6 +21,8 @@ import { Storage, StorageItemKeys } from '@app/storage';
 import { IshopMember } from '@app/server/apis/shopMember/shopMember.interface';
 import { updateSelectedFilterValues } from '@app/server/apis/filter/filter.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
+import Loader from '@app/screens/component/Loader';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
@@ -261,6 +263,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const saveSelectedFilterValues = async (callback?: Function) => {
         setLoader(true);
         const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
+        console.log('uer', userDetails);
         try {
             const response = await updateSelectedFilterValues({ _id: userDetails.shop, ...selectedValues });
             setLoader(false);
@@ -269,6 +272,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
             }
             ToastHOC.successAlert(response.message);
         } catch (error) {
+            console.log('error', error);
             setLoader(false);
             ToastHOC.errorAlert(error.message);
         }
@@ -358,14 +362,14 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                         if (currentIndex != filtersEx.length - 1) {
                             if (selectedValues[filtersEx[currentIndex].key]) {
                                 saveSelectedFilterValues(() => {
+                                    listRef?.current?.scrollToOffset({
+                                        animated: true,
+                                        offset: (currentIndex + 1) * getWP(10),
+                                    });
                                     setCurrentIndex(currentIndex + 1);
                                 });
-                                listRef?.current?.scrollToOffset({
-                                    animated: true,
-                                    offset: (currentIndex + 1) * getWP(10),
-                                });
                             } else {
-                                ToastHOC.errorAlert('Please selected atleast one value');
+                                ToastHOC.errorAlert('Please select atleast one value');
                             }
                         }
                     }}
@@ -374,6 +378,27 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
             <Border />
 
             {list}
+            <GeneralButtonWithNormalBg
+                backgroundColor={mainColor}
+                buttonText={'Continue'}
+                onPress={() => {
+                    if (currentIndex != filtersEx.length - 1) {
+                        if (selectedValues[filtersEx[currentIndex].key]) {
+                            saveSelectedFilterValues(() => {
+                                listRef?.current?.scrollToOffset({
+                                    animated: true,
+                                    offset: (currentIndex + 1) * getWP(10),
+                                });
+                                setCurrentIndex(currentIndex + 1);
+                            });
+                        } else {
+                            ToastHOC.errorAlert('Please select atleast one value');
+                        }
+                    }
+                }}
+                containerStyle={[PVA()]}
+            />
+            {loader && <Loader />}
         </View>
     );
 };

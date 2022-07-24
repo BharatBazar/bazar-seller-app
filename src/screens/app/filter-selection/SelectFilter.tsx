@@ -270,12 +270,6 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
                 }}
             />
             {/* </View> */}
-            <GeneralButtonWithNormalBg
-                backgroundColor={mainColor}
-                buttonText={'Continue'}
-                onPress={() => {}}
-                containerStyle={[PVA()]}
-            />
         </View>
     );
 };

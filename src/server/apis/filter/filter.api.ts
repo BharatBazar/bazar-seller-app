@@ -34,5 +34,5 @@ export function deleteFilter(data: Partial<IFilter>): Promise<CommonApiResponse>
 export function updateSelectedFilterValues(
     data: { _id: string } & { [key: string]: string },
 ): Promise<CommonApiResponse> {
-    return axios.patch('/shop/saveFilterValues');
+    return axios.patch('/shop/saveFilterValues', data);
 }
