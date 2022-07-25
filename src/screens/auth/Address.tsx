@@ -216,6 +216,7 @@ const Address: React.FC<AddressProps> = ({
                 <WrappedText text={error['pincode']} textColor={errorColor} containerStyle={{ marginTop: 3 }} />
             )}
             {previousPin == pincode && (
+          
                 <>
                     <View style={[FDR(), MT(0.1)]}>
                         <TextInput
