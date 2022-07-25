@@ -1,10 +1,10 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { fs14, NavigationProps } from '../../../common';
-import { colorCode, subHeadingColor } from '../../../common/color';
-import { BGCOLOR, FDR, FLEX, JCC, provideShadow, PV } from '../../../common/styles';
+import { NavigationProps } from '../../../common';
+import { colorCode } from '../../../common/color';
+import { BGCOLOR, FLEX } from '../../../common/styles';
 import { getShop } from '../../../server/apis/shop/shop.api';
-import { IRGetShop, IShop, Shop } from '../../../server/apis/shop/shop.interface';
+import { IRGetShop, IShop } from '../../../server/apis/shop/shop.interface';
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
 import { IshopMember, shopMemberRole } from '../../../server/apis/shopMember/shopMember.interface';

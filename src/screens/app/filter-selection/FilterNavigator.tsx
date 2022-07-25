@@ -16,7 +16,6 @@ import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIc
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { removeElementFromArray } from '@app/utilities/array';
 import ProgressBar from '@app/screens/components/progressbar/ProgressBar';
-import AsyncStorage from '@react-native-community/async-storage';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { IshopMember } from '@app/server/apis/shopMember/shopMember.interface';
 import { updateSelectedFilterValues } from '@app/server/apis/filter/filter.api';
