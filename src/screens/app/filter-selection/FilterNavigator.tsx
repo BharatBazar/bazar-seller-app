@@ -23,11 +23,14 @@ import { updateSelectedFilterValues } from '@app/server/apis/filter/filter.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
 import Loader from '@app/screens/component/Loader';
+import { getFilterAndValuesAndSelectedFilterValuesByShop, IRFilterValues } from '@app/server/apis/shop/shop.api';
+import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
 interface FilterNavigatorProps {
     goBack: Function;
+    item: IProductCatalogue;
 }
 
 let navref = createNavigationContainerRef();
@@ -247,11 +250,13 @@ const filtersEx = [
     },
 ];
 
-const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack }) => {
+const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack, item }) => {
     const listRef = React.useRef<FlatList>(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
     const [selectedValues, setSelectedValues] = React.useState({});
+
+    const [filters, setFilters] = React.useState([]);
 
     // const onChange = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
     //     const active = Math.ceil(nativeEvent.contentOffset.x / getWP(10));
@@ -278,14 +283,39 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         }
     };
 
-    console.log('current INdex', currentIndex);
+    const getFilterWithValuesAndSelectedValue = async (callback?: Function) => {
+        setLoader(true);
+        const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
+
+        try {
+            const response: IRFilterValues = await getFilterAndValuesAndSelectedFilterValuesByShop({
+                _id: userDetails.shop,
+                catalogueId: item._id,
+            });
+            console.log('response', response);
+            setFilters(response.payload.allFilters);
+            setSelectedValues(response.payload.selectedValues);
+            ToastHOC.successAlert(response.message);
+            setLoader(false);
+        } catch (error) {
+            console.log('error', error);
+            setLoader(false);
+            ToastHOC.errorAlert(error.message);
+        }
+    };
+
+    React.useEffect(() => {
+        getFilterWithValuesAndSelectedValue();
+    }, []);
+
+    console.log('current INdex', currentIndex, selectedValues, filters);
     const list = React.useMemo(
         () => (
             <FlatList
                 scrollEnabled={false}
                 ref={listRef}
                 horizontal={true}
-                data={filtersEx}
+                data={filters}
                 showsHorizontalScrollIndicator={false}
                 //  onScroll={onChange}
                 pagingEnabled
@@ -317,7 +347,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     );
     return (
         <View style={[FLEX(1)]}>
-            <ProgressBar totalStep={filtersEx.length} height={10} step={currentIndex + 1} totalWidth={getWP(10)} />
+            <ProgressBar totalStep={filters.length + 1} height={10} step={currentIndex} totalWidth={getWP(10)} />
 
             <View style={[FDR(), JCC('space-between'), PHA(), PTA()]}>
                 <ButtonMaterialIcons

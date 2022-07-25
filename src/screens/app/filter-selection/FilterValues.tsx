@@ -35,7 +35,7 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
             )}
             <ScrollView style={{ maxHeight: 500 }} contentContainerStyle={[]}>
                 <View style={[PHA()]}>
-                    {filter.value.map((item, index) => (
+                    {filter.values.map((item, index) => (
                         <FilterValue
                             item={item}
                             selected={selectedValues.includes(index)}

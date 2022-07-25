@@ -1,3 +1,4 @@
+import { CommonApiResponse } from './../common.interface';
 import { apiEndPoint } from './../../index';
 import axios from 'axios';
 
@@ -10,9 +11,28 @@ import {
     IRGetShop,
     IRGetShopCatalogue,
 } from './shop.interface';
+import { IFilter } from '../filter/filter.interface';
 
 export async function updateShop(data: Partial<updateShopData>): Promise<IRShopUpdate> {
     return axios.patch('/shop/update', data);
+}
+
+export interface AllFilterAndSelectedFilters {
+    allFilters: IFilter[];
+    selectedValues: {
+        [key: string]: string;
+    };
+}
+
+export interface IRFilterValues extends CommonApiResponse {
+    payload: AllFilterAndSelectedFilters;
+}
+
+export async function getFilterAndValuesAndSelectedFilterValuesByShop(data: {
+    _id: string;
+    catalogueId: string;
+}): Promise<IRFilterValues> {
+    return axios.post('/shop/getFilterValues', data);
 }
 
 export async function updateShopCatalogue(data: Partial<updateShopData>): Promise<IRShopUpdate> {

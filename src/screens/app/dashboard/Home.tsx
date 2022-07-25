@@ -11,9 +11,6 @@ import { IshopMember, shopMemberRole } from '../../../server/apis/shopMember/sho
 import { Storage, StorageItemKeys } from '../../../storage';
 import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
-import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
-import { MTA, PHA, PVA } from '@app/common/stylesheet';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationKey } from '@app/labels';
 import AddShopMemberBanner from './component/AddShopMemberBanner';
 
@@ -34,6 +31,7 @@ const Home = (props: Props) => {
             let response: IRGetShop = await getShop({
                 _id: userDetails.shop,
             });
+            console.log('response', response);
             setLoader(false);
             if (response.status == 1) {
                 setShop(response.payload);

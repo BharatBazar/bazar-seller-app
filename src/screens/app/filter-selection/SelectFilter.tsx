@@ -235,8 +235,6 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
         params: { item },
     },
 }) => {
-    const [filters, setfilters] = React.useState<IFilter[]>(filtersEx);
-
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
             <View
@@ -265,6 +263,7 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
                 />
             </View>
             <FilterNavigator
+                item={item}
                 goBack={() => {
                     navigation.goBack();
                 }}
