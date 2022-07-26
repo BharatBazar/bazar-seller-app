@@ -19,6 +19,7 @@ export interface IProductCatalogue {
     active: boolean;
     child: IProductCatalogue[];
     path: IProductCatalogue[];
+    totalFilterAdded: number;
 
     _id: string;
 }
