@@ -269,7 +269,11 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
         console.log('uer', userDetails);
         try {
-            const response = await updateSelectedFilterValues({ _id: userDetails.shop, ...selectedValues });
+            const response = await updateSelectedFilterValues({
+                _id: userDetails.shop,
+                ...selectedValues,
+                parent: item._id,
+            });
             setLoader(false);
             if (callback) {
                 callback();
