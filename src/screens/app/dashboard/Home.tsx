@@ -65,13 +65,13 @@ const Home = (props: Props) => {
                         touch={true}
                         onPress={() => {
                             console.log(shop.filterProvidedForSellingItems, item.totalFilterAdded);
-                            // if (item.totalFilterAdded != shop.filterProvidedForSellingItems[item._id]) {
-                            //     props.navigation.navigate(NavigationKey.SELECTFILTER, {
-                            //         item: item,
-                            //     });
-                            // } else {
-                            //     props.navigation.navigate(NavigationKey.PRODUCT, { item: item });
-                            // }
+                            if (item.totalFilterAdded != shop.filterProvidedForSellingItems[item._id]) {
+                                props.navigation.navigate(NavigationKey.SELECTFILTER, {
+                                    item: item,
+                                });
+                            } else {
+                                props.navigation.navigate(NavigationKey.PRODUCT, { item: item });
+                            }
                         }}
                         active={true}
                         paddingVertical={'1%'}

@@ -38,9 +38,9 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                     {filter.values.map((item, index) => (
                         <FilterValue
                             item={item}
-                            selected={selectedValues.includes(index)}
+                            selected={selectedValues.includes(item._id)}
                             onPress={() => {
-                                setSelectedValues(index);
+                                setSelectedValues(item._id);
                             }}
                         />
                     ))}

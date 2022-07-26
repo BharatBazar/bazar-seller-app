@@ -267,6 +267,7 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
                 goBack={() => {
                     navigation.goBack();
                 }}
+                navigation={navigation}
             />
             {/* </View> */}
         </View>

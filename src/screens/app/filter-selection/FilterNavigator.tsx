@@ -24,6 +24,7 @@ import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWith
 import Loader from '@app/screens/component/Loader';
 import { getFilterAndValuesAndSelectedFilterValuesByShop, IRFilterValues } from '@app/server/apis/shop/shop.api';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
+import { NavigationKey } from '@app/labels';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
@@ -249,7 +250,7 @@ const filtersEx = [
     },
 ];
 
-const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack, item }) => {
+const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack, item, navigation }) => {
     const listRef = React.useRef<FlatList>(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -275,6 +276,9 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 parent: item._id,
             });
             setLoader(false);
+            if (currentIndex + 1 == filters.length) {
+                navigation.navigate(NavigationKey.PRODUCT, { item: item });
+            }
             if (callback) {
                 callback();
             }
@@ -295,7 +299,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 _id: userDetails.shop,
                 catalogueId: item._id,
             });
-            console.log('response', response);
+            console.log('response', response.payload.allFilters);
             setFilters(response.payload.allFilters);
             setSelectedValues(response.payload.selectedValues);
             ToastHOC.successAlert(response.message);
@@ -311,7 +315,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         getFilterWithValuesAndSelectedValue();
     }, []);
 
-    console.log('current INdex', currentIndex, selectedValues, filters);
+    console.log(currentIndex, selectedValues);
     const list = React.useMemo(
         () => (
             <FlatList
@@ -372,21 +376,22 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                     ]}
                     iconName={currentIndex == 0 ? 'close' : 'chevron-left'}
                 />
-                <View>
+                <View style={[FLEX(1), AIC(), JCC()]}>
                     <GeneralText
                         containerStyle={[, AIC(), JCC()]}
                         fontFamily={'Medium'}
                         fontSize={fs16}
                         textColor={mainColor}
-                        text={filtersEx[currentIndex].name}
+                        text={filters.length > 0 ? filters[currentIndex]?.name || '' : ''}
                     />
 
-                    <GeneralText
+                    {/* <GeneralText
                         containerStyle={[AIC(), JCC(), MTA(2)]}
                         fontFamily={'Medium'}
                         fontSize={fs12}
-                        text={filtersEx[currentIndex].description}
-                    />
+                        text={filters[currentIndex].description}
+                        textAlign="center"
+                    /> */}
                 </View>
                 <ButtonMaterialIcons
                     iconName="chevron-right"
@@ -415,8 +420,8 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 backgroundColor={mainColor}
                 buttonText={'Continue'}
                 onPress={() => {
-                    if (currentIndex != filtersEx.length - 1) {
-                        if (selectedValues[filtersEx[currentIndex].key]) {
+                    if (currentIndex != filters.length - 1) {
+                        if (selectedValues[filters[currentIndex].key]) {
                             saveSelectedFilterValues(() => {
                                 listRef?.current?.scrollToOffset({
                                     animated: true,
