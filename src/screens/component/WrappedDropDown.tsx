@@ -92,6 +92,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
         <DropDownPicker
        
        placeholderTextColor={placeholderTextColor}
+       
         open={open}
         setOpen={setOpen}
             controller={provideController}
