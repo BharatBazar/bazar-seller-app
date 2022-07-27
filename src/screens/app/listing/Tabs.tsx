@@ -10,10 +10,8 @@ import { Shop } from '@app/server/apis/shop/shop.interface';
 const Tab = createMaterialTopTabNavigator();
 
 interface ProductTabProps extends NavigationProps {
-    shopId: Shop;
-    category: string;
-    subCategory: string;
-    subCategory1: string;
+    shopId: string;
+
     initialIndex: number;
     tabs: IProductStatus[];
 }
@@ -21,18 +19,13 @@ interface ProductTabProps extends NavigationProps {
 const ProductTab: React.FC<ProductTabProps> = ({
     navigation,
     shopId,
-    category,
-    subCategory1,
-    subCategory,
+
     initialIndex,
     tabs,
 }) => {
     const basicProps = {
         navigation: navigation,
         shopId: shopId,
-        category: category,
-        subCategory: subCategory,
-        subCategory1: subCategory1,
     };
 
     React.useEffect(() => {}, []);

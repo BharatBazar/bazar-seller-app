@@ -10,7 +10,6 @@ import { apiEndPoint } from '../../../server';
 import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
-import Status from './component/Status';
 import ProductTab from './Tabs';
 import IconIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
@@ -18,30 +17,31 @@ import { APIProductStatus } from '@app/server/apis/product/product.api';
 import { IProductStatus, IRProductStatus } from '@app/server/apis/product/product.interface';
 import { showMessage } from 'react-native-flash-message';
 import { Shop } from '@app/server/apis/shop/shop.interface';
+import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 
 export interface ProductProps extends NavigationProps {
     route: {
-        params: { itemType: string; shopId: Shop; category: string; subCategory: string; subCategory1: string };
+        params: { item: IProductCatalogue; shopId: string };
     };
 }
 
 const Product: React.FC<ProductProps> = ({
     navigation,
     route: {
-        params: { itemType, shopId, category, subCategory, subCategory1 },
+        params: { item, shopId },
     },
 }) => {
     const [searchedText, setSearchedText] = React.useState('');
     const [status, setStatus] = React.useState<IProductStatus[]>([]);
 
     const setBaseUrl = () => {
-        if (subCategory1) {
-            axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory1.toLowerCase()}`;
-        } else if (subCategory) {
-            axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory.toLowerCase()}`;
-        } else if (category) {
-            axios.defaults.baseURL = apiEndPoint + `/catalogue/${category.toLowerCase()}`;
-        }
+        // if (subCategory1) {
+        //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory1.toLowerCase()}`;
+        // } else if (subCategory) {
+        //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory.toLowerCase()}`;
+        // } else if (category) {
+        //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${category.toLowerCase()}`;
+        // }
     };
 
     const getCatalogueStatus = async (data: { shopId: string }) => {
@@ -56,7 +56,7 @@ const Product: React.FC<ProductProps> = ({
 
     React.useEffect(() => {
         setBaseUrl();
-        getCatalogueStatus({ shopId: shopId._id });
+        getCatalogueStatus({ shopId: shopId });
         return () => {
             axios.defaults.baseURL = apiEndPoint;
         };
@@ -75,7 +75,7 @@ const Product: React.FC<ProductProps> = ({
                             iconName={'chevron-left'}
                             iconColor={colorCode.WHITE}
                         />
-                        <WrappedText text={itemType} textColor={colorCode.WHITE} fontSize={fs18} />
+                        <WrappedText text={item.name} textColor={colorCode.WHITE} fontSize={fs18} />
                     </View>
 
                     <View style={[FDR(), AIC()]}>
@@ -92,9 +92,6 @@ const Product: React.FC<ProductProps> = ({
                                 navigation.navigate(NavigationKey.CREATEPRODUCT, {
                                     update: false,
                                     shopId: shopId,
-                                    category,
-                                    subCategory1,
-                                    subCategory,
                                 });
                             }}
                             // containerStyle={{ backgroundColor: colorCode.WHITE }}
@@ -125,15 +122,7 @@ const Product: React.FC<ProductProps> = ({
                     />
                 ))}
             </View> */}
-            <ProductTab
-                tabs={status}
-                initialIndex={3}
-                navigation={navigation}
-                shopId={shopId}
-                category={category}
-                subCategory={subCategory}
-                subCategory1={subCategory1}
-            />
+            <ProductTab tabs={status} initialIndex={3} navigation={navigation} shopId={shopId} />
         </View>
     );
 };

@@ -68,9 +68,10 @@ const Home = (props: Props) => {
                             if (item.totalFilterAdded != shop.filterProvidedForSellingItems[item._id]) {
                                 props.navigation.navigate(NavigationKey.SELECTFILTER, {
                                     item: item,
+                                    shopId: shop._id,
                                 });
                             } else {
-                                props.navigation.navigate(NavigationKey.PRODUCT, { item: item });
+                                props.navigation.navigate(NavigationKey.PRODUCT, { item: item, shopId: shop._id });
                             }
                         }}
                         active={true}

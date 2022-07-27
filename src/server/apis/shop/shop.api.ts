@@ -22,6 +22,7 @@ export interface AllFilterAndSelectedFilters {
     selectedValues: {
         [key: string]: string;
     };
+    currentIndex: number;
 }
 
 export interface IRFilterValues extends CommonApiResponse {

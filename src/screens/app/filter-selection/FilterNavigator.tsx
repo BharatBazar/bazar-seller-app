@@ -250,7 +250,7 @@ const filtersEx = [
     },
 ];
 
-const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack, item, navigation }) => {
+const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack, item, navigation, shopId }) => {
     const listRef = React.useRef<FlatList>(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
@@ -267,17 +267,16 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const [loader, setLoader] = React.useState(false);
     const saveSelectedFilterValues = async (callback?: Function) => {
         setLoader(true);
-        const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
-        console.log('uer', userDetails);
+
         try {
             const response = await updateSelectedFilterValues({
-                _id: userDetails.shop,
+                _id: shopId,
                 ...selectedValues,
                 parent: item._id,
             });
             setLoader(false);
             if (currentIndex + 1 == filters.length) {
-                navigation.navigate(NavigationKey.PRODUCT, { item: item });
+                navigation.navigate(NavigationKey.PRODUCT, { item: item, shopId: shopId });
             }
             if (callback) {
                 callback();
@@ -292,16 +291,20 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
 
     const getFilterWithValuesAndSelectedValue = async (callback?: Function) => {
         setLoader(true);
-        const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
 
         try {
             const response: IRFilterValues = await getFilterAndValuesAndSelectedFilterValuesByShop({
-                _id: userDetails.shop,
+                _id: shopId,
                 catalogueId: item._id,
             });
             console.log('response', response.payload.allFilters);
             setFilters(response.payload.allFilters);
             setSelectedValues(response.payload.selectedValues);
+            setCurrentIndex(response.payload.currentIndex);
+            listRef?.current?.scrollToOffset({
+                animated: true,
+                offset: (currentIndex + 1) * getWP(10),
+            });
             ToastHOC.successAlert(response.message);
             setLoader(false);
         } catch (error) {
@@ -352,9 +355,27 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         ),
         [selectedValues, setSelectedValues],
     );
+
+    const onContinue = () => {
+        if (selectedValues[filters[currentIndex].key]) {
+            saveSelectedFilterValues(() => {
+                if (currentIndex != filters.length - 1) {
+                    listRef?.current?.scrollToOffset({
+                        animated: true,
+                        offset: (currentIndex + 1) * getWP(10),
+                    });
+                    setCurrentIndex(currentIndex + 1);
+                }
+            });
+        } else {
+            ToastHOC.errorAlert('Please select atleast one value');
+        }
+    };
     return (
         <View style={[FLEX(1)]}>
-            <ProgressBar totalStep={filters.length + 1} height={10} step={currentIndex} totalWidth={getWP(10)} />
+            {filters.length > 0 && (
+                <ProgressBar totalStep={filters.length} height={10} step={currentIndex} totalWidth={getWP(10)} />
+            )}
 
             <View style={[FDR(), JCC('space-between'), PHA(), PTA()]}>
                 <ButtonMaterialIcons
@@ -384,32 +405,12 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                         textColor={mainColor}
                         text={filters.length > 0 ? filters[currentIndex]?.name || '' : ''}
                     />
-
-                    {/* <GeneralText
-                        containerStyle={[AIC(), JCC(), MTA(2)]}
-                        fontFamily={'Medium'}
-                        fontSize={fs12}
-                        text={filters[currentIndex].description}
-                        textAlign="center"
-                    /> */}
                 </View>
                 <ButtonMaterialIcons
                     iconName="chevron-right"
                     containerStyle={[BGCOLOR('#FFFFFF'), provideShadow(2)]}
                     onPress={() => {
-                        if (currentIndex != filtersEx.length - 1) {
-                            if (selectedValues[filtersEx[currentIndex].key]) {
-                                saveSelectedFilterValues(() => {
-                                    listRef?.current?.scrollToOffset({
-                                        animated: true,
-                                        offset: (currentIndex + 1) * getWP(10),
-                                    });
-                                    setCurrentIndex(currentIndex + 1);
-                                });
-                            } else {
-                                ToastHOC.errorAlert('Please select atleast one value');
-                            }
-                        }
+                        onContinue();
                     }}
                 />
             </View>
@@ -420,19 +421,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 backgroundColor={mainColor}
                 buttonText={'Continue'}
                 onPress={() => {
-                    if (currentIndex != filters.length - 1) {
-                        if (selectedValues[filters[currentIndex].key]) {
-                            saveSelectedFilterValues(() => {
-                                listRef?.current?.scrollToOffset({
-                                    animated: true,
-                                    offset: (currentIndex + 1) * getWP(10),
-                                });
-                                setCurrentIndex(currentIndex + 1);
-                            });
-                        } else {
-                            ToastHOC.errorAlert('Please select atleast one value');
-                        }
-                    }
+                    onContinue();
                 }}
                 containerStyle={[PVA()]}
             />
