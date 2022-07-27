@@ -7,17 +7,15 @@ import * as React from 'react';
 import { FlatList, View } from 'react-native';
 
 import FilterValues from './FilterValues';
-import { fs12, fs16 } from '@app/common';
-import { disabledColor, mainColor, subHeadingColor } from '@app/common/color';
+import { fs16 } from '@app/common';
+import { disabledColor, mainColor } from '@app/common/color';
 import { AIC, BGCOLOR, FDR, FLEX, JCC, provideShadow } from '@app/common/styles';
-import { MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
+import { PHA, PTA, PVA } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 
 import GeneralText from '@app/screens/components/text/GeneralText';
 import { removeElementFromArray } from '@app/utilities/array';
 import ProgressBar from '@app/screens/components/progressbar/ProgressBar';
-import { Storage, StorageItemKeys } from '@app/storage';
-import { IshopMember } from '@app/server/apis/shopMember/shopMember.interface';
 import { updateSelectedFilterValues } from '@app/server/apis/filter/filter.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
@@ -257,12 +255,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const [selectedValues, setSelectedValues] = React.useState({});
 
     const [filters, setFilters] = React.useState([]);
-
-    // const onChange = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
-    //     const active = Math.ceil(nativeEvent.contentOffset.x / getWP(10));
-
-    //     if (active !== currentIndex) setCurrentIndex(active);
-    // };
 
     const [loader, setLoader] = React.useState(false);
     const saveSelectedFilterValues = async (callback?: Function) => {
