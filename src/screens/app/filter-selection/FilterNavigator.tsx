@@ -268,7 +268,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
             });
             setLoader(false);
             if (currentIndex + 1 == filters.length) {
-                navigation.navigate(NavigationKey.PRODUCT, { item: item, shopId: shopId });
+                navigation.replace(NavigationKey.PRODUCT, { item: item, shopId: shopId });
             }
             if (callback) {
                 callback();
@@ -289,13 +289,14 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 _id: shopId,
                 catalogueId: item._id,
             });
-            console.log('response', response.payload.allFilters);
+            console.log('response', response.payload.currentIndex, response.payload.selectedValues);
             setFilters(response.payload.allFilters);
             setSelectedValues(response.payload.selectedValues);
             setCurrentIndex(response.payload.currentIndex);
+            console.log(response.payload.currentIndex);
             listRef?.current?.scrollToOffset({
                 animated: true,
-                offset: (currentIndex + 1) * getWP(10),
+                offset: response.payload.currentIndex * getWP(10),
             });
             ToastHOC.successAlert(response.message);
             setLoader(false);
