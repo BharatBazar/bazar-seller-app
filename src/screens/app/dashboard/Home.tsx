@@ -64,8 +64,8 @@ const Home = (props: Props) => {
                         item={item}
                         touch={true}
                         onPress={() => {
-                            console.log(shop.filterProvidedForSellingItems, item.totalFilterAdded);
-                            if (item.totalFilterAdded != shop.filterProvidedForSellingItems[item._id]) {
+                            //console.log(shop.filterProvidedForSellingItems[item._id], item.totalFilterAdded);
+                            if (item.totalFilterAdded > shop.filterProvidedForSellingItems[item._id]) {
                                 props.navigation.navigate(NavigationKey.SELECTFILTER, {
                                     item: item,
                                     shopId: shop._id,

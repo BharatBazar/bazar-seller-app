@@ -232,7 +232,7 @@ interface SelectFilterProps extends NavigationProps {}
 const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
     navigation,
     route: {
-        params: { item },
+        params: { item, shopId },
     },
 }) => {
     return (
@@ -268,6 +268,7 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
                     navigation.goBack();
                 }}
                 navigation={navigation}
+                shopId={shopId}
             />
             {/* </View> */}
         </View>
