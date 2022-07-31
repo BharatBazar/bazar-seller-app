@@ -105,7 +105,7 @@ export const passwordValidation = [
 export const FontFamily = {
     Regular: 'Roboto-Regular',
     Thin: 'Roboto-Thin',
-    Light: 'Roboto_Light',
+    Light: 'Roboto-Light',
     Black: 'Roboto-Black',
     Medium: 'Roboto-Medium',
     Bold: 'Roboto-Bold',
