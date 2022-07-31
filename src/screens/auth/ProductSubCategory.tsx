@@ -1,48 +1,24 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
-import {
-    AIC,
-    BGCOLOR,
-    borderinsideeffect,
-    BR,
-    FDR,
-    HP,
-    JCC,
-    MH,
-    ML,
-    MT,
-    PH,
-    provideShadow,
-    PV,
-    W,
-} from '../../common/styles';
+import { StyleSheet } from 'react-native';
+import { AIC, BR, JCC } from '../../common/styles';
 import {
     categoryType,
     IRGetProductCatalogue,
     IProductCatalogue,
 } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
-import HeaderText from './component/HeaderText';
-import { getHP, getWP } from '../../common/dimension';
-import { FlatList } from 'react-native-gesture-handler';
+
 import { IRGetShop, IRShopUpdate, Shop, updateShopData } from '../../server/apis/shop/shop.interface';
 import { getShop, updateShop } from '../../server/apis/shop/shop.api';
-import ProductCategory from './component/DukanProductCategory';
-import ServerErrorText from './component/errorText';
-import WrappedText from '../component/WrappedText';
+
 import { colorCode } from '../../common/color';
-import LoadProductDetails from './component/LoadProductDetails';
-import { fs12, fs18, fs20, NavigationProps } from '../../common';
-import ProductButton from '../app/edit/product/component/ProductButton';
-import { padHor, padVer } from '../app/edit/product/component/generalConfig';
+
+import { NavigationProps } from '../../common';
 import { NavigationKey } from '../../labels';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../storage';
-import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
-import CatalogueCardVertical from './component/CatalogueCardVertical';
-import Border from '../components/border/Border';
-import CataloguePopup from './dukan-catalogue/CataloguePopup';
+
 import Catalogue from './dukan-catalogue/CatalogueSelect';
 
 export interface ProductSubCategory extends NavigationProps {
@@ -90,18 +66,6 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
         }
     };
 
-    const fetchProductDetails = async (data: Object) => {
-        const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
-        if (response.status == 1) {
-            const data: productData[] = response.payload.map((item) => {
-                return { ...item, selected: false };
-            });
-            setData(data);
-        } else {
-            setError(response.message);
-        }
-    };
-
     const getShopDetails = async () => {
         let response: IRGetShop = await getShop({
             _id: ownerDetails.shop,
@@ -133,63 +97,11 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
         }
     };
 
-    const extractSelectedDataAndSubmitIt: Function = () => {
-        const subC = category.map((item) => {
-            return item
-                .filter((sub) => sub.selected)
-                .map((subc) => {
-                    return subc._id;
-                });
-        });
-
-        const subC1 = subC.map((item) =>
-            item.map((id) => {
-                if (subCategory[id] && subCategory[id].length > 0) {
-                    return subCategory[id].filter((subc1) => subc1.selected).map((subc1) => subc1._id);
-                } else {
-                    return [];
-                }
-            }),
-        );
-        submitDetails({ subCategory: subC, subCategory1: subC1 });
-    };
-
     useEffect(() => {
         getShopDetails();
         return () => {};
     }, []);
 
-    const updateSubCategory = (data: productData[], id: string) => {
-        const newCategory = { ...subCategory };
-        newCategory[id] = data;
-        setSubCategory(newCategory);
-    };
-    const deleteSubCategory = (id: string) => {
-        const newCategory = { ...subCategory };
-
-        delete newCategory[id];
-
-        setSubCategory(newCategory);
-    };
-
-    const submitSubCategoryDetails = async () => {
-        const category1: [[string]] = category
-            .filter((item: productData[]) => item.some((item) => item.selected))
-            .map((item) => item.filter((item) => item.selected).map((item) => item._id));
-
-        console.log(category1);
-        let category2: [[string]] = [];
-        category1.forEach((item, index1) => {
-            item.forEach((item, index2) => {
-                category2.push(subCategory[item].filter((item) => item.selected).map((item) => item._id));
-                if (index2 == item.length - 1 && index1 == category1.length - 1) {
-                    submitDetails({ subCategory: category1, subCategory1: category2 });
-                }
-            });
-        });
-    };
-
-    const [index3, index4] = selectedCatalogueAddress.split('-');
     return <Catalogue />;
     // return (
     //     <ScrollView

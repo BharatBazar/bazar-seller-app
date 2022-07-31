@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect } from 'react';
 import { ScrollView, StatusBar, StyleSheet, View } from 'react-native';
-import { AIC, BGCOLOR, BR, DSP, JCC, MT, PH } from '../../common/styles';
+import { AIC, BGCOLOR, BR, DSP, FDR, JCC, MT, PH } from '../../common/styles';
 import { IProductCatalogue, IRGetProductCatalogue } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 
@@ -14,7 +14,7 @@ import {
 import { getShopCatalgoue, updateShop, updateShopCatalogue } from '../../server/apis/shop/shop.api';
 
 import { colorCode, mainColor, subHeadingColor } from '../../common/color';
-import { FontFamily, fs16, fs20, NavigationProps } from '../../common';
+import { FontFamily, fs16, fs18, fs20, NavigationProps } from '../../common';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
 
 import WrappedText from '../component/WrappedText';
@@ -27,17 +27,20 @@ import Loader from '../component/Loader';
 import CatalogueItem from './dukan-catalogue/CatalogueItem';
 
 import { NavigationKey } from '@app/labels';
-import { GENERAL_PADDING, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
+import { GENERAL_PADDING, MLA, MTA, PHA, PTA, PVA } from '@app/common/stylesheet';
 
 import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { removeElementFromArray } from '@app/utilities/array';
 import { LoaderContext } from '@app/../App';
+import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
+import ButtonMaterialIcons from '../components/button/ButtonMaterialIcons';
 
 export interface ProductDetail extends NavigationProps {
     route: {
         params: {
             ownerDetails: IshopMember;
+            update?: boolean;
         };
     };
 }
@@ -53,7 +56,11 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
     const [sellingItem, setSellingItem] = React.useState<IProductCatalogue[]>([]);
 
     const setLoaderCallBack = React.useContext(LoaderContext);
-
+    let { update } = React.useMemo(() => {
+        if (params) {
+            return { ...params };
+        }
+    }, [params]);
     const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
         const indexOfA = selectedCategory.findIndex((item) => item == a._id);
         const indexOfB = selectedCategory.findIndex((item) => item == b._id);
@@ -143,12 +150,32 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
 
     return (
         <View style={{ flex: 1, backgroundColor: '#FDFDFF' }}>
-            <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING)]}>
+            <View
+                style={[
+                    BGCOLOR(mainColor),
+                    PVA(),
+                    AIC(),
+                    PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING),
+
+                    FDR(update ? 'row' : 'column'),
+                ]}
+            >
+                {update && (
+                    <ButtonMaterialIcons
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                        iconName={'arrow-back'}
+                        containerStyle={[MLA()]}
+                        iconColor={colorCode.WHITE}
+                    />
+                )}
                 <WrappedText
-                    text={'Select Category'}
-                    fontSize={fs20}
+                    text={update ? 'Update Select Category' : 'Select Category'}
+                    fontSize={fs18}
                     textColor={'#ffffff'}
                     textAlign="center"
+                    containerStyle={{ marginLeft: update ? 20 : 0 }}
                     fontFamily={FontFamily.Medium}
                 />
             </View>

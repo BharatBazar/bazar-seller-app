@@ -78,7 +78,10 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 <WrappedRectangleButton
                     containerStyle={[styles.containerStyle]}
                     onPress={() => {
-                        props.navigation.navigate(NavigationKey.PRODUCTSUBCATEGORY, { ownerDetails: userDetail });
+                        props.navigation.navigate(NavigationKey.PRODUCTDETAILS, {
+                            ownerDetails: userDetail,
+                            update: true,
+                        });
                     }}
                 >
                     <View style={[FDR(), AIC()]}>
