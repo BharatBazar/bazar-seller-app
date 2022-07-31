@@ -1,6 +1,6 @@
+import { CommonApiResponse } from './../common.interface';
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-import { CommonApiResponse } from '../common.interface';
 import { IFilter, IRGetFilter, IRGetFilterWithValue } from './filter.interface';
 
 export function createFilter(data: Partial<IFilter>): Promise<CommonApiResponse> {
@@ -29,4 +29,10 @@ export function getClassifier(): Promise<{ payload: string[] }> {
 
 export function deleteFilter(data: Partial<IFilter>): Promise<CommonApiResponse> {
     return axios.delete(`/filter/delete?_id=${data._id}`);
+}
+
+export function updateSelectedFilterValues(
+    data: { _id: string } & { [key: string]: string },
+): Promise<CommonApiResponse> {
+    return axios.patch('/shop/saveFilterValues', data);
 }

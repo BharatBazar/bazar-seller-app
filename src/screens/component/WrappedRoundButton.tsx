@@ -14,25 +14,18 @@ export interface WrappedRoundButtonProps {
     text?: string;
     textStyle?: StyleProp<any>;
     children?: any;
+    disabled?: boolea;
 }
 
 export interface WrappedRoundButtonState {}
 
 class WrappedRoundButton extends React.Component<WrappedRoundButtonProps, WrappedRoundButtonState> {
     render() {
-        const {
-            buttonSource,
-            onPress,
-            height,
-            style,
-            isLoading,
-            containerStyle,
-            text,
-            textStyle,
-            children,
-        } = this.props;
+        const { buttonSource, onPress, height, style, isLoading, containerStyle, text, textStyle, children, disabled } =
+            this.props;
         return (
             <Ripple
+                disabled={disabled}
                 style={[
                     styles.container,
                     {

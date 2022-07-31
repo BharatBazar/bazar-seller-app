@@ -4,7 +4,7 @@ import { getHP } from '@app/common/dimension';
 import WrappedRoundButton from '@app/screens/component/WrappedRoundButton';
 import * as React from 'react';
 import { ViewStyle } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export interface ButtonMaterialIconsProps {
     onPress: Function;
@@ -13,6 +13,7 @@ export interface ButtonMaterialIconsProps {
     containerHeight?: number;
     iconColor?: string;
     containerStyle?: ViewStyle | ViewStyle[];
+    disabled?: boolean;
 }
 
 const ButtonMaterialIcons: React.FC<ButtonMaterialIconsProps> = ({
@@ -22,9 +23,11 @@ const ButtonMaterialIcons: React.FC<ButtonMaterialIconsProps> = ({
     iconName,
     iconSize,
     containerHeight,
+    disabled,
 }) => {
     return (
         <WrappedRoundButton
+            disabled={disabled}
             containerStyle={[containerStyle]}
             onPress={() => {
                 onPress();

@@ -6,7 +6,7 @@ import { Image, StyleProp, StyleSheet, TextStyle, ViewStyle, TouchableOpacity } 
 import GeneralText from '../text/GeneralText';
 
 interface Props {
-    backgroundColor?: string;
+    backgroundColor: string;
     buttonText?: string;
 
     opacity?: number;

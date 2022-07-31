@@ -69,6 +69,8 @@ export interface IShop {
     noOfRating: Number;
 
     sellingItems: IProductCatalogue[];
+    //Here key is parent id and value is total filter added up to now
+    filterProvidedForSellingItems: { [key: string]: number };
     shopMemberOnBoardingDone: boolean;
 }
 export interface IRGetShop extends CommonApiResponse {

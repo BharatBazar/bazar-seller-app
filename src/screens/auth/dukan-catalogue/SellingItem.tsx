@@ -46,7 +46,7 @@ const SellingItem: React.FunctionComponent<SellingItemProps> = ({ item, containe
                     />
                 </View>
                 <ButtonIconsIcons
-                    iconName="trash"
+                    iconName="delete"
                     containerStyle={[AS('flex-end'), BGCOLOR('#FFFFFF'), provideShadow(2)]}
                     onPress={() => {
                         setAlertState({

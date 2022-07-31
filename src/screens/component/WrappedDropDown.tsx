@@ -92,6 +92,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
         <DropDownPicker
        
        placeholderTextColor={placeholderTextColor}
+       
         open={open}
         setOpen={setOpen}
             controller={provideController}
@@ -116,7 +117,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
                 borderColor,
                shadowColor:borderColor,
                elevation:7,
-               backgroundColor:'red'
+               backgroundColor:'#ffffff'
                
                 
               }}
@@ -144,6 +145,7 @@ const WrappedDropDown: React.SFC<WrappedDropDownProps> = ({
             onSelectItem={onSelectItem}
             arrowStyle={{ height: fs14, width: fs14 }}
             arrowColor={black50}
+            searchPlaceholder="Search area"
         />
        
         // </View>

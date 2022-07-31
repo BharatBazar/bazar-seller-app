@@ -1,37 +1,20 @@
 import React from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { fs14, NavigationProps } from '../../../common';
-import { colorCode, subHeadingColor } from '../../../common/color';
-import { BGCOLOR, FDR, FLEX, JCC, provideShadow, PV } from '../../../common/styles';
+import { NavigationProps } from '../../../common';
+import { colorCode } from '../../../common/color';
+import { BGCOLOR, FLEX } from '../../../common/styles';
 import { getShop } from '../../../server/apis/shop/shop.api';
-import { IRGetShop, IShop, Shop } from '../../../server/apis/shop/shop.interface';
+import { IRGetShop, IShop } from '../../../server/apis/shop/shop.interface';
 import WrappedText from '../../component/WrappedText';
 import { ShowSubCategory } from '../component';
 import { IshopMember, shopMemberRole } from '../../../server/apis/shopMember/shopMember.interface';
 import { Storage, StorageItemKeys } from '../../../storage';
 import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
-import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
-import { MTA, PHA, PVA } from '@app/common/stylesheet';
-import Icon from 'react-native-vector-icons/MaterialIcons';
 import { NavigationKey } from '@app/labels';
 import AddShopMemberBanner from './component/AddShopMemberBanner';
 
 interface Props extends NavigationProps {}
-
-interface ISection {
-    sellingItems: {
-        name: string;
-        image: string;
-        path: { name: string }[];
-    };
-}
-interface State {
-    activeSections: number[];
-    shop: Shop;
-    section: ISection[];
-    userDetails: Partial<IshopMember>;
-}
 
 const Home = (props: Props) => {
     const [shop, setShop] = React.useState<Partial<IShop>>({});
@@ -48,6 +31,7 @@ const Home = (props: Props) => {
             let response: IRGetShop = await getShop({
                 _id: userDetails.shop,
             });
+            console.log('response', response);
             setLoader(false);
             if (response.status == 1) {
                 setShop(response.payload);
@@ -61,7 +45,15 @@ const Home = (props: Props) => {
     };
 
     React.useEffect(() => {
-        getShopDetails();
+        //getShopDetails();
+        props.navigation.addListener('focus', () => {
+            getShopDetails();
+        });
+        return () => {
+            props.navigation.removeListener('focus', () => {
+                getShopDetails();
+            });
+        };
     }, []);
 
     return (
@@ -80,14 +72,23 @@ const Home = (props: Props) => {
                         item={item}
                         touch={true}
                         onPress={() => {
-                            //console.log('propes', this.props);
-                            // props.navigation.navigate(NavigationKey.PRODUCT, {
-                            //     itemType: section.category.name,
-                            //     shopId: this.props.shopId,
-                            //     category: this.props.category,
-                            //     subCategory: section.category.name,
-                            //     subCategory1: '',
-                            // });
+                            // console.log(
+                            //     shop.filterProvidedForSellingItems,
+                            //     shop.filterProvidedForSellingItems[item._id],
+                            //     item.totalFilterAdded,
+                            // );
+
+                            if (
+                                !shop.filterProvidedForSellingItems ||
+                                item.totalFilterAdded > shop?.filterProvidedForSellingItems[item._id]
+                            ) {
+                                props.navigation.navigate(NavigationKey.SELECTFILTER, {
+                                    item: item,
+                                    shopId: shop._id,
+                                });
+                            } else {
+                                props.navigation.navigate(NavigationKey.PRODUCT, { item: item, shopId: shop._id });
+                            }
                         }}
                         active={true}
                         paddingVertical={'1%'}

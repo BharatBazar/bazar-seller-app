@@ -60,27 +60,33 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 </View>
             </View>
             <View style={[MHA(), BGCOLOR('#FFFFFF'), provideShadow(2), BRA(10), MTA()]}>
-                <WrappedRectangleButton
-                    containerStyle={[styles.containerStyle]}
-                    onPress={() => {
-                        logOut();
-                    }}
-                >
+                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => {}}>
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'person'} size={fs18} />
                         <WrappedText text={'Member Details'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
                 <View style={[BW(0.5), BC(borderColor), MHA()]} />
-                <WrappedRectangleButton
-                    containerStyle={[styles.containerStyle]}
-                    onPress={() => {
-                        logOut();
-                    }}
-                >
+
+                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => {}}>
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'edit'} size={fs18} />
                         <WrappedText text={'Shop Details'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                        props.navigation.navigate(NavigationKey.PRODUCTDETAILS, {
+                            ownerDetails: userDetail,
+                            update: true,
+                        });
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <MaterialIcon name={'checkroom'} size={fs18} />
+                        <WrappedText text={'Catalogue'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
                 <View style={[BW(0.5), BC(borderColor), MHA()]} />
