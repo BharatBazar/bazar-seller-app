@@ -45,7 +45,15 @@ const Home = (props: Props) => {
     };
 
     React.useEffect(() => {
-        getShopDetails();
+        //getShopDetails();
+        props.navigation.addListener('focus', () => {
+            getShopDetails();
+        });
+        return () => {
+            props.navigation.removeListener('focus', () => {
+                getShopDetails();
+            });
+        };
     }, []);
 
     return (
@@ -64,13 +72,14 @@ const Home = (props: Props) => {
                         item={item}
                         touch={true}
                         onPress={() => {
-                            console.log(
-                                shop.filterProvidedForSellingItems,
-                                shop.filterProvidedForSellingItems[item._id],
-                                item.totalFilterAdded,
-                            );
+                            // console.log(
+                            //     shop.filterProvidedForSellingItems,
+                            //     shop.filterProvidedForSellingItems[item._id],
+                            //     item.totalFilterAdded,
+                            // );
+
                             if (
-                                shop.filterProvidedForSellingItems &&
+                                !shop.filterProvidedForSellingItems ||
                                 item.totalFilterAdded > shop?.filterProvidedForSellingItems[item._id]
                             ) {
                                 props.navigation.navigate(NavigationKey.SELECTFILTER, {
