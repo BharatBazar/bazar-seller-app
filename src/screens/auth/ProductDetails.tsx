@@ -89,7 +89,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
             if (data) {
                 setLoaderCallBack(true);
                 const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-                let datasend = { sellingItems: data, _id: ownerDetails.shop };
+                let datasend = { sellingItems: data, _id: ownerDetails.shop._id || ownerDetails.shop };
 
                 const response: IRUpdateShopCatalogue = await updateShopCatalogue(datasend);
                 console.log('respinse update', response);

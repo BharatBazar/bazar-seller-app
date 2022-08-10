@@ -1,18 +1,17 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { DrawerContentComponentProps } from '@react-navigation/drawer';
-import { FontFamily, fs12, fs14, fs18, fs20, NavigationProps } from '../../../common';
+import { FontFamily, fs12, fs18, fs20, NavigationProps } from '../../../common';
 import WrappedRectangleButton from '../../component/WrappedRectangleButton';
 import { NavigationKey } from '../../../labels';
 import WrappedText from '../../component/WrappedText';
 import { getHP, getWP } from '../../../common/dimension';
-import { AIC, BGCOLOR, BR, FDR, M, MH, provideShadow, P, AS, FLEX, JCC, BW, BC } from '../../../common/styles';
-import { black100, borderColor, mainColor } from '../../../common/color';
+import { AIC, BGCOLOR, FDR, provideShadow, P, BW, BC } from '../../../common/styles';
+import { borderColor, mainColor } from '../../../common/color';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { Storage, StorageItemKeys } from '../../../storage';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
-import { STATUS_BAR_HEIGHT } from '../../component/StatusBar';
-import { BRA, GENERAL_PADDING, MBA, MHA, MTA } from '@app/common/stylesheet';
+import { BRA, MHA, MTA } from '@app/common/stylesheet';
 
 export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) => {
     async function logOut() {

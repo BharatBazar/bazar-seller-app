@@ -8,7 +8,8 @@
         "test": "jest",
         "android": "cd android && ./gradlew clean && cd .. && react-native run-android",
         "android:release": "cd android && ./gradlew assembleRelease",
-        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix"
+        "lint": "eslint '*/**/*.{js,ts,tsx}' --quiet --fix",
+        "launch:emulator": "emulator -avd Pixel_API_29"
     },
     "dependencies": {
         "@react-native-community/async-storage": "^1.12.1",
