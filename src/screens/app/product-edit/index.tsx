@@ -42,11 +42,7 @@ interface EditProductProps extends NavigationProps {
         params: {
             update: boolean;
             _id?: string;
-            shopId: IShop;
-            category: string;
-            subCategory: string;
-            subCategory1: string;
-            changeTab: Function;
+            shopId: string;
         };
     };
 }
@@ -54,7 +50,7 @@ interface EditProductProps extends NavigationProps {
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     navigation,
     route: {
-        params: { update, _id, shopId, category, subCategory, subCategory1, changeTab },
+        params: { update, _id, shopId },
     },
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
@@ -97,6 +93,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     };
 
+    // console.log(shopId);
     const fetchProduct = async () => {
         try {
             setLoader(true);
@@ -136,7 +133,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             filter.map((item) => {
                 filtersV[item.type] = productDetails[item.type];
             });
-            console.log(filtersV, 'filter values here');
+            // console.log(filtersV, 'filter values here');
             setFilterValues(filtersV);
         }
     }, [productDetails, filter]);
@@ -247,7 +244,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
         filter.map((item) => {
             let filterSpec = filterValues[item.type];
-            console.log(filterValues, filterSpec);
+            // console.log(filterValues, filterSpec);
             if (item.mandatory && filterSpec && filterSpec.length == 0) {
                 errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
             } else if (item.mandatory && !filterSpec) {
@@ -321,7 +318,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                             item={item}
                             onPressDragSort={() => {
-                                console.log('index', index);
+                                //   console.log('index', index);
                                 setCurrentDragSortIndex(index);
                             }}
                             key={index}
@@ -346,7 +343,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     setPopup={() => {
                         setOpenChooseColor(false);
                     }}
-                    shopId={shopId._id}
+                    shopId={shopId}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];
                         setChoosenColor(data);
@@ -374,7 +371,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         data[currentColorIndex] = { ...data[currentColorIndex], sizes };
                         setChoosenColor(data);
                     }}
-                    shopId={shopId._id}
+                    shopId={shopId}
                     colorId={currentColorIndex > -1 ? choosenColor[currentColorIndex]._id : ''}
                 />
                 {loader && <Loader />}
@@ -390,7 +387,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }
                     isVisible={currentDragStortIndex > -1}
                     setPopup={() => {
-                        console.log('ser');
+                        //  console.log('ser');
                         setCurrentDragSortIndex(-1);
                     }}
                     setPhotosArrayAfterReordering={(photos: ImageOrVideo[]) => {
@@ -410,7 +407,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     existingPhotos={currentAddMoreImage > -1 ? choosenColor[currentAddMoreImage].photos : []}
                     updatePhotoArray={(photos: string[]) => {
-                        console.log('update =>', 'phtotos=>', photos);
+                        //   console.log('update =>', 'phtotos=>', photos);
                         updateColorInServer(currentAddMoreImage, {
                             photos: photos,
                             _id: choosenColor[currentAddMoreImage]._id,
@@ -430,7 +427,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     choosenSize={cuurentProductSizeIndex > -1 ? choosenColor[cuurentProductSizeIndex].sizes : []}
                     setChoosenSize={(sizes: choosenSize[]) => {
-                        console.log('sized =>', sizes, cuurentProductSizeIndex);
+                        //   console.log('sized =>', sizes, cuurentProductSizeIndex);
                         updateColorInServer(cuurentProductSizeIndex, {
                             sizes,
                             _id: choosenColor[cuurentProductSizeIndex]._id,
@@ -448,15 +445,15 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         setCurrentColorSizeIndex('');
                     }}
                     index={currentSizeIndexOnSizeClick}
-                    shopId={shopId._id}
+                    shopId={shopId}
                     item={choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick]}
                     updateSize={(size: choosenSize) => {
-                        console.log('update size');
+                        //     console.log('update size');
                         let colors = [...choosenColor];
                         let a = { ...choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] };
                         a = { ...a, ...size };
                         choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] = a;
-                        console.log('a ===', a);
+                        //   console.log('a ===', a);
                         setChoosenColor(colors);
                     }}
                     removeSize={() => {
