@@ -30,7 +30,7 @@ import ProvideSize from '@app/screens/app/product-edit/size/ProvideSize';
 import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
-import CreateProduct from '../screens/app/edit/Edit';
+import CreateProduct from '../screens/app/product-edit/index';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

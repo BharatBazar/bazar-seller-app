@@ -14,22 +14,21 @@ import { Shop } from '@app/server/apis/shop/shop.interface';
 
 export interface ProductListProps extends MaterialTopTabNavigationProp {
     shopId: Shop;
-    category: string;
-    subCategory: string;
-    subCategory1: string;
+
     status: productStatus;
     isInitialRoute: boolean;
+    parentId: string;
 }
 
-const ProductList: React.SFC<ProductListProps> = ({
+const ProductList: React.FC<ProductListProps> = ({
     shopId,
     navigation,
-    category,
-    subCategory,
-    subCategory1,
+    parentId,
+
     status,
     isInitialRoute,
 }) => {
+    console.log('parentid', parentId);
     const [loading, setLoader] = useState(false);
     const [product, setProduct] = useState<IProduct[]>([]);
 
@@ -100,9 +99,7 @@ const ProductList: React.SFC<ProductListProps> = ({
                                         update: true,
                                         shopId: shopId,
                                         _id: item._id,
-                                        category: category,
-                                        subCategory: subCategory,
-                                        subCategory1: subCategory1,
+                                        parentId: parentId,
                                         changeTab: () => {
                                             navigation.jumpTo('Waiting for approval');
                                         },

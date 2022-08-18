@@ -9,6 +9,7 @@ import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
 import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/header/HeaderWithBackButtonTitleAndrightButton';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
 import { APIgetProduct } from '@app/server/apis/product/product.api';
@@ -43,6 +44,7 @@ interface EditProductProps extends NavigationProps {
             update: boolean;
             _id?: string;
             shopId: string;
+            parentId: string;
         };
     };
 }
@@ -50,7 +52,7 @@ interface EditProductProps extends NavigationProps {
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     navigation,
     route: {
-        params: { update, _id, shopId },
+        params: { update, _id, shopId, parentId },
     },
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
@@ -128,6 +130,11 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     React.useEffect(() => {
         let filtersV = {};
+        console.log('parent id', parentId);
+        if (!parentId) {
+            navigation.goBack();
+            ToastHOC.errorAlert('Please provide parent id');
+        }
         //When both product details and filter value are available
         if (updateFlow && filter.length > 0 && Object.keys(productDetails).length > 0) {
             filter.map((item) => {

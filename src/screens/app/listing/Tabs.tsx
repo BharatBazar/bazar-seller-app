@@ -14,6 +14,7 @@ interface ProductTabProps extends NavigationProps {
 
     initialIndex: number;
     tabs: IProductStatus[];
+    parentId: string;
 }
 
 const ProductTab: React.FC<ProductTabProps> = ({
@@ -22,10 +23,12 @@ const ProductTab: React.FC<ProductTabProps> = ({
 
     initialIndex,
     tabs,
+    parentId,
 }) => {
     const basicProps = {
         navigation: navigation,
         shopId: shopId,
+        parentId: parentId,
     };
 
     React.useEffect(() => {}, []);
