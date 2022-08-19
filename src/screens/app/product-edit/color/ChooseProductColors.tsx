@@ -31,6 +31,7 @@ export interface ChooseProductColorsProps {
     removeColorFromArray: (index: number) => void;
     shopId: string;
     updateColorInArray: (color: Partial<choosenColor>, index: number) => void;
+    catalogueId: string;
 }
 
 const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
@@ -43,6 +44,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     avaialbleSize,
     shopId,
     updateColorInArray,
+    catalogueId,
 }) => {
     //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
@@ -61,6 +63,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 parentId: productId ? productId : undefined,
                 shopId: shopId,
                 photos: [DEFAULT_IMAGE_URL],
+                catalogueId: catalogueId,
             });
             setLoader(false);
             if (!productId) {

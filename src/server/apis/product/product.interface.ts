@@ -70,6 +70,7 @@ export interface IProductColor {
     photos: [string];
     includedColor: [IClassifier];
     shopId: string;
+    catalogueId: string;
 }
 
 export interface IColorApp {

@@ -350,6 +350,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     setPopup={() => {
                         setOpenChooseColor(false);
                     }}
+                    catalogueId={parentId}
                     shopId={shopId}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];

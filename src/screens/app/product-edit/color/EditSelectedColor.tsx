@@ -134,7 +134,14 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                         onPressSingleSize(index);
                                     }}
                                     buttonText={
-                                        item.size.name + ' ' + item.size.description + '\n' + item.quantity + ' piece'
+                                        item.size
+                                            ? item.size.name +
+                                              ' ' +
+                                              item.size.description +
+                                              '\n' +
+                                              item.quantity +
+                                              ' piece'
+                                            : ''
                                     }
                                 />
                             ))}
