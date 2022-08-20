@@ -355,7 +355,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                         removeSelectedValues={(indexOfValue: number,filter:any) =>  // jo screen par render ho rha hai vo saari ids idhar aa jaee
                             setSelectedValues((selectedValues) => {
                                 const notShowFilter = filter.values.filter(e=>e._id !== indexOfValue);
-
                                 const showfilter = notShowFilter.map(e=>{
                                     return e._id
                                 })
@@ -381,6 +380,9 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     );
 
     const onContinue = () => {
+        const setValues:any = filters[currentIndex].values.map((e)=>{
+            return e._id
+        });
         if (selectedValues[filters[currentIndex].key]) {
             saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {
@@ -391,8 +393,20 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                     setCurrentIndex(currentIndex + 1);
                 }
             });
-        } else {
-            ToastHOC.errorAlert('Please select atleast one value');
+        } else if(filters[currentIndex].key) {
+             selectedValues[filters[currentIndex].key] = setValues;
+             saveSelectedFilterValues(() => {
+                if (currentIndex != filters.length - 1) {
+                    listRef?.current?.scrollToOffset({
+                        animated: true,
+                        offset: (currentIndex + 1) * getWP(10),
+                    });
+                    setCurrentIndex(currentIndex + 1);
+                }
+            });
+           
+        }else{
+             ToastHOC.errorAlert('Please select atleast odne value');
         }
     };
     return (
