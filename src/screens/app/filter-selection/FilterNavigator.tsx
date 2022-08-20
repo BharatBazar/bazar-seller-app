@@ -340,7 +340,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                         selectedValues={selectedValues[item.key] || []}
                         setSelectedValues={(indexOfValue: number) =>  // jo screen par render ho rha hai vo saari ids idhar aa jaee
                             setSelectedValues((selectedValues) => {
-                      
                                 let values = selectedValues[item.key] || [];
                                 if (values.includes(indexOfValue)) {
                                     removeElementFromArray(values, indexOfValue);
@@ -352,6 +351,27 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                                 return { ...selectedValues };
                             })
                         }
+
+                        removeSelectedValues={(indexOfValue: number,filter:any) =>  // jo screen par render ho rha hai vo saari ids idhar aa jaee
+                            setSelectedValues((selectedValues) => {
+                                const notShowFilter = filter.values.filter(e=>e._id !== indexOfValue);
+
+                                const showfilter = notShowFilter.map(e=>{
+                                    return e._id
+                                })
+                                console.log("SHOW_FILTER",showfilter);
+                                let values = selectedValues[item.key] || [];
+                                if (values.includes(indexOfValue)) {
+                                    removeElementFromArray(values, indexOfValue);
+                                } else {
+                                    values.push(showfilter);
+                                }
+
+                                selectedValues[item.key] = values[0];
+                                return { ...selectedValues };
+                            })
+                        }
+                       
                         index={currentIndex}
                     /></>
                 )}

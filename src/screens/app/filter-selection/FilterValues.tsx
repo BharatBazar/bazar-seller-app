@@ -10,15 +10,16 @@ interface FilterValuesProps {
     filter: IFilter;
     selectedValues: string[];
     setSelectedValues: Function;
+    removeSelectedValues: Function;
     index: number;
-    // selectAll:boolean;
+
 }
 
 const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
     filter,
     selectedValues,
     setSelectedValues,
-    // selectAll,
+    removeSelectedValues,
     index,
 }) => {
 
@@ -49,7 +50,7 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                             onPress={() => {
                                 // setSelectedValues(item._id);
                                 filter.defaultSelectAll = false
-                                setSelectedValues(item._id);
+                                removeSelectedValues(item._id,filter);
                             }}
                         />
                   ):(
