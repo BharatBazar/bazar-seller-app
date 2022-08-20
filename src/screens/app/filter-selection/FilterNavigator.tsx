@@ -289,6 +289,12 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 _id: shopId,
                 catalogueId: item._id,
             });
+            // console.log("GET_ALL_FILTERS_WITH_POWER",response.payload.allFilters.map((e)=>{
+            //     console.log("==>",e._id);
+            // }));
+            console.log("GET_ALL_FILTERS_WITH_POWER",response.payload.allFilters.map((e)=>{
+                console.log("==>",e.defaultSelectAll);
+            }));
             console.log('response', response.payload.currentIndex, response.payload.selectedValues);
             setFilters(response.payload.allFilters);
             setSelectedValues(response.payload.selectedValues);
@@ -325,11 +331,16 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 keyExtractor={(item, index) => item._id.toString()}
                 // snapToInterval={getWP(10)}
                 renderItem={({ item, index }) => (
+                    
+                    <>
                     <FilterValues
                         filter={item}
+                        // selectAll = {item.defaultSelectAll}
+                        // selectedValues={selectedValues[item.key] || []}
                         selectedValues={selectedValues[item.key] || []}
-                        setSelectedValues={(indexOfValue: number) =>
+                        setSelectedValues={(indexOfValue: number) =>  // jo screen par render ho rha hai vo saari ids idhar aa jaee
                             setSelectedValues((selectedValues) => {
+                      
                                 let values = selectedValues[item.key] || [];
                                 if (values.includes(indexOfValue)) {
                                     removeElementFromArray(values, indexOfValue);
@@ -342,7 +353,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                             })
                         }
                         index={currentIndex}
-                    />
+                    /></>
                 )}
             />
         ),

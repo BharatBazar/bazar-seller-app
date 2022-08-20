@@ -87,6 +87,7 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 console.log('itemmm', item.name, selected);
                 if (selected) {
                 } else {
+                    console.log("ICL",item.child.length);
                     if (item.child.length > 0) {
                         setShowChildPopup(true);
                     } else {
