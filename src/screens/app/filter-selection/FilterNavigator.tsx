@@ -252,7 +252,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const listRef = React.useRef<FlatList>(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
-    const [selectedValues, setSelectedValues] = React.useState({});
+    const [selectedValues, setSelectedValues] = React.useState(null);
 
     const [filters, setFilters] = React.useState([]);
 
@@ -383,7 +383,11 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         const setValues:any = filters[currentIndex].values.map((e)=>{
             return e._id
         });
-        if (selectedValues[filters[currentIndex].key]) {
+        // const filterKeys = selectedValues[filters[currentIndex].key]
+//    const check = setValues === filterKeys;
+//    console.log("SAME",setValues,filterKeys);
+    //    const isTrue = setValues[0] === selectedValues[filterKeys][0];
+        if (selectedValues[filters[currentIndex].key] )  {
             saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {
                     listRef?.current?.scrollToOffset({
@@ -393,7 +397,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                     setCurrentIndex(currentIndex + 1);
                 }
             });
-        } else if(filters[currentIndex].key) {
+        } else if(filters[currentIndex].key  ) {
              selectedValues[filters[currentIndex].key] = setValues;
              saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {

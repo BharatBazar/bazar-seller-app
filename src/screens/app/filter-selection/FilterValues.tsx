@@ -23,6 +23,9 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
     index,
 }) => {
 
+    const [searchText, setSearchText] = React.useState('')
+
+    const searchFilter = filter.values.filter(e=>e.name.charAt(searchText.length -1) === searchText.charAt(searchText.length-1))
     return (
         <View style={[FLEX(1), BGCOLOR('#FFF'), WP(10)]}>
             {/* <HeaderWithTitleAndSubHeading
@@ -35,13 +38,17 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                 <GeneralSearch
                     containerStyle={[MHA(), MTA(), BGCOLOR('#FFFFFF')]}
                     placeholder={'Search ' + filter.name}
+                    setSearchText={setSearchText}
+                    searchText={searchText}
                 />
             )}
             <ScrollView style={{ maxHeight: 500 }} contentContainerStyle={[]}>
                 <View style={[PHA()]}>
-                    {filter.values.map((item, index) => (
+
+                    {/* {filter.values.map((item, index) => ( */}
+                    {searchFilter.map((item, index) => (
                        <>
-           
+          
                   {filter.defaultSelectAll === true ?(
                        <FilterValue
                             item={item}  //selected should be true until or unless vo kisi pr press na kre
@@ -69,6 +76,7 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                     ))}
                 </View>
             </ScrollView>
+
         </View>
     );
 };
