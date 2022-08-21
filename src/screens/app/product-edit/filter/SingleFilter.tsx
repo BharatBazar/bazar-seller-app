@@ -96,7 +96,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
             let selectedValue = filter.multiple
                 ? filterValues.filter((item) => item._id != filterValue._id).map((item) => item._id)
                 : [];
-            data[filter.type] = selectedValue;
+            data[filter.key] = selectedValue;
 
             //const response = await APIDeleteFilter({ _id: productId, filter: data, multiple: filter.multiple });
             const response = await updateProduct(data);
