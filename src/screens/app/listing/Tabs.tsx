@@ -37,7 +37,7 @@ const ProductTab: React.FC<ProductTabProps> = ({
         return (
             <Tab.Navigator
                 style={{ backgroundColor: '#FFFFFF' }}
-                lazy={true}
+                screenOptions={{ lazy: true }}
                 tabBarOptions={{
                     scrollEnabled: true,
 

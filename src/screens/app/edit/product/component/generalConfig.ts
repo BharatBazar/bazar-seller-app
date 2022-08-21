@@ -117,7 +117,7 @@ export async function createProduct(data: Partial<IProduct>) {
     return await APIcreateProduct(data);
 }
 
-export async function createProductColor(data: Partial<IProductColor>) {
+export async function createProductColor(data: Partial<IProductColor> & { [key: string]: string }) {
     return await APICreateProductColor(data);
 }
 

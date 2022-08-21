@@ -53,6 +53,8 @@ export interface FilterInterface {
     showSearch: boolean;
     key: string;
     _id: string;
+    values: FilterValueInterface[];
+    filterLevel: number;
 }
 
 export interface FilterValueInterface {

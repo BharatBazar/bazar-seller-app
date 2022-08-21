@@ -63,7 +63,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [loader, setLoader] = React.useState<boolean>(false);
     const [updateFlow, setUpdate] = React.useState(update || false);
     const [filter, setFilter] = React.useState<FilterInterface[]>([]);
-    const [distribution, setDistribution] = React.useState<FilterValueInterface[]>([]);
+    const [distribution, setDistribution] = React.useState<FilterInterface[]>([]);
     const [choosenColor, setChoosenColor] = React.useState<choosenColor[]>([]);
 
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
@@ -369,6 +369,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     chosenColor={choosenColor}
                     colors={distribution.length > 0 ? distribution[0].values : []}
+                    colorFilterKey={distribution.length > 0 ? distribution[0].key : ''}
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                 />
                 <ProvideSize
