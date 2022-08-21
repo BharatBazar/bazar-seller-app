@@ -49,7 +49,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
     const [loader, setLoader] = React.useState(false);
-    const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
+    //const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);

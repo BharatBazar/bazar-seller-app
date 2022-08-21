@@ -9,7 +9,7 @@ import { fs18 } from '../../../../common';
 import { getHP } from '../../../../common/dimension';
 import TextButton from '../../../component/TextButton';
 import { borderColor, errorColor, mainColor } from '../../../../common/color';
-import { IClassifier, IProduct } from '../../../../server/apis/product/product.interface';
+import { FilterInterface, FilterValueInterface, IProduct } from '../../../../server/apis/product/product.interface';
 import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
 import { ToastHOC } from '../../../hoc/ToastHOC';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
@@ -28,10 +28,10 @@ interface Error {
 }
 
 interface SingleFilterProps {
-    filter: IFilter;
+    filter: FilterInterface;
     index: number;
-    filterValues: IClassifier[];
-    setFilterValues: (key: string, value: IClassifier[]) => void;
+    filterValues: FilterValueInterface[];
+    setFilterValues: (key: string, value: FilterValueInterface[]) => void;
 
     // postDataToServer: IPostDataToServer;
     // productId: string;
@@ -54,22 +54,29 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
     const [loading, setLoader] = React.useState(false);
     const [error, setErrors] = React.useState<Partial<Error>>({});
 
-    const addDataInServer = async (filterValue: IClassifier) => {
+    const addDataInServer = async (filterValue: FilterValueInterface) => {
         setErrors({});
-
+        console.log('data in server');
         const data: Partial<IProduct> = {
             _id: productId,
         };
-        let filterValuee: IClassifier[] = filter.multiple
-            ? [...filterValues.map((item) => item._id), filterValue._id]
+        let filterValuee: string[] = filter.multiple
+            ? filterValues
+                ? [...filterValues.map((item) => item._id), filterValue._id]
+                : [filterValue._id]
             : [filterValue._id];
-        data[filter.type] = filterValuee;
-        // console.log('data', data, filter);
+        //  console.log('data', data, filterValuee, filterValues);
+        data[filter.key] = filterValuee;
+        //  console.log('data', data, filter);
         try {
             setLoader(true);
             const response = await updateProduct(data);
             if (response.status == 1) {
-                setFilterValues(filter.type, filter.multiple ? [...filterValues, filterValue] : [filterValue]);
+                console.log('respo se', response);
+                setFilterValues(
+                    filter.key,
+                    filter.multiple ? (filterValues ? [...filterValues, filterValue] : [filterValue]) : [filterValue],
+                );
             }
             setLoader(false);
         } catch (error) {
@@ -77,7 +84,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
             setLoader(false);
         }
     };
-    const removeDataFromServer = async (filterValue: IClassifier) => {
+    const removeDataFromServer = async (filterValue: FilterValueInterface) => {
         try {
             console.log(filterValue);
             setLoader(true);
@@ -96,7 +103,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
 
             if (response.status == 1) {
                 setFilterValues(
-                    filter.type,
+                    filter.key,
                     filter.multiple ? filterValues.filter((item) => item._id != filterValue._id) : [],
                 );
                 setLoader(false);
@@ -109,14 +116,14 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
         }
     };
 
-    const onSelect = (data: IClassifier) => {
+    const onSelect = (data: FilterValueInterface) => {
         addDataInServer(data);
     };
 
-    const onDelete = (data: IClassifier) => {
+    const onDelete = (data: FilterValueInterface) => {
         removeDataFromServer(data);
     };
-    console.log('fitler values', filterValues);
+
     return (
         <View
             key={index}
@@ -158,7 +165,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
             />
             <View style={[MT(0.1)]} />
             {filterValues &&
-                filterValues.map((classifier: IClassifier, index: number) => {
+                filterValues.map((classifier: FilterValueInterface, index: number) => {
                     return (
                         <ShowFilter
                             key={index}

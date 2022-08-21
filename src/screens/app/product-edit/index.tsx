@@ -13,8 +13,13 @@ import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
 import { APIgetProduct } from '@app/server/apis/product/product.api';
-import { IClassifier, IFilter, IProduct, IRProduct, productStatus } from '@app/server/apis/product/product.interface';
-import { IShop } from '@app/server/apis/shop/shop.interface';
+import {
+    FilterValueInterface,
+    FilterInterface,
+    IProduct,
+    IRProduct,
+    productStatus,
+} from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -57,8 +62,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
     const [updateFlow, setUpdate] = React.useState(update || false);
-    const [filter, setFilter] = React.useState<IFilter[]>([]);
-    const [distribution, setDistribution] = React.useState<IClassifier[]>([]);
+    const [filter, setFilter] = React.useState<FilterInterface[]>([]);
+    const [distribution, setDistribution] = React.useState<FilterValueInterface[]>([]);
     const [choosenColor, setChoosenColor] = React.useState<choosenColor[]>([]);
 
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
@@ -138,7 +143,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         //When both product details and filter value are available
         if (updateFlow && filter.length > 0 && Object.keys(productDetails).length > 0) {
             filter.map((item) => {
-                filtersV[item.type] = productDetails[item.type];
+                filtersV[item.key] = productDetails[item.key] || [];
             });
             // console.log(filtersV, 'filter values here');
             setFilterValues(filtersV);
@@ -228,7 +233,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     // when filter value need to be updated
     const setFilterValuesCallback = React.useCallback(
-        (key: string, value: IClassifier[]) => {
+        (key: string, value: FilterValueInterface[]) => {
             let filters = { ...filterValues };
             filters[key] = value;
 
