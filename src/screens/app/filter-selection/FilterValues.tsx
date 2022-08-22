@@ -24,8 +24,18 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
 }) => {
 
     const [searchText, setSearchText] = React.useState('')
+    const [searchFilter, setSearchFilter] = React.useState([])
 
-    const searchFilter = filter.values.filter(e=>e.name.charAt(searchText.length -1) === searchText.charAt(searchText.length-1))
+
+
+    React.useEffect(() => {
+        const values:any = filter.values.filter(e=>(e.name.toLowerCase() || e.name.split(" ").toLowerCase()).includes(searchText.toLowerCase()))
+        const yu:any = values.filter(e=>(e.name.toLowerCase() || e.name.split(" ").toLowerCase()).includes(searchText.toLowerCase()))
+        setSearchFilter(yu)            
+    }, [searchText])
+    
+
+
     return (
         <View style={[FLEX(1), BGCOLOR('#FFF'), WP(10)]}>
             {/* <HeaderWithTitleAndSubHeading
