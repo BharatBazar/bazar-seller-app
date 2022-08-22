@@ -13,7 +13,7 @@ import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tab
 import { Shop } from '@app/server/apis/shop/shop.interface';
 
 export interface ProductListProps extends MaterialTopTabNavigationProp {
-    shopId: Shop;
+    shopId: string;
 
     status: productStatus;
     isInitialRoute: boolean;
@@ -39,7 +39,7 @@ const ProductList: React.FC<ProductListProps> = ({
             const response: IProducts = await APIgetAllProduct({
                 query: {
                     status: status,
-                    shopId: shopId._id,
+                    shopId: shopId,
                 },
             });
 
