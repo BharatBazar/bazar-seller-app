@@ -73,7 +73,7 @@ const ShowFilterModal: React.SFC<ShowFilterModalProps> = ({
     onDelete,
     loading,
 }) => {
-    console.log(selectedData, 'selectedAta');
+    // console.log(selectedData, 'selectedAta');
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
             <View

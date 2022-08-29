@@ -243,54 +243,64 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     );
 
     const checkError = () => {
-        let errors: string[] = [];
-        setLoader(true);
-        if (choosenColor.length > 0) {
-            choosenColor.map((item) => {
-                if (item.sizes.length == 0) {
-                    errors.push(item.color.name.toUpperCase() + ' color ' + 'does not have any size.');
+        if (productDetails.status == productStatus.WAITINGFORAPPROVAL) {
+            ToastHOC.infoAlert('Your product will be approved soon..');
+        } else {
+            let errors: string[] = [];
+            setLoader(true);
+            if (choosenColor.length > 0) {
+                choosenColor.map((item) => {
+                    if (item.sizes.length == 0) {
+                        errors.push(item.color.name.toUpperCase() + ' color ' + 'does not have any size.');
+                    }
+                });
+            } else {
+                errors.push('Please select a color for the product');
+            }
+            filter.map((item) => {
+                let filterSpec = filterValues[item.key];
+                // console.log(filterValues, filterSpec);
+                if (item.mandatory && filterSpec && filterSpec.length == 0) {
+                    errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
+                } else if (item.mandatory && !filterSpec) {
+                    errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
                 }
             });
-        } else {
-            errors.push('Please select a color for the product');
-        }
-        filter.map((item) => {
-            let filterSpec = filterValues[item.type];
-            // console.log(filterValues, filterSpec);
-            if (item.mandatory && filterSpec && filterSpec.length == 0) {
-                errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
-            } else if (item.mandatory && !filterSpec) {
-                errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
-            }
-        });
-        setLoader(false);
-        if (errors.length > 0) setErrors(errors);
-        else {
-            setErrors(errors);
-            let status: productStatus = productDetails.status as productStatus;
-            let proStatus =
-                status === productStatus.INVENTORY
-                    ? productStatus.WAITINGFORAPPROVAL
-                    : status == productStatus.REJECTED
-                    ? productStatus.WAITINGFORAPPROVAL
-                    : status == productStatus.LIVE
-                    ? productStatus.INVENTORY
-                    : status == productStatus.OUTOFSTOCK
-                    ? productStatus.WAITINGFORAPPROVAL
-                    : productStatus.INVENTORY;
+            setLoader(false);
+            if (errors.length > 0) setErrors(errors);
+            else {
+                setErrors(errors);
+                let status: productStatus = productDetails.status as productStatus;
+                let proStatus =
+                    status == productStatus.INVENTORY
+                        ? productStatus.WAITINGFORAPPROVAL
+                        : status == productStatus.REJECTED
+                        ? productStatus.WAITINGFORAPPROVAL
+                        : status == productStatus.LIVE
+                        ? productStatus.INVENTORY
+                        : status == productStatus.OUTOFSTOCK
+                        ? productStatus.WAITINGFORAPPROVAL
+                        : productStatus.INVENTORY;
 
-            updateProductInServer({ status: proStatus });
+                console.log(status, productStatus, proStatus);
+
+                updateProductInServer({ status: proStatus });
+            }
         }
     };
 
+    const productContextValue = React.useMemo(
+        () => ({ productId: productId, setProductId: setProductId }),
+        [productId],
+    );
     return (
-        <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
+        <ProductIdContext.Provider value={productContextValue}>
             <View style={styles.container}>
                 <StatusBar statusBarColor={mainColor} />
                 <HeaderWithBackButtonTitleAndrightButton
                     rightComponent={() => (
                         <WrappedFeatherIcon
-                            iconName="trash-2"
+                            iconName="delete"
                             iconColor="#FFF"
                             containerHeight={30}
                             onPress={() => {}}

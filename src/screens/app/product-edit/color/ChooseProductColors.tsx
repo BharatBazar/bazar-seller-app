@@ -56,7 +56,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);
 
-    console.log('product DI', productId);
+    //console.log('product DI', productId);
     const createColorInServer = async (colorChoosen: FilterValueInterface, index: number) => {
         try {
             setLoader(true);

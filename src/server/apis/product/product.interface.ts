@@ -1,5 +1,4 @@
 import { CommonApiResponse } from '../common.interface';
-
 export enum productStatus {
     INVENTORY = 1,
     REJECTED = 2,
