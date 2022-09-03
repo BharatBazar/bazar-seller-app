@@ -20,7 +20,6 @@ import ServerErrorText from './component/errorText';
 import Loader from '../component/Loader';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import { commonButtonProps } from '../components/button';
-import Ripple from 'react-native-material-ripple';
 import TextRippleButton from '../components/button/TextRippleB';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { PHA, PTA, PVA } from '@app/common/stylesheet';

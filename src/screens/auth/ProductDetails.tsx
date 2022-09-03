@@ -141,7 +141,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
     };
 
     useEffect(() => {
-        fetchProductDetails({ parent: { $exists: false }, active: true });
+        fetchProductDetails({ parent: { $exists: false }, active: false });
 
         StatusBar.setBarStyle('light-content');
 
@@ -157,15 +157,24 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                     AIC(),
                     PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING),
 
-                    FDR(update ? 'row' : 'column'),
+                    FDR(update ? 'row' : 'row'),
                 ]}
             >
-                {update && (
+                {update ? (
                     <ButtonMaterialIcons
                         onPress={() => {
                             navigation.goBack();
                         }}
                         iconName={'arrow-back'}
+                        containerStyle={[MLA()]}
+                        iconColor={colorCode.WHITE}
+                    />
+                ) : (
+                    <ButtonMaterialIcons
+                        onPress={() => {
+                            navigation.goBack();
+                        }}
+                        iconName={'close'}
                         containerStyle={[MLA()]}
                         iconColor={colorCode.WHITE}
                     />
@@ -175,7 +184,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                     fontSize={fs18}
                     textColor={'#ffffff'}
                     textAlign="center"
-                    containerStyle={{ marginLeft: update ? 20 : 0 }}
+                    containerStyle={{ marginLeft: update ? 20 : 20 }}
                     fontFamily={FontFamily.Medium}
                 />
             </View>
