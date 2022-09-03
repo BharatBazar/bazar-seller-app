@@ -64,7 +64,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const loadFilter = async () => {
         setLoading(true);
         try {
-            const response: IRGetFilterWithValue = await getFilterWithValue({ active: true });
+            const response: IRGetFilterWithValue = await getFilterWithValue({ active: false });
 
             setLoading(false);
             if (response.status == 1) {

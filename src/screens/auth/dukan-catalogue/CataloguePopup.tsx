@@ -52,7 +52,7 @@ const CataloguePopup: React.FunctionComponent<CataloguePopupProps> = ({
     const getCatalogueDetails = async () => {
         setLoader(true);
         const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
-            active: true,
+            active: false,
             parent: parentCatalogue._id,
             categoryType: categoryType.SubCategory1,
         });

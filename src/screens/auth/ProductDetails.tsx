@@ -5,12 +5,7 @@ import { AIC, BGCOLOR, BR, DSP, FDR, JCC, MT, PH } from '../../common/styles';
 import { IProductCatalogue, IRGetProductCatalogue } from '../../server/apis/catalogue/catalogue.interface';
 import { getProductCatalogueAPI } from '../../server/apis/catalogue/catalogue.api';
 
-import {
-    IRGetShopCatalogue,
-    IRShopUpdate,
-    IRUpdateShopCatalogue,
-    updateShopData,
-} from '../../server/apis/shop/shop.interface';
+import { IRGetShopCatalogue, IRUpdateShopCatalogue } from '../../server/apis/shop/shop.interface';
 import { getShopCatalgoue, updateShop, updateShopCatalogue } from '../../server/apis/shop/shop.api';
 
 import { colorCode, mainColor, subHeadingColor } from '../../common/color';
@@ -23,7 +18,7 @@ import Border from '../components/border/Border';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 
 import { Storage, StorageItemKeys } from '@app/storage';
-import Loader from '../component/Loader';
+
 import CatalogueItem from './dukan-catalogue/CatalogueItem';
 
 import { NavigationKey } from '@app/labels';
@@ -33,7 +28,6 @@ import ItemsYouSell from './dukan-catalogue/ItemsYouSell';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { removeElementFromArray } from '@app/utilities/array';
 import { LoaderContext } from '@app/../App';
-import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import ButtonMaterialIcons from '../components/button/ButtonMaterialIcons';
 
 export interface ProductDetail extends NavigationProps {
@@ -96,7 +90,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                 if (response.status == 1) {
                     successCallBack && successCallBack();
                     if (reload) {
-                        fetchProductDetails({ parent: { $exists: false }, active: true });
+                        fetchProductDetails({ parent: { $exists: false }, active: false });
                     } else {
                         setLoaderCallBack(false);
                     }
@@ -141,7 +135,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
     };
 
     useEffect(() => {
-        fetchProductDetails({ parent: { $exists: false }, active: true });
+        fetchProductDetails({ parent: { $exists: false }, active: false });
 
         StatusBar.setBarStyle('light-content');
 

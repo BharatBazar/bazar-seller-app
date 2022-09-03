@@ -121,7 +121,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const loadFilter = async () => {
         setLoader(true);
         try {
-            const response: IRGetFilterWithValue = await getFilterWithValue({ active: true });
+            const response: IRGetFilterWithValue = await getFilterWithValue({ active: false });
 
             setLoader(false);
             if (response.status == 1) {
@@ -321,12 +321,14 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         />
                     )}
                     <Border />
-                    <WrappedText
-                        text="Selected color variant of product"
-                        textColor={black100}
-                        containerStyle={{ marginTop: DSP * 0.5 }}
-                        fontSize={fs16}
-                    />
+                    {choosenColor && choosenColor.length > 0 && (
+                        <WrappedText
+                            text="Selected color variant of product"
+                            textColor={black100}
+                            containerStyle={{ marginTop: DSP * 0.5 }}
+                            fontSize={fs16}
+                        />
+                    )}
                     {choosenColor.map((item: choosenColor, index: number) => (
                         <EditSelectedColor
                             onPressAddMoreImage={() => {

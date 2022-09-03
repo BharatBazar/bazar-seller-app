@@ -20,7 +20,7 @@ const filtersEx = [
         value: [
             {
                 _id: '610cdb761ef524d134701e03',
-                active: true,
+                active: false,
                 name: '28',
                 description: 'cm',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -38,7 +38,7 @@ const filtersEx = [
             },
             {
                 _id: '610cdb851ef524d134701e04',
-                active: true,
+                active: false,
                 name: '29',
                 description: 'cm',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -56,7 +56,7 @@ const filtersEx = [
             },
             {
                 _id: '610cdb8d1ef524d134701e05',
-                active: true,
+                active: false,
                 name: '30',
                 description: 'cm',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -74,7 +74,7 @@ const filtersEx = [
             },
             {
                 _id: '610cdb991ef524d134701e06',
-                active: true,
+                active: false,
                 name: '32',
                 description: 'cm',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -92,7 +92,7 @@ const filtersEx = [
             },
             {
                 _id: '610cdba41ef524d134701e07',
-                active: true,
+                active: false,
                 name: '31',
                 description: 'cm',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -123,7 +123,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Puma',
                 description: 'Puma is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -132,7 +132,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Nike',
                 description: 'Nike is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -141,7 +141,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Adidas',
                 description: 'Adidas is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -160,7 +160,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Puma',
                 description: 'Puma is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -169,7 +169,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Nike',
                 description: 'Nike is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -178,7 +178,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Adidas',
                 description: 'Adidas is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -197,7 +197,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Puma',
                 description: 'Puma is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -206,7 +206,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Nike',
                 description: 'Nike is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
@@ -215,7 +215,7 @@ const filtersEx = [
             {
                 _id: '610cdbfd1ef524d134701e08',
 
-                active: true,
+                active: false,
                 name: 'Adidas',
                 description: 'Adidas is a well renowned brand. It is established in 2004.',
                 image: 'https://images-na.ssl-images-amazon.com/images/G/31/img21/shoes/June/eoss/MEN/coops/liberty._SS400_QL85_.jpg',
