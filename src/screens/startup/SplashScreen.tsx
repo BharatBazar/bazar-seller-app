@@ -13,7 +13,7 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
     const checkAppState = async () => {
         try {
             const token = await Storage.getItem(StorageItemKeys.Token);
-            
+
             //already logged in
             if (token) {
                 // varaible name itself explains its use
@@ -26,10 +26,10 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
                     StorageItemKeys.isCustomerOnboardingCompleted,
                 );
                 const screenName = await Storage.getItem(StorageItemKeys.currentScreen);
-                console.log("Onboarding Completed"); // Add by garvit
+                console.log('Onboarding Completed'); // Add by garvit
                 console.log(isCustomerOnboardingCompleted, screenName);
                 if (screenName == undefined) {
-                    console.log("replaced1"); //add by gar
+                    console.log('replaced1'); //add by gar
                     navigation.replace(NavigationKey.WELCOME);
                     return;
                 }
@@ -37,9 +37,9 @@ const Splash: React.FC<SplashProps> = ({ navigation }) => {
 
                 if (isCustomerOnboardingCompleted == undefined || isCustomerOnboardingCompleted == false) {
                     //It tells that what is current screen in onboarding flow
-                    console.log("Screen Name G"); //Add by garvit
+                    console.log('Screen Name G'); //Add by garvit
                     console.log(screenName, 'screen Name');
-                    if (screenName != NavigationKey.VERIFICATION) {
+                    if (screenName != NavigationKey.VERIFICATION && screenName != NavigationKey.PRODUCTDETAILS) {
                         navigation.replace(NavigationKey.AUTHNAVIGATOR, { screen: screenName, ownerDetails });
                         return;
                     } else {
