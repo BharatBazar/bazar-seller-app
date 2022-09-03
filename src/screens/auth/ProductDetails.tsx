@@ -281,9 +281,13 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
             <RightComponentButtonWithLeftText
                 buttonText={'Continue'}
                 onPress={async () => {
-                    await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
-                    await Storage.setItem(StorageItemKeys.currentScreen, false);
-                    navigation.replace(NavigationKey.BHARATBAZARHOME);
+                    if (data.length != 0) {
+                        await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
+                        await Storage.setItem(StorageItemKeys.currentScreen, false);
+                        navigation.replace(NavigationKey.BHARATBAZARHOME);
+                    } else {
+                        ToastHOC.errorAlert('Please select at least one item!');
+                    }
                 }}
                 containerStyle={{ margin: DSP }}
             />

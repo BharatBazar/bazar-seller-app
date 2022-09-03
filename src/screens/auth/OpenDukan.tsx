@@ -101,6 +101,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
 
             setLoader(false);
+            console.log('Response', response);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'token exist');
@@ -118,13 +119,17 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     screen = NavigationKey.VERIFICATION;
                 } else if (currentAccountState.notCategory) {
                     screen = NavigationKey.PRODUCTDETAILS;
-                } else if (currentAccountState.notSubCategory) {
-                    screen = NavigationKey.PRODUCTSUBCATEGORY;
                 } else {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
                     screen = NavigationKey.BHARATBAZARHOME;
                 }
-                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.BHARATBAZARHOME) {
+
+                console.log(screen, 'screen');
+                if (
+                    screen == NavigationKey.VERIFICATION ||
+                    screen == NavigationKey.BHARATBAZARHOME ||
+                    screen == NavigationKey.PRODUCTDETAILS
+                ) {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     resetTo(screen, currentAccountState.data);
                 } else {
