@@ -54,7 +54,13 @@ const AppNavigation = () => {
                 }}
                 initialRouteName={NavigationKey.SPLASH}
             >
-                <Stack.Screen name={NavigationKey.SPLASH} component={Splash} />
+                <Stack.Screen
+                    name={NavigationKey.SPLASH}
+                    component={Splash}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
                 <Stack.Screen
                     name={NavigationKey.SELECTFILTER}
                     component={SelectFilter}
@@ -62,7 +68,13 @@ const AppNavigation = () => {
                         animation: 'slide_from_right',
                     }}
                 />
-                <Stack.Screen name={NavigationKey.WELCOME} component={Welcome} />
+                <Stack.Screen
+                    name={NavigationKey.WELCOME}
+                    component={Welcome}
+                    options={{
+                        animation: 'slide_from_left',
+                    }}
+                />
                 <Stack.Screen
                     name={NavigationKey.AUTHNAVIGATOR}
                     component={AuthNavigation}
@@ -71,7 +83,13 @@ const AppNavigation = () => {
                     }}
                 />
                 <Stack.Screen name={NavigationKey.VERIFICATION} component={Verification} />
-                <Stack.Screen name={NavigationKey.OPENDUKAN} component={OpenDukan} />
+                <Stack.Screen
+                    name={NavigationKey.OPENDUKAN}
+                    component={OpenDukan}
+                    options={{
+                        animation: 'fade',
+                    }}
+                />
                 <Stack.Screen name={NavigationKey.BHARATBAZARHOME} component={BharatBazarHome} />
                 <Stack.Screen name={NavigationKey.PRODUCTSEARCH} component={ProdcutSearch} />
                 <Stack.Screen name={NavigationKey.PRODUCT} component={Product} />

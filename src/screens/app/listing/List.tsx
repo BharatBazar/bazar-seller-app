@@ -10,7 +10,6 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { FlatList } from 'react-native-gesture-handler';
 import Loader from '@app/screens/component/Loader';
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
-import { Shop } from '@app/server/apis/shop/shop.interface';
 
 export interface ProductListProps extends MaterialTopTabNavigationProp {
     shopId: string;

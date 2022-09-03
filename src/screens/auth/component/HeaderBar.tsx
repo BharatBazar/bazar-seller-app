@@ -28,13 +28,11 @@ interface OnboardingHeaderProps {
 
 const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
     containerStyle,
-    statusBarColor,
+
     headerBackgroundColor,
     goBack,
     showBackButton,
     step,
-
-    shopOwner,
 }) => {
     const setAlertState: (data: IdefaultAlertState) => void = React.useContext(AlertContext);
     const setLogout = useLogout();
@@ -66,7 +64,7 @@ const OnboardingHeader: React.FunctionComponent<OnboardingHeaderProps> = ({
                 />
                 <View style={[BGCOLOR(headerBackgroundColor), AIC()]}>
                     <WrappedText
-                        text={'Create your dukan'}
+                        text={'Register your dukan'}
                         textColor={mainColor}
                         fontSize={fs18}
                         fontFamily={FontFamily.Medium}

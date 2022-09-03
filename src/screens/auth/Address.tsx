@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { View, TextInput } from 'react-native';
-import { fs13, fs20, NavigationProps } from '../../common';
+import { FontFamily, fs13, fs20, NavigationProps } from '../../common';
 import { black50, colorCode, disabledColor, errorColor } from '../../common/color';
 import { buttonContainerStyle, textInputContainerStyle, componentProps } from '../../common/containerStyles';
 import { getHP } from '../../common/dimension';
@@ -8,7 +8,6 @@ import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, HP, JCC, ML, MT, PA, PH, PV } from '.
 import { checkPincode } from '../../server/apis/address/address.api';
 import TextButton from '../component/TextButton';
 import WrappedDropDown from '../component/WrappedDropDown';
-import ShadowWrapperHOC from '../hoc/ShadowWrapperHOC';
 import HeaderText from './component/HeaderText';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import WrappedText from '../component/WrappedText';
@@ -22,6 +21,7 @@ import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
 import axios from 'axios';
 import { ShopAddress } from '@app/common/customScreenText';
 import capatailize from '@app/common/capatalize';
+import GeneralText from '../components/text/GeneralText';
 
 export interface AddressProps extends NavigationProps {
     route: {
@@ -216,7 +216,6 @@ const Address: React.FC<AddressProps> = ({
                 <WrappedText text={error['pincode']} textColor={errorColor} containerStyle={{ marginTop: 3 }} />
             )}
             {previousPin == pincode && (
-          
                 <>
                     <View style={[FDR(), MT(0.1)]}>
                         <TextInput
@@ -274,7 +273,6 @@ const Address: React.FC<AddressProps> = ({
                             setValue(item.label);
                             // setArea(item.label)
                         }}
-                       
                         onChangeValue={(value) => {
                             console.log(value);
                         }}
@@ -288,8 +286,9 @@ const Address: React.FC<AddressProps> = ({
                 </>
             )}
             <View style={[MT(0.1), { zIndex: -20 }]}>
+                <GeneralText text="Dukan ka pata" textStyle={{ marginTop: 15 }} fontFamily={FontFamily.Bold} />
                 <TextInput
-                    autoCapitalize={"none"}
+                    autoCapitalize={'sentences'}
                     placeholder={'Local Address in your words so that any one can reach your dukan'}
                     multiline={true}
                     onChangeText={(value) => {
