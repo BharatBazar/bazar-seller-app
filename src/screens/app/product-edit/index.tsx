@@ -472,11 +472,14 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     choosenSize={cuurentProductSizeIndex > -1 ? choosenColor[cuurentProductSizeIndex].sizes : []}
                     setChoosenSize={(sizes: choosenSize[]) => {
-                        //   console.log('sized =>', sizes, cuurentProductSizeIndex);
-                        updateColorInServer(cuurentProductSizeIndex, {
-                            sizes,
-                            _id: choosenColor[cuurentProductSizeIndex]._id,
-                        });
+                        console.log('sized =>', sizes, cuurentProductSizeIndex);
+                        // updateColorInServer(cuurentProductSizeIndex, {
+                        //     sizes,
+                        //     _id: choosenColor[cuurentProductSizeIndex]._id,
+                        // });
+                        let data = [...choosenColor];
+                        data[cuurentProductSizeIndex].sizes = sizes;
+                        setChoosenColor(data);
                         setCurrentProductSizeIndex(-1);
                     }}
                     shopId={shopId}
