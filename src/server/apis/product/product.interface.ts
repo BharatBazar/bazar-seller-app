@@ -89,7 +89,7 @@ export interface IProduct {
     brand: string | IClassifier;
     fit: string | IClassifier;
     pattern: [string] | [IClassifier];
-    note: string;
+    note: [string];
     descriptionCustomer: string;
     alreadyRejected: boolean;
 }

@@ -4,11 +4,12 @@ import { AlertBox } from '@app/common/containerStyles';
 import { View } from 'react-native';
 import WrappedText from '@app/screens/component/WrappedText';
 import { errorColor, mainColor } from '@app/common/color';
-import { marHor } from '../product/component/generalConfig';
 import { fs14, fs18 } from '@app/common';
 import Ripple from 'react-native-material-ripple';
 import { BC, BR, BW, FDR, JCC, MT, MV, PH } from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import { marHor } from '../../edit/product/component/generalConfig';
+import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 
 interface HowToImproveProps {
     note: string;
@@ -16,7 +17,7 @@ interface HowToImproveProps {
 
 const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
     const [isCollapsed, setIsCollapsed] = React.useState(false);
-    console.log(note);
+    // console.log(note);
     return (
         <View style={[marHor, MV(0.1), { backgroundColor: '#00000000' }]}>
             <Ripple
@@ -26,7 +27,7 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
                 }}
             >
                 <WrappedText text={'How to improve'} textColor={mainColor} fontSize={fs14} />
-                <WrappedFeatherIcon iconName={isCollapsed ? 'chevron-up' : 'chevron-down'} iconColor={mainColor} />
+                <ButtonFeatherIcon iconName={isCollapsed ? 'chevron-up' : 'chevron-down'} iconColor={mainColor} />
             </Ripple>
             <Collapsible collapsed={isCollapsed} style={[{ position: 'absolute', zIndex: 1000 }]}>
                 <View style={[AlertBox()]}>

@@ -3,18 +3,13 @@ import { getHP } from '@app/common/dimension';
 import { AIC, BGCOLOR, BR, JCC, ML, MT, MV, PH, PV } from '@app/common/styles';
 import ModalHeader from '@app/screens/component/ModalHeader';
 import NormalButton from '@app/screens/component/NormalButton';
-import TextButton from '@app/screens/component/TextButton';
 import WrappedCheckBox from '@app/screens/component/WrappedCheckBox';
-import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
-import WrappedText from '@app/screens/component/WrappedText';
-import ModalHOC from '@app/screens/hoc/ModalHOC';
+
 import { productStatus } from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Ripple from 'react-native-material-ripple';
 import Modal from 'react-native-modal';
-import { border } from '../product/component/generalConfig';
-import ProductButton from '../product/component/ProductButton';
+import { border } from '../../edit/product/component/generalConfig';
 
 interface ImproveListProps {
     notes: [string];

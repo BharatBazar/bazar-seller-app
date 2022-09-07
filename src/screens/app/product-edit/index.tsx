@@ -33,6 +33,8 @@ import {
 } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
+import HowToImprove from './component/HowToImprove';
+import ImproveList from './component/ImproveList';
 import ProductCompleteCTA from './component/ProductCompleteCTA';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import CollapsibleErrorComponent from './error/CollapsibleError';
@@ -311,6 +313,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 />
                 {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
                 <ScrollView contentContainerStyle={[PH(0.2)]}>
+                    {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle
                             title={distribution[0].name}
@@ -320,14 +323,17 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     )}
-                    <Border />
+
                     {choosenColor && choosenColor.length > 0 && (
-                        <WrappedText
-                            text="Selected color variant of product"
-                            textColor={black100}
-                            containerStyle={{ marginTop: DSP * 0.5 }}
-                            fontSize={fs16}
-                        />
+                        <>
+                            <Border />
+                            <WrappedText
+                                text="Selected color variant of product"
+                                textColor={black100}
+                                containerStyle={{ marginTop: DSP * 0.5 }}
+                                fontSize={fs16}
+                            />
+                        </>
                     )}
                     {choosenColor.map((item: choosenColor, index: number) => (
                         <EditSelectedColor
@@ -352,11 +358,24 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     ))}
-                    <Filter filters={filter} filterValues={filterValues} setFilterValues={setFilterValuesCallback} />
+                    {filter.length > 0 && (
+                        <Filter
+                            filters={filter}
+                            filterValues={filterValues}
+                            setFilterValues={setFilterValuesCallback}
+                        />
+                    )}
                 </ScrollView>
                 <View style={[{ paddingHorizontal: DSP }, PV(0.2), BGCOLOR('#FFFFFF'), border]}>
-                    <ProductCompleteCTA
+                    {/* <ProductCompleteCTA
                         status={productDetails?.status}
+                        onPress={() => {
+                            checkError();
+                        }}
+                    /> */}
+                    <ImproveList
+                        notes={productDetails.note}
+                        status={productDetails.status}
                         onPress={() => {
                             checkError();
                         }}

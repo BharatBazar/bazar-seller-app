@@ -25,7 +25,7 @@ import { IRGetFilterWithValue } from '../../../server/apis/filter/filter.interfa
 import { getFilterWithValue } from '../../../server/apis/filter/filter.api';
 import { returnEmptyStringOrValue } from '../../../common/helper';
 import HowToImprove from './component/HowToImprove';
-import ImproveList from './component/ImproveList';
+import ImproveList from '../product-edit/component/ImproveList';
 import EditProduct from '../product-edit';
 
 export interface CreateProductProps extends NavigationProps {
