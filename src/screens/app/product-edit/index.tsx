@@ -28,6 +28,7 @@ import {
     border,
     createProduct,
     deleteProductColor,
+    deleteProductFromServer,
     updateProduct,
     updateProductColor,
 } from '../edit/product/component/generalConfig';
@@ -223,6 +224,34 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         });
     };
 
+    const deleteProduct = async () => {
+        Alert.alert('Warning', 'Do you really want to delete this product it will delete all progress?', [
+            {
+                text: 'Yes',
+                onPress: async () => {
+                    try {
+                        if (productId) {
+                            setLoader(true);
+                            const response: IRProduct = await deleteProductFromServer({ _id: productId });
+                            setLoader(false);
+                            if (response.status == 1) {
+                                navigation.goBack();
+                            }
+                        } else {
+                            navigation.goBack();
+                        }
+                    } catch (error) {
+                        setLoader(false);
+                        ToastHOC.errorAlert(error.message, 'Problem deleting product');
+                    }
+                },
+            },
+            {
+                text: 'No',
+            },
+        ]);
+    };
+
     // To prevent uncessary render used memoization for this calculation
     const [currentColorIndexOnSizeClick, currentSizeIndexOnSizeClick] = React.useMemo(() => {
         if (currentColorSizeIndex.length > 0) {
@@ -305,7 +334,9 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             iconName="delete"
                             iconColor="#FFF"
                             containerHeight={30}
-                            onPress={() => {}}
+                            onPress={() => {
+                                deleteProduct();
+                            }}
                         />
                     )}
                     containerStyle={[{ padding: DSP }]}
