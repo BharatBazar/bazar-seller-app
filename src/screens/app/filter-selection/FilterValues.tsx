@@ -19,21 +19,34 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
     filter,
     selectedValues,
     setSelectedValues,
+    setSelectedValuesFalse,
     removeSelectedValues,
     index,
 }) => {
 
     const [searchText, setSearchText] = React.useState('')
     const [searchFilter, setSearchFilter] = React.useState([])
+    const [TotalSearch, setTotalSearch] = React.useState([])
+    const [changeSelect, setChangeSelect] = React.useState(false)
 
 
-
+    
     React.useEffect(() => {
         const values:any = filter.values.filter(e=>(e.name.toLowerCase() || e.name.split(" ").toLowerCase()).includes(searchText.toLowerCase()))
         const yu:any = values.filter(e=>(e.name.toLowerCase() || e.name.split(" ").toLowerCase()).includes(searchText.toLowerCase()))
         setSearchFilter(yu)            
     }, [searchText])
+
     
+    const setDefaultSelectAllFalse = (item:any)=>{
+        console.log("ITEMs",item._id,selectedValues);
+        setSelectedValues(item._id)
+       filter.defaultSelectAll = false
+    //   if(  selectedValues.includes(item._id)){
+    //         (filter.defaultSelectAll === false)
+    //   }
+     
+    }
 
 
     return (
@@ -58,30 +71,23 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                     {/* {filter.values.map((item, index) => ( */}
                     {searchFilter.map((item, index) => (
                        <>
-          
-                  {filter.defaultSelectAll === true ?(
+ 
                        <FilterValue
-                            item={item}  //selected should be true until or unless vo kisi pr press na kre
-                            selected={true}  // it is important to change this code for default select all
-                          
-                            onPress={() => {
-                                // setSelectedValues(item._id);
-                                filter.defaultSelectAll = false
-                                removeSelectedValues(item._id,filter);
-                            }}
-                        />
-                  ):(
-                       <FilterValue
-                            item={item}  //selected should be true until or unless vo kisi pr press na kre
-                            selected={selectedValues.includes(item._id)}  
-
-                            onPress={() => {
-                                // setSelectedValues(item._id);
-                                setSelectedValues(item._id);
-                            }}
-                        />
-                  )}
                        
+                            item={item}
+                            // selected={selectedValues.includes(item._id)}
+                            // selected={filter.defaultSelectAll === true && !selectedValues.includes(item._id)?true: selectedValues.includes(item._id) }
+                            // selected={selectedValues.includes(item._id)?true:filter.defaultSelectAll === true && !selectedValues.includes(item._id)?true:false }
+                            // onPress={() => {
+                            //     !selectedValues.includes(item._id) && filter.defaultSelectAll === true?(setDefaultSelectAllFalse(item)):(setSelectedValues(item._id))
+                            // }}
+                            selected={filter.defaultSelectAll === true ? setDefaultSelectAllFalse(item) :selectedValues.includes(item._id)}
+                             onPress={() => {
+                                setSelectedValues(item._id);
+                                // filter.defaultSelectAll = false
+                            }}
+                        />
+
                        </>
                     ))}
                 </View>

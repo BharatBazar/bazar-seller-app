@@ -290,11 +290,8 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 catalogueId: item._id,
             });
             // console.log("GET_ALL_FILTERS_WITH_POWER",response.payload.allFilters.map((e)=>{
-            //     console.log("==>",e._id);
+            //     console.log("==>",e.defaultSelectAll);
             // }));
-            console.log("GET_ALL_FILTERS_WITH_POWER",response.payload.allFilters.map((e)=>{
-                console.log("==>",e.defaultSelectAll);
-            }));
             console.log('response', response.payload.currentIndex, response.payload.selectedValues);
             setFilters(response.payload.allFilters);
             setSelectedValues(response.payload.selectedValues);
@@ -333,12 +330,10 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 renderItem={({ item, index }) => (
                     
                     <>
-                    <FilterValues
+                     <FilterValues
                         filter={item}
-                        // selectAll = {item.defaultSelectAll}
-                        // selectedValues={selectedValues[item.key] || []}
                         selectedValues={selectedValues[item.key] || []}
-                        setSelectedValues={(indexOfValue: number) =>  // jo screen par render ho rha hai vo saari ids idhar aa jaee
+                        setSelectedValues={(indexOfValue: number) =>
                             setSelectedValues((selectedValues) => {
                                 let values = selectedValues[item.key] || [];
                                 if (values.includes(indexOfValue)) {
@@ -351,26 +346,21 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                                 return { ...selectedValues };
                             })
                         }
-
-                        removeSelectedValues={(indexOfValue: number,filter:any) =>  // jo screen par render ho rha hai vo saari ids idhar aa jaee
+                        setSelectedValuesFalse={(indexOfValue: number) =>
                             setSelectedValues((selectedValues) => {
-                                const notShowFilter = filter.values.filter(e=>e._id !== indexOfValue);
-                                const showfilter = notShowFilter.map(e=>{
-                                    return e._id
-                                })
-                                console.log("SHOW_FILTER",showfilter);
+                                console.log("SEE",selectedValues);
                                 let values = selectedValues[item.key] || [];
+                                console.log("VALUES",values);
                                 if (values.includes(indexOfValue)) {
-                                    removeElementFromArray(values, indexOfValue);
+                                 values.push(indexOfValue);  
                                 } else {
-                                    values.push(showfilter);
+                                    removeElementFromArray(values, indexOfValue);
                                 }
 
-                                selectedValues[item.key] = values[0];
+                                selectedValues[item.key] = values;
                                 return { ...selectedValues };
                             })
                         }
-                       
                         index={currentIndex}
                     /></>
                 )}
@@ -378,16 +368,9 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         ),
         [selectedValues, setSelectedValues],
     );
-
-    const onContinue = () => {
-        const setValues:any = filters[currentIndex].values.map((e)=>{
-            return e._id
-        });
-        // const filterKeys = selectedValues[filters[currentIndex].key]
-//    const check = setValues === filterKeys;
-//    console.log("SAME",setValues,filterKeys);
-    //    const isTrue = setValues[0] === selectedValues[filterKeys][0];
-        if (selectedValues[filters[currentIndex].key] )  {
+  const onContinue = () => {
+      console.log("LL",selectedValues[filters[currentIndex].key]);
+        if (selectedValues[filters[currentIndex].key]) {
             saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {
                     listRef?.current?.scrollToOffset({
@@ -397,22 +380,45 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                     setCurrentIndex(currentIndex + 1);
                 }
             });
-        } else if(filters[currentIndex].key  ) {
-             selectedValues[filters[currentIndex].key] = setValues;
-             saveSelectedFilterValues(() => {
-                if (currentIndex != filters.length - 1) {
-                    listRef?.current?.scrollToOffset({
-                        animated: true,
-                        offset: (currentIndex + 1) * getWP(10),
-                    });
-                    setCurrentIndex(currentIndex + 1);
-                }
-            });
-           
-        }else{
-             ToastHOC.errorAlert('Please select atleast odne value');
+        } else {
+            ToastHOC.errorAlert('Please select atleast one value');
         }
     };
+//     const onContinue = () => {
+//         const setValues:any = filters[currentIndex].values.map((e)=>{
+//             return e._id
+//         });
+
+//         // const filterKeys = selectedValues[filters[currentIndex].key]
+// //    const check = setValues === filterKeys;
+// //    console.log("SAME",setValues,filterKeys);
+//     //    const isTrue = setValues[0] === selectedValues[filterKeys][0];
+//         if (selectedValues[filters[currentIndex].key] )  {
+//             saveSelectedFilterValues(() => {
+//                 if (currentIndex != filters.length - 1) {
+//                     listRef?.current?.scrollToOffset({
+//                         animated: true,
+//                         offset: (currentIndex + 1) * getWP(10),
+//                     });
+//                     setCurrentIndex(currentIndex + 1);
+//                 }
+//             });
+//         } else if(filters[currentIndex].key  ) {
+//              selectedValues[filters[currentIndex].key] = setValues;
+//              saveSelectedFilterValues(() => {
+//                 if (currentIndex != filters.length - 1) {
+//                     listRef?.current?.scrollToOffset({
+//                         animated: true,
+//                         offset: (currentIndex + 1) * getWP(10),
+//                     });
+//                     setCurrentIndex(currentIndex + 1);
+//                 }
+//             });
+           
+//         }else{
+//              ToastHOC.errorAlert('Please select atleast odne value');
+//         }
+//     };
     return (
         <View style={[FLEX(1)]}>
             {filters.length > 0 && (
