@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
 import { AIC, FDR, MT, FLEX, ML, BGCOLOR, HP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
@@ -288,15 +288,18 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
 
         return (
             <ScrollView
-                keyboardShouldPersistTaps={true}
+                //       keyboardShouldPersistTaps={true}
                 style={[
                     {
-                        flex: 1,
-                        padding: GENERAL_PADDING,
-                        paddingTop: update ? STATUS_BAR_HEIGHT + GENERAL_PADDING : GENERAL_PADDING,
+                        // flex: 1,
+
                         backgroundColor: '#FFFFFF',
                     },
                 ]}
+                contentContainerStyle={{
+                    padding: GENERAL_PADDING,
+                    paddingTop: update ? STATUS_BAR_HEIGHT + GENERAL_PADDING : GENERAL_PADDING,
+                }}
             >
                 <HeaderText
                     step={update ? undefined : 'Step 1'}

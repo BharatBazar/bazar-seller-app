@@ -77,7 +77,7 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
 
         // setSelectedCategory();
         const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
-            active: true,
+            active: false,
             parent: parentCatalogue._id,
         });
 

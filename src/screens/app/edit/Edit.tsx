@@ -25,7 +25,7 @@ import { IRGetFilterWithValue } from '../../../server/apis/filter/filter.interfa
 import { getFilterWithValue } from '../../../server/apis/filter/filter.api';
 import { returnEmptyStringOrValue } from '../../../common/helper';
 import HowToImprove from './component/HowToImprove';
-import ImproveList from './component/ImproveList';
+import ImproveList from '../product-edit/component/ImproveList';
 import EditProduct from '../product-edit';
 
 export interface CreateProductProps extends NavigationProps {
@@ -64,7 +64,7 @@ const CreateProduct: React.FC<CreateProductProps> = ({
     const loadFilter = async () => {
         setLoading(true);
         try {
-            const response: IRGetFilterWithValue = await getFilterWithValue({ active: true });
+            const response: IRGetFilterWithValue = await getFilterWithValue({ active: false });
 
             setLoading(false);
             if (response.status == 1) {

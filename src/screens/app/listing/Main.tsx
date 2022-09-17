@@ -35,6 +35,7 @@ const Product: React.FC<ProductProps> = ({
     const [status, setStatus] = React.useState<IProductStatus[]>([]);
 
     const setBaseUrl = () => {
+        // axios.defaults.baseURL = apiEndPoint + `/catalogue`;
         // if (subCategory1) {
         //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory1.toLowerCase()}`;
         // } else if (subCategory) {
@@ -56,6 +57,7 @@ const Product: React.FC<ProductProps> = ({
 
     React.useEffect(() => {
         setBaseUrl();
+
         getCatalogueStatus({ shopId: shopId });
         return () => {
             axios.defaults.baseURL = apiEndPoint;
@@ -92,10 +94,11 @@ const Product: React.FC<ProductProps> = ({
                                 navigation.navigate(NavigationKey.CREATEPRODUCT, {
                                     update: false,
                                     shopId: shopId,
+                                    parentId: item._id,
                                 });
                             }}
                             // containerStyle={{ backgroundColor: colorCode.WHITE }}
-                            iconName={'plus'}
+                            iconName={'add'}
                             containerHeight={getHP(0.3)}
                             iconSize={fs24}
                             iconColor={'#FFFFFF'}
@@ -122,7 +125,7 @@ const Product: React.FC<ProductProps> = ({
                     />
                 ))}
             </View> */}
-            <ProductTab tabs={status} initialIndex={3} navigation={navigation} shopId={shopId} />
+            <ProductTab tabs={status} initialIndex={3} navigation={navigation} shopId={shopId} parentId={item._id} />
         </View>
     );
 };

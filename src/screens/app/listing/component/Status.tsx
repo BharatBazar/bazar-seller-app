@@ -1,12 +1,12 @@
 import { getHP } from '@app/common/dimension';
 import * as React from 'react';
-import { Pressable, View } from 'react-native';
+import { View } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { fs10, fs12, fs13 } from '../../../../common';
 import { colorCode } from '../../../../common/color';
-import { BR, BW, HP, ML, MT, PV, W, WP } from '../../../../common/styles';
+import { BR, MT, WP } from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
-import { border, marHor, marTop, padHor, padVer } from '../../edit/product/component/generalConfig';
+import { border, marTop, padHor, padVer } from '../../edit/product/component/generalConfig';
 
 export interface StatusProps {
     name: string;

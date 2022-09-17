@@ -9,11 +9,17 @@ import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
 import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/header/HeaderWithBackButtonTitleAndrightButton';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { getFilterWithValue } from '@app/server/apis/filter/filter.api';
 import { IRGetFilterWithValue } from '@app/server/apis/filter/filter.interface';
 import { APIgetProduct } from '@app/server/apis/product/product.api';
-import { IClassifier, IFilter, IProduct, IRProduct, productStatus } from '@app/server/apis/product/product.interface';
-import { IShop } from '@app/server/apis/shop/shop.interface';
+import {
+    FilterValueInterface,
+    FilterInterface,
+    IProduct,
+    IRProduct,
+    productStatus,
+} from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { View, StyleSheet, ScrollView, Alert } from 'react-native';
 import { showMessage } from 'react-native-flash-message';
@@ -22,11 +28,14 @@ import {
     border,
     createProduct,
     deleteProductColor,
+    deleteProductFromServer,
     updateProduct,
     updateProductColor,
 } from '../edit/product/component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
+import HowToImprove from './component/HowToImprove';
+import ImproveList from './component/ImproveList';
 import ProductCompleteCTA from './component/ProductCompleteCTA';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import CollapsibleErrorComponent from './error/CollapsibleError';
@@ -42,11 +51,8 @@ interface EditProductProps extends NavigationProps {
         params: {
             update: boolean;
             _id?: string;
-            shopId: IShop;
-            category: string;
-            subCategory: string;
-            subCategory1: string;
-            changeTab: Function;
+            shopId: string;
+            parentId: string;
         };
     };
 }
@@ -54,13 +60,13 @@ interface EditProductProps extends NavigationProps {
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     navigation,
     route: {
-        params: { update, _id, shopId, category, subCategory, subCategory1, changeTab },
+        params: { update, _id, shopId, parentId },
     },
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
     const [updateFlow, setUpdate] = React.useState(update || false);
-    const [filter, setFilter] = React.useState<IFilter[]>([]);
-    const [distribution, setDistribution] = React.useState<IClassifier[]>([]);
+    const [filter, setFilter] = React.useState<FilterInterface[]>([]);
+    const [distribution, setDistribution] = React.useState<FilterInterface[]>([]);
     const [choosenColor, setChoosenColor] = React.useState<choosenColor[]>([]);
 
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
@@ -97,6 +103,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         }
     };
 
+    // console.log(shopId);
     const fetchProduct = async () => {
         try {
             setLoader(true);
@@ -117,7 +124,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const loadFilter = async () => {
         setLoader(true);
         try {
-            const response: IRGetFilterWithValue = await getFilterWithValue({ active: true });
+            const response: IRGetFilterWithValue = await getFilterWithValue({ active: false });
 
             setLoader(false);
             if (response.status == 1) {
@@ -131,12 +138,17 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     React.useEffect(() => {
         let filtersV = {};
+        console.log('parent id', parentId);
+        if (!parentId) {
+            navigation.goBack();
+            ToastHOC.errorAlert('Please provide parent id');
+        }
         //When both product details and filter value are available
         if (updateFlow && filter.length > 0 && Object.keys(productDetails).length > 0) {
             filter.map((item) => {
-                filtersV[item.type] = productDetails[item.type];
+                filtersV[item.key] = productDetails[item.key] || [];
             });
-            console.log(filtersV, 'filter values here');
+            // console.log(filtersV, 'filter values here');
             setFilterValues(filtersV);
         }
     }, [productDetails, filter]);
@@ -212,6 +224,34 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         });
     };
 
+    const deleteProduct = async () => {
+        Alert.alert('Warning', 'Do you really want to delete this product it will delete all progress?', [
+            {
+                text: 'Yes',
+                onPress: async () => {
+                    try {
+                        if (productId) {
+                            setLoader(true);
+                            const response: IRProduct = await deleteProductFromServer({ _id: productId });
+                            setLoader(false);
+                            if (response.status == 1) {
+                                navigation.goBack();
+                            }
+                        } else {
+                            navigation.goBack();
+                        }
+                    } catch (error) {
+                        setLoader(false);
+                        ToastHOC.errorAlert(error.message, 'Problem deleting product');
+                    }
+                },
+            },
+            {
+                text: 'No',
+            },
+        ]);
+    };
+
     // To prevent uncessary render used memoization for this calculation
     const [currentColorIndexOnSizeClick, currentSizeIndexOnSizeClick] = React.useMemo(() => {
         if (currentColorSizeIndex.length > 0) {
@@ -224,7 +264,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     // when filter value need to be updated
     const setFilterValuesCallback = React.useCallback(
-        (key: string, value: IClassifier[]) => {
+        (key: string, value: FilterValueInterface[]) => {
             let filters = { ...filterValues };
             filters[key] = value;
 
@@ -234,57 +274,69 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     );
 
     const checkError = () => {
-        let errors: string[] = [];
-        setLoader(true);
-        if (choosenColor.length > 0) {
-            choosenColor.map((item) => {
-                if (item.sizes.length == 0) {
-                    errors.push(item.color.name.toUpperCase() + ' color ' + 'does not have any size.');
+        if (productDetails.status == productStatus.WAITINGFORAPPROVAL) {
+            ToastHOC.infoAlert('Your product will be approved soon..');
+        } else {
+            let errors: string[] = [];
+            setLoader(true);
+            if (choosenColor.length > 0) {
+                choosenColor.map((item) => {
+                    if (item.sizes.length == 0) {
+                        errors.push(item.color.name.toUpperCase() + ' color ' + 'does not have any size.');
+                    }
+                });
+            } else {
+                errors.push('Please select a color for the product');
+            }
+            filter.map((item) => {
+                let filterSpec = filterValues[item.key];
+                // console.log(filterValues, filterSpec);
+                if (item.mandatory && filterSpec && filterSpec.length == 0) {
+                    errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
+                } else if (item.mandatory && !filterSpec) {
+                    errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
                 }
             });
-        } else {
-            errors.push('Please select a color for the product');
-        }
-        filter.map((item) => {
-            let filterSpec = filterValues[item.type];
-            console.log(filterValues, filterSpec);
-            if (item.mandatory && filterSpec && filterSpec.length == 0) {
-                errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
-            } else if (item.mandatory && !filterSpec) {
-                errors.push(item.name.toUpperCase() + ' filter does not have any value selected');
-            }
-        });
-        setLoader(false);
-        if (errors.length > 0) setErrors(errors);
-        else {
-            setErrors(errors);
-            let status: productStatus = productDetails.status as productStatus;
-            let proStatus =
-                status === productStatus.INVENTORY
-                    ? productStatus.WAITINGFORAPPROVAL
-                    : status == productStatus.REJECTED
-                    ? productStatus.WAITINGFORAPPROVAL
-                    : status == productStatus.LIVE
-                    ? productStatus.INVENTORY
-                    : status == productStatus.OUTOFSTOCK
-                    ? productStatus.WAITINGFORAPPROVAL
-                    : productStatus.INVENTORY;
+            setLoader(false);
+            if (errors.length > 0) setErrors(errors);
+            else {
+                setErrors(errors);
+                let status: productStatus = productDetails.status as productStatus;
+                let proStatus =
+                    status == productStatus.INVENTORY
+                        ? productStatus.WAITINGFORAPPROVAL
+                        : status == productStatus.REJECTED
+                        ? productStatus.WAITINGFORAPPROVAL
+                        : status == productStatus.LIVE
+                        ? productStatus.INVENTORY
+                        : status == productStatus.OUTOFSTOCK
+                        ? productStatus.WAITINGFORAPPROVAL
+                        : productStatus.INVENTORY;
 
-            updateProductInServer({ status: proStatus });
+                console.log(status, productStatus, proStatus);
+
+                updateProductInServer({ status: proStatus });
+            }
         }
     };
 
+    const productContextValue = React.useMemo(
+        () => ({ productId: productId, setProductId: setProductId }),
+        [productId],
+    );
     return (
-        <ProductIdContext.Provider value={{ productId: productId, setProductId: setProductId }}>
+        <ProductIdContext.Provider value={productContextValue}>
             <View style={styles.container}>
                 <StatusBar statusBarColor={mainColor} />
                 <HeaderWithBackButtonTitleAndrightButton
                     rightComponent={() => (
                         <WrappedFeatherIcon
-                            iconName="trash-2"
+                            iconName="delete"
                             iconColor="#FFF"
                             containerHeight={30}
-                            onPress={() => {}}
+                            onPress={() => {
+                                deleteProduct();
+                            }}
                         />
                     )}
                     containerStyle={[{ padding: DSP }]}
@@ -292,6 +344,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 />
                 {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
                 <ScrollView contentContainerStyle={[PH(0.2)]}>
+                    {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle
                             title={distribution[0].name}
@@ -301,13 +354,18 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     )}
-                    <Border />
-                    <WrappedText
-                        text="Selected color variant of product"
-                        textColor={black100}
-                        containerStyle={{ marginTop: DSP * 0.5 }}
-                        fontSize={fs16}
-                    />
+
+                    {choosenColor && choosenColor.length > 0 && (
+                        <>
+                            <Border />
+                            <WrappedText
+                                text="Selected color variant of product"
+                                textColor={black100}
+                                containerStyle={{ marginTop: DSP * 0.5 }}
+                                fontSize={fs16}
+                            />
+                        </>
+                    )}
                     {choosenColor.map((item: choosenColor, index: number) => (
                         <EditSelectedColor
                             onPressAddMoreImage={() => {
@@ -321,7 +379,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                             item={item}
                             onPressDragSort={() => {
-                                console.log('index', index);
+                                //   console.log('index', index);
                                 setCurrentDragSortIndex(index);
                             }}
                             key={index}
@@ -331,11 +389,24 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     ))}
-                    <Filter filters={filter} filterValues={filterValues} setFilterValues={setFilterValuesCallback} />
+                    {filter.length > 0 && (
+                        <Filter
+                            filters={filter}
+                            filterValues={filterValues}
+                            setFilterValues={setFilterValuesCallback}
+                        />
+                    )}
                 </ScrollView>
                 <View style={[{ paddingHorizontal: DSP }, PV(0.2), BGCOLOR('#FFFFFF'), border]}>
-                    <ProductCompleteCTA
+                    {/* <ProductCompleteCTA
                         status={productDetails?.status}
+                        onPress={() => {
+                            checkError();
+                        }}
+                    /> */}
+                    <ImproveList
+                        notes={productDetails.note}
+                        status={productDetails.status}
                         onPress={() => {
                             checkError();
                         }}
@@ -346,7 +417,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     setPopup={() => {
                         setOpenChooseColor(false);
                     }}
-                    shopId={shopId._id}
+                    catalogueId={parentId}
+                    shopId={shopId}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];
                         setChoosenColor(data);
@@ -359,6 +431,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     chosenColor={choosenColor}
                     colors={distribution.length > 0 ? distribution[0].values : []}
+                    colorFilterKey={distribution.length > 0 ? distribution[0].key : ''}
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                 />
                 <ProvideSize
@@ -374,7 +447,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         data[currentColorIndex] = { ...data[currentColorIndex], sizes };
                         setChoosenColor(data);
                     }}
-                    shopId={shopId._id}
+                    shopId={shopId}
                     colorId={currentColorIndex > -1 ? choosenColor[currentColorIndex]._id : ''}
                 />
                 {loader && <Loader />}
@@ -390,7 +463,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }
                     isVisible={currentDragStortIndex > -1}
                     setPopup={() => {
-                        console.log('ser');
+                        //  console.log('ser');
                         setCurrentDragSortIndex(-1);
                     }}
                     setPhotosArrayAfterReordering={(photos: ImageOrVideo[]) => {
@@ -410,7 +483,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     existingPhotos={currentAddMoreImage > -1 ? choosenColor[currentAddMoreImage].photos : []}
                     updatePhotoArray={(photos: string[]) => {
-                        console.log('update =>', 'phtotos=>', photos);
+                        //   console.log('update =>', 'phtotos=>', photos);
                         updateColorInServer(currentAddMoreImage, {
                             photos: photos,
                             _id: choosenColor[currentAddMoreImage]._id,
@@ -431,10 +504,13 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     choosenSize={cuurentProductSizeIndex > -1 ? choosenColor[cuurentProductSizeIndex].sizes : []}
                     setChoosenSize={(sizes: choosenSize[]) => {
                         console.log('sized =>', sizes, cuurentProductSizeIndex);
-                        updateColorInServer(cuurentProductSizeIndex, {
-                            sizes,
-                            _id: choosenColor[cuurentProductSizeIndex]._id,
-                        });
+                        // updateColorInServer(cuurentProductSizeIndex, {
+                        //     sizes,
+                        //     _id: choosenColor[cuurentProductSizeIndex]._id,
+                        // });
+                        let data = [...choosenColor];
+                        data[cuurentProductSizeIndex].sizes = sizes;
+                        setChoosenColor(data);
                         setCurrentProductSizeIndex(-1);
                     }}
                     shopId={shopId}
@@ -448,15 +524,15 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         setCurrentColorSizeIndex('');
                     }}
                     index={currentSizeIndexOnSizeClick}
-                    shopId={shopId._id}
+                    shopId={shopId}
                     item={choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick]}
                     updateSize={(size: choosenSize) => {
-                        console.log('update size');
+                        //     console.log('update size');
                         let colors = [...choosenColor];
                         let a = { ...choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] };
                         a = { ...a, ...size };
                         choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] = a;
-                        console.log('a ===', a);
+                        //   console.log('a ===', a);
                         setChoosenColor(colors);
                     }}
                     removeSize={() => {

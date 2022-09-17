@@ -39,7 +39,7 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
         textStyle: { marginLeft: 5 },
     };
 
-    console.log('screens', screens);
+    //    console.log('screens', screens);
     return (
         <View style={[MT(0.1)]}>
             <FlatList

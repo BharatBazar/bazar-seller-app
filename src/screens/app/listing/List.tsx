@@ -10,26 +10,24 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { FlatList } from 'react-native-gesture-handler';
 import Loader from '@app/screens/component/Loader';
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
-import { Shop } from '@app/server/apis/shop/shop.interface';
 
 export interface ProductListProps extends MaterialTopTabNavigationProp {
-    shopId: Shop;
-    category: string;
-    subCategory: string;
-    subCategory1: string;
+    shopId: string;
+
     status: productStatus;
     isInitialRoute: boolean;
+    parentId: string;
 }
 
-const ProductList: React.SFC<ProductListProps> = ({
+const ProductList: React.FC<ProductListProps> = ({
     shopId,
     navigation,
-    category,
-    subCategory,
-    subCategory1,
+    parentId,
+
     status,
     isInitialRoute,
 }) => {
+    console.log('parentid', parentId);
     const [loading, setLoader] = useState(false);
     const [product, setProduct] = useState<IProduct[]>([]);
 
@@ -40,7 +38,7 @@ const ProductList: React.SFC<ProductListProps> = ({
             const response: IProducts = await APIgetAllProduct({
                 query: {
                     status: status,
-                    shopId: shopId._id,
+                    shopId: shopId,
                 },
             });
 
@@ -100,9 +98,7 @@ const ProductList: React.SFC<ProductListProps> = ({
                                         update: true,
                                         shopId: shopId,
                                         _id: item._id,
-                                        category: category,
-                                        subCategory: subCategory,
-                                        subCategory1: subCategory1,
+                                        parentId: parentId,
                                         changeTab: () => {
                                             navigation.jumpTo('Waiting for approval');
                                         },

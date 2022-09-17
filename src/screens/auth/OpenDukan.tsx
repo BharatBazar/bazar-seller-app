@@ -20,7 +20,6 @@ import ServerErrorText from './component/errorText';
 import Loader from '../component/Loader';
 import RightComponentButtonWithLeftText from '../components/button/RightComponentButtonWithLeftText';
 import { commonButtonProps } from '../components/button';
-import Ripple from 'react-native-material-ripple';
 import TextRippleButton from '../components/button/TextRippleB';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { PHA, PTA, PVA } from '@app/common/stylesheet';
@@ -101,6 +100,7 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
 
             setLoader(false);
+            console.log('Response', response);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'token exist');
@@ -118,13 +118,17 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     screen = NavigationKey.VERIFICATION;
                 } else if (currentAccountState.notCategory) {
                     screen = NavigationKey.PRODUCTDETAILS;
-                } else if (currentAccountState.notSubCategory) {
-                    screen = NavigationKey.PRODUCTSUBCATEGORY;
                 } else {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, true);
                     screen = NavigationKey.BHARATBAZARHOME;
                 }
-                if (screen == NavigationKey.VERIFICATION || screen == NavigationKey.BHARATBAZARHOME) {
+
+                console.log(screen, 'screen');
+                if (
+                    screen == NavigationKey.VERIFICATION ||
+                    screen == NavigationKey.BHARATBAZARHOME ||
+                    screen == NavigationKey.PRODUCTDETAILS
+                ) {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     resetTo(screen, currentAccountState.data);
                 } else {

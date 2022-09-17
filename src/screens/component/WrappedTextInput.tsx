@@ -6,6 +6,7 @@ import { colorCode, errorColor } from '../../common/color';
 import { getHP } from '../../common/dimension';
 import { AIC, JCC, MT } from '../../common/styles';
 import WrappedRoundButton from './WrappedRoundButton';
+import WrappedText from './WrappedText';
 
 interface Props {
     containerStyle?: StyleProp<any>;
@@ -33,6 +34,7 @@ interface Props {
     keyBoard?: string | any;
     textAlignVertical?: 'center' | 'auto' | 'top' | 'bottom';
     maxLength?: any;
+    title?: string;
 }
 
 interface State {
@@ -71,11 +73,19 @@ export default class WrappedTextInput extends Component<Props, State> {
             autoCapitalize,
             keyBoard,
             maxLength,
+            title,
         } = this.props;
         console.log('rendering', placeholder);
         const { secureTextEntry } = this.state;
         return (
             <View>
+                {title != undefined && (
+                    <WrappedText
+                        text={title}
+                        fontFamily={FontFamily.Medium}
+                        textStyle={{ marginTop: 10, marginBottom: 10 }}
+                    />
+                )}
                 <View style={[styles.mainContainer, containerStyle]}>
                     <TextInput
                         editable={editable}

@@ -3,18 +3,24 @@ import { View } from 'react-native';
 import { BC, BGCOLOR, BR, BW, DSP, JCC, MT, MV, provideShadow, PV } from '../../../../common/styles';
 
 import { getHP } from '../../../../common/dimension';
-import { IClassifier, IFilter, IProduct } from '@app/server/apis/product/product.interface';
+import {
+    FilterInterface,
+    FilterValueInterface,
+    IClassifier,
+    IFilter,
+    IProduct,
+} from '@app/server/apis/product/product.interface';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import SingleFilter from './SingleFilter';
 import { border, IPostDataToServer } from '../../edit/product/component/generalConfig';
 
 interface FilterProps {
-    filters: IFilter[];
-    filterValues: { [key: string]: IClassifier[] };
-    setFilterValues: (key: string, value: IClassifier[]) => void;
+    filters: FilterInterface[];
+    filterValues: { [key: string]: FilterValueInterface[] };
+    setFilterValues: (key: string, value: FilterValueInterface[]) => void;
 }
 
-const Filter: React.SFC<FilterProps> = ({ filters, setFilterValues, filterValues }) => {
+const Filter: React.FC<FilterProps> = ({ filters, setFilterValues, filterValues }) => {
     //console.log('filter', filters);
     return (
         <View style={[{ marginTop: DSP }, provideShadow(2), BR(0.1), BGCOLOR('#FFF'), { padding: DSP }]}>
@@ -24,7 +30,7 @@ const Filter: React.SFC<FilterProps> = ({ filters, setFilterValues, filterValues
                     filter={item}
                     index={index}
                     setFilterValues={setFilterValues}
-                    filterValues={filterValues[item.type]}
+                    filterValues={filterValues[item.key]}
                 />
             ))}
         </View>

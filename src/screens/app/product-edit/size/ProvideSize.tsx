@@ -169,6 +169,8 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
 
     const onPressDoLater = () => {
         const totalUncreatedProduct = selectedSize.findIndex((item) => item.itemId.length == 0);
+        console.log('total', totalUncreatedProduct);
+        setPopup(false);
         if (totalUncreatedProduct > -1) {
             setAlertState({
                 isVisible: true,
@@ -189,7 +191,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
 
     return (
         <ModalHOC isVisible={isVisible} setPopup={setPopup}>
-            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP }}>
+            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT }}>
                 {showBack ? (
                     <WrappedFeatherIcon
                         iconName={'chevron-left'}

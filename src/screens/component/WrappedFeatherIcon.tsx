@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { ActivityIndicator, ViewStyle } from 'react-native';
-import { colorCode, mainColor } from '../../common/color';
-import WrappedRectangleButton from './WrappedRectangleButton';
+import { ViewStyle } from 'react-native';
+import { mainColor } from '../../common/color';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import WrappedRoundButton from './WrappedRoundButton';
 import { fs20 } from '../../common';

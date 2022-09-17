@@ -51,7 +51,7 @@ const ButtonAddWithTitleAndSubTitle: React.FunctionComponent<ButtonAddWithTitleA
         >
             <View style={[FLEX(1.5), JCC()]}>
                 <WrappedFeatherIcon
-                    iconName="plus"
+                    iconName="add"
                     onPress={onPressPlus}
                     containerHeight={35}
                     containerStyle={[BGCOLOR('#FFFFF'), BW(1), BC(borderColor)]}

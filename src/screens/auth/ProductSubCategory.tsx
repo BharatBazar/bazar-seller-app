@@ -74,7 +74,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
         if (response.status == 1) {
             setShop(response.payload);
             const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
-                active: true,
+                active: false,
                 parent: { $in: response.payload.category.map((item) => item._id) },
                 categoryType: categoryType.SubCategory,
             });
@@ -254,7 +254,7 @@ const ProductSubCategory: React.SFC<ProductSubCategory> = ({
     //                                                 />
     //                                             </View>
     //                                             <LoadProductDetails
-    //                                                 query={{ parent: newSubCategory._id, active: true }}
+    //                                                 query={{ parent: newSubCategory._id, active: false }}
     //                                                 data={subCategory[newSubCategory._id]}
     //                                                 setData={(data: productData[]) => {
     //                                                     updateSubCategory(data, newSubCategory._id);

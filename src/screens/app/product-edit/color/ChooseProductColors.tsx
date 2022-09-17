@@ -4,7 +4,7 @@ import { getHP, getWP } from '../../../../common/dimension';
 import { colorCode } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
 import ModalHeader from '../../../component/ModalHeader';
-import { IFilter } from '../../../../server/apis/product/product.interface';
+import { FilterInterface, FilterValueInterface, IFilter } from '../../../../server/apis/product/product.interface';
 import { choosenColor, choosenSize, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, MH, MT, MV, PL, PR } from '@app/common/styles';
@@ -24,13 +24,15 @@ import AddPhotoPopup from '../photo';
 export interface ChooseProductColorsProps {
     setPopup: Function;
     isVisible: boolean;
-    colors: IFilter[] | [];
-    avaialbleSize: IFilter[] | [];
+    colors: FilterValueInterface[] | [];
+    avaialbleSize: FilterValueInterface[] | [];
     chosenColor: choosenColor[];
     addColorsToChoosenArray: (color: choosenColor) => void;
     removeColorFromArray: (index: number) => void;
     shopId: string;
     updateColorInArray: (color: Partial<choosenColor>, index: number) => void;
+    catalogueId: string;
+    colorFilterKey: string;
 }
 
 const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
@@ -43,25 +45,32 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     avaialbleSize,
     shopId,
     updateColorInArray,
+    catalogueId,
+    colorFilterKey,
 }) => {
     //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
     const [loader, setLoader] = React.useState(false);
-    const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
+    //const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);
 
-    console.log('product DI', productId);
-    const createColorInServer = async (colorChoosen: IFilter, index: number) => {
+    //console.log('product DI', productId);
+    const createColorInServer = async (colorChoosen: FilterValueInterface, index: number) => {
         try {
             setLoader(true);
-            const color = await createProductColor({
+            let data = {
                 color: colorChoosen._id,
                 parentId: productId ? productId : undefined,
                 shopId: shopId,
                 photos: [DEFAULT_IMAGE_URL],
-            });
+                catalogueId: catalogueId,
+            };
+
+            data[colorFilterKey] = [...chosenColor.map((item) => item.color._id), colorChoosen._id];
+
+            const color = await createProductColor(data);
             setLoader(false);
             if (!productId) {
                 setProductId(color.payload.productId);
@@ -80,10 +89,15 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         }
     };
 
-    const deleteColorInServer = async (_id: string, index: number) => {
+    const deleteColorInServer = async (_id: string, index: number, fitlerValueId: string) => {
         try {
             setLoader(true);
-            const color = await deleteProductColor({ _id, parentId: productId ? productId : '' });
+            let data = {};
+            data[colorFilterKey] = [
+                ...chosenColor.filter((item) => item.color._id != fitlerValueId).map((color) => color.color._id),
+            ];
+
+            const color = await deleteProductColor({ _id, parentId: productId ? productId : '', ...data });
             removeColorFromArray(index);
             setLoader(false);
         } catch (error) {
@@ -110,9 +124,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         }
     };
 
-    const onPressColor = (selected: boolean, indexInSelectedColor: number, item: IFilter, index: number) => {
+    const onPressColor = (
+        selected: boolean,
+        indexInSelectedColor: number,
+        item: FilterValueInterface,
+        index: number,
+    ) => {
         if (selected) {
-            deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor);
+            deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor, item._id);
         } else {
             createColorInServer(item, index);
         }
@@ -138,7 +157,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
 
                 <ScrollView style={{ maxHeight: getHP(5) }}>
                     <View style={{ flexWrap: 'wrap', flex: 1, flexDirection: 'row' }}>
-                        {colors.map((item: IFilter, index: number) => {
+                        {colors.map((item: FilterValueInterface, index: number) => {
                             const indexInSelectedColor = chosenColor.findIndex((color) => color.color._id == item._id);
                             const selected = indexInSelectedColor > -1;
                             console.log('selected =>', selected);

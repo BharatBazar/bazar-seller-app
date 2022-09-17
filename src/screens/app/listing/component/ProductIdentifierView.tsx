@@ -76,14 +76,22 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
             </View>
 
             <View style={[FDR(), JCC('center'), AIC('center'), MT(0.1)]}>
-                {rest.colors.map((color, index) => {
-                    return (
-                        <View
-                            key={index}
-                            style={[HP(0.2), W(getHP(0.2)), BR(0.1), BGCOLOR(color.color.description), MR(0.1), border]}
-                        />
-                    );
-                })}
+                {rest.colors.length > 0 &&
+                    rest.colors.map((color, index) => {
+                        return (
+                            <View
+                                key={index}
+                                style={[
+                                    HP(0.2),
+                                    W(getHP(0.2)),
+                                    BR(0.1),
+                                    BGCOLOR(color?.color?.description),
+                                    MR(0.1),
+                                    border,
+                                ]}
+                            />
+                        );
+                    })}
                 {rest.colors.length == 0 && <WrappedText text={'No color added'} textColor={'#646464'} />}
             </View>
             {rest.status == productStatus.REJECTED ? (
@@ -99,6 +107,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                     />
                 </View>
             ) : (
+                typeof title == 'string' &&
                 title.length > 0 && (
                     <WrappedText
                         text={title}

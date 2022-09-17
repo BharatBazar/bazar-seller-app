@@ -6,6 +6,7 @@ import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFeatherIconWithRightText';
+import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import * as React from 'react';
 import { ImageBackground, View, StyleSheet } from 'react-native';
 import { border } from '../../edit/product/component/generalConfig';
@@ -31,7 +32,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onClickEditSize,
     onPressSingleSize,
 }) => {
-    console.log('sizes =>', item.photos);
+    //console.log('sizes =>', item.photos);
 
     const imageBackgroundStyle = [BR(0.1), { height: 80, width: 120 }, MR(0.4)];
     return (
@@ -40,15 +41,15 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                 <View style={[FDR(), AIC()]}>
                     <View style={[BGCOLOR(item.color.description), { height: 20, width: 20, borderRadius: 100 }]} />
                     <WrappedText
-                        text={'product ' + item.color.name + ' color details'}
-                        textColor={item.color.description}
+                        text={'Product ' + item.color.name + ' color details'}
+                        //textColor={item.color.description}
                         fontSize={fs15}
                         fontFamily={FontFamily.Medium}
                         containerStyle={[ML(0.2), { marginTop: 0 }]}
                     />
                 </View>
-                <WrappedFeatherIcon
-                    iconName="trash-2"
+                <ButtonMaterialIcons
+                    iconName="delete"
                     iconSize={20}
                     containerHeight={30}
                     containerStyle={[BGCOLOR('#FFF'), provideShadow(2)]}
@@ -134,7 +135,14 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                         onPressSingleSize(index);
                                     }}
                                     buttonText={
-                                        item.size.name + ' ' + item.size.description + '\n' + item.quantity + ' piece'
+                                        item.size
+                                            ? item.size.name +
+                                              ' ' +
+                                              item.size.description +
+                                              '\n' +
+                                              item.quantity +
+                                              ' piece'
+                                            : ''
                                     }
                                 />
                             ))}
