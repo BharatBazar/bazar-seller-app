@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TextInput, ViewStyle } from 'react-native';
+import { View, TextInput, ViewStyle, Text } from 'react-native';
 
 import { getHP } from '@app/common/dimension';
 import { AIC, BC, BR, BW, FDR, MH } from '@app/common/styles';
@@ -9,10 +9,12 @@ import { fs20, NavigationProps } from '@app/common';
 export interface SearchProps {
     containerStyle?: ViewStyle[] | ViewStyle;
     placeholder: string;
+    setSearchText:Function;
+    searchText:string
 }
 
-const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder }) => {
-    const [searchedText, setSearchText] = React.useState('');
+const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder,setSearchText,searchText }) => {
+    // const [searchedText, setSearchText] = React.useState('');
     return (
         <View
             style={[
@@ -35,12 +37,12 @@ const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder }) =
                         flex: 1,
                     },
                 ]}
-                value={searchedText}
+                value={searchText}
                 onChangeText={(searchedText: string) => setSearchText(searchedText)}
                 placeholder={placeholder}
                 placeholderTextColor={'#8A8A8A'}
             />
-            {searchedText.length > 0 && (
+            {searchText.length > 0 && (
                 <Icon
                     name={'x-circle'}
                     size={fs20}
@@ -51,6 +53,7 @@ const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder }) =
                     style={[MH(0.2)]}
                 />
             )}
+           
         </View>
     );
 };

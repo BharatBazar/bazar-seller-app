@@ -1,6 +1,6 @@
 import React from 'react';
-import { Easing } from 'react-native';
-import Toast from 'react-native-toast-message';
+import { Easing, Image, Text, View } from 'react-native';
+import Toast, { BaseToast, ErrorToast, InfoToast } from 'react-native-toast-message';
 import Splash from '../screens/startup/SplashScreen';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -9,7 +9,7 @@ import { DrawerActions, NavigationContainer } from '@react-navigation/native';
 import { TransitionSpec } from '@react-navigation/stack/lib/typescript/src/types';
 import { NavigationKey } from '../labels';
 import { colorCode } from '../common/color';
-import { NavigationProps } from '../common';
+import { FontFamily, NavigationProps } from '../common';
 import { provideShadow } from '../common/styles';
 import { SideMenu } from '../screens/app/drawer/SideMenu';
 import { STATUS_BAR_HEIGHT } from '../screens/component/StatusBar';
@@ -31,6 +31,7 @@ import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/product-edit/index';
+import CloseIcon from 'react-native-vector-icons/AntDesign'
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -40,6 +41,58 @@ const config: TransitionSpec = {
         duration: 150,
         easing: Easing.linear,
     },
+};
+
+const toastConfig = {
+
+  success: (props:any) => (
+    <BaseToast
+      {...props}
+      style={{ borderLeftColor: 'green' }}
+      contentContainerStyle={{ paddingHorizontal: 15 }}
+      text1Style={{
+        fontSize: 15,
+        fontFamily:FontFamily.Helvatica,
+      }}
+      text2Style={{
+        fontSize: 13,
+        fontFamily:FontFamily.Helvatica,
+      }}
+       renderTrailingIcon={()=><CloseIcon name='close' size={22} color="#222222" style={{ alignSelf:"center",paddingRight:10}}/>}
+    />
+  ),
+
+  error: (props:any) => (
+    <ErrorToast
+      {...props}
+      text1Style={{
+        fontSize: 15,
+        fontFamily:FontFamily.Helvatica,
+      }}
+      text2Style={{
+        fontSize: 13,
+        fontFamily:FontFamily.Helvatica,
+      }}
+      renderTrailingIcon={()=><CloseIcon name='close' size={22} color="#222222" style={{ alignSelf:"center",paddingRight:10}}/>}
+   
+    />
+  ),
+
+  info: (props:any) => (
+    <InfoToast
+      {...props}
+      text1Style={{
+        fontSize: 15,
+        fontFamily:FontFamily.Helvatica,
+      }}
+      text2Style={{
+        fontSize: 13,
+        fontFamily:FontFamily.Helvatica,
+      }}
+      renderTrailingIcon={()=><CloseIcon name='close' size={22} color="#222222" style={{ alignSelf:"center",paddingRight:10}}/>}
+   
+    />
+  ),
 };
 const AppNavigation = () => {
     return (
@@ -115,7 +168,7 @@ const AppNavigation = () => {
                 <Stack.Screen name={NavigationKey.EditProductSize} component={ProvideSize} />
                 {/* <Stack.Screen name={NavigationKey.PRODUCTSTATUS} component={ProductTab} /> */}
             </Stack.Navigator>
-            <Toast />
+            <Toast config={toastConfig} />
         </NavigationContainer>
     );
 };

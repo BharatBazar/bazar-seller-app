@@ -110,14 +110,16 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
 
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
         try {
+            console.log("DATA",data);
             setLoaderCallBack(true);
             const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-
+            // console.log("OWNER_DETAILS",ownerDetails.shop);
             //getting all the current selected catalogue of an shop with the parent catalogue or top
             //category populated
             const response1: IRGetShopCatalogue = await getShopCatalgoue({
                 _id: ownerDetails.shop,
             });
+            console.log("RESPONSE_1",response1);
 
             setSelectedCategory([
                 ...response1.payload.selectedCategory,
@@ -127,7 +129,6 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
             setSellingItem(response1.payload.sellingItems);
 
             const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
-
             setLoaderCallBack(false);
 
             setData([...response.payload]);

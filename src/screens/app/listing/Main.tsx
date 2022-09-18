@@ -19,6 +19,7 @@ import { showMessage } from 'react-native-flash-message';
 import { Shop } from '@app/server/apis/shop/shop.interface';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 
+
 export interface ProductProps extends NavigationProps {
     route: {
         params: { item: IProductCatalogue; shopId: string };

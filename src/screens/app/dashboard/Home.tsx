@@ -31,10 +31,10 @@ const Home = (props: Props) => {
             let response: IRGetShop = await getShop({
                 _id: userDetails.shop,
             });
-            console.log('response', response);
             setLoader(false);
             if (response.status == 1) {
                 setShop(response.payload);
+
             } else {
                 throw new Error(response.message);
             }
