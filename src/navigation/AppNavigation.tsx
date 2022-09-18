@@ -1,5 +1,5 @@
 import React from 'react';
-import { Easing, Image, Text, View } from 'react-native';
+import { Easing, Image, Text, TouchableOpacity, View } from 'react-native';
 import Toast, { BaseToast, ErrorToast, InfoToast } from 'react-native-toast-message';
 import Splash from '../screens/startup/SplashScreen';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -58,7 +58,7 @@ const toastConfig = {
         fontSize: 13,
         fontFamily:FontFamily.Helvatica,
       }}
-       renderTrailingIcon={()=><CloseIcon name='close' size={22} color="#222222" style={{ alignSelf:"center",paddingRight:10}}/>}
+      renderTrailingIcon={()=><TouchableOpacity style={{ alignSelf:"center",paddingRight:10}} onPress={()=>Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
     />
   ),
 
@@ -73,7 +73,7 @@ const toastConfig = {
         fontSize: 13,
         fontFamily:FontFamily.Helvatica,
       }}
-      renderTrailingIcon={()=><CloseIcon name='close' size={22} color="#222222" style={{ alignSelf:"center",paddingRight:10}}/>}
+      renderTrailingIcon={()=><TouchableOpacity style={{ alignSelf:"center",paddingRight:10}} onPress={()=>Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
    
     />
   ),
@@ -89,7 +89,7 @@ const toastConfig = {
         fontSize: 13,
         fontFamily:FontFamily.Helvatica,
       }}
-      renderTrailingIcon={()=><CloseIcon name='close' size={22} color="#222222" style={{ alignSelf:"center",paddingRight:10}}/>}
+      renderTrailingIcon={()=><TouchableOpacity style={{ alignSelf:"center",paddingRight:10}} onPress={()=>Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
    
     />
   ),

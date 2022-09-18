@@ -8,7 +8,7 @@ export class ToastHOC {
             text1: text1 || 'Error',
             text2: text2,
             autoHide: true,
-            onPress:()=>Toast.hide()
+            // onPress:()=>Toast.hide()
             
         });
     }
@@ -19,7 +19,6 @@ export class ToastHOC {
             text1: text1 || 'Success',
             text2: text2,
             autoHide: true,
-            onPress:()=>Toast.hide()
         });
     }
     static infoAlert(text2: string, text1?: string) {
@@ -29,7 +28,6 @@ export class ToastHOC {
             text1: text1 || 'Info',
             text2: text2,
             autoHide: true,
-            onPress:()=>Toast.hide()
         });
     }
 }
