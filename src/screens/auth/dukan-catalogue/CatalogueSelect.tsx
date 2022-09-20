@@ -23,8 +23,8 @@ interface CatalogueProps {
     setPopup: Function;
     catalgoueTree: string[][];
 
-    callBack: (path: IProductCatalogue[]) => void;
-    onPressDelete: (path: IProductCatalogue[]) => void;
+    callBack: (path: IProductCatalogue[], callBack: Function) => void;
+    onPressDelete: (path: IProductCatalogue[], callBack: Function) => void;
     parentCatalogue: IProductCatalogue;
 }
 
@@ -75,13 +75,11 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
     const getCatalogueDetails = async () => {
         setLoader(true);
 
-        // setSelectedCategory();
         const response1: IRGetProductCatalogue = await getProductCatalogueAPI({
             active: false,
             parent: parentCatalogue._id,
         });
 
-        // console.log(response1.payload);
         if (response1.status == 1) {
             response1.payload.sort((a, b) => sortFunction(a, b, []));
             setCurrentItem([...response1.payload]);
@@ -97,11 +95,17 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
         else {
             setSelectedCategory([]);
         }
+        return () => {
+            console.log('Rerendering popup');
+        };
+        console.log('Is use effect getting triggered', isVisible);
     }, [isVisible]);
 
     const currentCatalogue: IProductCatalogue | { name: string; image: '' } = parentCatalogue
         ? parentCatalogue
         : { name: '', image: '' };
+    console.log('loader value in popup', loader, currentCatalogue.name);
+
     return (
         <ModalHOC
             refer={(ref) => (modalRef.current = ref)}
@@ -159,13 +163,31 @@ const Catalogue: React.FunctionComponent<CatalogueProps> = ({
                                     item={item}
                                     index={0}
                                     selectedTree={catalgoueTree}
-                                    onPressDelete={(path) => {
-                                        onPressDelete(item.child.length > 0 ? [item, ...path] : [item]);
+                                    onPressDelete={(path, callBack) => {
+                                        if (!callBack) setLoader(true);
+                                        onPressDelete(
+                                            item.child.length > 0 ? [item, ...path] : [item],
+                                            callBack
+                                                ? () => {
+                                                      callBack();
+                                                  }
+                                                : () => {
+                                                      setLoader(false);
+                                                  },
+                                        );
                                     }}
-                                    onPressCategory={(path) => {
-                                        console.log('isSelected', isSelected, path, item.name);
-
-                                        callBack(item.child.length > 0 ? [item, ...path] : [item]);
+                                    onPressCategory={(path, callback) => {
+                                        if (!callback) setLoader(true);
+                                        callBack(
+                                            item.child.length > 0 ? [item, ...path] : [item],
+                                            callback
+                                                ? () => {
+                                                      callback();
+                                                  }
+                                                : () => {
+                                                      setLoader(false);
+                                                  },
+                                        );
                                     }}
                                     selected={isSelected}
                                 />
