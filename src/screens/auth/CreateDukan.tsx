@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, StyleSheet, ScrollView, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, ScrollView, KeyboardAvoidingView, Platform } from 'react-native';
 import { colorCode, messageColor } from '../../common/color';
 import { AIC, FDR, MT, FLEX, ML, BGCOLOR, HP } from '../../common/styles';
 import { textInputContainerStyle, buttonContainerStyle, absoluteBottomWrapper } from '../../common/containerStyles';
@@ -22,7 +22,7 @@ import { emailValidation, mobileValidation } from '../../common';
 import HeaderText from './component/HeaderText';
 import { Storage, StorageItemKeys } from '../../storage';
 import { STATUS_BAR_HEIGHT } from '../component/StatusBar';
-import { GENERAL_PADDING, MTA } from '@app/common/stylesheet';
+import { GENERAL_PADDING, MBA, MHA, MTA, PHA, PVA } from '@app/common/stylesheet';
 import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
 import WrappedText from '../component/WrappedText';
@@ -75,7 +75,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: false,
+            otpSent: true,
             signInButtonState: 0,
             otpButtonState: 1,
             formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '', gender: 'M' },
@@ -287,180 +287,184 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         //console.log(details.phoneNumber, phoneNumber, update);
 
         return (
-            <ScrollView
-                //       keyboardShouldPersistTaps={true}
-                style={[
-                    {
-                        // flex: 1,
-
-                        backgroundColor: '#FFFFFF',
-                    },
-                ]}
-                contentContainerStyle={{
-                    padding: GENERAL_PADDING,
-                    paddingTop: update ? STATUS_BAR_HEIGHT + GENERAL_PADDING : GENERAL_PADDING,
-                }}
-            >
-                <HeaderText
-                    step={update ? undefined : 'Step 1'}
-                    heading={update ? CreateDukanText.UPDATE_HEADING : CreateDukanText.HEADING}
-                    subHeading={CreateDukanText.MESSAGE}
-                />
-                {this.state.formState.phoneNumber.length < 10 ? null : this.returnErrorText('serverError')}
-                <View style={{}}>
-                    <View style={[FDR(), AIC()]}>
-                        <View style={{ flex: 1 }}>
-                            <WrappedTextInput
-                                placeholder={CreateDukanText.ownerMobileNumber}
-                                value={phoneNumber}
-                                onChangeText={(phoneNumber) => {
-                                    this.setField('phoneNumber', phoneNumber);
-                                    if (update && phoneNumber == details.phoneNumber) {
-                                        this.setState({ otpSent: false });
-                                    }
-                                }}
-                                {...componentProps.textInputProps}
-                                errorText={error['phoneNumber']}
-                                maxLength={10}
-                                keyBoard="numeric"
-                            />
-                        </View>
-                    </View>
-
-                    {((update && phoneNumber != details.phoneNumber) || !update) && (
-                        <TextButton
-                            text={
-                                otpSent
-                                    ? CreateDukanText.resendOTp + (timer > 0 ? 'in ' + timer + 's' : '')
-                                    : CreateDukanText.sendOtp
-                            }
-                            textProps={componentProps.buttonTextProps}
-                            containerStyle={[
-                                buttonContainerStyle,
-                                { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
-                            ]}
-                            onPress={() => {
-                                this.checkPhoneNumber(this.state.formState.phoneNumber);
-                            }}
-                            isLoading={otpButtonState == 2 ? true : false}
-                            disabled={otpButtonState == 2 || timer > 0}
+            <View style={[FLEX(1)]}>
+                <KeyboardAvoidingView
+                    behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+                    keyboardVerticalOffset={Platform.OS === 'ios' ? 64 : 0}
+                    style={{ flexGrow: 1 }}
+                >
+                    <ScrollView
+                        style={[
+                            {
+                                backgroundColor: '#FFFFFF',
+                            },
+                        ]}
+                        contentContainerStyle={{
+                            padding: GENERAL_PADDING,
+                            paddingTop: update ? STATUS_BAR_HEIGHT + GENERAL_PADDING : GENERAL_PADDING,
+                        }}
+                    >
+                        <HeaderText
+                            step={update ? undefined : 'Step 1'}
+                            heading={update ? CreateDukanText.UPDATE_HEADING : CreateDukanText.HEADING}
+                            subHeading={CreateDukanText.MESSAGE}
                         />
-                    )}
-                    {otpSent && (
-                        <>
-                            <WrappedTextInput
-                                placeholder={CreateDukanText.verificationOtp}
-                                value={otp}
-                                {...componentProps.textInputProps}
-                                onChangeText={(otp) => this.setField('otp', otp)}
-                                errorText={error['otpError']}
-                            />
-                            {otpSent && (
-                                <WrappedText text={CreateDukanText.otpMessage} fontSize={10} textColor={messageColor} />
+                        {this.state.formState.phoneNumber.length < 10 ? null : this.returnErrorText('serverError')}
+                        <View style={{}}>
+                            <View style={[FDR(), AIC()]}>
+                                <View style={{ flex: 1 }}>
+                                    <WrappedTextInput
+                                        placeholder={CreateDukanText.ownerMobileNumber}
+                                        value={phoneNumber}
+                                        onChangeText={(phoneNumber) => {
+                                            this.setField('phoneNumber', phoneNumber);
+                                            if (update && phoneNumber == details.phoneNumber) {
+                                                this.setState({ otpSent: false });
+                                            }
+                                        }}
+                                        {...componentProps.textInputProps}
+                                        errorText={error['phoneNumber']}
+                                        maxLength={10}
+                                        keyBoard="numeric"
+                                    />
+                                </View>
+                            </View>
+
+                            {((update && phoneNumber != details.phoneNumber) || !update) && (
+                                <TextButton
+                                    text={
+                                        otpSent
+                                            ? CreateDukanText.resendOTp + (timer > 0 ? 'in ' + timer + 's' : '')
+                                            : CreateDukanText.sendOtp
+                                    }
+                                    textProps={componentProps.buttonTextProps}
+                                    containerStyle={[
+                                        buttonContainerStyle,
+                                        { alignSelf: 'flex-end', paddingHorizontal: '2%', marginTop: getHP(0.1) },
+                                    ]}
+                                    onPress={() => {
+                                        this.checkPhoneNumber(this.state.formState.phoneNumber);
+                                    }}
+                                    isLoading={otpButtonState == 2 ? true : false}
+                                    disabled={otpButtonState == 2 || timer > 0}
+                                />
                             )}
-                        </>
-                    )}
-
-                    {((!update && otpSent) ||
-                        (update && phoneNumber != details.phoneNumber && otpSent) ||
-                        (update && phoneNumber == details.phoneNumber)) && (
-                        <>
-                            <WrappedText
-                                text={'Please provide your gender'}
-                                fontSize={fs12}
-                                textColor={messageColor}
-                                containerStyle={[MTA()]}
-                            />
-
-                            <View style={[FDR(), MTA()]}>
-                                <NormalCheckbox
-                                    placeholder={'Male'}
-                                    value={gender == 'M'}
-                                    containerStyle={[FLEX(1)]}
-                                    setValue={() => {
-                                        this.setField('gender', 'M');
-                                    }}
-                                />
-                                <NormalCheckbox
-                                    containerStyle={[FLEX(1)]}
-                                    placeholder={'Female'}
-                                    value={gender == 'F'}
-                                    setValue={() => {
-                                        this.setField('gender', 'F');
-                                    }}
-                                />
-                                <NormalCheckbox
-                                    containerStyle={[FLEX(1)]}
-                                    placeholder={'Other'}
-                                    value={gender == 'O'}
-                                    setValue={() => {
-                                        this.setField('gender', 'O');
-                                    }}
-                                />
-                            </View>
-
-                            <View style={[FDR()]}>
-                                <View style={[FLEX(1)]}>
+                            {otpSent && (
+                                <>
                                     <WrappedTextInput
-                                        value={firstName}
-                                        placeholder={CreateDukanText.ownerFirstName}
-                                        // onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
-                                        onChangeText={(firstName) => this.setField('firstName', firstName)}
-                                        autoCapitalize={'words'}
-                                        errorText={error['firstNameError']}
+                                        placeholder={CreateDukanText.verificationOtp}
+                                        value={otp}
+                                        {...componentProps.textInputProps}
+                                        onChangeText={(otp) => this.setField('otp', otp)}
+                                        errorText={error['otpError']}
+                                    />
+                                    {otpSent && (
+                                        <WrappedText
+                                            text={CreateDukanText.otpMessage}
+                                            fontSize={10}
+                                            textColor={messageColor}
+                                        />
+                                    )}
+                                </>
+                            )}
+
+                            {((!update && otpSent) ||
+                                (update && phoneNumber != details.phoneNumber && otpSent) ||
+                                (update && phoneNumber == details.phoneNumber)) && (
+                                <>
+                                    <WrappedText
+                                        text={'Please provide your gender'}
+                                        fontSize={fs12}
+                                        textColor={messageColor}
+                                        containerStyle={[MTA()]}
+                                    />
+
+                                    <View style={[FDR(), MTA()]}>
+                                        <NormalCheckbox
+                                            placeholder={'Male'}
+                                            value={gender == 'M'}
+                                            containerStyle={[FLEX(1)]}
+                                            setValue={() => {
+                                                this.setField('gender', 'M');
+                                            }}
+                                        />
+                                        <NormalCheckbox
+                                            containerStyle={[FLEX(1)]}
+                                            placeholder={'Female'}
+                                            value={gender == 'F'}
+                                            setValue={() => {
+                                                this.setField('gender', 'F');
+                                            }}
+                                        />
+                                        <NormalCheckbox
+                                            containerStyle={[FLEX(1)]}
+                                            placeholder={'Other'}
+                                            value={gender == 'O'}
+                                            setValue={() => {
+                                                this.setField('gender', 'O');
+                                            }}
+                                        />
+                                    </View>
+
+                                    <View style={[FDR()]}>
+                                        <View style={[FLEX(1)]}>
+                                            <WrappedTextInput
+                                                value={firstName}
+                                                placeholder={CreateDukanText.ownerFirstName}
+                                                // onChangeText={(firstName) => this.setField('firstName', capatailize(firstName))}
+                                                onChangeText={(firstName) => this.setField('firstName', firstName)}
+                                                autoCapitalize={'words'}
+                                                errorText={error['firstNameError']}
+                                                {...componentProps.textInputProps}
+                                            />
+                                        </View>
+                                        <View style={[FLEX(1), ML(0.1)]}>
+                                            <WrappedTextInput
+                                                value={lastName}
+                                                placeholder={CreateDukanText.ownerLastName}
+                                                // onChangeText={(lastName) => this.setField('lastName', capatailize(lastName))}
+                                                onChangeText={(lastName) => this.setField('lastName', lastName)}
+                                                autoCapitalize="words"
+                                                errorText={error['lastNameError']}
+                                                {...componentProps.textInputProps}
+                                            />
+                                        </View>
+                                    </View>
+                                    <WrappedText
+                                        text={CreateDukanText.ownerNameMessage}
+                                        fontSize={10}
+                                        textColor={messageColor}
+                                    />
+
+                                    <WrappedTextInput
+                                        placeholder={CreateDukanText.ownerEmail}
+                                        value={email}
+                                        onChangeText={(email) => this.setField('email', email)}
+                                        errorText={error['emailError']}
+                                        autoCapitalize={'none'}
                                         {...componentProps.textInputProps}
                                     />
-                                </View>
-                                <View style={[FLEX(1), ML(0.1)]}>
-                                    <WrappedTextInput
-                                        value={lastName}
-                                        placeholder={CreateDukanText.ownerLastName}
-                                        // onChangeText={(lastName) => this.setField('lastName', capatailize(lastName))}
-                                        onChangeText={(lastName) => this.setField('lastName', lastName)}
-                                        autoCapitalize="words"
-                                        errorText={error['lastNameError']}
-                                        {...componentProps.textInputProps}
+                                    <WrappedText
+                                        text={CreateDukanText.ownerEmailMessage}
+                                        fontSize={10}
+                                        textColor={messageColor}
                                     />
-                                </View>
-                            </View>
-                            <WrappedText
-                                text={CreateDukanText.ownerNameMessage}
-                                fontSize={10}
-                                textColor={messageColor}
-                            />
-
-                            <WrappedTextInput
-                                placeholder={CreateDukanText.ownerEmail}
-                                value={email}
-                                onChangeText={(email) => this.setField('email', email)}
-                                errorText={error['emailError']}
-                                autoCapitalize={'none'}
-                                {...componentProps.textInputProps}
-                            />
-                            <WrappedText
-                                text={CreateDukanText.ownerEmailMessage}
-                                fontSize={10}
-                                textColor={messageColor}
-                            />
-                            <TextButton
-                                // text={CreateDukanText.SignIn}
-                                text={
-                                    update
-                                        ? 'Update details'
-                                        : `Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`
-                                }
-                                textProps={componentProps.buttonTextProps}
-                                containerStyle={buttonContainerStyle}
-                                onPress={() => {
-                                    this.validateFields();
-                                }}
-                                isLoading={signInButtonState == 2 ? true : false}
-                                disabled={signInButtonState == 2}
-                            />
-                        </>
-                    )}
-                </View>
-            </ScrollView>
+                                </>
+                            )}
+                        </View>
+                    </ScrollView>
+                </KeyboardAvoidingView>
+                <TextButton
+                    text={update ? 'Update details' : `Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`}
+                    textProps={componentProps.buttonTextProps}
+                    containerStyle={[buttonContainerStyle, MHA(), MBA()]}
+                    onPress={() => {
+                        this.validateFields();
+                    }}
+                    isLoading={signInButtonState == 2 ? true : false}
+                    disabled={signInButtonState == 2}
+                />
+            </View>
         );
     }
 }
