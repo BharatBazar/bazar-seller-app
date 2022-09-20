@@ -43,11 +43,12 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const [loader, setLoader] = React.useState(false);
     const saveSelectedFilterValues = async (callback?: Function) => {
         setLoader(true);
-
+        let dataToSend = {};
+        dataToSend[filters[currentIndex].key] = selectedValues[filters[currentIndex].key];
         try {
             const response = await updateSelectedFilterValues({
                 _id: shopId,
-                ...selectedValues,
+                ...dataToSend,
                 parent: item._id,
             });
             setLoader(false);
