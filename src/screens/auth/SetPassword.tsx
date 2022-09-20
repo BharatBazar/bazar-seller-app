@@ -165,6 +165,7 @@ const SetPassword: React.FC<OpenDukanProps> = ({
                         placeholder={'Confirm Password'}
                         value={formData.confirmPassword}
                         secureTextEntry={true}
+                        eyeButton={true}
                         onChangeText={(confirmPassword) => setField('confirmPassword', confirmPassword)}
                         {...componentProps.textInputProps}
                         errorText={error['confirmPassword']}

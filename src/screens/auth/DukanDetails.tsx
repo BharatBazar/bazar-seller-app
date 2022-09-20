@@ -100,9 +100,9 @@ const ShopDetails: React.FC<ShopDetailsProps> = ({
             error['shopName'] = 'Please enter a attractive shop name.';
         }
 
-        if (shopDetails.shopDescription.length < 3) {
-            error['shopDescription'] = 'Please enter a valid shop description.';
-        }
+        // if (shopDetails.shopDescription.length < 3) {
+        //     error['shopDescription'] = 'Please enter a valid shop description.';
+        // }
 
         if (Object.keys(error).length == 0) {
             setError({});

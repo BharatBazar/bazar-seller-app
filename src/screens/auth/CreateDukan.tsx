@@ -75,7 +75,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
         super(props);
 
         this.state = {
-            otpSent: true,
+            otpSent: false,
             signInButtonState: 0,
             otpButtonState: 1,
             formState: { phoneNumber: '', otp: '', firstName: '', email: '', lastName: '', gender: 'M' },
@@ -297,6 +297,7 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                         style={[
                             {
                                 backgroundColor: '#FFFFFF',
+                                flexGrow: 1,
                             },
                         ]}
                         contentContainerStyle={{
@@ -449,21 +450,25 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                                         fontSize={10}
                                         textColor={messageColor}
                                     />
+                                    <TextButton
+                                        text={
+                                            update
+                                                ? 'Update details'
+                                                : `Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`
+                                        }
+                                        textProps={componentProps.buttonTextProps}
+                                        containerStyle={[buttonContainerStyle, MTA()]}
+                                        onPress={() => {
+                                            this.validateFields();
+                                        }}
+                                        isLoading={signInButtonState == 2 ? true : false}
+                                        disabled={signInButtonState == 2}
+                                    />
                                 </>
                             )}
                         </View>
                     </ScrollView>
                 </KeyboardAvoidingView>
-                <TextButton
-                    text={update ? 'Update details' : `Add ${firstName.length > 0 ? firstName + ' as ' : 'as '}Owner`}
-                    textProps={componentProps.buttonTextProps}
-                    containerStyle={[buttonContainerStyle, MHA(), MBA()]}
-                    onPress={() => {
-                        this.validateFields();
-                    }}
-                    isLoading={signInButtonState == 2 ? true : false}
-                    disabled={signInButtonState == 2}
-                />
             </View>
         );
     }
