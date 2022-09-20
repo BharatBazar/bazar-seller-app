@@ -235,6 +235,7 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
         params: { item, shopId },
     },
 }) => {
+    console.log('item', item);
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF')]}>
             <View
@@ -256,7 +257,7 @@ const SelectFilter: React.FunctionComponent<SelectFilterProps> = ({
                     iconName={'chevron-left'}
                 />
                 <HeaderWithTitleAndSubHeading
-                    heading={item.name}
+                    heading={item.type}
                     subHeading={'select filter values for each filter'}
                     borderNeeded={false}
                     headerContainerStyle={[MHA()]}
