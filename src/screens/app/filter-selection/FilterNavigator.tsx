@@ -118,7 +118,8 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     }, [currentIndex]);
 
     const onContinue = () => {
-        if (selectedValues[filters[currentIndex].key]) {
+        const keyInSel = filters[currentIndex].key;
+        if (selectedValues[keyInSel] && selectedValues[keyInSel].length > 0) {
             saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {
                     listRef?.current?.scrollToOffset({
