@@ -1,15 +1,11 @@
-import { NavigationProps } from '@app/common';
-import { mainColor } from '@app/common/color';
-import { AIC, BGCOLOR, FDR, FLEX, provideShadow } from '@app/common/styles';
-import { GENERAL_PADDING, MHA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
-
-import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
-import GeneralButtonWithNormalBg from '@app/screens/components/button/ButtonWithBgAndRightIconOrComponent';
-import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
-
-import { IFilter } from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { View } from 'react-native';
+import { NavigationProps } from '@app/common';
+import { AIC, BGCOLOR, FDR, FLEX, provideShadow } from '@app/common/styles';
+import { GENERAL_PADDING, MHA, PHA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
+import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
+
 import FilterNavigator from './FilterNavigator';
 
 const filtersEx = [
