@@ -53,6 +53,7 @@ interface EditProductProps extends NavigationProps {
             _id?: string;
             shopId: string;
             parentId: string;
+            reload: Function;
         };
     };
 }
@@ -60,7 +61,7 @@ interface EditProductProps extends NavigationProps {
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     navigation,
     route: {
-        params: { update, _id, shopId, parentId },
+        params: { update, _id, shopId, parentId, reload },
     },
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
@@ -205,6 +206,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 if (!updateFlow) {
                     setUpdate(true);
                 }
+                reload();
             }
             setLoader(false);
         } catch (error) {
@@ -324,6 +326,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         () => ({ productId: productId, setProductId: setProductId }),
         [productId],
     );
+
     return (
         <ProductIdContext.Provider value={productContextValue}>
             <View style={styles.container}>
@@ -421,12 +424,16 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     shopId={shopId}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];
+                        if (data.length == 1) {
+                            reload();
+                        }
                         setChoosenColor(data);
                     }}
                     removeColorFromArray={removeColorFromProduct}
                     updateColorInArray={(color: Partial<choosenColor>, index: number) => {
                         const data = [...choosenColor];
                         data[index] = { ...data[index], ...color };
+
                         setChoosenColor(data);
                     }}
                     chosenColor={choosenColor}
@@ -533,6 +540,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         a = { ...a, ...size };
                         choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] = a;
                         //   console.log('a ===', a);
+
                         setChoosenColor(colors);
                     }}
                     removeSize={() => {
