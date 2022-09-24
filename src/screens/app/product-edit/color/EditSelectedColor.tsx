@@ -48,7 +48,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                         containerStyle={[ML(0.2), { marginTop: 0 }]}
                     />
                 </View>
-                <ButtonMaterialIcons
+                <WrappedFeatherIcon
                     iconName="delete"
                     iconSize={20}
                     containerHeight={30}
@@ -79,7 +79,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                 style={imageBackgroundStyle}
                             >
                                 <WrappedFeatherIcon
-                                    iconName="trash-2"
+                                    iconName="delete"
                                     iconSize={13}
                                     iconColor={'#FFF'}
                                     containerHeight={22}

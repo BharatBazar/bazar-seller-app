@@ -1,22 +1,18 @@
-import { FontFamily, fs10, fs12, fs15, fs20, fs9 } from '@app/common';
-import { colorCode, errorColor, mainColor } from '@app/common/color';
-import { AIC, AS, BGCOLOR, BR, BW, FDR, HP, JCC, ML, MT, MV, P, PH, provideShadow, PV } from '@app/common/styles';
+import { FontFamily, fs10, fs12 } from '@app/common';
+import { colorCode, mainColor } from '@app/common/color';
+import { AIC, AS, BGCOLOR, BR, FDR, JCC, ML, PH, provideShadow, PV } from '@app/common/styles';
 import WrappedText from '@app/screens/component/WrappedText';
 import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import * as React from 'react';
 import { View } from 'react-native';
 import CounterComponent from '../../edit/product/component/component/Counter';
 import { choosenSize } from '../data-types';
-import Icon from 'react-native-vector-icons/Feather';
-import { border, createProductSize } from '../../edit/product/component/generalConfig';
-import Border from '@app/screens/components/border/Border';
-import { getHP } from '@app/common/dimension';
 import ProductIdPopup from './ProductIdPopup';
 import { showMessage } from 'react-native-flash-message';
 import { generateProductId } from '@app/server/apis/shop/shop.api';
-import { LoaderContext } from '@app/../App';
+
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import { MBA, MTA } from '@app/common/stylesheet';
+import { MBA } from '@app/common/stylesheet';
 
 interface SizeProps {
     size: choosenSize;
