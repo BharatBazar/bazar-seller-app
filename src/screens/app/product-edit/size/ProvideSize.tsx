@@ -1,7 +1,9 @@
 import { AlertContext, LoaderContext } from '@app/../App';
 import { fs12, fs14 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
-import { AIC, BGCOLOR, colorTransparency, DSP, FDR, JCC, MT, MV, provideShadow } from '@app/common/styles';
+import { getHP } from '@app/common/dimension';
+import { AIC, BGCOLOR, colorTransparency, DSP, FDR, FLEX, JCC, MT, MV, provideShadow } from '@app/common/styles';
+import { BRA, MHA, MTA, MVA, PA, PHA, PVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -120,6 +122,10 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     };
 
     const deleteSize = async (data: Partial<choosenSize>, index: number) => {
+        setError((error) => {
+            delete error[data.size?._id];
+            return error;
+        });
         if (data.itemId?.length > 0) {
             try {
                 setLoader(true);
@@ -141,11 +147,13 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
         } else {
             let sizes = [...selectedSize];
             sizes.splice(index, 1);
+
             setSelectedSize(sizes);
         }
     };
 
     const checkError = () => {
+        setError({});
         let error = {};
         if (selectedSize.length > 0)
             selectedSize.forEach((item, index) => {
@@ -190,107 +198,138 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     };
 
     return (
-        <ModalHOC isVisible={isVisible} setPopup={setPopup}>
-            <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT }}>
-                {showBack ? (
-                    <WrappedFeatherIcon
-                        iconName={'chevron-left'}
-                        onPress={() => {
-                            setPopup(false);
-                        }}
-                        iconColor={mainColor}
-                        containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
-                    />
-                ) : (
-                    <TextRippleButton
-                        onPress={() => {
-                            onPressDoLater();
-                        }}
-                        buttonText="do later"
-                        fontSize={fs14}
-                        buttonTextColor={mainColor}
-                        containerStyle={{
-                            alignSelf: 'flex-end',
-                            backgroundColor: colorCode.CHAKRALOW(20),
-                            paddingHorizontal: '5%',
-                            paddingVertical: '1%',
-                            borderRadius: 4,
-                        }}
-                    />
-                )}
-                <ScrollView>
+        <ModalHOC
+            isVisible={isVisible}
+            setPopup={() => {
+                checkError();
+            }}
+        >
+            <View style={[BGCOLOR('#FFFFFF'), PVA(), BRA(), MTA()]}>
+                <View style={[PHA()]}>
+                    {showBack ? (
+                        <WrappedFeatherIcon
+                            iconName={'chevron-left'}
+                            onPress={() => {
+                                checkError();
+                            }}
+                            iconColor={mainColor}
+                            containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
+                        />
+                    ) : (
+                        <TextRippleButton
+                            onPress={() => {
+                                onPressDoLater();
+                            }}
+                            buttonText="do later"
+                            fontSize={fs14}
+                            buttonTextColor={mainColor}
+                            containerStyle={{
+                                alignSelf: 'flex-end',
+                                backgroundColor: colorCode.CHAKRALOW(20),
+                                paddingHorizontal: '5%',
+                                paddingVertical: '1%',
+                                borderRadius: 4,
+                            }}
+                        />
+                    )}
                     <HeaderWithTitleAndSubHeading
                         borderNeeded={false}
                         heading="Select Size"
                         subHeading="Select all the size for this color"
                     />
-                    <View style={[MV(0.3), FDR('row'), JCC('space-between'), { flexWrap: 'wrap' }]}>
-                        {avaialbleSize.map((size: IFilter, index: number) => {
-                            let selectedIndex = selectedSize.findIndex((item) => item.size._id == size._id);
 
-                            return (
-                                <WrappedSize
-                                    key={size.name}
-                                    size={size.name}
-                                    selected={selectedIndex > -1}
-                                    onPress={() => {
-                                        if (selectedIndex == -1) {
-                                            let sizes = [...selectedSize];
-                                            sizes.push(provideDefaultSizeState(size, colorId, shopId));
-                                            setSelectedSize(sizes);
-                                        } else {
-                                            deleteSize(selectedSize[selectedIndex], selectedIndex);
-                                        }
-                                    }}
-                                />
-                            );
-                        })}
+                    <View style={[MVA(), FDR('row'), { flexWrap: 'wrap' }]}>
+                        {avaialbleSize
+                            .sort((a, b) => {
+                                let apresent = selectedSize.findIndex((item) => item.size._id == a._id) > -1;
+                                let bpresent = selectedSize.findIndex((item) => item.size._id == b._id) > -1;
+                                return apresent && bpresent ? 0 : bpresent ? 1 : -1;
+                            })
+                            .map((size: IFilter, index: number) => {
+                                let selectedIndex = selectedSize.findIndex((item) => item.size._id == size._id);
+
+                                return (
+                                    <WrappedSize
+                                        key={size.name}
+                                        size={size.name}
+                                        selected={selectedIndex > -1}
+                                        onPress={() => {
+                                            if (selectedIndex == -1) {
+                                                let sizes = [...selectedSize];
+                                                sizes.push(provideDefaultSizeState(size, colorId, shopId));
+                                                setSelectedSize(sizes);
+                                            } else {
+                                                deleteSize(selectedSize[selectedIndex], selectedIndex);
+                                            }
+                                        }}
+                                    />
+                                );
+                            })}
                     </View>
-                    <Border marginTop={0} />
-                    <View style={[MT(0.3)]} />
-                    <HeaderWithTitleAndSubHeading
-                        borderNeeded={false}
-                        heading="Selected Size"
-                        subHeading="Provide details related to each size"
-                    />
-                    <View style={[MT(0.2)]} />
-                    {selectedSize.map((item, index) => (
-                        <>
-                            {typeof error[item.size._id] == 'string' && (
-                                <WrappedText text={error[item.size._id]} textColor={errorColor} key={item.size._id} />
-                            )}
-                            <Size
-                                setLoader={setLoader}
-                                shopId={shopId}
-                                key={index}
-                                size={item}
-                                setSize={(a: Partial<choosenSize>) => {
-                                    let sizes = [...selectedSize];
-                                    sizes[index] = { ...sizes[index], ...a };
-                                    setSelectedSize(sizes);
-                                }}
-                                createSize={(data: Partial<choosenSize>) => {
-                                    createSize(data, index);
-                                }}
-                                removeSize={() => {
-                                    deleteSize(item, index);
-                                }}
-                                updateSize={() => {
-                                    return updateSize(item, index);
-                                }}
+                </View>
+
+                {selectedSize.length > 0 ? (
+                    <View style={[]}>
+                        <Border marginTop={0} />
+                        <ScrollView scrollEnabled style={{ maxHeight: getHP(7) }} contentContainerStyle={[PHA()]}>
+                            <View style={[MTA()]} />
+                            <HeaderWithTitleAndSubHeading
+                                borderNeeded={false}
+                                heading={undefined}
+                                subHeading="Provide details related to each size"
                             />
-                        </>
-                    ))}
-                </ScrollView>
-                <Border />
+                            <View style={[MTA(5)]} />
+
+                            {[...selectedSize].map((item, index) => (
+                                <>
+                                    <Border borderStyle={{ borderTopWidth: 1 }} />
+
+                                    {typeof error[item.size._id] == 'string' && (
+                                        <WrappedText
+                                            text={error[item.size._id]}
+                                            textColor={errorColor}
+                                            containerStyle={[MTA()]}
+                                            key={item.size._id}
+                                        />
+                                    )}
+                                    <Size
+                                        setLoader={setLoader}
+                                        shopId={shopId}
+                                        key={item._id}
+                                        size={item}
+                                        setSize={(a: Partial<choosenSize>) => {
+                                            let sizes = [...selectedSize];
+                                            sizes[index] = { ...sizes[index], ...a };
+                                            setSelectedSize(sizes);
+                                        }}
+                                        createSize={(data: Partial<choosenSize>) => {
+                                            createSize(data, index);
+                                        }}
+                                        removeSize={() => {
+                                            deleteSize(item, index);
+                                        }}
+                                        updateSize={() => {
+                                            return updateSize(item, index);
+                                        }}
+                                    />
+                                </>
+                            ))}
+                        </ScrollView>
+                    </View>
+                ) : (
+                    <View />
+                )}
+
+                {/* <Border marginTop={0} />
 
                 <RightComponentButtonWithLeftText
-                    buttonText={'continue'}
-                    containerStyle={[MT(0.1)]}
+                    buttonText={'Continue'}
+                    containerStyle={[MTA(), MHA()]}
                     onPress={() => {
                         checkError();
                     }}
-                />
+                    disabled={!selectedSize.some((item) => item.itemId.length != 0)}
+                /> */}
             </View>
             {loader && <Loader />}
         </ModalHOC>

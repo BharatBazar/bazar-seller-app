@@ -1,6 +1,6 @@
 import { FontFamily, fs10, fs12, fs15, fs20, fs9 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
-import { AIC, BGCOLOR, BR, BW, FDR, HP, JCC, ML, MT, MV, P, PH, provideShadow, PV } from '@app/common/styles';
+import { AIC, AS, BGCOLOR, BR, BW, FDR, HP, JCC, ML, MT, MV, P, PH, provideShadow, PV } from '@app/common/styles';
 import WrappedText from '@app/screens/component/WrappedText';
 import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import * as React from 'react';
@@ -15,6 +15,8 @@ import ProductIdPopup from './ProductIdPopup';
 import { showMessage } from 'react-native-flash-message';
 import { generateProductId } from '@app/server/apis/shop/shop.api';
 import { LoaderContext } from '@app/../App';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import { MBA, MTA } from '@app/common/stylesheet';
 
 interface SizeProps {
     size: choosenSize;
@@ -68,7 +70,7 @@ const Size: React.FunctionComponent<SizeProps> = ({
     React.useEffect(() => {
         previousValue.current = { quantity, itemId };
         return () => {};
-    }, []);
+    }, [quantity]);
 
     React.useEffect(() => {
         if (itemId.length > 0 && previousValue.current.length == 0) {
@@ -86,27 +88,40 @@ const Size: React.FunctionComponent<SizeProps> = ({
                 <View />
             )} */}
 
+            {itemId.length != 0 && (
+                <WrappedText
+                    text={'Unique Id - ' + itemId}
+                    containerStyle={[
+                        PH(0.4),
+                        PV(0.1),
+                        BGCOLOR(itemId.length == 0 ? colorCode.SAFFRONLOW(20) : colorCode.CHAKRALOW(20)),
+                        BR(0.05),
+                        MBA(),
+                        AS('flex-start'),
+                        { opacity: 0.5 },
+                    ]}
+                    fontFamily={FontFamily.Bold}
+                    fontWeight={'600'}
+                    textColor={itemId.length == 0 ? colorCode.SAFFRONLOW(100) : colorCode.CHAKRALOW(100)}
+                    fontSize={fs10}
+                />
+            )}
+
             <View style={[FDR(), AIC(), JCC('space-between')]}>
                 <View style={[FDR(), AIC()]}>
-                    <WrappedText
-                        text={itemId.length == 0 ? 'Yet to create' : 'Unique Id - ' + itemId}
-                        containerStyle={[
-                            PH(0.4),
-                            PV(0.1),
-                            BGCOLOR(itemId.length == 0 ? colorCode.SAFFRONLOW(20) : colorCode.CHAKRALOW(20)),
-                            BR(0.05),
-                            { opacity: 0.5 },
-                        ]}
-                        fontFamily={FontFamily.Bold}
-                        fontWeight={'600'}
-                        textColor={itemId.length == 0 ? colorCode.SAFFRONLOW(100) : colorCode.CHAKRALOW(100)}
-                        fontSize={fs10}
+                    <WrappedFeatherIcon
+                        iconName={'delete'}
+                        onPress={() => {
+                            removeSize();
+                        }}
+                        iconColor={mainColor}
+                        containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginRight: 1, marginLeft: 10 }]}
                     />
-
                     <WrappedText
                         text={name}
-                        textColor={'#fff'}
-                        containerStyle={[ML(0.2), BGCOLOR(mainColor), AIC(), JCC(), BR(2), { height: 30, width: 30 }]}
+                        textColor={mainColor}
+                        fontFamily={FontFamily.Bold}
+                        containerStyle={[ML(0.2), AIC(), JCC(), BR(2), { height: 30, width: 30 }]}
                     />
                 </View>
                 <CounterComponent
@@ -116,28 +131,12 @@ const Size: React.FunctionComponent<SizeProps> = ({
                     }}
                 />
 
-                <View style={[FDR(), JCC('flex-end')]}>
-                    {itemId.length !== 0 && previousValue.current?.quantity === quantity && (
-                        <TextRippleButton
-                            buttonText={'Delete'}
-                            onPress={() => {
-                                removeSize();
-                            }}
-                            buttonTextColor={colorCode.CHAKRALOW(100)}
-                            fontSize={fs12}
-                            containerStyle={[
-                                PH(0.4),
-                                PV(0.03),
-                                BGCOLOR(colorCode.CHAKRALOW(20)),
-                                BR(0.05),
-                                { opacity: 0.5 },
-                            ]}
-                        />
-                    )}
-                    {(previousValue.current?.quantity !== quantity || itemId.length == 0) && (
-                        <TextRippleButton
-                            buttonText={itemId.length == 0 ? 'Create' : ' Save '}
-                            onPress={async () => {
+                <View style={[FDR(), JCC('flex-end'), AIC()]}>
+                    <TextRippleButton
+                        buttonText={itemId.length == 0 ? 'Create' : ' Save '}
+                        onPress={async () => {
+                            if (itemId.length != 0 && previousValue.current?.quantity == quantity) {
+                            } else {
                                 if (itemId.length == 0) {
                                     if (productUniqueId.length > 0) {
                                         setShowIdPopup(true);
@@ -150,15 +149,26 @@ const Size: React.FunctionComponent<SizeProps> = ({
                                         setProductuniqueId('');
                                     }
                                 }
-                            }}
-                            buttonTextColor={'#fff'}
-                            fontSize={fs12}
-                            containerStyle={[PH(0.4), PV(0.03), BGCOLOR(mainColor), BR(0.05), ML(0.1)]}
-                        />
-                    )}
+                            }
+                        }}
+                        buttonTextColor={'#fff'}
+                        fontSize={fs12}
+                        containerStyle={[
+                            PH(0.4),
+                            PV(0.03),
+                            {
+                                backgroundColor:
+                                    itemId.length != 0 && previousValue.current?.quantity == quantity
+                                        ? colorCode.CHAKRALOW(50)
+                                        : colorCode.CHAKRALOW(70),
+                            },
+                            BR(0.05),
+                            ML(0.1),
+                        ]}
+                    />
                 </View>
             </View>
-            <Border borderStyle={{ borderTopWidth: 1 }} />
+
             <ProductIdPopup
                 isVisible={showIdPopup}
                 setPopup={setShowIdPopup}

@@ -170,8 +170,8 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
                                         onPress={() => {
-                                            setShowPhotoPopup(true);
-                                            //onPressColor(selected, indexInSelectedColor, item, index);
+                                            //setShowPhotoPopup(true);
+                                            onPressColor(selected, indexInSelectedColor, item, index);
                                         }}
                                     >
                                         <View
