@@ -7,6 +7,7 @@ import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFeatherIconWithRightText';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import * as React from 'react';
 import { ImageBackground, View, StyleSheet } from 'react-native';
 import { border } from '../../edit/product/component/generalConfig';
@@ -70,11 +71,11 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                 }}
                 screens={item.photos}
                 itemWidth={getWP(4)}
-                renderImage={(item) => {
+                renderImage={(uri) => {
                     return (
                         <View>
                             <ImageBackground
-                                source={{ uri: item }}
+                                source={{ uri: uri }}
                                 imageStyle={imageBackgroundStyle}
                                 style={imageBackgroundStyle}
                             >
@@ -84,7 +85,12 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                     iconColor={'#FFF'}
                                     containerHeight={22}
                                     containerStyle={[BGCOLOR('#00000099'), { position: 'absolute', right: 7, top: 7 }]}
-                                    onPress={() => {}}
+                                    onPress={() => {
+                                        if (item.photos.length == 1) {
+                                            ToastHOC.infoAlert('Cannot delete as only one image is there');
+                                        } else {
+                                        }
+                                    }}
                                 />
                             </ImageBackground>
                         </View>
