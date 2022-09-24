@@ -295,7 +295,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                                     <Size
                                         setLoader={setLoader}
                                         shopId={shopId}
-                                        key={item._id}
+                                        key={item.size._id}
                                         size={item}
                                         setSize={(a: Partial<choosenSize>) => {
                                             let sizes = [...selectedSize];

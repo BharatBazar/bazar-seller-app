@@ -92,7 +92,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
                 </Ripple>
                 {photos.length > 1 && (
                     <WrappedFeatherIcon
-                        iconName={'trash-2'}
+                        iconName={'delete'}
                         iconColor={'#FFFFFF'}
                         onPress={() => {
                             setSelectedIndex(index + 1);
@@ -158,7 +158,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
                 />
             )}
             <RightComponentButtonWithLeftText
-                buttonText={'continue'}
+                buttonText={'Continue'}
                 containerStyle={[MT(0.1)]}
                 onPress={() => {
                     updatePhotoArray(photos);

@@ -65,15 +65,10 @@ const Size: React.FunctionComponent<SizeProps> = ({
         }
     };
 
-    const previousValue = React.useRef<null | Partial<choosenSize>>(null);
+    const previousValue = React.useRef<null | Partial<choosenSize>>({ quantity: quantity, itemId: itemId });
 
     React.useEffect(() => {
-        previousValue.current = { quantity, itemId };
-        return () => {};
-    }, [quantity]);
-
-    React.useEffect(() => {
-        if (itemId.length > 0 && previousValue.current.length == 0) {
+        if (itemId.length > 0 && previousValue.current?.itemId?.length == 0) {
             previousValue.current = { quantity, itemId };
         }
     }, [itemId]);
@@ -142,7 +137,7 @@ const Size: React.FunctionComponent<SizeProps> = ({
                                         setShowIdPopup(true);
                                     } else generateId();
                                 } else {
-                                    const a = await updateSize();
+                                    const a = await updateSize(); // If size is updated then it returns true
                                     console.log('a =>', a);
                                     if (a) {
                                         previousValue.current = { quantity, itemId };

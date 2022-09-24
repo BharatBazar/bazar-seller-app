@@ -11,6 +11,7 @@ import Modal from 'react-native-modal';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
 
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 
 interface ImageZoomViewerProps {
     isVisible: boolean;
@@ -43,11 +44,11 @@ const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
                 JCC('space-between'),
                 BGCOLOR('#000000'),
 
-                { paddingTop: getStatusBarHeight() },
+                { paddingTop: 10 },
             ]}
         >
             <WrappedFeatherIcon
-                iconName={'x'}
+                iconName={'close'}
                 iconColor={'#FFFFFF'}
                 onPress={() => {
                     setPopup(false);
@@ -87,13 +88,14 @@ const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
     return (
         <Modal
             isVisible={isVisible}
-            style={{ margin: 0 }}
+            style={{ margin: 0, justifyContent: 'flex-end' }}
             onBackdropPress={() => {
                 setPopup(false);
             }}
+            statusBarTranslucent={true}
             useNativeDriverForBackdrop
         >
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, marginTop: STATUS_BAR_HEIGHT }}>
                 {imageViewerHeader(currentIndex)}
                 <ImageViewer
                     imageUrls={data}
