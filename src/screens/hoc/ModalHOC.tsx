@@ -51,6 +51,7 @@ const ModalHOC: React.FC<ModalProps> = ({
             onBackButtonPress={() => {
                 setPopup();
             }}
+            swipeDirection={['down']}
             deviceHeight={getHP(10) + STATUS_BAR_HEIGHT}
             statusBarTranslucent={Platform.OS == 'android' ? statusBarTranlucent : false}
             backdropTransitionOutTiming={0}

@@ -1,3 +1,4 @@
+import { FilterInterface } from './../product/product.interface';
 import { CommonApiResponse } from '../common.interface';
 import { classifierTypes } from '../product/product.interface';
 export interface IFilter {
@@ -31,7 +32,7 @@ export interface IRGetFilter extends CommonApiResponse {
 
 export interface IRGetFilterWithValue extends CommonApiResponse {
     payload: {
-        filter: IFilter[];
-        distribution: IFilter[];
+        filter: FilterInterface[];
+        distribution: FilterInterface[];
     };
 }

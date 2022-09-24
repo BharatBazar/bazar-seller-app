@@ -17,6 +17,7 @@ import { updateProduct } from '../../edit/product/component/generalConfig';
 import { showMessage } from 'react-native-flash-message';
 import { ProductIdContext } from '../data-types';
 import Loader from '@app/screens/component/Loader';
+import { MTA } from '@app/common/stylesheet';
 
 export enum selectAction {
     add = 'Add',
@@ -125,10 +126,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
     };
 
     return (
-        <View
-            key={index}
-            style={[MT(0.2), { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}
-        >
+        <View key={index} style={[, { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}>
             {/* <WrappedText text={filter.name} fontSize={fs18} />
             <WrappedText text={filter.description} textColor={'#8A8A8A'} />
             {error['generalError'] && (
@@ -163,7 +161,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                     //setOpenChooseColor(true);
                 }}
             />
-            <View style={[MT(0.1)]} />
+
             {filterValues &&
                 filterValues.map((classifier: FilterValueInterface, index: number) => {
                     return (
@@ -177,7 +175,6 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                         />
                     );
                 })}
-            <View style={[MT(0.1)]} />
 
             <ShowFilterModal
                 isVisible={showPopup}

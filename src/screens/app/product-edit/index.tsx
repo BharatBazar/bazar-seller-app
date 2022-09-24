@@ -1,7 +1,8 @@
 import { AlertContext } from '@app/../App';
 import { fs16, fs20, NavigationProps } from '@app/common';
 import { black100, mainColor } from '@app/common/color';
-import { BGCOLOR, DSP, MV, PH, PV } from '@app/common/styles';
+import { BGCOLOR, DSP, FLEX, HP, MV, PH, PV } from '@app/common/styles';
+import { HA, PBA, WA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import StatusBar from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -36,7 +37,6 @@ import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import HowToImprove from './component/HowToImprove';
 import ImproveList from './component/ImproveList';
-import ProductCompleteCTA from './component/ProductCompleteCTA';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import CollapsibleErrorComponent from './error/CollapsibleError';
 import Filter from './filter/Filter';
@@ -125,7 +125,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const loadFilter = async () => {
         setLoader(true);
         try {
-            const response: IRGetFilterWithValue = await getFilterWithValue({ active: false });
+            const response: IRGetFilterWithValue = await getFilterWithValue({ shopId: shopId, parentId: parentId });
 
             setLoader(false);
             if (response.status == 1) {
@@ -332,21 +332,25 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             <View style={styles.container}>
                 <StatusBar statusBarColor={mainColor} />
                 <HeaderWithBackButtonTitleAndrightButton
-                    rightComponent={() => (
-                        <WrappedFeatherIcon
-                            iconName="delete"
-                            iconColor="#FFF"
-                            containerHeight={30}
-                            onPress={() => {
-                                deleteProduct();
-                            }}
-                        />
-                    )}
+                    rightComponent={() => {
+                        if (productDetails.colors && productDetails.colors.length > 0) {
+                            return (
+                                <WrappedFeatherIcon
+                                    iconName="delete"
+                                    iconColor="#FFF"
+                                    containerHeight={30}
+                                    onPress={() => {
+                                        deleteProduct();
+                                    }}
+                                />
+                            );
+                        } else return <View style={[HA(30), WA(30)]} />;
+                    }}
                     containerStyle={[{ padding: DSP }]}
                     title={updateFlow ? 'Update Product' : 'Create Product'}
                 />
                 {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
-                <ScrollView contentContainerStyle={[PH(0.2)]}>
+                <ScrollView contentContainerStyle={[PH(0.2), PBA()]}>
                     {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle

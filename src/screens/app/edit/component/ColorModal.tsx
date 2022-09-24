@@ -45,7 +45,9 @@ const ColorModal: React.FC<ColorModalProps> = ({ setPopup, isVisible, colors, up
                             <Color
                                 item={item}
                                 selected={chosenColor[item._id] ? true : false}
-                                onPress={() => updateColorArray(index)}
+                                onPress={() => {
+                                    updateColorArray(index);
+                                }}
                             />
                         );
                     }}
