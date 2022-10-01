@@ -176,7 +176,10 @@ const CreateBill: React.FC = ({ navigation, route }) => {
                         >
                             Add Product
                         </Text>
-                        <TouchableOpacity onPress={() => refRBSheet.current.close()} style={{ borderRadius: 15, backgroundColor: mainColor }}>
+                        <TouchableOpacity onPress={() =>{
+                             refRBSheet.current.close()
+                             setItem([])
+                        }} style={{ borderRadius: 15, backgroundColor: mainColor }}>
                             <CrossIcon name="cross" color={"#ffffff"} size={24} style={{ alignSelf: "center" }} />
                         </TouchableOpacity>
                     </View>
