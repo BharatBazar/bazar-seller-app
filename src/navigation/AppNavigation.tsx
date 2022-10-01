@@ -32,6 +32,7 @@ import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/product-edit/index';
 import CloseIcon from 'react-native-vector-icons/AntDesign'
+import CreateBill from '@app/screens/auth/bill-desk/CreateBill';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -158,6 +159,9 @@ const AppNavigation = () => {
                         animation: 'fade',
                     }}
                 />
+                 <Stack.Screen name={NavigationKey.CREATEBILL} component={CreateBill} options={{
+                     animation:"slide_from_right"
+                 }} />
                 <Stack.Screen
                     name={NavigationKey.RESETPASSWORD}
                     component={ResetPassword}

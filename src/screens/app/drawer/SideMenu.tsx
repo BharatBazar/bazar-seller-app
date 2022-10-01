@@ -9,6 +9,7 @@ import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, provideShadow, P, BW, BC } from '../../../common/styles';
 import { borderColor, mainColor } from '../../../common/color';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import Zocial from 'react-native-vector-icons/Zocial';
 import { Storage, StorageItemKeys } from '../../../storage';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
 import { BRA, MHA, MTA } from '@app/common/stylesheet';
@@ -89,6 +90,20 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                     </View>
                 </WrappedRectangleButton>
                 <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                       props.navigation.navigate(NavigationKey.CREATEBILL,{
+                           openModal:true
+                       })
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <Zocial name={'print'} size={fs18} />
+                        <WrappedText text={'Create Bill'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                   <View style={[BW(0.5), BC(borderColor), MHA()]} />
                 <WrappedRectangleButton
                     containerStyle={[styles.containerStyle]}
                     onPress={() => {
