@@ -136,7 +136,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
     };
 
     useEffect(() => {
-        fetchProductDetails({ parent: { $exists: false }, active: false });
+        fetchProductDetails({ parent: { $exists: false }, active: true });
 
         StatusBar.setBarStyle('light-content');
 
