@@ -300,6 +300,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 }
             });
             setLoader(false);
+
             if (errors.length > 0) setErrors(errors);
             else {
                 setErrors(errors);

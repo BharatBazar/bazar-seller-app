@@ -3,7 +3,7 @@ import { fs12, fs14 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
 import { AIC, BGCOLOR, colorTransparency, DSP, FDR, FLEX, JCC, MT, MV, provideShadow } from '@app/common/styles';
-import { BRA, MHA, MTA, MVA, PA, PHA, PVA } from '@app/common/stylesheet';
+import { BRA, BTRA, MBA, MHA, MTA, MVA, PA, PHA, PVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -165,7 +165,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                         setPopup(false, true);
                         setChoosenSize(selectedSize);
                         setSelectedSize([]);
-                    } else setError(error);
+                    } else setError({ ...error });
                 }
             });
         else {
@@ -204,7 +204,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 checkError();
             }}
         >
-            <View style={[BGCOLOR('#FFFFFF'), PVA(), BRA(), MTA()]}>
+            <View style={[BGCOLOR('#FFFFFF'), PVA(), BTRA(), MTA()]}>
                 <View style={[PHA()]}>
                     {showBack ? (
                         <WrappedFeatherIcon
@@ -269,7 +269,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 </View>
 
                 {selectedSize.length > 0 ? (
-                    <View style={[]}>
+                    <View style={[MBA()]}>
                         <Border marginTop={0} />
                         <ScrollView scrollEnabled style={{ maxHeight: getHP(7) }} contentContainerStyle={[PHA()]}>
                             <View style={[MTA()]} />
@@ -278,19 +278,18 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                                 heading={undefined}
                                 subHeading="Provide details related to each size"
                             />
-                            <View style={[MTA(5)]} />
 
-                            {[...selectedSize].map((item, index) => (
-                                <>
-                                    <Border borderStyle={{ borderTopWidth: 1 }} />
-
-                                    {typeof error[item.size._id] == 'string' && (
+                            {selectedSize.map((item, index) => (
+                                <View key={item._id + index}>
+                                    {typeof error[item.size._id] == 'string' ? (
                                         <WrappedText
                                             text={error[item.size._id]}
                                             textColor={errorColor}
-                                            containerStyle={[MTA()]}
-                                            key={item.size._id}
+                                            containerStyle={[MTA(5)]}
+                                            key={index}
                                         />
+                                    ) : (
+                                        <View style={[MTA()]} />
                                     )}
                                     <Size
                                         setLoader={setLoader}
@@ -312,7 +311,8 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                                             return updateSize(item, index);
                                         }}
                                     />
-                                </>
+                                    {index != selectedSize.length - 1 && <Border borderStyle={{ borderTopWidth: 1 }} />}
+                                </View>
                             ))}
                         </ScrollView>
                     </View>

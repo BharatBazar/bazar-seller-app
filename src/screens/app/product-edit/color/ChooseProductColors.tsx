@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { getHP, getWP } from '../../../../common/dimension';
-import { colorCode } from '../../../../common/color';
+import { borderColor, colorCode, mainColor } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
 import ModalHeader from '../../../component/ModalHeader';
 import { FilterInterface, FilterValueInterface, IFilter } from '../../../../server/apis/product/product.interface';
@@ -164,9 +164,9 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                             const selected = indexInSelectedColor > -1;
                             //    const selected = true;
                             console.log('selected =>', selected);
-                            const selectedStyle = selected ? [BW(1), BC(item.description), BR(0.4)] : {};
+                            const selectedStyle = selected ? [BW(1.5), BC(mainColor), BR(0.1)] : {};
                             return (
-                                <View style={[selectedStyle, MT(0.2), BR(0.4)]}>
+                                <View style={[selectedStyle, MT(0.2)]}>
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
                                         onPress={() => {
@@ -196,7 +196,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                             iconName="check-circle"
                                             iconSize={20}
                                             onPress={() => {}}
-                                            iconColor={item.description}
+                                            iconColor={mainColor}
                                             containerStyle={{ position: 'absolute', top: -12, right: -12 }}
                                         />
                                     )}
