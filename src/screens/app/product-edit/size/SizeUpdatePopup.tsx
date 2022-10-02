@@ -1,8 +1,11 @@
 import { BGCOLOR, BTR, DSP, MT, P, PA, PH, PV } from '@app/common/styles';
+import { MTA, MVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
+import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { APIDeleteProductSize, APIUpdateProductSize } from '@app/server/apis/product/product.api';
 import { IRProductSize } from '@app/server/apis/product/product.interface';
 import * as React from 'react';
@@ -64,6 +67,7 @@ const SizeUpdatePopup: React.FunctionComponent<SizeUpdatePopupProps> = ({
                 const id: IRProductSize = await APIDeleteProductSize({ _id: data._id, parentId: data.parentId });
                 setLoader(false);
                 if (id && id.status == 1) {
+                    ToastHOC.successAlert('Size deleted!');
                     removeSize();
                     setPopup();
                 } else {
@@ -99,9 +103,10 @@ const SizeUpdatePopup: React.FunctionComponent<SizeUpdatePopupProps> = ({
                         return updateSizeInServer(size);
                     }}
                 />
+                <Border />
                 <RightComponentButtonWithLeftText
-                    buttonText={'close'}
-                    containerStyle={[MT(0.1)]}
+                    buttonText={'Close'}
+                    containerStyle={[MTA()]}
                     onPress={() => {
                         //checkError();
                     }}

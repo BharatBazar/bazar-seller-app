@@ -13,6 +13,7 @@ export interface ModalProps {
     refer?: any;
     statusBarTranlucent?: boolean;
     modalStyle?: ViewStyle | ViewStyle[];
+    children: any;
 }
 
 const ModalHOC: React.FC<ModalProps> = ({
