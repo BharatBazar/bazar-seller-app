@@ -76,7 +76,11 @@ const CreateBill: React.FC = ({ navigation, route }) => {
             <View style={{paddingHorizontal:20}}>
                            <View style={{ padding:3,marginTop: 25, borderWidth: 1, borderColor: mainColor, borderRadius: 5, justifyContent: "space-between", flexDirection: "row" }}>
                         <View style={{ flexDirection: "row" }}>
-                            <Image style={{ width: 70, height: 70, borderRadius: 8, alignSelf: "center" }} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfZFOYL7gHQna3k8UoVy987SdLOVm1wVioBw&usqp=CAU" }} />
+                            <View>
+                                <Text style={{marginLeft:3,fontFamily:FontFamily.Regular}}>Id {item._id}</Text>
+                            <Image  style={{ width: 70, height: 70, marginTop:5,borderRadius: 8, resizeMode:"cover",alignSelf: "center" }} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFlmYAlXMHURN9wb0aoZR9Ev0qEQ74RHyzPA&usqp=CAU" }} />
+
+                            </View>
                             <View style={{ alignSelf: "center",marginLeft:15 }}>
                                 <Text style={{ fontFamily: FontFamily.Medium }}>{item.name}</Text>
                                 <Text style={{ fontFamily: FontFamily.Regular }}>1 × {item.subName}</Text>
@@ -158,10 +162,6 @@ const CreateBill: React.FC = ({ navigation, route }) => {
                 onClose={() => setColor("#ffffff")}
                 animationType={"slide"}
                 customStyles={{
-                    wrapper: {
-                        backgroundColor: 'transparent',
-                        flex: 1
-                    },
                     draggableIcon: {
                         backgroundColor: '#000',
                     },
@@ -188,7 +188,7 @@ const CreateBill: React.FC = ({ navigation, route }) => {
 
                     <View style={{ marginTop: 10 }}>
                         <Text style={{ fontFamily: FontFamily.Regular }}>Enter Item Id</Text>
-                        <TextInput onChangeText={(id)=>{setId(id)
+                        <TextInput keyboardType="number-pad" onChangeText={(id)=>{setId(id)
                        setShowEnter(true), setItem([]) }} style={{ borderWidth: 1, borderColor: mainColor, height: 35, marginTop: 5, borderRadius: 5 }} />
                         {id &&  showEnter !== false ?(
                             <>
@@ -202,8 +202,12 @@ const CreateBill: React.FC = ({ navigation, route }) => {
                        item.length === 1  && id?(
                            <>
                             <View style={{padding:3, marginTop: 25, borderWidth: 1, borderColor: mainColor, borderRadius: 5, justifyContent: "space-between", flexDirection: "row" }}>
+                       
                         <View style={{ flexDirection: "row" }}>
-                            <Image style={{ width: 70, height: 70, borderRadius: 8, alignSelf: "center" }} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfZFOYL7gHQna3k8UoVy987SdLOVm1wVioBw&usqp=CAU" }} />
+                        <View>
+                                                  <Text style={{marginLeft:3,fontFamily:FontFamily.Regular ,color:"#252525"}}>Id {item[0]._id}</Text>
+                          <Image  style={{ width: 70, height: 70, marginTop:5,borderRadius: 8, resizeMode:"cover",alignSelf: "center" }} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFlmYAlXMHURN9wb0aoZR9Ev0qEQ74RHyzPA&usqp=CAU" }} />
+                        </View>
                             <View style={{ alignSelf: "center" ,marginLeft:15}}>
                                 <Text style={{ fontFamily: FontFamily.Medium }}>{item[0].name}</Text>
                                 <Text style={{ fontFamily: FontFamily.Regular }}>1 × {item[0].subName}</Text>
@@ -242,6 +246,7 @@ const CreateBill: React.FC = ({ navigation, route }) => {
                     onPress={() => {
                         Add(item[0])
                     }}
+                    disabled={item.length>0?(false):(true)}
                 />
                   
                      </View>
