@@ -20,6 +20,7 @@ const CreateBill: React.FC = ({ navigation, route }) => {
     const [color, setColor] = React.useState("#ffffff")
     const [id, setId] = React.useState<Number>()
     const [item, setItem] = useState([])
+    const [showEnter, setShowEnter] = useState<Boolean>(true)
 
    
 
@@ -59,6 +60,7 @@ const CreateBill: React.FC = ({ navigation, route }) => {
     const product = products.find(e=>e._id === Number(id))
     setModalHeight(600)
     setItem([product])
+    setShowEnter(false)
    }
 
    const Add = (item:any)=>{
@@ -186,13 +188,18 @@ const CreateBill: React.FC = ({ navigation, route }) => {
 
                     <View style={{ marginTop: 10 }}>
                         <Text style={{ fontFamily: FontFamily.Regular }}>Enter Item Id</Text>
-                        <TextInput onChangeText={(id)=>setId(id)} style={{ borderWidth: 1, borderColor: mainColor, height: 35, marginTop: 5, borderRadius: 5 }} />
-                        <TouchableOpacity onPress={() =>findProduct(id)} style={{ marginTop: 15, padding: 3, width: 70, borderRadius: 5, backgroundColor: mainColor }}>
+                        <TextInput onChangeText={(id)=>{setId(id)
+                       setShowEnter(true), setItem([]) }} style={{ borderWidth: 1, borderColor: mainColor, height: 35, marginTop: 5, borderRadius: 5 }} />
+                        {id &&  showEnter !== false ?(
+                            <>
+                            <TouchableOpacity onPress={() =>findProduct(id)} style={{ marginTop: 15, padding: 3, width: 70, borderRadius: 5, backgroundColor: mainColor }}>
                             <Text style={{ fontFamily: FontFamily.Bold, color: "#ffffff", alignSelf: "center" }}>Enter</Text>
                         </TouchableOpacity>
+                            </>
+                        ):(null)}
                     </View>
                    {
-                       item.length === 1?(
+                       item.length === 1  && id?(
                            <>
                             <View style={{padding:3, marginTop: 25, borderWidth: 1, borderColor: mainColor, borderRadius: 5, justifyContent: "space-between", flexDirection: "row" }}>
                         <View style={{ flexDirection: "row" }}>
