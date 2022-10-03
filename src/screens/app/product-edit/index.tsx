@@ -32,7 +32,7 @@ import {
     deleteProductFromServer,
     updateProduct,
     updateProductColor,
-} from '../edit/product/component/generalConfig';
+} from './component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import HowToImprove from './component/HowToImprove';

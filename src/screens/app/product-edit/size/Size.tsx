@@ -5,7 +5,7 @@ import WrappedText from '@app/screens/component/WrappedText';
 import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import * as React from 'react';
 import { View } from 'react-native';
-import CounterComponent from '../../edit/product/component/component/Counter';
+import CounterComponent from './Counter';
 import { choosenSize } from '../data-types';
 import ProductIdPopup from './ProductIdPopup';
 import { showMessage } from 'react-native-flash-message';

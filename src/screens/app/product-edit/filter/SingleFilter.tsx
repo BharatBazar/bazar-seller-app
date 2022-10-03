@@ -1,23 +1,17 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BC, BGCOLOR, BR, BW, JCC, MT, MV, PV } from '../../../../common/styles';
-import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
-import WrappedText from '../../../component/WrappedText';
 
 import ShowFilterModal, { ShowFilter } from './FilterValues';
-import { fs18 } from '../../../../common';
+
 import { getHP } from '../../../../common/dimension';
-import TextButton from '../../../component/TextButton';
-import { borderColor, errorColor, mainColor } from '../../../../common/color';
+
 import { FilterInterface, FilterValueInterface, IProduct } from '../../../../server/apis/product/product.interface';
-import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
+
 import { ToastHOC } from '../../../hoc/ToastHOC';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
-import { updateProduct } from '../../edit/product/component/generalConfig';
+import { updateProduct } from '../component/generalConfig';
 import { showMessage } from 'react-native-flash-message';
 import { ProductIdContext } from '../data-types';
-import Loader from '@app/screens/component/Loader';
-import { MTA } from '@app/common/stylesheet';
 
 export enum selectAction {
     add = 'Add',

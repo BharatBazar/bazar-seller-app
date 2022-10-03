@@ -14,7 +14,7 @@ import { IRShopUpdate } from '../../server/apis/shop/shop.interface';
 import { updateShop } from '../../server/apis/shop/shop.api';
 import ServerErrorText from './component/errorText';
 import { IshopMember } from '../../server/apis/shopMember/shopMember.interface';
-import { marTop } from '../app/edit/product/component/generalConfig';
+import { marTop } from '../app/product-edit/component/generalConfig';
 import { Storage, StorageItemKeys } from '../../storage';
 import ShowInforTextBelowInput from '../components/text/ShowInfoTextBelowInput';
 import TextPhotoAudioInputComponent from '../components/multimedia/TextPhotoAudioInput';

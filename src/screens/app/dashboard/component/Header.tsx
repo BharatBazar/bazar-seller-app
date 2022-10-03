@@ -6,7 +6,7 @@ import { AIC, BGCOLOR, FDR, JCC, PV } from '../../../../common/styles';
 
 import WrappedFeatherIcon from '../../../component/WrappedFeatherIcon';
 import WrappedText from '../../../component/WrappedText';
-import { padHor } from '../../edit/product/component/generalConfig';
+import { padHor } from '../../product-edit/component/generalConfig';
 
 export interface HeaderProps {
     headerTitle: string;

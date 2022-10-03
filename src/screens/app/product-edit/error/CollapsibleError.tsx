@@ -7,7 +7,7 @@ import * as React from 'react';
 import { View, Animated } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Ripple from 'react-native-material-ripple';
-import { border } from '../../edit/product/component/generalConfig';
+import { border } from '../component/generalConfig';
 
 interface CollapsibleErrorComponentProps {
     error: string[];

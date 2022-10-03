@@ -1,10 +1,10 @@
-import { MLA, MRA } from '@app/common/stylesheet';
 import React, { Component } from 'react';
 import { Text } from 'react-native';
-import { mainColor } from '../../../../../../common/color';
-import { getWP } from '../../../../../../common/dimension';
-import { AIC, BGCOLOR, BR, JCC, MH, provideShadow } from '../../../../../../common/styles';
-import WrappedRectangleButton from '../../../../../component/WrappedRectangleButton';
+import { MRA } from '@app/common/stylesheet';
+import { mainColor } from '@app/common/color';
+import { getWP } from '@app/common/dimension';
+import { AIC, BGCOLOR, BR, JCC, provideShadow } from '@app/common/styles';
+import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 
 interface Props {
     size: string;

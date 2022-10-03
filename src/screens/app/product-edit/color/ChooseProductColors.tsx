@@ -14,7 +14,7 @@ import Ripple from 'react-native-material-ripple';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { DEFAULT_IMAGE_URL, FontFamily, fs14, fs16 } from '@app/common';
 
-import { createProductColor, deleteProductColor, updateProductColor } from '../../edit/product/component/generalConfig';
+import { createProductColor, deleteProductColor, updateProductColor } from '../component/generalConfig';
 
 import { showMessage } from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';

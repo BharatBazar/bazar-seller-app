@@ -10,7 +10,7 @@ import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIc
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import * as React from 'react';
 import { ImageBackground, View, StyleSheet } from 'react-native';
-import { border } from '../../edit/product/component/generalConfig';
+import { border } from '../component/generalConfig';
 import { choosenColor, choosenSize } from '../data-types';
 import ImageCarousel from './ImageCarousel';
 

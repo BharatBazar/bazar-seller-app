@@ -14,7 +14,7 @@ import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BC, BGCOLOR, BW, DSP, FDR, FLEX, ML, MT, P, PA, provideShadow } from '../../../common/styles';
 import { buttonContainerStyle, textInputContainerStyle } from '../../../common/containerStyles';
 import WrappedTextInput from '../../component/WrappedTextInput';
-import { border } from '../../app/edit/product/component/generalConfig';
+import { border } from '../../app/product-edit/component/generalConfig';
 import ModalWithHeader from '@app/screens/components/popup/ModalWithHeader';
 import { getDefaultMember, member } from './AddDukanMembers';
 import Ripple from 'react-native-material-ripple';

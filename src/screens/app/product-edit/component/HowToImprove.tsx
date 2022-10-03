@@ -8,7 +8,7 @@ import { fs14, fs18 } from '@app/common';
 import Ripple from 'react-native-material-ripple';
 import { BC, BR, BW, FDR, JCC, MT, MV, PH } from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import { marHor } from '../../edit/product/component/generalConfig';
+import { marHor } from './generalConfig';
 import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 
 interface HowToImproveProps {

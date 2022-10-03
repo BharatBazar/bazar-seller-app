@@ -11,7 +11,7 @@ import { IRGetShop, IRShopVerification, IShop, Shop, verificationStatus } from '
 import { deleteShop, getShop, getShopVerificationDetails } from '../../server/apis/shop/shop.api';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { NavigationKey } from '../../labels';
-import { border } from '../app/edit/product/component/generalConfig';
+import { border } from '../app/product-edit/component/generalConfig';
 import WrappedFeatherIcon from '../component/WrappedFeatherIcon';
 import StepIndicator from 'react-native-step-indicator';
 import { CommonApiResponse } from '../../server/apis/common.interface';

@@ -1,30 +1,23 @@
-import { AlertContext, LoaderContext } from '@app/../App';
-import { fs12, fs14 } from '@app/common';
+import * as React from 'react';
+import { View } from 'react-native';
+import { AlertContext } from '@app/../App';
+import { fs14 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { AIC, BGCOLOR, colorTransparency, DSP, FDR, FLEX, JCC, MT, MV, provideShadow } from '@app/common/styles';
-import { BRA, BTRA, MBA, MHA, MTA, MVA, PA, PHA, PVA } from '@app/common/stylesheet';
+import { BGCOLOR, FDR, provideShadow } from '@app/common/styles';
+import { BTRA, MBA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
-import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
-import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
-import {
-    APICreateProductSize,
-    APIdeleteProduct,
-    APIDeleteProductSize,
-    APIUpdateProductSize,
-} from '@app/server/apis/product/product.api';
-import { IClassifier, IFilter, IRProductSize } from '@app/server/apis/product/product.interface';
-import * as React from 'react';
-import { View } from 'react-native';
+import { APICreateProductSize, APIDeleteProductSize, APIUpdateProductSize } from '@app/server/apis/product/product.api';
+import { IFilter, IRProductSize } from '@app/server/apis/product/product.interface';
 import { showMessage } from 'react-native-flash-message';
 import { ScrollView } from 'react-native-gesture-handler';
-import WrappedSize from '../../edit/product/component/component/WrappedSize';
+import WrappedSize from './WrappedSize';
 import { choosenSize, ProductIdContext, provideDefaultSizeState } from '../data-types';
 import Size from './Size';
 
