@@ -1,13 +1,12 @@
-import { fs12, fs14, fs16 } from '@app/common';
-import { applyColorCode, borderColor, errorColor } from '@app/common/color';
-import { AIC, BGCOLOR, colorTransparency, DSP, FDR, FLEX, JCC, MT, PA, provideShadow, PT } from '@app/common/styles';
-import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import WrappedText from '@app/screens/component/WrappedText';
 import * as React from 'react';
 import { View, Animated } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Ripple from 'react-native-material-ripple';
-import { border } from '../component/generalConfig';
+import { fs14, fs16 } from '@app/common';
+import { applyColorCode, borderColor, errorColor } from '@app/common/color';
+import { AIC, BGCOLOR, colorTransparency, DSP, FDR, FLEX, JCC, MT, PA, provideShadow } from '@app/common/styles';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import WrappedText from '@app/screens/component/WrappedText';
 
 interface CollapsibleErrorComponentProps {
     error: string[];

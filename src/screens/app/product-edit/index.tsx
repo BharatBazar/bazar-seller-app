@@ -351,8 +351,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     title={updateFlow ? 'Update Product' : 'Create Product'}
                 />
                 {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
+                {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
                 <ScrollView contentContainerStyle={[PH(0.2), PBA()]}>
-                    {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle
                             title={distribution[0].name}
@@ -374,6 +374,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             />
                         </>
                     )}
+
                     {choosenColor.map((item: choosenColor, index: number) => (
                         <EditSelectedColor
                             onPressAddMoreImage={() => {
@@ -397,6 +398,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             }}
                         />
                     ))}
+
                     {filter.length > 0 && (
                         <Filter
                             filters={filter}
