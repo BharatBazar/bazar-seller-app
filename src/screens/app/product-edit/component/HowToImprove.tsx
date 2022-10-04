@@ -1,32 +1,58 @@
 import * as React from 'react';
-import { View } from 'react-native';
+import { Animated, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Ripple from 'react-native-material-ripple';
 import WrappedText from '@app/screens/component/WrappedText';
-import { AlertBox } from '@app/common/containerStyles';
-import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 import { applyColorCode, borderColor, errorColor, mainColor } from '@app/common/color';
 import { fs14, fs16, fs18 } from '@app/common';
-import { AIC, BC, BGCOLOR, BR, BW, DSP, FDR, FLEX, JCC, MT, MV, PH, provideShadow, PV } from '@app/common/styles';
-import { marHor } from './generalConfig';
-import { PHA, PVA } from '@app/common/stylesheet';
+import {
+    AIC,
+    BGCOLOR,
+    BR,
+    BW,
+    colorTransparency,
+    DSP,
+    FDR,
+    FLEX,
+    JCC,
+    MT,
+    provideShadow,
+    PV,
+} from '@app/common/styles';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import { PA } from '@app/common/stylesheet';
 
 interface HowToImproveProps {
     note: string;
 }
 
+const ANIMATION_DURATION = 500;
+const BC = errorColor + colorTransparency[80];
+
 const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
     const [isCollapsed, setIsCollapsed] = React.useState(false);
+    const borderBottomRadius = React.useRef(new Animated.Value(0));
 
+    React.useEffect(() => {
+        if (isCollapsed) {
+            Animated.timing(borderBottomRadius.current, {
+                toValue: 5,
+                duration: ANIMATION_DURATION,
+                useNativeDriver: true,
+            }).start();
+        }
+
+        return () => {
+            console.log('Returned');
+        };
+    }, [isCollapsed]);
     // console.log(note);
     return (
         <View
             style={[
-                PHA(),
-                PVA(),
-                { backgroundColor: '#ffffff' },
+                { paddingHorizontal: DSP * 0.7, paddingVertical: DSP },
                 provideShadow(5),
+                BGCOLOR('#ffffff'),
                 { borderBottomColor: borderColor, borderBottomWidth: 1 },
             ]}
         >
@@ -39,9 +65,11 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
 
                     {
                         borderWidth: 2,
-                        borderColor: errorColor,
-                        borderRadius: 5,
-                        borderRadius: 5,
+                        borderColor: BC,
+                        borderTopRightRadius: 5,
+                        borderTopLeftRadius: 5,
+                        borderBottomRightRadius: borderBottomRadius.current,
+                        borderBottomLeftRadius: borderBottomRadius.current,
                     },
                     BGCOLOR(applyColorCode(errorColor, 80)),
                 ]}
@@ -63,13 +91,26 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
                 />
             </Ripple>
             <Collapsible collapsed={isCollapsed}>
-                <View style={[AlertBox()]}>
+                <View
+                    style={[
+                        PA(DSP * 0.7),
+
+                        {
+                            borderBottomRightRadius: 5,
+                            borderBottomLeftRadius: 5,
+                            borderColor: BC,
+                            borderWidth: 2,
+                        },
+                        // BGCOLOR(applyColorCode(errorColor, 40)),
+                    ]}
+                >
                     {note.map((item, index) => (
                         <WrappedText
                             text={`[${index + 1}] ` + item}
-                            textColor={errorColor}
                             textStyle={{ lineHeight: fs18 }}
+                            fontSize={fs14}
                             containerStyle={[MT(0.05)]}
+                            fontWeight={'bold'}
                         />
                     ))}
                 </View>

@@ -17,15 +17,11 @@ const BC = errorColor + colorTransparency[80];
 
 const CollapsibleErrorComponent: React.FunctionComponent<CollapsibleErrorComponentProps> = ({ error }) => {
     const [collapsed, setCollapsed] = React.useState(false);
-    const borderBottomRadius = new Animated.Value(0);
+    var borderRadiusAnimated = React.useRef(new Animated.Value(0)).current;
 
     React.useEffect(() => {
         if (collapsed) {
-            Animated.timing(borderBottomRadius, {
-                toValue: 5,
-                duration: ANIMATION_DURATION,
-                useNativeDriver: true,
-            }).start();
+            borderRadiusAnimated.setValue(5);
         }
     }, [collapsed]);
 
@@ -54,8 +50,8 @@ const CollapsibleErrorComponent: React.FunctionComponent<CollapsibleErrorCompone
                         borderColor: BC,
                         borderTopRightRadius: 5,
                         borderTopLeftRadius: 5,
-                        borderBottomRightRadius: borderBottomRadius,
-                        borderBottomLeftRadius: borderBottomRadius,
+                        borderBottomRightRadius: borderRadiusAnimated,
+                        borderBottomLeftRadius: borderRadiusAnimated,
                     },
                     BGCOLOR(applyColorCode(errorColor, 80)),
                 ]}
