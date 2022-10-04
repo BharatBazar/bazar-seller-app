@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, FlatList } from 'react-native';
 import { getHP } from '../../../../common/dimension';
-import { AIC, BC, BR, BW, FDR, FLEX, HP, JCC, MT, MV, PL, PV } from '../../../../common/styles';
+import { AIC, BC, BR, BW, DSP, FDR, FLEX, HP, JCC, MT, MV, PL, PV } from '../../../../common/styles';
 import ModalHOC from '../../../hoc/ModalHOC';
 import ModalHeader from '../../../component/ModalHeader';
 import WrappedText from '../../../component/WrappedText';
@@ -25,7 +25,15 @@ export const ShowFilter = ({
 }) => {
     return (
         <Ripple
-            style={[BW(1), BC('#8A8A8A'), PV(0.1), PL(0.3), BR(0.1), FDR(), { marginBottom: getHP(0.05) }]}
+            style={[
+                BW(1),
+                BC('#8A8A8A'),
+                PV(0.1),
+                PL(0.3),
+                BR(0.1),
+                FDR(),
+                { marginBottom: getHP(0.05), marginTop: DSP },
+            ]}
             onPress={() => {
                 onPress(item);
             }}
