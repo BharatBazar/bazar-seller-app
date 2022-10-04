@@ -3,6 +3,8 @@ import { Animated, View } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Ripple from 'react-native-material-ripple';
 import WrappedText from '@app/screens/component/WrappedText';
+import { AlertBox } from '@app/common/containerStyles';
+import ButtonFeatherIcon from '@app/screens/components/button/ButtonFeatherIcon';
 import { applyColorCode, borderColor, errorColor, mainColor } from '@app/common/color';
 import { fs14, fs16, fs18 } from '@app/common';
 import {
@@ -16,41 +18,30 @@ import {
     FLEX,
     JCC,
     MT,
+    MV,
+    PH,
     provideShadow,
     PV,
 } from '@app/common/styles';
+import { marHor } from './generalConfig';
+import { MBA, MTA, PA, PHA, PVA } from '@app/common/stylesheet';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import { PA } from '@app/common/stylesheet';
 
 interface HowToImproveProps {
     note: string;
 }
 
-const ANIMATION_DURATION = 500;
+const ANIMATION_DURATION = 400;
 const BC = errorColor + colorTransparency[80];
 
 const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
     const [isCollapsed, setIsCollapsed] = React.useState(false);
-    const borderBottomRadius = React.useRef(new Animated.Value(0));
 
-    React.useEffect(() => {
-        if (isCollapsed) {
-            Animated.timing(borderBottomRadius.current, {
-                toValue: 5,
-                duration: ANIMATION_DURATION,
-                useNativeDriver: true,
-            }).start();
-        }
-
-        return () => {
-            console.log('Returned');
-        };
-    }, [isCollapsed]);
     // console.log(note);
     return (
         <View
             style={[
-                { paddingHorizontal: DSP * 0.7, paddingVertical: DSP },
+                { padding: DSP * 0.6 },
                 provideShadow(5),
                 BGCOLOR('#ffffff'),
                 { borderBottomColor: borderColor, borderBottomWidth: 1 },
@@ -66,10 +57,8 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
                     {
                         borderWidth: 2,
                         borderColor: BC,
-                        borderTopRightRadius: 5,
-                        borderTopLeftRadius: 5,
-                        borderBottomRightRadius: borderBottomRadius.current,
-                        borderBottomLeftRadius: borderBottomRadius.current,
+
+                        borderRadius: 5,
                     },
                     BGCOLOR(applyColorCode(errorColor, 80)),
                 ]}
@@ -90,27 +79,26 @@ const HowToImprove: React.FunctionComponent<HowToImproveProps> = ({ note }) => {
                     iconColor={'#FFFFFF'}
                 />
             </Ripple>
-            <Collapsible collapsed={isCollapsed}>
+            <Collapsible duration={ANIMATION_DURATION} collapsed={isCollapsed}>
                 <View
                     style={[
                         PA(DSP * 0.7),
+                        MTA(2),
 
                         {
-                            borderBottomRightRadius: 5,
-                            borderBottomLeftRadius: 5,
+                            borderRadius: 5,
                             borderColor: BC,
                             borderWidth: 2,
                         },
-                        // BGCOLOR(applyColorCode(errorColor, 40)),
                     ]}
                 >
                     {note.map((item, index) => (
                         <WrappedText
-                            text={`[${index + 1}] ` + item}
+                            text={index + 1 + '. ' + item}
                             textStyle={{ lineHeight: fs18 }}
-                            fontSize={fs14}
-                            containerStyle={[MT(0.05)]}
                             fontWeight={'bold'}
+                            containerStyle={[MBA(2)]}
+                            fontSize={fs14}
                         />
                     ))}
                 </View>

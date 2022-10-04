@@ -2,33 +2,27 @@ import * as React from 'react';
 import { View, Animated } from 'react-native';
 import Collapsible from 'react-native-collapsible';
 import Ripple from 'react-native-material-ripple';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import WrappedText from '@app/screens/component/WrappedText';
 import { fs14, fs16 } from '@app/common';
 import { applyColorCode, borderColor, errorColor } from '@app/common/color';
 import { AIC, BGCOLOR, colorTransparency, DSP, FDR, FLEX, JCC, MT, PA, provideShadow } from '@app/common/styles';
-import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import WrappedText from '@app/screens/component/WrappedText';
+import { MBA, MTA } from '@app/common/stylesheet';
 
 interface CollapsibleErrorComponentProps {
     error: string[];
 }
 
-const ANIMATION_DURATION = 200;
+const ANIMATION_DURATION = 400;
 const BC = errorColor + colorTransparency[80];
 
 const CollapsibleErrorComponent: React.FunctionComponent<CollapsibleErrorComponentProps> = ({ error }) => {
     const [collapsed, setCollapsed] = React.useState(false);
-    var borderRadiusAnimated = React.useRef(new Animated.Value(0)).current;
-
-    React.useEffect(() => {
-        if (collapsed) {
-            borderRadiusAnimated.setValue(5);
-        }
-    }, [collapsed]);
 
     return (
         <View
             style={[
-                { paddingHorizontal: DSP * 0.7, paddingVertical: DSP },
+                { padding: DSP * 0.6 },
                 provideShadow(5),
                 BGCOLOR('#ffffff'),
                 { borderBottomColor: borderColor, borderBottomWidth: 1 },
@@ -48,10 +42,7 @@ const CollapsibleErrorComponent: React.FunctionComponent<CollapsibleErrorCompone
                     {
                         borderWidth: 2,
                         borderColor: BC,
-                        borderTopRightRadius: 5,
-                        borderTopLeftRadius: 5,
-                        borderBottomRightRadius: borderRadiusAnimated,
-                        borderBottomLeftRadius: borderRadiusAnimated,
+                        borderRadius: 5,
                     },
                     BGCOLOR(applyColorCode(errorColor, 80)),
                 ]}
@@ -73,10 +64,10 @@ const CollapsibleErrorComponent: React.FunctionComponent<CollapsibleErrorCompone
                 <View
                     style={[
                         PA(DSP * 0.7),
+                        MTA(2),
 
                         {
-                            borderBottomRightRadius: 5,
-                            borderBottomLeftRadius: 5,
+                            borderRadius: 5,
                             borderColor: BC,
                             borderWidth: 2,
                         },
@@ -89,7 +80,7 @@ const CollapsibleErrorComponent: React.FunctionComponent<CollapsibleErrorCompone
                             //textColor={'#FFFFFF'}
                             fontSize={fs14}
                             fontWeight={'bold'}
-                            containerStyle={[MT(0.06)]}
+                            containerStyle={[MBA(2)]}
                         />
                     ))}
                 </View>
