@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, } from 'react-native';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { AIC, BGCOLOR, FDR, MT } from '@app/common/styles';
+import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
+import { AIC, BGCOLOR, FDR, ML, MT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import CrossIcon from 'react-native-vector-icons/Entypo';
@@ -11,99 +11,123 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Image } from 'react-native';
-import { add } from 'react-native-reanimated';
+import Entypo from 'react-native-vector-icons/Entypo'
+import { products } from './products';
+import BottomSheet from './BottomSheet';
 
- var totalItem:[]=[]
+var totalItem: [] = []
 
 const CreateBill: React.FC = ({ navigation, route }) => {
-    const [modalHeight, setModalHeight] = React.useState(400)
+    const [modalHeight, setModalHeight] = React.useState(500)
     const [color, setColor] = React.useState("#ffffff")
     const [id, setId] = React.useState<Number>()
     const [item, setItem] = useState([])
     const [showEnter, setShowEnter] = useState<Boolean>(true)
+    const [openContinueModal, setOpenContinueModal] = useState<String>()
+    const [editItem, setEditItem] = useState<{}>()
+    const [allProducts, setAllProducts] = useState([])
+    const [k, setK] = useState([])
+
+    const refRBSheet = useRef()
+
+
+    const removeItem = (id:any)=>{
+        const j = k.filter((e)=>{
+            return e._id !== id
+        })
+        setK(j)
+    }
+
+
+var total = 0;
+
+k.forEach(i=>{
+    total +=i.price*i.quantity
+})
+
+
+
+
+
+    const findProduct = (id: number) => {
+        const product = products.filter(e => e._id === Number(id))
+        setModalHeight(600)
+        setAllProducts(product)
+        setItem([product])
+        setShowEnter(false)
+    }
+
+    const Add = (item: any) => {
+        setK([...k,item])
+        setItem([])
+        refRBSheet.current.close()
+    }
 
    
+    
 
-    const refRBSheet = useRef();
 
-    useEffect(() => {
-        if (route.params.openModal === true) {
-            refRBSheet.current.open();
-        }
-    }, [modalHeight]);
+    const ChangeQuantity = (quantity: number, item: {}) => {
+        const product = products.find(e => e._id === Number(item._id)).quantity = quantity
+        const fProduct = products.find(e => e._id === Number(item._id))
+        setItem([fProduct])
 
-   const products = [
-       {
-           _id:1,
-           name:"Mens",
-           subName:"Shirt",
-           color:"red",
-           price:100
-       },
-       {
-           _id:2,
-           name:"Womens",
-           subName:"Jeans",
-           color:"blue",
-           price:200
-       },
-       {
-           _id:3,
-           name:"Child",
-           subName:"Shoes",
-           color:"orange",
-           price:700
-       },
-   ]
 
-   const findProduct = (id:number)=>{
-    const product = products.find(e=>e._id === Number(id))
-    setModalHeight(600)
-    setItem([product])
-    setShowEnter(false)
-   }
+    }
 
-   const Add = (item:any)=>{
-        totalItem.push(item)
-        setItem([])
-       refRBSheet.current.close()
-       console.log(totalItem);
-   }
+    const IncreaseQuantity=(item:{})=>{
+        const u = k.find(e=>e._id === Number(item._id)).quantity++
+        
+       setK([...k])
+     
+    }
+    const DecreaseQuantity=(item:{})=>{
+        const u = k.find(e=>e._id === Number(item._id)).quantity--
+        
+       setK([...k])
+     
+    }
+    
+ 
+    
 
-   const renderData = ({item})=>{
-       return(
-           <>
-            <View style={{paddingHorizontal:20}}>
-                           <View style={{ padding:3,marginTop: 25, borderWidth: 1, borderColor: mainColor, borderRadius: 5, justifyContent: "space-between", flexDirection: "row" }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <View>
-                                <Text style={{marginLeft:3,fontFamily:FontFamily.Regular}}>Id {item._id}</Text>
-                            <Image  style={{ width: 70, height: 70, marginTop:5,borderRadius: 8, resizeMode:"cover",alignSelf: "center" }} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFlmYAlXMHURN9wb0aoZR9Ev0qEQ74RHyzPA&usqp=CAU" }} />
-
+    const renderData = ({ item }) => {
+        return (
+            <>
+                {/* <TouchableOpacity onPress={() => editProductModal(item)} style={styles.card}> */}
+                <View style={styles.card}>
+                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
+                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.img }} />
+                            <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
+                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.name}</Text>
+                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.subName}</Text>
+                                <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>$ {item.quantity * item.price}</Text>
                             </View>
-                            <View style={{ alignSelf: "center",marginLeft:15 }}>
-                                <Text style={{ fontFamily: FontFamily.Medium }}>{item.name}</Text>
-                                <Text style={{ fontFamily: FontFamily.Regular }}>1 × {item.subName}</Text>
-                            </View>
+
+
                         </View>
-                        <View style={{borderRadius:12.5,width:25,height:25,alignSelf:"center",backgroundColor:item.color}}>
-                            
+                        {/* <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: "red" }}>
+
+                        </View> */}
+                        <View style={{ alignSelf: "center", flexDirection: "row" }}>
+                            <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' />
+                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity}</Text>
+                            <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' />
+
                         </View>
-                        <View style={{borderRadius:"1",alignSelf:"center"}}>
-                            <Text style={{fontFamily:FontFamily.Bold,color:"#252525",marginRight:10}}>₹ {item.price}</Text>
-                        </View>
-                        <TouchableOpacity style={{alignSelf:"center"}}>
-                            <DeleteIcon name='delete' size={22} color={"#252525"}/>
+                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ paddingRight: 10, marginTop: 5 }}>
+                            <CrossIcon name='cross' color={"#252525"} size={24} />
                         </TouchableOpacity>
                     </View>
-                
-            </View>
-           </>
-       )
-   }
+                </View>
+            </>
+        )
+    }
+
 
     return (
-        <View style={{ flex: 1, backgroundColor: color }}>
+        <View style={{ flex: 1, backgroundColor: "#f9f6ee" }}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
                 {
                     <ButtonMaterialIcons
@@ -129,131 +153,55 @@ const CreateBill: React.FC = ({ navigation, route }) => {
                     buttonText={'Add Product'}
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
-                        console.log(totalItem)
+                        setOpenContinueModal("ADD_PRODUCT")
                         refRBSheet.current.open()
-                        setModalHeight(400)
-                    }}
-                />
-            </View>
-            <View style={{ width:"100%",position:"absolute",bottom:0 }}>
-                <RightComponentButtonWithLeftText
-                    buttonText={'Continue'}
-                    containerStyle={[MT(0.1)]}
-                    onPress={() => {
-                        console.log(totalItem)
-                        refRBSheet.current.open()
-                        setModalHeight(400)
+                        setModalHeight(500)
                     }}
                 />
             </View>
 
-            {totalItem.length > 0?(<>
-           <FlatList
-           data={totalItem}
-           renderItem={renderData}
-           />
-            </>):(null)}
+            <View style={{ paddingHorizontal: 20, flex: .8 }}>
 
-            <RBSheet
-                ref={refRBSheet}
-                closeOnDragDown={true}
-                height={modalHeight}
-                onOpen={() => setColor("grey")}
-                onClose={() => setColor("#ffffff")}
-                animationType={"slide"}
-                customStyles={{
-                    draggableIcon: {
-                        backgroundColor: '#000',
-                    },
-                }}
-            >
-                <View style={{ paddingHorizontal: 20 ,flex:1}}>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <Text
-                            style={{
-                                fontFamily: FontFamily.Helvatica,
-                                fontSize: 16,
-                                alignSelf: 'center',
-                            }}
-                        >
-                            Add Product
-                        </Text>
-                        <TouchableOpacity onPress={() =>{
-                             refRBSheet.current.close()
-                             setItem([])
-                        }} style={{ borderRadius: 15, backgroundColor: mainColor }}>
-                            <CrossIcon name="cross" color={"#ffffff"} size={24} style={{ alignSelf: "center" }} />
-                        </TouchableOpacity>
-                    </View>
+                {k.length > 0 ? (<>
+                    <FlatList
+                        data={k}
+                        renderItem={renderData}
+                        showsVerticalScrollIndicator={false}
+                    />
+                </>) : (null)}
 
-                    <View style={{ marginTop: 10 }}>
-                        <Text style={{ fontFamily: FontFamily.Regular }}>Enter Item Id</Text>
-                        <TextInput keyboardType="number-pad" onChangeText={(id)=>{setId(id)
-                       setShowEnter(true), setItem([]) }} style={{ borderWidth: 1, borderColor: mainColor, height: 35, marginTop: 5, borderRadius: 5 }} />
-                        {id &&  showEnter !== false ?(
-                            <>
-                            <TouchableOpacity onPress={() =>findProduct(id)} style={{ marginTop: 15, padding: 3, width: 70, borderRadius: 5, backgroundColor: mainColor }}>
-                            <Text style={{ fontFamily: FontFamily.Bold, color: "#ffffff", alignSelf: "center" }}>Enter</Text>
-                        </TouchableOpacity>
-                            </>
-                        ):(null)}
-                    </View>
-                   {
-                       item.length === 1  && id?(
-                           <>
-                            <View style={{padding:3, marginTop: 25, borderWidth: 1, borderColor: mainColor, borderRadius: 5, justifyContent: "space-between", flexDirection: "row" }}>
-                       
-                        <View style={{ flexDirection: "row" }}>
-                        <View>
-                                                  <Text style={{marginLeft:3,fontFamily:FontFamily.Regular ,color:"#252525"}}>Id {item[0]._id}</Text>
-                          <Image  style={{ width: 70, height: 70, marginTop:5,borderRadius: 8, resizeMode:"cover",alignSelf: "center" }} source={{ uri: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQFlmYAlXMHURN9wb0aoZR9Ev0qEQ74RHyzPA&usqp=CAU" }} />
-                        </View>
-                            <View style={{ alignSelf: "center" ,marginLeft:15}}>
-                                <Text style={{ fontFamily: FontFamily.Medium }}>{item[0].name}</Text>
-                                <Text style={{ fontFamily: FontFamily.Regular }}>1 × {item[0].subName}</Text>
-                            </View>
-                        </View>
-                        <View style={{borderRadius:12.5,width:25,height:25,alignSelf:"center",backgroundColor:!item[0].color?"red":item[0].color}}>
-                            
-                        </View>
-                        <View style={{alignSelf:"center"}}>
-                            <Text style={{fontFamily:FontFamily.Bold,color:"#252525",marginRight:10}}>₹ {item[0].price}</Text>
-                        </View>
-                        
-                    </View>
+                <View style={{ width: "100%", }}>
 
-                    <View style={{flexDirection:"row",justifyContent:"space-between",marginTop:20}}>
-                        <Text style={{fontFamily:FontFamily.Regular,fontSize:17,alignSelf:"center"}}>Quantity</Text>
-                        <TextInput style={{ borderBottomColor:mainColor,borderBottomWidth:1,alignSelf:"center",fontSize:17,fontFamily:FontFamily.Regular}}/>
-                    </View>
-                    <View style={{borderWidth:.7,marginTop:10}}>
-
-                    </View>
-                    <View style={{flexDirection:"row",marginTop:10,justifyContent:"space-between"}}>
-                        <Text style={{fontFamily:FontFamily.Regular,fontSize:17,alignSelf:"center"}}>Total</Text>
-                        <Text style={{fontFamily:FontFamily.Bold,color:"#252525",marginRight:10,fontSize:17}}>₹ {item[0].price}</Text>
-                    </View>
-                           </>
-                       ):(null)
-                   }
-                 
-                  
-                </View>
-                   <View style={{position:"absolute",bottom:0,width:"100%",alignSelf:"center"}}>
-                            <RightComponentButtonWithLeftText
-                    buttonText={'Add'}
-                    containerStyle={[MT(0.1)]}
-                    onPress={() => {
-                        Add(item[0])
-                    }}
-                    disabled={item.length>0?(false):(true)}
-                />
-                  
-                     </View>
-                      
-                
                
-            </RBSheet>
+
+            </View>
+          
+            </View>
+              <View style={{paddingHorizontal:20,paddingTop:30}}>
+                {k.length>0?(
+                    <>
+                      <View style={{flexDirection:"row",justifyContent:"space-between"}}>
+                      <Text style={{fontFamily:FontFamily.Black,color:"#252525",fontSize:16}}>Total Price</Text>
+                      <Text style={{fontFamily:FontFamily.Black,color:"#252525",fontSize:16}}>$ {total}</Text>
+                  </View>
+                    </>
+                ):(null)}
+                 
+               <View style={{paddingTop:20}}>
+                    <RightComponentButtonWithLeftText
+                    buttonText={'Continue'}
+                    containerStyle={[MT(0.1),{borderRadius:30,width:"70%",alignSelf:"center"}]}
+                    onPress={() => {
+                        setOpenContinueModal("CONTINUE")
+                        refRBSheet.current.open()
+                        setModalHeight(500)
+                    }}
+                    disabled={k.length > 0 ?false:true}
+                />
+               </View>
+                </View>
+
+            <BottomSheet total={total} removeItem={removeItem} k={k} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
         </View>
     );
 };
@@ -271,4 +219,22 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
     },
+    card: {
+        borderRadius: 10,
+        elevation: 3,
+        backgroundColor: "#fff",
+        shadowOffset: { width: 1, height: 1 },
+        shadowColor: "#333",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+        marginHorizontal: 4,
+        marginVertical: 6,
+    },
+    circle: {
+        alignSelf: "center",
+        borderRadius: 30,
+        padding: 1,
+        backgroundColor: mainColor
+
+    }
 });
