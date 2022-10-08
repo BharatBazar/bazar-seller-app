@@ -11,6 +11,7 @@ import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/edit/product/component/generalConfig';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { getHP } from '@app/common/dimension';
+import { createBill } from '@app/server/apis/billdesk/bill.api';
 
 const BottomSheet = ({
     Add,
@@ -60,7 +61,7 @@ const BottomSheet = ({
                             <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.img }} />
                         </View>
                         <View style={{ alignSelf: "center" }}>
-                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.subName}</Text>
+                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productName}</Text>
                         </View>
                         <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: item.color ? item.color : "red" }}>
 
@@ -68,7 +69,7 @@ const BottomSheet = ({
                         <View style={{ alignSelf: "center" }}>
                             <Text style={{ fontFamily: FontFamily.Bold, color: "#252525" }}>₹ {item.quantity * item.price}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ alignSelf: "center", paddingRight: 10 }}>
+                        <TouchableOpacity onPress={()=>removeItem(item.kkd)} style={{ alignSelf: "center", paddingRight: 10 }}>
                             <DeleteIcon name='delete' size={22} color={"#252525"} />
                         </TouchableOpacity>
 
@@ -76,6 +77,19 @@ const BottomSheet = ({
                 </View>
             </>
         )
+    }
+
+    const AddProduct=async()=>{
+        try {
+            console.log(k);
+            const bill = await createBill({
+                name:"Babu rao",
+                totalPrice:total,
+                products:k
+            })
+        } catch (error) {
+            console.log("ERROR",error.message);
+        }
     }
 
 
@@ -104,7 +118,7 @@ const BottomSheet = ({
                             <FlatList
                                 data={k}
                                 renderItem={renderReview}
-                                keyExtractor={item => item._id}
+                                keyExtractor={item => item.kkd}
                             />
 
                         </View>
@@ -119,7 +133,7 @@ const BottomSheet = ({
                             buttonText={'Confirm'}
                             containerStyle={[MT(0.1), { position: "absolute", bottom: 0, width: "100%" }]}
                             onPress={() => {
-                                Add(allProducts[0])
+                                AddProduct()
                             }}
                             disabled={allProducts.length > 0 ? (false) : (true)}
                         />
@@ -186,7 +200,7 @@ const BottomSheet = ({
                                                     <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts[0].img }} />
                                                     <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
                                                         <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].name}</Text>
-                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts[0].subName}</Text>
+                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts[0].productName}</Text>
                                                     </View>
 
 
@@ -235,7 +249,7 @@ const BottomSheet = ({
                             <Text style={{ fontFamily: FontFamily.Helvatica, alignSelf: "center", fontSize: 16 }}>Edit Product</Text>
 
                             <View>
-                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 15 }}>Item Id {editItem._id}</Text>
+                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 15 }}>Item Id {editItem.kkd}</Text>
                             </View>
 
                             <View>

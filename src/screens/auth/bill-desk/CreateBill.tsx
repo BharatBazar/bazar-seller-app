@@ -33,7 +33,7 @@ const CreateBill: React.FC = ({ navigation, route }) => {
 
     const removeItem = (id:any)=>{
         const j = k.filter((e)=>{
-            return e._id !== id
+            return e.kkd !== id
         })
         setK(j)
     }
@@ -50,7 +50,7 @@ k.forEach(i=>{
 
 
     const findProduct = (id: number) => {
-        const product = products.filter(e => e._id === Number(id))
+        const product = products.filter(e => e.kkd === Number(id))
         setModalHeight(600)
         setAllProducts(product)
         setItem([product])
@@ -68,21 +68,21 @@ k.forEach(i=>{
 
 
     const ChangeQuantity = (quantity: number, item: {}) => {
-        const product = products.find(e => e._id === Number(item._id)).quantity = quantity
-        const fProduct = products.find(e => e._id === Number(item._id))
+        const product = products.find(e => e.kkd === Number(item.kkd)).quantity = quantity
+        const fProduct = products.find(e => e.kkd === Number(item.kkd))
         setItem([fProduct])
 
 
     }
 
     const IncreaseQuantity=(item:{})=>{
-        const u = k.find(e=>e._id === Number(item._id)).quantity++
+        const u = k.find(e=>e.kkd === Number(item.kkd)).quantity++
         
        setK([...k])
      
     }
     const DecreaseQuantity=(item:{})=>{
-        const u = k.find(e=>e._id === Number(item._id)).quantity--
+        const u = k.find(e=>e.kkd === Number(item.kkd)).quantity--
         
        setK([...k])
      
@@ -101,7 +101,7 @@ k.forEach(i=>{
                             <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.img }} />
                             <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
                                 <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.name}</Text>
-                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.subName}</Text>
+                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.productName}</Text>
                                 <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>$ {item.quantity * item.price}</Text>
                             </View>
 
@@ -115,8 +115,8 @@ k.forEach(i=>{
                             <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity}</Text>
                             <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' />
 
-                        </View>
-                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ paddingRight: 10, marginTop: 5 }}>
+                          </View>
+                        <TouchableOpacity onPress={()=>removeItem(item.kkd)} style={{ paddingRight: 10, marginTop: 5 }}>
                             <CrossIcon name='cross' color={"#252525"} size={24} />
                         </TouchableOpacity>
                     </View>
