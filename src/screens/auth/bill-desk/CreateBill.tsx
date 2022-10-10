@@ -201,7 +201,7 @@ k.forEach(i=>{
                </View>
                 </View>
 
-            <BottomSheet total={total} removeItem={removeItem} k={k} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
+            <BottomSheet navigation={navigation} total={total} removeItem={removeItem} k={k} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
         </View>
     );
 };

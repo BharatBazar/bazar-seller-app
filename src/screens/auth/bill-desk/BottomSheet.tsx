@@ -12,6 +12,7 @@ import { border, borRad } from '@app/screens/app/edit/product/component/generalC
 import Entypo from 'react-native-vector-icons/Entypo'
 import { getHP } from '@app/common/dimension';
 import { createBill } from '@app/server/apis/billdesk/bill.api';
+import { NavigationKey } from '@app/labels';
 
 const BottomSheet = ({
     Add,
@@ -35,7 +36,8 @@ const BottomSheet = ({
     allProducts,
     k,
     total,
-    removeItem
+    removeItem,
+    navigation
 
 }) => {
     // const refRBSheet = useRef();
@@ -87,6 +89,9 @@ const BottomSheet = ({
                 totalPrice:total,
                 products:k
             })
+            if(bill.status === 1){
+                navigation.navigate(NavigationKey.UPDATEBILL)
+            }
         } catch (error) {
             console.log("ERROR",error.message);
         }
