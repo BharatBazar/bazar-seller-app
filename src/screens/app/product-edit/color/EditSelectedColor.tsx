@@ -1,8 +1,8 @@
 import { DEFAULT_IMAGE_URL, FontFamily, fs12, fs14, fs15 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { getWP } from '@app/common/dimension';
-import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, HP, JCC, ML, MR, provideShadow, WP } from '@app/common/styles';
-import { MBA, MLA, MTA, MVA } from '@app/common/stylesheet';
+import { AIC, BGCOLOR, BR, DSP, FDR, FLEX, HP, JCC, MA, ML, MR, provideShadow, WP } from '@app/common/styles';
+import { BRA, MBA, MHA, MLA, MTA, MVA } from '@app/common/stylesheet';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
@@ -48,7 +48,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
         return photos;
     };
     return (
-        <View style={[{ marginTop: DSP }, provideShadow(2), BR(0.2), BGCOLOR('#FFF'), WP(9), MTA(), MLA(5)]}>
+        <View style={[MA(DSP * 0.7), provideShadow(2), BRA(DSP * 0.7), BGCOLOR('#FFF')]}>
             <View style={[FDR(), JCC('space-between'), AIC(), { marginHorizontal: DSP * 1.5, marginTop: DSP * 0.8 }]}>
                 <View style={[FDR(), AIC()]}>
                     <View style={[BGCOLOR(item.color.description), { height: 20, width: 20, borderRadius: 100 }]} />
@@ -90,7 +90,14 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                 iconName="add"
                                 iconSize={25}
                                 iconColor={mainColor}
-                                containerStyle={[imageBackgroundStyle, AIC(), JCC(), provideShadow(), MBA(5)]}
+                                containerStyle={[
+                                    imageBackgroundStyle,
+                                    AIC(),
+                                    JCC(),
+                                    provideShadow(),
+                                    BGCOLOR('#FFFFFF'),
+                                    MTA(5),
+                                ]}
                                 onPress={() => {
                                     onPressAddMoreImage();
                                 }}
@@ -101,8 +108,8 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                             <View>
                                 <ImageBackground
                                     source={{ uri: uri }}
-                                    imageStyle={imageBackgroundStyle}
-                                    style={imageBackgroundStyle}
+                                    imageStyle={[imageBackgroundStyle]}
+                                    style={[imageBackgroundStyle, MVA(5)]}
                                 >
                                     <WrappedFeatherIcon
                                         iconName="delete"

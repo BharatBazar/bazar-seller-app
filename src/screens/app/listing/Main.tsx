@@ -6,7 +6,7 @@ import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, JCC, PH, PV } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
-import { apiEndPoint } from '../../../server';
+
 import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';

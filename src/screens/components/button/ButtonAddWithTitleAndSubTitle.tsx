@@ -20,19 +20,21 @@ import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 
 import * as React from 'react';
-import { View } from 'react-native';
+import { View, ViewStyle } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 
 interface ButtonAddWithTitleAndSubTitleProps {
     onPressPlus: Function;
     title: string;
     subTitle: string;
+    containerStyle?: ViewStyle | ViewStyle[];
 }
 
 const ButtonAddWithTitleAndSubTitle: React.FunctionComponent<ButtonAddWithTitleAndSubTitleProps> = ({
     onPressPlus,
     title,
     subTitle,
+    containerStyle,
 }) => {
     return (
         <Ripple
@@ -47,6 +49,7 @@ const ButtonAddWithTitleAndSubTitle: React.FunctionComponent<ButtonAddWithTitleA
                 BR(0.1),
                 { overflow: 'hidden' },
                 BGCOLOR('#FFFFFF'),
+                containerStyle,
             ]}
         >
             <View style={[FLEX(1.5), JCC()]}>
