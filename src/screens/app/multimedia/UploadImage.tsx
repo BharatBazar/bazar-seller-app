@@ -12,8 +12,6 @@ import { deleteImage, getSignedPhotoUrl } from '@app/server/apis/multimedia/mult
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 //import OpenSettings from 'react-native-open-settings';
 
-export const GENERAL_S3_URL = 'https://lababeen-admin-multimedia-bucket.s3.ap-south-1.amazonaws.com/';
-
 interface UploadImageProps {
     text: string;
     textColor?: string;

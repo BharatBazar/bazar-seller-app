@@ -21,6 +21,8 @@ import Loader from '@app/screens/component/Loader';
 import ProvideSize from '../size/ProvideSize';
 import AddPhotoPopup from '../photo';
 import { MHA, PBA, PHA, PTA } from '@app/common/stylesheet';
+import { useUploadImage } from '@app/hooks/useUploadImage';
+import { s3BucketKeys } from '@app/server/apis/multimedia/multimedia.interface';
 
 export interface ChooseProductColorsProps {
     setPopup: Function;
@@ -57,6 +59,8 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);
 
+    const uploadImageFunction = useUploadImage(s3BucketKeys.productImage, setLoader);
+
     //console.log('product DI', productId);
     const createColorInServer = async (colorChoosen: FilterValueInterface, index: number) => {
         try {
@@ -90,6 +94,9 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         }
     };
 
+    // React.useEffect(() => {
+    //     setLoader(false);
+    // }, []);
     const deleteColorInServer = async (_id: string, index: number, fitlerValueId: string) => {
         try {
             setLoader(true);
@@ -169,9 +176,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                 <View style={[selectedStyle, MT(0.2)]}>
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
-                                        onPress={() => {
+                                        onPress={async () => {
+                                            const getUrl: string | void = await uploadImageFunction(true);
+
+                                            if (getUrl) {
+                                                console.log('Urrll', getUrl);
+                                            }
                                             //setShowPhotoPopup(true);
-                                            onPressColor(selected, indexInSelectedColor, item, index);
+                                            //  onPressColor(selected, indexInSelectedColor, item, index);
                                         }}
                                     >
                                         <View
