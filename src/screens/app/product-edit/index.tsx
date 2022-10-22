@@ -114,6 +114,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             if (response) {
                 //console.log('response set ', response.payload.colors[1].sizes);
                 setProductId(response.payload._id);
+
+                console.log(response.payload.colors[0]);
                 setChoosenColor(response.payload.colors);
                 setProductDetails(response.payload);
                 setLoader(false);

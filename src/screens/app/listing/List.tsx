@@ -44,7 +44,7 @@ const ProductList: React.FC<ProductListProps> = ({
                 },
             });
 
-            console.log(status, response);
+            console.log(status, response.payload.payload[0]);
 
             if (response.status == 1) {
                 //    console.log(response.payload.payload);

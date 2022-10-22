@@ -4,7 +4,12 @@ import { getHP, getWP } from '../../../../common/dimension';
 import { borderColor, colorCode, mainColor } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
 import ModalHeader from '../../../component/ModalHeader';
-import { FilterInterface, FilterValueInterface, IFilter } from '../../../../server/apis/product/product.interface';
+import {
+    FilterInterface,
+    FilterValueInterface,
+    IFilter,
+    IProductColor,
+} from '../../../../server/apis/product/product.interface';
 import { choosenColor, choosenSize, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, MH, MT, MV, PL, PR } from '@app/common/styles';
@@ -62,14 +67,16 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const uploadImageFunction = useUploadImage(s3BucketKeys.productImage, setLoader);
 
     //console.log('product DI', productId);
-    const createColorInServer = async (colorChoosen: FilterValueInterface, index: number) => {
+    const createColorInServer = async (colorChoosen: FilterValueInterface, url: string) => {
         try {
             setLoader(true);
-            let data = {
+            let data: IProductColor = {
                 color: colorChoosen._id,
                 parentId: productId ? productId : undefined,
                 shopId: shopId,
-                photos: [DEFAULT_IMAGE_URL],
+                photos: [url],
+                identificationPhoto: url,
+
                 catalogueId: catalogueId,
             };
 
@@ -82,9 +89,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             }
             showMessage({ type: 'success', message: 'Product size created' });
             addColorsToChoosenArray(
-                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, [
-                    DEFAULT_IMAGE_URL,
-                ]),
+                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, [url]),
             );
             setCurrentColorIndex(chosenColor.length);
             setShowSizePopup(true);
@@ -137,11 +142,12 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         indexInSelectedColor: number,
         item: FilterValueInterface,
         index: number,
+        url: string,
     ) => {
         if (selected) {
             deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor, item._id);
         } else {
-            createColorInServer(item, index);
+            createColorInServer(item, url);
         }
     };
 
@@ -177,13 +183,13 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
                                         onPress={async () => {
-                                            const getUrl: string | void = await uploadImageFunction(true);
+                                            const getUrl: string | void = await uploadImageFunction(false);
 
                                             if (getUrl) {
                                                 console.log('Urrll', getUrl);
+                                                onPressColor(selected, indexInSelectedColor, item, index, getUrl);
+                                            } else {
                                             }
-                                            //setShowPhotoPopup(true);
-                                            //  onPressColor(selected, indexInSelectedColor, item, index);
                                         }}
                                     >
                                         <View

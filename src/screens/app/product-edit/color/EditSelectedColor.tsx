@@ -34,7 +34,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onClickEditSize,
     onPressSingleSize,
 }) => {
-    //console.log('sizes =>', item.photos);
+    // console.log('sizes =>', item.photos);
 
     const imageBackgroundStyle = [BR(0.1), { height: 80, width: 120 }, MR(0.4)];
     const providePhotos = () => {

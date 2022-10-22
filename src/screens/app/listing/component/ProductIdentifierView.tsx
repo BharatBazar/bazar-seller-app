@@ -36,8 +36,8 @@ export interface ProductIdentifierViewProps {
     onPress: Function;
 }
 
-const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
-    product: { _id, title, subTitle, ...rest },
+const ProductIdentifierView: React.FC<ProductIdentifierViewProps> = ({
+    product: { _id, title, subTitle, sellerIdentificationPhoto, ...rest },
     onPress,
 }) => {
     return (
@@ -59,7 +59,7 @@ const ProductIdentifierView: React.SFC<ProductIdentifierViewProps> = ({
                 {/* {rest.status != productStatus.NOTCOMPLETED && <WrappedText text={rest.itemId} />} */}
                 <FastImageWrapper
                     source={{
-                        uri: DEFAULT_IMAGE_URL,
+                        uri: sellerIdentificationPhoto || DEFAULT_IMAGE_URL,
                     }}
                     resizeMode={'cover'}
                     imageStyle={[
