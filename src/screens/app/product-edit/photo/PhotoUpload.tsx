@@ -157,7 +157,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                 buttonText={'Continue'}
                 containerStyle={[MT(0.1)]}
                 onPress={() => {
-                    updatePhotoArray(photos);
+                    updatePhotoArray(photos.map((item) => item.path));
                 }}
             />
             <ImageZoomViewer

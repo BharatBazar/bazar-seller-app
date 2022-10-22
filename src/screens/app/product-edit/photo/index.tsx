@@ -68,7 +68,7 @@ const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
                     openCamera={openCamera}
                     existingPhotos={existingPhotos}
                     updatePhotoArray={(photos: { path: string }[]) => {
-                        updatePhotoArray(photos.map((item) => DEFAULT_IMAGE_URL));
+                        updatePhotoArray(photos.map((item) => item));
                     }}
                 />
             </View>
