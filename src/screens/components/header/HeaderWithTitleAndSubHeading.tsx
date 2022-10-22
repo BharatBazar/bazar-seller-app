@@ -27,7 +27,9 @@ const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSu
 }) => {
     return (
         <View style={headerContainerStyle}>
-            <WrappedText text={heading} fontFamily={FontFamily.Medium} fontSize={fs20} textStyle={headerStyle} />
+            {heading && (
+                <WrappedText text={heading} fontFamily={FontFamily.Medium} fontSize={fs20} textStyle={headerStyle} />
+            )}
             {typeof subHeading === 'string' && (
                 <WrappedText
                     text={subHeading}

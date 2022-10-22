@@ -6,7 +6,7 @@ import { fs10, fs12, fs13 } from '../../../../common';
 import { colorCode } from '../../../../common/color';
 import { BR, MT, WP } from '../../../../common/styles';
 import WrappedText from '../../../component/WrappedText';
-import { border, marTop, padHor, padVer } from '../../edit/product/component/generalConfig';
+import { border, marTop, padHor, padVer } from '../../product-edit/component/generalConfig';
 
 export interface StatusProps {
     name: string;

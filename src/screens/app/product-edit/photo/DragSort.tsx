@@ -1,7 +1,7 @@
 import { FontFamily, fs13, fs15, fs20 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { getHP, getWP } from '@app/common/dimension';
-import { AIC, BGCOLOR, BR, BW, FDR, JCC, MH, ML, MT, PH, provideShadow, PV } from '@app/common/styles';
+import { AIC, BGCOLOR, BR, BW, DSP, FDR, JCC, MH, ML, MT, PH, provideShadow, PV } from '@app/common/styles';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
@@ -31,6 +31,7 @@ interface DragSortState {
     isVisible: boolean;
     movedKey: string | undefined;
     items: { path: string; _id: string }[];
+    orderChanged: boolean;
 }
 
 export default class DragSort extends React.Component<DragSortProps, DragSortState> {
@@ -40,6 +41,7 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
             items: props.data,
             movedKey: undefined,
             isVisible: false,
+            orderChanged: false,
         };
 
         this.sortableViewRef = createRef();
@@ -89,7 +91,7 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                         this.props.setPopup(false);
                     }}
                 >
-                    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+                    <SafeAreaView style={{ flex: 1, backgroundColor: '#fff', paddingTop: DSP }}>
                         <View style={[MH(0.5)]}>
                             <WrappedFeatherIcon
                                 iconName={'chevron-left'}
@@ -107,37 +109,47 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                                 textColor={'#1f1f1f'}
                             />
                             <WrappedText
-                                text={'Click on image and place it in order you want'}
+                                text={'Arrange image in the order you want'}
                                 fontFamily={FontFamily.Medium}
                                 fontSize={fs13}
                                 textColor={'#646464'}
                                 containerStyle={[MT(0.05)]}
                             />
-                            <WrappedRectangleButton
-                                containerStyle={[
-                                    FDR(),
-                                    JCC(),
-                                    AIC(),
-                                    BGCOLOR(mainColor),
-                                    PH(0.5),
-                                    PV(0.1),
-                                    BR(0.05),
-                                    MT(0.1),
-                                ]}
-                                onPress={() => {
-                                    this.props.setPhotosArrayAfterReordering(items);
-                                }}
-                            >
-                                <WrappedText
-                                    text={'Reorder'}
-                                    textColor={'#FFFFFF'}
-                                    textStyle={{
-                                        color: '#FFFFFF',
-                                        fontSize: fs15,
+
+                            <WrappedText
+                                text={'For arranging image long press on image drag and drop in order you want'}
+                                fontFamily={FontFamily.Medium}
+                                fontSize={fs13}
+                                textColor={'#646464'}
+                                containerStyle={[MT(0.05)]}
+                            />
+                            {this.state.orderChanged && (
+                                <WrappedRectangleButton
+                                    containerStyle={[
+                                        FDR(),
+                                        JCC(),
+                                        AIC(),
+                                        BGCOLOR(mainColor),
+                                        PH(0.5),
+                                        PV(0.1),
+                                        BR(0.05),
+                                        MT(0.1),
+                                    ]}
+                                    onPress={() => {
+                                        this.props.setPhotosArrayAfterReordering(items);
                                     }}
-                                    containerStyle={[ML(0.2)]}
-                                />
-                            </WrappedRectangleButton>
+                                >
+                                    <WrappedText
+                                        text={'Reorder'}
+                                        textColor={'#FFFFFF'}
+                                        textStyle={{
+                                            color: '#FFFFFF',
+                                            fontSize: fs15,
+                                        }}
+                                        containerStyle={[ML(0.2)]}
+                                    />
+                                </WrappedRectangleButton>
+                            )}
                         </View>
 
                         <AnySizeDragSortableView
@@ -146,7 +158,7 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                             keyExtractor={(item: { path: string; _id: string }) => item._id}
                             renderItem={this._renderItem}
                             onDataChange={(data, callback) => {
-                                this.setState({ items: data }, () => {
+                                this.setState({ items: data, orderChanged: true }, () => {
                                     callback();
                                 });
                             }}

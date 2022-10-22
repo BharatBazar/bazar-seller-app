@@ -1,4 +1,4 @@
-import { ISizeApp } from './../../../../../server/apis/product/product.interface';
+import { ISizeApp } from '../../../../server/apis/product/product.interface';
 import {
     IProduct,
     productStatus,
@@ -6,7 +6,7 @@ import {
     IProductSize,
     IRProductSize,
     IRProductColor,
-} from '../../../../../server/apis/product/product.interface';
+} from '../../../../server/apis/product/product.interface';
 import {
     APIcreateProduct,
     APICreateProductColor,
@@ -18,9 +18,9 @@ import {
     APIupdateProduct,
     APIUpdateProductColor,
     APIUpdateProductSize,
-} from '../../../../../server/apis/product/product.api';
-import { getHP } from '../../../../../common/dimension';
-import { PH, PV, BR } from '../../../../../common/styles';
+} from '../../../../server/apis/product/product.api';
+import { getHP } from '../../../../common/dimension';
+import { PH, PV, BR } from '../../../../common/styles';
 import { Platform } from 'react-native';
 export const shadowWrapperStyle = [PH(0.1), PV(0.1)];
 export const generalSpacing = getHP(0.2);

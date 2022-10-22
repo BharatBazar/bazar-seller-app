@@ -6,7 +6,7 @@ import { getHP, getWP } from '../../../common/dimension';
 import { BC, BGCOLOR, BW, DSP, FDR, FLEX, ML, PA } from '../../../common/styles';
 import { textInputContainerStyle } from '../../../common/containerStyles';
 import WrappedTextInput from '../../component/WrappedTextInput';
-import { border } from '../../app/edit/product/component/generalConfig';
+import { border } from '../../app/product-edit/component/generalConfig';
 import ModalWithHeader from '@app/screens/components/popup/ModalWithHeader';
 import { getDefaultMember, member } from './AddDukanMembers';
 import Ripple from 'react-native-material-ripple';

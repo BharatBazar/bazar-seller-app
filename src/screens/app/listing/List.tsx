@@ -17,6 +17,7 @@ export interface ProductListProps extends MaterialTopTabNavigationProp {
     status: productStatus;
     isInitialRoute: boolean;
     parentId: string;
+    reload: Function;
 }
 
 const ProductList: React.FC<ProductListProps> = ({
@@ -26,6 +27,7 @@ const ProductList: React.FC<ProductListProps> = ({
 
     status,
     isInitialRoute,
+    reload,
 }) => {
     console.log('parentid', parentId);
     const [loading, setLoader] = useState(false);
@@ -101,6 +103,9 @@ const ProductList: React.FC<ProductListProps> = ({
                                         parentId: parentId,
                                         changeTab: () => {
                                             navigation.jumpTo('Waiting for approval');
+                                        },
+                                        reload: () => {
+                                            reload();
                                         },
                                     });
                                 }}

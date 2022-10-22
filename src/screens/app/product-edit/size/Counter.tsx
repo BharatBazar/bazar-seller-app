@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ViewStyle } from 'react-native';
-import { fs15, fs16, fs20 } from '../../../../../../common';
-import { borderColor, colorCode, mainColor } from '../../../../../../common/color';
-import { getHP, getWP } from '../../../../../../common/dimension';
-import TextButton from '../../../../../component/TextButton';
-import WrappedText from '../../../../../component/WrappedText';
-import WrappedTextInput from '../../../../../component/WrappedTextInput';
+import { StyleSheet, View, ViewStyle } from 'react-native';
+import { fs15 } from '@app/common';
+import { borderColor, colorCode } from '@app/common/color';
+import { getHP, getWP } from '@app/common/dimension';
+import TextButton from '@app/screens/component/TextButton';
+
+import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 
 interface Props {
     containerStyle?: ViewStyle | ViewStyle[];

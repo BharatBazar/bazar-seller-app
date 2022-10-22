@@ -30,7 +30,7 @@ import {
 import { IProduct, productStatus } from '../../../../server/apis/product/product.interface';
 import { FastImageWrapper } from '../../../component/FastImage';
 import WrappedText from '../../../component/WrappedText';
-import { border } from '../../edit/product/component/generalConfig';
+import { border } from '../../product-edit/component/generalConfig';
 export interface ProductIdentifierViewProps {
     product: IProduct;
     onPress: Function;

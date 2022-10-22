@@ -8,11 +8,12 @@ import { STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 export interface ModalProps {
     isVisible: boolean;
     setPopup: Function;
-    children: React.ReactChild;
+
     showErrorMessage?: string;
     refer?: any;
     statusBarTranlucent?: boolean;
     modalStyle?: ViewStyle | ViewStyle[];
+    children: any;
 }
 
 const ModalHOC: React.FC<ModalProps> = ({

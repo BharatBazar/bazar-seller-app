@@ -1,11 +1,10 @@
-import { FontFamilies } from '@app/constants';
 import React, { Component } from 'react';
-import { View, TouchableHighlight, Text } from 'react-native';
-import { colorCode, mainColor } from '../../../../../../common/color';
-import { getHP, getWP } from '../../../../../../common/dimension';
-import { AIC, BC, BGCOLOR, BR, JCC, MH, provideShadow } from '../../../../../../common/styles';
-import WrappedRectangleButton from '../../../../../component/WrappedRectangleButton';
-import { ToastHOC } from '../../../../../hoc/ToastHOC';
+import { Text } from 'react-native';
+import { MRA } from '@app/common/stylesheet';
+import { mainColor } from '@app/common/color';
+import { getWP } from '@app/common/dimension';
+import { AIC, BGCOLOR, BR, JCC, provideShadow } from '@app/common/styles';
+import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
 
 interface Props {
     size: string;
@@ -23,10 +22,11 @@ class WrappedSize extends Component<Props, State> {
             <WrappedRectangleButton
                 containerStyle={[
                     BGCOLOR(selected ? mainColor : '#ffffff'),
-                    { height: getWP(0.8), width: getWP(0.8), overflow: 'hidden' },
+                    { height: getWP(1), width: getWP(1), overflow: 'hidden' },
                     BR(100),
-                    MH(0.2),
-                    provideShadow(),
+                    MRA(7),
+                    { marginLeft: 1 },
+                    !selected && provideShadow(),
                     AIC(),
                     JCC(),
                 ]}

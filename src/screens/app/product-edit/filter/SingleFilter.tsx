@@ -1,22 +1,17 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BC, BGCOLOR, BR, BW, JCC, MT, MV, PV } from '../../../../common/styles';
-import { ErrorState, IFilter, IPostDataToServer } from './component/generalConfig';
-import WrappedText from '../../../component/WrappedText';
 
 import ShowFilterModal, { ShowFilter } from './FilterValues';
-import { fs18 } from '../../../../common';
+
 import { getHP } from '../../../../common/dimension';
-import TextButton from '../../../component/TextButton';
-import { borderColor, errorColor, mainColor } from '../../../../common/color';
+
 import { FilterInterface, FilterValueInterface, IProduct } from '../../../../server/apis/product/product.interface';
-import { APIDeleteFilter } from '../../../../server/apis/product/product.api';
+
 import { ToastHOC } from '../../../hoc/ToastHOC';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
-import { updateProduct } from '../../edit/product/component/generalConfig';
+import { updateProduct } from '../component/generalConfig';
 import { showMessage } from 'react-native-flash-message';
 import { ProductIdContext } from '../data-types';
-import Loader from '@app/screens/component/Loader';
 
 export enum selectAction {
     add = 'Add',
@@ -125,10 +120,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
     };
 
     return (
-        <View
-            key={index}
-            style={[MT(0.2), { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}
-        >
+        <View key={index} style={[, { borderBottomWidth: 1, borderColor: '#e5e5e5', paddingBottom: getHP(0.2) }]}>
             {/* <WrappedText text={filter.name} fontSize={fs18} />
             <WrappedText text={filter.description} textColor={'#8A8A8A'} />
             {error['generalError'] && (
@@ -163,7 +155,7 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                     //setOpenChooseColor(true);
                 }}
             />
-            <View style={[MT(0.1)]} />
+
             {filterValues &&
                 filterValues.map((classifier: FilterValueInterface, index: number) => {
                     return (
@@ -177,7 +169,6 @@ const SingleFilter: React.FunctionComponent<SingleFilterProps> = ({
                         />
                     );
                 })}
-            <View style={[MT(0.1)]} />
 
             <ShowFilterModal
                 isVisible={showPopup}

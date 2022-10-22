@@ -1,18 +1,9 @@
 import * as React from 'react';
 import { View } from 'react-native';
-import { BC, BGCOLOR, BR, BW, DSP, JCC, MT, MV, provideShadow, PV } from '../../../../common/styles';
-
-import { getHP } from '../../../../common/dimension';
-import {
-    FilterInterface,
-    FilterValueInterface,
-    IClassifier,
-    IFilter,
-    IProduct,
-} from '@app/server/apis/product/product.interface';
+import { BGCOLOR, BR, DSP, provideShadow } from '../../../../common/styles';
+import { FilterInterface, FilterValueInterface } from '@app/server/apis/product/product.interface';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import SingleFilter from './SingleFilter';
-import { border, IPostDataToServer } from '../../edit/product/component/generalConfig';
 
 interface FilterProps {
     filters: FilterInterface[];

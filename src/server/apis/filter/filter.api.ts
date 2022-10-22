@@ -19,8 +19,8 @@ export function getFilter(data: Partial<IFilter>): Promise<IRGetFilter> {
     return axios.post('/filter/getAll', data);
 }
 
-export function getFilterWithValue(data: Partial<IFilter>): Promise<IRGetFilterWithValue> {
-    return axios.post('/filter/getAllWithValue', data);
+export function getFilterWithValue(data: { shopId: string; parentId: string }): Promise<IRGetFilterWithValue> {
+    return axios.post('/filter/getValueForAshop', data);
 }
 
 export function getClassifier(): Promise<{ payload: string[] }> {

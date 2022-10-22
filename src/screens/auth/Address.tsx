@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TextInput } from 'react-native';
+import { View, TextInput, Keyboard } from 'react-native';
 import { FontFamily, fs13, fs20, NavigationProps } from '../../common';
 import { black50, colorCode, disabledColor, errorColor } from '../../common/color';
 import { buttonContainerStyle, textInputContainerStyle, componentProps } from '../../common/containerStyles';
@@ -120,12 +120,6 @@ const Address: React.FC<AddressProps> = ({
             if (update) {
                 let index = areas.findIndex((item) => item.value == area);
 
-                console.log({
-                    ...data,
-                    state: state,
-                    city: city,
-                    area: { name: areas[index].label, _id: areas[index].value },
-                });
                 updateCallback({
                     ...data,
                     state: state,
@@ -198,6 +192,7 @@ const Address: React.FC<AddressProps> = ({
                         textProps={componentProps.buttonTextProps}
                         containerStyle={[HP(0.5), PH(0.5), { borderTopRightRadius: 2, borderBottomRightRadius: 2 }]}
                         onPress={() => {
+                            Keyboard.dismiss();
                             checkPincodeInServer(pincode);
                         }}
                         disabled={loader == 1}
@@ -277,7 +272,7 @@ const Address: React.FC<AddressProps> = ({
                             console.log(value);
                         }}
                         searchable={true}
-                        dropDownMaxHeight={250}
+                        dropDownMaxHeight={400}
                         placeholder={value ? value : area ? area : 'Area'}
                         // placeholder={details.area}
                     />

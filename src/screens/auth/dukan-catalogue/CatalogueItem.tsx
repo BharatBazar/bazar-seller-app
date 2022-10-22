@@ -15,8 +15,8 @@ import Catalogue from './CatalogueSelect';
 export interface CatalogueItemProps {
     item: IProductCatalogue;
     containerStyle?: ViewStyle | ViewStyle[];
-    onPressCategory: (path: IProductCatalogue[]) => void;
-    onPressDelete: (path: IProductCatalogue[]) => void;
+    onPressCategory: (path: IProductCatalogue[], callBack?: Function) => void;
+    onPressDelete: (path: IProductCatalogue[], callBack?: Function) => void;
     //selectedItems: IProductCatalogue[];
     selected: boolean;
 
@@ -27,7 +27,7 @@ export interface CatalogueItemProps {
     selectedTree: string[][];
 }
 
-const CatalogueItem: React.SFC<CatalogueItemProps> = ({
+const CatalogueItem: React.FC<CatalogueItemProps> = ({
     item,
     onPressCategory,
 
@@ -158,14 +158,11 @@ const CatalogueItem: React.SFC<CatalogueItemProps> = ({
                 }}
                 catalgoueTree={selectedTree && selectedTree.length > 1 ? selectedTree.slice(1) : []}
                 parentCatalogue={item}
-                onPressDelete={(path) => {
-                    onPressDelete(path);
+                onPressDelete={(path, callBack: Function) => {
+                    onPressDelete(path, callBack);
                 }}
-                callBack={(path: IProductCatalogue[]) => {
-                    // console.log('item', item);
-
-                    onPressCategory(path);
-                    // setShowChildPopup(false);
+                callBack={(path: IProductCatalogue[], callBack: Function) => {
+                    onPressCategory(path, callBack);
                 }}
             />
         </TouchableOpacity>

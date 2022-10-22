@@ -9,7 +9,7 @@ import { productStatus } from '@app/server/apis/product/product.interface';
 import * as React from 'react';
 import { View, StyleSheet } from 'react-native';
 import Modal from 'react-native-modal';
-import { border } from '../../edit/product/component/generalConfig';
+import { border } from './generalConfig';
 
 interface ImproveListProps {
     notes: [string];

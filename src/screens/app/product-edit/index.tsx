@@ -1,7 +1,8 @@
 import { AlertContext } from '@app/../App';
-import { fs16, fs20, NavigationProps } from '@app/common';
+import { FontFamily, fs16, fs20, NavigationProps } from '@app/common';
 import { black100, mainColor } from '@app/common/color';
-import { BGCOLOR, DSP, MV, PH, PV } from '@app/common/styles';
+import { BGCOLOR, DSP, FLEX, HP, MV, PH, PV } from '@app/common/styles';
+import { HA, MHA, MTA, PBA, PHA, PTA, PVA, WA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import StatusBar from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
@@ -31,12 +32,11 @@ import {
     deleteProductFromServer,
     updateProduct,
     updateProductColor,
-} from '../edit/product/component/generalConfig';
+} from './component/generalConfig';
 import ChooseProductColors from './color/ChooseProductColors';
 import EditSelectedColor from './color/EditSelectedColor';
 import HowToImprove from './component/HowToImprove';
 import ImproveList from './component/ImproveList';
-import ProductCompleteCTA from './component/ProductCompleteCTA';
 import { choosenColor, choosenSize, ProductIdContext } from './data-types';
 import CollapsibleErrorComponent from './error/CollapsibleError';
 import Filter from './filter/Filter';
@@ -44,6 +44,7 @@ import AddPhotoPopup from './photo';
 import DragSort from './photo/DragSort';
 import ProvideSize from './size/ProvideSize';
 import SizeUpdatePopup from './size/SizeUpdatePopup';
+import ColorTabBar from './color/ColorTabBar';
 
 interface EditProductProps extends NavigationProps {
     update?: boolean;
@@ -53,6 +54,7 @@ interface EditProductProps extends NavigationProps {
             _id?: string;
             shopId: string;
             parentId: string;
+            reload: Function;
         };
     };
 }
@@ -60,7 +62,7 @@ interface EditProductProps extends NavigationProps {
 const EditProduct: React.FunctionComponent<EditProductProps> = ({
     navigation,
     route: {
-        params: { update, _id, shopId, parentId },
+        params: { update, _id, shopId, parentId, reload },
     },
 }) => {
     const [loader, setLoader] = React.useState<boolean>(false);
@@ -124,7 +126,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const loadFilter = async () => {
         setLoader(true);
         try {
-            const response: IRGetFilterWithValue = await getFilterWithValue({ active: false });
+            const response: IRGetFilterWithValue = await getFilterWithValue({ shopId: shopId, parentId: parentId });
 
             setLoader(false);
             if (response.status == 1) {
@@ -205,6 +207,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 if (!updateFlow) {
                     setUpdate(true);
                 }
+                reload();
             }
             setLoader(false);
         } catch (error) {
@@ -298,6 +301,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 }
             });
             setLoader(false);
+
             if (errors.length > 0) setErrors(errors);
             else {
                 setErrors(errors);
@@ -324,27 +328,32 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         () => ({ productId: productId, setProductId: setProductId }),
         [productId],
     );
+
     return (
         <ProductIdContext.Provider value={productContextValue}>
             <View style={styles.container}>
                 <StatusBar statusBarColor={mainColor} />
                 <HeaderWithBackButtonTitleAndrightButton
-                    rightComponent={() => (
-                        <WrappedFeatherIcon
-                            iconName="delete"
-                            iconColor="#FFF"
-                            containerHeight={30}
-                            onPress={() => {
-                                deleteProduct();
-                            }}
-                        />
-                    )}
+                    rightComponent={() => {
+                        if (productDetails.colors && productDetails.colors.length > 0) {
+                            return (
+                                <WrappedFeatherIcon
+                                    iconName="delete"
+                                    iconColor="#FFF"
+                                    containerHeight={30}
+                                    onPress={() => {
+                                        deleteProduct();
+                                    }}
+                                />
+                            );
+                        } else return <View style={[HA(30), WA(30)]} />;
+                    }}
                     containerStyle={[{ padding: DSP }]}
                     title={updateFlow ? 'Update Product' : 'Create Product'}
                 />
                 {errors.length > 0 && <CollapsibleErrorComponent error={errors} />}
-                <ScrollView contentContainerStyle={[PH(0.2)]}>
-                    {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
+                {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
+                <ScrollView contentContainerStyle={[PBA()]}>
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
                         <ButtonAddWithTitleAndSubTitle
                             title={distribution[0].name}
@@ -352,43 +361,58 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                             onPressPlus={() => {
                                 setOpenChooseColor(true);
                             }}
+                            containerStyle={[MHA()]}
                         />
                     )}
 
-                    {choosenColor && choosenColor.length > 0 && (
+                    {/* {choosenColor && choosenColor.length > 0 && (
                         <>
                             <Border />
                             <WrappedText
                                 text="Selected color variant of product"
-                                textColor={black100}
-                                containerStyle={{ marginTop: DSP * 0.5 }}
+                                textColor={mainColor}
+                                containerStyle={[MTA(), MHA()]}
                                 fontSize={fs16}
+                                fontFamily={FontFamily.Medium}
+                                fontWeight={'600'}
                             />
+                            <Border />
                         </>
-                    )}
-                    {choosenColor.map((item: choosenColor, index: number) => (
-                        <EditSelectedColor
-                            onPressAddMoreImage={() => {
-                                setCurrentAddMoreImage(index);
-                            }}
-                            onClickEditSize={() => {
-                                setCurrentProductSizeIndex(index);
-                            }}
-                            onPressSingleSize={(sizeIndex: string) => {
-                                setCurrentColorSizeIndex(index + '-' + sizeIndex);
-                            }}
-                            item={item}
-                            onPressDragSort={() => {
-                                //   console.log('index', index);
-                                setCurrentDragSortIndex(index);
-                            }}
-                            key={index}
-                            sizes={item.sizes}
-                            onPressDeleteColor={() => {
-                                deleteColorFromServer(item._id, index);
-                            }}
+                    )} */}
+
+                    {/* {choosenColor.map((item: choosenColor, index: number) => (
+                       
+                    ))} */}
+                    <Border />
+                    {choosenColor.length > 0 && (
+                        <ColorTabBar
+                            colors={choosenColor}
+                            renderItem={(item: choosenColor, index: number) => (
+                                <EditSelectedColor
+                                    onPressAddMoreImage={() => {
+                                        setCurrentAddMoreImage(index);
+                                    }}
+                                    onClickEditSize={() => {
+                                        setCurrentProductSizeIndex(index);
+                                    }}
+                                    onPressSingleSize={(sizeIndex: string) => {
+                                        setCurrentColorSizeIndex(index + '-' + sizeIndex);
+                                    }}
+                                    item={item}
+                                    onPressDragSort={() => {
+                                        //   console.log('index', index);
+                                        setCurrentDragSortIndex(index);
+                                    }}
+                                    key={index}
+                                    sizes={item.sizes}
+                                    onPressDeleteColor={() => {
+                                        deleteColorFromServer(item._id, index);
+                                    }}
+                                />
+                            )}
                         />
-                    ))}
+                    )}
+
                     {filter.length > 0 && (
                         <Filter
                             filters={filter}
@@ -421,12 +445,16 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     shopId={shopId}
                     addColorsToChoosenArray={(color: choosenColor) => {
                         const data = [...choosenColor, color];
+                        if (data.length == 1) {
+                            reload();
+                        }
                         setChoosenColor(data);
                     }}
                     removeColorFromArray={removeColorFromProduct}
                     updateColorInArray={(color: Partial<choosenColor>, index: number) => {
                         const data = [...choosenColor];
                         data[index] = { ...data[index], ...color };
+
                         setChoosenColor(data);
                     }}
                     chosenColor={choosenColor}
@@ -533,6 +561,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         a = { ...a, ...size };
                         choosenColor[currentColorIndexOnSizeClick].sizes[currentSizeIndexOnSizeClick] = a;
                         //   console.log('a ===', a);
+
                         setChoosenColor(colors);
                     }}
                     removeSize={() => {

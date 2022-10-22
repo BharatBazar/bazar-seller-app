@@ -13,6 +13,7 @@ import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
 import { NavigationKey } from '@app/labels';
 import AddShopMemberBanner from './component/AddShopMemberBanner';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 interface Props extends NavigationProps {}
 
@@ -49,6 +50,7 @@ const Home = (props: Props) => {
         props.navigation.addListener('focus', () => {
             getShopDetails();
         });
+
         return () => {
             props.navigation.removeListener('focus', () => {
                 getShopDetails();
