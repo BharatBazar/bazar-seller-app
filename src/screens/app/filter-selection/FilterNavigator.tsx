@@ -23,6 +23,7 @@ import Loader from '@app/screens/component/Loader';
 import { getFilterAndValuesAndSelectedFilterValuesByShop, IRFilterValues } from '@app/server/apis/shop/shop.api';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 import { NavigationKey } from '@app/labels';
+import { FilterInterface, IFilter } from '@app/server/apis/product/product.interface';
 
 const FilterStackNavigator = createNativeStackNavigator();
 
@@ -42,11 +43,12 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const [loader, setLoader] = React.useState(false);
     const saveSelectedFilterValues = async (callback?: Function) => {
         setLoader(true);
-
+        let dataToSend = {};
+        dataToSend[filters[currentIndex].key] = selectedValues[filters[currentIndex].key];
         try {
             const response = await updateSelectedFilterValues({
                 _id: shopId,
-                ...selectedValues,
+                ...dataToSend,
                 parent: item._id,
             });
             setLoader(false);
@@ -72,14 +74,25 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 _id: shopId,
                 catalogueId: item._id,
             });
+<<<<<<< HEAD
             // console.log("GET_ALL_FILTERS_WITH_POWER",response.payload.allFilters.map((e)=>{
             //     console.log("==>",e.defaultSelectAll);
             // }));
             console.log('response', response.payload.currentIndex, response.payload.selectedValues);
+=======
+>>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
             setFilters(response.payload.allFilters);
-            setSelectedValues(response.payload.selectedValues);
+
+            if (response.payload.currentIndex == 0) {
+                let sv = {};
+                let item = response.payload.allFilters[0];
+                if (item.defaultSelectAll) sv[item.key] = item.values.map((vl) => vl._id);
+
+                setSelectedValues(sv);
+            } else setSelectedValues(response.payload.selectedValues);
+
             setCurrentIndex(response.payload.currentIndex);
-            console.log(response.payload.currentIndex);
+
             listRef?.current?.scrollToOffset({
                 animated: true,
                 offset: response.payload.currentIndex * getWP(10),
@@ -97,6 +110,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         getFilterWithValuesAndSelectedValue();
     }, []);
 
+<<<<<<< HEAD
     console.log(currentIndex, selectedValues);
     const list = React.useMemo(
         () => (
@@ -154,6 +168,25 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
   const onContinue = () => {
       console.log("LL",selectedValues[filters[currentIndex].key]);
         if (selectedValues[filters[currentIndex].key]) {
+=======
+    React.useEffect(() => {
+        let item: FilterInterface = filters[currentIndex];
+
+        console.log('item', item && item.defaultSelectAll && !selectedValues[item.key]);
+        if (item && item.defaultSelectAll && (!selectedValues[item.key] || selectedValues[item.key].length == 0)) {
+            console.log('selected');
+            setSelectedValues((prev) => {
+                prev[item.key] = item.values.map((val) => val._id);
+                console.log(prev);
+                return { ...prev };
+            });
+        }
+    }, [currentIndex]);
+
+    const onContinue = () => {
+        const keyInSel = filters[currentIndex].key;
+        if (selectedValues[keyInSel] && selectedValues[keyInSel].length > 0) {
+>>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
             saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {
                     listRef?.current?.scrollToOffset({
@@ -167,6 +200,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
             ToastHOC.errorAlert('Please select atleast one value');
         }
     };
+<<<<<<< HEAD
 //     const onContinue = () => {
 //         const setValues:any = filters[currentIndex].values.map((e)=>{
 //             return e._id
@@ -202,6 +236,10 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
 //              ToastHOC.errorAlert('Please select atleast odne value');
 //         }
 //     };
+=======
+
+    console.log('selee', selectedValues, currentIndex);
+>>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
     return (
         <View style={[FLEX(1)]}>
             {filters.length > 0 && (
@@ -246,8 +284,37 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 />
             </View>
             <Border />
+            <FlatList
+                scrollEnabled={false}
+                ref={listRef}
+                horizontal={true}
+                data={filters}
+                showsHorizontalScrollIndicator={false}
+                //  onScroll={onChange}
+                pagingEnabled
+                keyExtractor={(item, index) => item._id.toString()}
+                // snapToInterval={getWP(10)}
+                renderItem={({ item, index }) => (
+                    <FilterValues
+                        filter={item}
+                        selectedValues={selectedValues[item.key] || []}
+                        setSelectedValues={(indexOfValue: number) =>
+                            setSelectedValues((selectedValues) => {
+                                let values = selectedValues[item.key] || [];
+                                if (values.includes(indexOfValue)) {
+                                    removeElementFromArray(values, indexOfValue);
+                                } else {
+                                    values.push(indexOfValue);
+                                }
 
-            {list}
+                                selectedValues[item.key] = values;
+                                return { ...selectedValues };
+                            })
+                        }
+                        index={currentIndex}
+                    />
+                )}
+            />
             <GeneralButtonWithNormalBg
                 backgroundColor={mainColor}
                 buttonText={'Continue'}

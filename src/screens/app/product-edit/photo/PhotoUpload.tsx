@@ -1,30 +1,26 @@
 import React from 'react';
 import { View, StyleSheet, Image, ScrollView } from 'react-native';
-import WrappedText from '@app/screens/component/WrappedText';
-import { BGCOLOR, DSP, MT } from '@app/common/styles';
-import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import Ripple from 'react-native-material-ripple';
 import { fs14, fs15, fs20 } from '@app/common';
+import { BGCOLOR, DSP, MT } from '@app/common/styles';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
-import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { getHP, getWP } from '@app/common/dimension';
 import DragSort from './DragSort';
 import DeleteImagePopup from './DeleteImage';
-import Ripple from 'react-native-material-ripple';
-
 import ImageZoomViewer from './ImageViewer';
-
 import AddPhoto from '@app/screens/components/multimedia/AddPhoto';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFeatherIconWithRightText';
-
+import WrappedText from '@app/screens/component/WrappedText';
+import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
     openCamera?: boolean;
 }
 
-const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoArray, openCamera }) => {
+const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoArray, openCamera }) => {
     const [photos, setPhotos] = React.useState<{ path: string; _id: string }[]>([]);
     const [showImageViewer, setShowImageViewer] = React.useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
@@ -92,7 +88,7 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
                 </Ripple>
                 {photos.length > 1 && (
                     <WrappedFeatherIcon
-                        iconName={'trash-2'}
+                        iconName={'delete'}
                         iconColor={'#FFFFFF'}
                         onPress={() => {
                             setSelectedIndex(index + 1);
@@ -158,10 +154,10 @@ const PhotoUpload: React.SFC<PhotoUploadProps> = ({ existingPhotos, updatePhotoA
                 />
             )}
             <RightComponentButtonWithLeftText
-                buttonText={'continue'}
+                buttonText={'Continue'}
                 containerStyle={[MT(0.1)]}
                 onPress={() => {
-                    updatePhotoArray(photos);
+                    updatePhotoArray(photos.map((item) => item.path));
                 }}
             />
             <ImageZoomViewer

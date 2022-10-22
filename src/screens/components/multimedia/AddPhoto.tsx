@@ -2,9 +2,12 @@ import { fs13, fs14, fs15, fs20, fs28 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { getHP, getWP } from '@app/common/dimension';
 import { AIC, BGCOLOR, BR, FDR, FLEX, HP, JCC, ML, PH, PV } from '@app/common/styles';
+import { useUploadImage } from '@app/hooks/useUploadImage';
+import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { s3BucketKeys } from '@app/server/apis/multimedia/multimedia.interface';
 import * as React from 'react';
 import { Image, View, StyleSheet, ViewStyle } from 'react-native';
 import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
@@ -40,39 +43,38 @@ const IconTextButton: React.FunctionComponent<IconTextButtonProps> = ({ onPress,
 
 const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerStyle, openCamera }) => {
     const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
+    const [loader, setLoader] = React.useState(false);
+    const uploadImageFunction = useUploadImage(s3BucketKeys.productImage, setLoader);
 
     const openImageSelector = async (selector: 'file' | 'camera') => {
         try {
-            let images = [];
+            let images;
             if (selector == 'file') {
-                images = await ImageCropPicker.openPicker({
-                    compressImageMaxWidth: 1000,
-                    compressImageMaxHeight: 1000,
-                    multiple: true,
-                    mediaType: 'photo',
-                });
+                images = await uploadImageFunction(false);
             } else {
-                images = await ImageCropPicker.openCamera({
-                    compressImageMaxWidth: 1000,
-                    compressImageMaxHeight: 1000,
-                    multiple: true,
-                    mediaType: 'photo',
-                });
+                images = await uploadImageFunction(true);
             }
 
-            const result = [];
+            // const url =
 
-            for (const image of images) {
-                let data = {
-                    path: image.path,
-                    width: 1000,
-                    height: 1000,
-                };
-                result.push(await ImageCropPicker.openCropper(data));
+            // const result = [];
+
+            // for (const image of images) {
+            //     let data = {
+            //         path: image.path,
+            //         width: 1000,
+            //         height: 1000,
+            //     };
+            //     result.push(await ImageCropPicker.openCropper(data));
+            // }
+            // console.log(result);
+            if (images) {
+                addImage([{ path: images, _id: new Date().getTime().toString() }]);
+                setShowImageSelect(false);
+            } else {
+                setShowImageSelect(false);
+                ToastHOC.errorAlert('Problem');
             }
-            console.log(result);
-            addImage(result);
-            setShowImageSelect(false);
         } catch (error: Error) {
             setShowImageSelect(false);
             ToastHOC.errorAlert(error.message);
@@ -126,6 +128,7 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerS
                     />
                 </View>
             </Modal>
+            {loader && <Loader />}
         </View>
     );
 };

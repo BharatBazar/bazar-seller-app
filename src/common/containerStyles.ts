@@ -58,6 +58,5 @@ export const AlertBox = (color?: string): ViewStyle => {
         borderRadius: 5,
         paddingHorizontal: '3%',
         paddingVertical: '3%',
-        marginTop: getHP(0.1),
     };
 };

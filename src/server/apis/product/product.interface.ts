@@ -102,6 +102,7 @@ export interface IProductColor {
     photos: [string];
     includedColor: [IClassifier];
     shopId: string;
+    identificationPhoto: string;
     catalogueId: string;
 }
 

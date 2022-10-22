@@ -24,7 +24,7 @@ export default Border;
 
 const styles = StyleSheet.create({
     borderStyle: {
-        borderTopWidth: 2,
+        borderTopWidth: 1,
         borderColor: mainColor,
         opacity: 0.1,
         marginTop: '4%',

@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { getHP, getWP } from '../../../../common/dimension';
-import { colorCode } from '../../../../common/color';
+import { borderColor, colorCode, mainColor } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
 import ModalHeader from '../../../component/ModalHeader';
-import { FilterInterface, FilterValueInterface, IFilter } from '../../../../server/apis/product/product.interface';
+import {
+    FilterInterface,
+    FilterValueInterface,
+    IFilter,
+    IProductColor,
+} from '../../../../server/apis/product/product.interface';
 import { choosenColor, choosenSize, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
 import { AIC, BC, BGCOLOR, BR, BW, FDR, MH, MT, MV, PL, PR } from '@app/common/styles';
@@ -14,12 +19,15 @@ import Ripple from 'react-native-material-ripple';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { DEFAULT_IMAGE_URL, FontFamily, fs14, fs16 } from '@app/common';
 
-import { createProductColor, deleteProductColor, updateProductColor } from '../../edit/product/component/generalConfig';
+import { createProductColor, deleteProductColor, updateProductColor } from '../component/generalConfig';
 
 import { showMessage } from 'react-native-flash-message';
 import Loader from '@app/screens/component/Loader';
 import ProvideSize from '../size/ProvideSize';
 import AddPhotoPopup from '../photo';
+import { MHA, PBA, PHA, PTA } from '@app/common/stylesheet';
+import { useUploadImage } from '@app/hooks/useUploadImage';
+import { s3BucketKeys } from '@app/server/apis/multimedia/multimedia.interface';
 
 export interface ChooseProductColorsProps {
     setPopup: Function;
@@ -51,20 +59,24 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
     const [loader, setLoader] = React.useState(false);
-    //const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
+    const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);
 
+    const uploadImageFunction = useUploadImage(s3BucketKeys.productImage, setLoader);
+
     //console.log('product DI', productId);
-    const createColorInServer = async (colorChoosen: FilterValueInterface, index: number) => {
+    const createColorInServer = async (colorChoosen: FilterValueInterface, url: string) => {
         try {
             setLoader(true);
-            let data = {
+            let data: IProductColor = {
                 color: colorChoosen._id,
                 parentId: productId ? productId : undefined,
                 shopId: shopId,
-                photos: [DEFAULT_IMAGE_URL],
+                photos: [url],
+                identificationPhoto: url,
+
                 catalogueId: catalogueId,
             };
 
@@ -77,9 +89,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             }
             showMessage({ type: 'success', message: 'Product size created' });
             addColorsToChoosenArray(
-                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, [
-                    DEFAULT_IMAGE_URL,
-                ]),
+                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, [url]),
             );
             setCurrentColorIndex(chosenColor.length);
             setShowSizePopup(true);
@@ -89,6 +99,9 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         }
     };
 
+    // React.useEffect(() => {
+    //     setLoader(false);
+    // }, []);
     const deleteColorInServer = async (_id: string, index: number, fitlerValueId: string) => {
         try {
             setLoader(true);
@@ -129,45 +142,54 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
         indexInSelectedColor: number,
         item: FilterValueInterface,
         index: number,
+        url: string,
     ) => {
         if (selected) {
             deleteColorInServer(chosenColor[indexInSelectedColor]._id, indexInSelectedColor, item._id);
         } else {
-            createColorInServer(item, index);
+            createColorInServer(item, url);
         }
     };
 
     return (
-        <ModalHOC isVisible={isVisible} setPopup={setPopup}>
+        <ModalHOC statusBarTranlucent isVisible={isVisible} setPopup={setPopup}>
             <View
                 style={{
                     backgroundColor: colorCode.WHITE,
                     paddingTop: '5%',
-                    paddingHorizontal: '5%',
+
                     borderTopLeftRadius: getHP(0.2),
                     borderTopRightRadius: getHP(0.2),
                 }}
             >
                 <ModalHeader
+                    containerStyle={[PHA()]}
                     heading={'Choose Color'}
                     subHeading={'Click on the closest match of the color\navailable of the product.'}
                     setPopup={() => setPopup(false)}
                 />
                 <Border />
 
-                <ScrollView style={{ maxHeight: getHP(5) }}>
-                    <View style={{ flexWrap: 'wrap', flex: 1, flexDirection: 'row' }}>
-                        {colors.map((item: FilterValueInterface, index: number) => {
+                <ScrollView style={{ maxHeight: getHP(7.8) }} contentContainerStyle={[PHA(), PBA()]}>
+                    <View style={{}}>
+                        {[...colors].map((item: FilterValueInterface, index: number) => {
                             const indexInSelectedColor = chosenColor.findIndex((color) => color.color._id == item._id);
                             const selected = indexInSelectedColor > -1;
+                            //    const selected = true;
                             console.log('selected =>', selected);
-                            const selectedStyle = selected ? [BW(1), BC(item.description)] : {};
+                            const selectedStyle = selected ? [BW(1.5), BC(mainColor), BR(0.1)] : {};
                             return (
-                                <View style={[selectedStyle, MT(0.2), BR(0.4), MH(0.2)]}>
+                                <View style={[selectedStyle, MT(0.2)]}>
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
-                                        onPress={() => {
-                                            onPressColor(selected, indexInSelectedColor, item, index);
+                                        onPress={async () => {
+                                            const getUrl: string | void = await uploadImageFunction(false);
+
+                                            if (getUrl) {
+                                                console.log('Urrll', getUrl);
+                                                onPressColor(selected, indexInSelectedColor, item, index, getUrl);
+                                            } else {
+                                            }
                                         }}
                                     >
                                         <View
@@ -192,7 +214,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                             iconName="check-circle"
                                             iconSize={20}
                                             onPress={() => {}}
-                                            iconColor={item.description}
+                                            iconColor={mainColor}
                                             containerStyle={{ position: 'absolute', top: -12, right: -12 }}
                                         />
                                     )}
@@ -201,10 +223,10 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                         })}
                     </View>
                 </ScrollView>
-                <Border marginTop={10} />
+                <Border marginTop={0} />
                 <RightComponentButtonWithLeftText
-                    buttonText={'close'}
-                    containerStyle={[MV(0.2)]}
+                    buttonText={'Close'}
+                    containerStyle={[MV(0.2), MHA()]}
                     onPress={() => {
                         setPopup(false);
                     }}
@@ -257,7 +279,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
 export default ChooseProductColors;
 
 const arrayStyle = {
-    colorContainerStyle: [FDR(), BGCOLOR('#F0F0F0'), AIC(), BR(0.4), PL(0.2), PR(0.4), { paddingVertical: 5 }],
+    colorContainerStyle: [FDR(), BGCOLOR('#F0F0F0'), AIC(), BR(0.1), PL(0.2), PR(0.4), { paddingVertical: 10 }],
     colotStyle: [
         {
             height: 20,

@@ -15,6 +15,7 @@ interface ProductTabProps extends NavigationProps {
     initialIndex: number;
     tabs: IProductStatus[];
     parentId: string;
+    reload: Function;
 }
 
 const ProductTab: React.FC<ProductTabProps> = ({
@@ -24,6 +25,7 @@ const ProductTab: React.FC<ProductTabProps> = ({
     initialIndex,
     tabs,
     parentId,
+    reload,
 }) => {
     const basicProps = {
         navigation: navigation,
@@ -57,6 +59,7 @@ const ProductTab: React.FC<ProductTabProps> = ({
                         options={{ tabBarLabel: item.name, title: item.name }}
                         children={(props) => (
                             <ProductList
+                                reload={reload}
                                 key={item._id}
                                 {...basicProps}
                                 {...props}

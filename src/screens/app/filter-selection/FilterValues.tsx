@@ -1,13 +1,19 @@
 import * as React from 'react';
+<<<<<<< HEAD
 import { ScrollView, Text, View } from 'react-native';
 import { BGCOLOR, FLEX, WP } from '@app/common/styles';
+=======
+import { ScrollView, View } from 'react-native';
+import { AIC, BGCOLOR, FLEX, JCC, WP } from '@app/common/styles';
+>>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
 import { MHA, MTA, PHA } from '@app/common/stylesheet';
 import GeneralSearch from '@app/screens/components/search/Search';
-import { IFilter } from '@app/server/apis/product/product.interface';
+import { FilterInterface, FilterValueInterface, IFilter } from '@app/server/apis/product/product.interface';
 import FilterValue from './FilterValue';
+import WrappedText from '@app/screens/component/WrappedText';
 
 interface FilterValuesProps {
-    filter: IFilter;
+    filter: FilterInterface;
     selectedValues: string[];
     setSelectedValues: Function;
     removeSelectedValues: Function;
@@ -23,6 +29,7 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
     removeSelectedValues,
     index,
 }) => {
+<<<<<<< HEAD
 
     const [searchText, setSearchText] = React.useState('')
     const [searchFilter, setSearchFilter] = React.useState([])
@@ -48,6 +55,26 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
      
     }
 
+=======
+    const [searchString, setSearchString] = React.useState('');
+    const prevSearchVal = React.useRef('');
+    const [result, setResult] = React.useState<FilterValueInterface[]>([]);
+
+    React.useEffect(() => {
+        if (prevSearchVal.current.length > searchString.length) {
+            if (searchString.length == 0) {
+                setResult([]);
+            } else setResult([...filter.values.filter((item) => item.name.includes(searchString))]);
+        } else if (prevSearchVal.current.length < searchString.length) {
+            if (result.length > 0) {
+                setResult((prevRes) => prevRes.filter((item) => item.name.includes(searchString)));
+            } else {
+                setResult([...filter.values.filter((item) => item.name.includes(searchString))]);
+            }
+        }
+        prevSearchVal.current = searchString;
+    }, [searchString]);
+>>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
 
     return (
         <View style={[FLEX(1), BGCOLOR('#FFF'), WP(10)]}>
@@ -61,6 +88,7 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                 <GeneralSearch
                     containerStyle={[MHA(), MTA(), BGCOLOR('#FFFFFF')]}
                     placeholder={'Search ' + filter.name}
+<<<<<<< HEAD
                     setSearchText={setSearchText}
                     searchText={searchText}
                 />
@@ -91,6 +119,42 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                        </>
                     ))}
                 </View>
+=======
+                    searchText={searchString}
+                    setSearchString={setSearchString}
+                />
+            )}
+            <ScrollView style={{ maxHeight: 500 }} contentContainerStyle={[]}>
+                {searchString.length > 0 ? (
+                    result.length > 0 ? (
+                        result.map((item, index) => (
+                            <View style={[PHA()]}>
+                                <FilterValue
+                                    item={item}
+                                    selected={selectedValues.includes(item._id)}
+                                    onPress={() => {
+                                        setSelectedValues(item._id);
+                                    }}
+                                />
+                            </View>
+                        ))
+                    ) : (
+                        <WrappedText containerStyle={[FLEX(1), AIC(), JCC(), MTA(50)]} text={'No Result Found'} />
+                    )
+                ) : (
+                    filter.values.map((item, index) => (
+                        <View style={[PHA()]}>
+                            <FilterValue
+                                item={item}
+                                selected={selectedValues.includes(item._id)}
+                                onPress={() => {
+                                    setSelectedValues(item._id);
+                                }}
+                            />
+                        </View>
+                    ))
+                )}
+>>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
             </ScrollView>
 
         </View>

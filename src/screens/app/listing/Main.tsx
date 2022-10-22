@@ -6,7 +6,7 @@ import { colorCode, mainColor } from '../../../common/color';
 import { getHP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, JCC, PH, PV } from '../../../common/styles';
 import { NavigationKey } from '../../../labels';
-import { apiEndPoint } from '../../../server';
+
 import StatusBar from '../../component/StatusBar';
 import WrappedFeatherIcon from '../../component/WrappedFeatherIcon';
 import WrappedText from '../../component/WrappedText';
@@ -18,6 +18,7 @@ import { IProductStatus, IRProductStatus } from '@app/server/apis/product/produc
 import { showMessage } from 'react-native-flash-message';
 import { Shop } from '@app/server/apis/shop/shop.interface';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
+import { getShopCatalgoue } from '@app/server/apis/shop/shop.api';
 
 
 export interface ProductProps extends NavigationProps {
@@ -35,17 +36,6 @@ const Product: React.FC<ProductProps> = ({
     const [searchedText, setSearchedText] = React.useState('');
     const [status, setStatus] = React.useState<IProductStatus[]>([]);
 
-    const setBaseUrl = () => {
-        // axios.defaults.baseURL = apiEndPoint + `/catalogue`;
-        // if (subCategory1) {
-        //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory1.toLowerCase()}`;
-        // } else if (subCategory) {
-        //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${subCategory.toLowerCase()}`;
-        // } else if (category) {
-        //     axios.defaults.baseURL = apiEndPoint + `/catalogue/${category.toLowerCase()}`;
-        // }
-    };
-
     const getCatalogueStatus = async (data: { shopId: string }) => {
         try {
             const a: IRProductStatus = await APIProductStatus(data);
@@ -57,12 +47,7 @@ const Product: React.FC<ProductProps> = ({
     };
 
     React.useEffect(() => {
-        setBaseUrl();
-
         getCatalogueStatus({ shopId: shopId });
-        return () => {
-            axios.defaults.baseURL = apiEndPoint;
-        };
     }, []);
 
     return (
@@ -96,6 +81,10 @@ const Product: React.FC<ProductProps> = ({
                                     update: false,
                                     shopId: shopId,
                                     parentId: item._id,
+                                    reload: () => {
+                                        console.log('reload ====');
+                                        getCatalogueStatus({ shopId: shopId });
+                                    },
                                 });
                             }}
                             // containerStyle={{ backgroundColor: colorCode.WHITE }}
@@ -126,7 +115,17 @@ const Product: React.FC<ProductProps> = ({
                     />
                 ))}
             </View> */}
-            <ProductTab tabs={status} initialIndex={3} navigation={navigation} shopId={shopId} parentId={item._id} />
+            <ProductTab
+                reload={() => {
+                    console.log('reload is happening');
+                    getCatalogueStatus({ shopId: shopId });
+                }}
+                tabs={status}
+                initialIndex={3}
+                navigation={navigation}
+                shopId={shopId}
+                parentId={item._id}
+            />
         </View>
     );
 };

@@ -43,7 +43,7 @@ interface selected {}
 
 export interface productData extends IProductCatalogue, selected {}
 
-const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params } }) => {
+const ProductDetails: React.FC<ProductDetail> = ({ navigation, route: { params } }) => {
     const [data, setData] = React.useState<productData[]>([]);
     const [error, setError] = React.useState<string>('');
     const [selectedCategory, setSelectedCategory] = React.useState<string[][]>([]);
@@ -55,30 +55,16 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
             return { ...params };
         }
     }, [params]);
-    const sortFunction = (a: IProductCatalogue, b: IProductCatalogue, selectedCategory: string[]) => {
-        const indexOfA = selectedCategory.findIndex((item) => item == a._id);
-        const indexOfB = selectedCategory.findIndex((item) => item == b._id);
-        console.log(indexOfA, indexOfB, selectedCategory);
-        if (indexOfA == -1 && indexOfB == -1) {
-            return 0;
-        } else if (indexOfA > -1 && indexOfB > -1) {
-            if (indexOfA < indexOfB) {
-                return -1;
-            } else if (indexOfA == indexOfB) {
-                return 0;
-            } else {
-                return 1;
-            }
-        } else if (indexOfA > -1 && indexOfB == -1) {
-            return -1;
-        } else if (indexOfB > -1 && indexOfA == -1) {
-            return 1;
-        }
-    };
 
     //While updating full subCategory and subCategory1 is going
     //So we have to carefully update index
-    const updateCatalogueDetails = async (data: string[], reload?: boolean, successCallBack?: Function) => {
+    const updateCatalogueDetails = async (
+        data: string[],
+        reload?: boolean,
+        successCallBack?: Function,
+        triggerThisCallbackEveryTime?: Function,
+    ) => {
+        console.log('Update ====>>>', triggerThisCallbackEveryTime);
         try {
             if (data) {
                 setLoaderCallBack(true);
@@ -98,13 +84,16 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                     setLoaderCallBack(false);
                     setError(response.message);
                 }
+                triggerThisCallbackEveryTime && triggerThisCallbackEveryTime();
             } else {
                 setLoaderCallBack(false);
                 ToastHOC.errorAlert('Please provide data');
+                triggerThisCallbackEveryTime && triggerThisCallbackEveryTime();
             }
         } catch (error) {
             setLoaderCallBack(false);
             ToastHOC.errorAlert(error.message);
+            triggerThisCallbackEveryTime && triggerThisCallbackEveryTime();
         }
     };
 
@@ -167,7 +156,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                 ) : (
                     <ButtonMaterialIcons
                         onPress={() => {
-                            navigation.goBack();
+                            ToastHOC.infoAlert('Close the app you cant go back');
                         }}
                         iconName={'close'}
                         containerStyle={[MLA()]}
@@ -223,7 +212,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                                 item={item}
                                 selected={isSelected}
                                 containerStyle={styles.productCategory}
-                                onPressDelete={(path: IProductCatalogue[]) => {
+                                onPressDelete={(path: IProductCatalogue[], callBack: Function) => {
                                     let newpath = [item, ...path];
 
                                     let data = [...sellingItem];
@@ -243,15 +232,14 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                                                         removeElementFromArray(selectedCat[index], item._id);
                                                     }
                                                 });
-
-                                                //  console.log(selectedCat);
-
                                                 return [...selectedCat];
                                             });
                                         },
+
+                                        callBack,
                                     );
                                 }}
-                                onPressCategory={(path: IProductCatalogue[]) => {
+                                onPressCategory={(path: IProductCatalogue[], callBack: Function) => {
                                     let newpath = [item, ...path];
 
                                     let data = [...sellingItem];
@@ -274,6 +262,7 @@ const ProductDetails: React.SFC<ProductDetail> = ({ navigation, route: { params 
                                             });
                                             setSellingItem(data);
                                         },
+                                        callBack,
                                     );
                                 }}
                             />

@@ -29,7 +29,7 @@ const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
     const [photo, setPhotos] = React.useState<string[]>([]);
     console.log('existing Photos', existingPhotos);
     return (
-        <ModalHOC isVisible={isVisible} setPopup={setPopup}>
+        <ModalHOC statusBarTranlucent={true} isVisible={isVisible} setPopup={setPopup}>
             <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP }}>
                 {openCamera ? (
                     <WrappedFeatherIcon
@@ -68,7 +68,7 @@ const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
                     openCamera={openCamera}
                     existingPhotos={existingPhotos}
                     updatePhotoArray={(photos: { path: string }[]) => {
-                        updatePhotoArray(photos.map((item) => DEFAULT_IMAGE_URL));
+                        updatePhotoArray(photos.map((item) => item));
                     }}
                 />
             </View>
