@@ -8,11 +8,11 @@ import { FontFamily, fs12 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { AIC, FS, HP, MT } from '@app/common/styles';
 import WrappedTextInput from '@app/screens/component/WrappedTextInput';
-import { border, borRad } from '@app/screens/app/edit/product/component/generalConfig';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { getHP } from '@app/common/dimension';
 import { createBill } from '@app/server/apis/billdesk/bill.api';
 import { NavigationKey } from '@app/labels';
+import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 
 const BottomSheet = ({
     Add,

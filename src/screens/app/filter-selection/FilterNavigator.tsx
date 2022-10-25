@@ -36,7 +36,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const listRef = React.useRef<FlatList>(null);
 
     const [currentIndex, setCurrentIndex] = React.useState(0);
-    const [selectedValues, setSelectedValues] = React.useState(null);
+    const [selectedValues, setSelectedValues] = React.useState({});
 
     const [filters, setFilters] = React.useState([]);
 
@@ -74,13 +74,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 _id: shopId,
                 catalogueId: item._id,
             });
-<<<<<<< HEAD
-            // console.log("GET_ALL_FILTERS_WITH_POWER",response.payload.allFilters.map((e)=>{
-            //     console.log("==>",e.defaultSelectAll);
-            // }));
-            console.log('response', response.payload.currentIndex, response.payload.selectedValues);
-=======
->>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
             setFilters(response.payload.allFilters);
 
             if (response.payload.currentIndex == 0) {
@@ -110,65 +103,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
         getFilterWithValuesAndSelectedValue();
     }, []);
 
-<<<<<<< HEAD
-    console.log(currentIndex, selectedValues);
-    const list = React.useMemo(
-        () => (
-            <FlatList
-                scrollEnabled={false}
-                ref={listRef}
-                horizontal={true}
-                data={filters}
-                showsHorizontalScrollIndicator={false}
-                //  onScroll={onChange}
-                pagingEnabled
-                keyExtractor={(item, index) => item._id.toString()}
-                // snapToInterval={getWP(10)}
-                renderItem={({ item, index }) => (
-                    
-                    <>
-                     <FilterValues
-                        filter={item}
-                        selectedValues={selectedValues[item.key] || []}
-                        setSelectedValues={(indexOfValue: number) =>
-                            setSelectedValues((selectedValues) => {
-                                let values = selectedValues[item.key] || [];
-                                if (values.includes(indexOfValue)) {
-                                    removeElementFromArray(values, indexOfValue);
-                                } else {
-                                    values.push(indexOfValue);
-                                }
-
-                                selectedValues[item.key] = values;
-                                return { ...selectedValues };
-                            })
-                        }
-                        setSelectedValuesFalse={(indexOfValue: number) =>
-                            setSelectedValues((selectedValues) => {
-                                console.log("SEE",selectedValues);
-                                let values = selectedValues[item.key] || [];
-                                console.log("VALUES",values);
-                                if (values.includes(indexOfValue)) {
-                                 values.push(indexOfValue);  
-                                } else {
-                                    removeElementFromArray(values, indexOfValue);
-                                }
-
-                                selectedValues[item.key] = values;
-                                return { ...selectedValues };
-                            })
-                        }
-                        index={currentIndex}
-                    /></>
-                )}
-            />
-        ),
-        [selectedValues, setSelectedValues],
-    );
-  const onContinue = () => {
-      console.log("LL",selectedValues[filters[currentIndex].key]);
-        if (selectedValues[filters[currentIndex].key]) {
-=======
     React.useEffect(() => {
         let item: FilterInterface = filters[currentIndex];
 
@@ -186,7 +120,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
     const onContinue = () => {
         const keyInSel = filters[currentIndex].key;
         if (selectedValues[keyInSel] && selectedValues[keyInSel].length > 0) {
->>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
             saveSelectedFilterValues(() => {
                 if (currentIndex != filters.length - 1) {
                     listRef?.current?.scrollToOffset({
@@ -200,46 +133,8 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
             ToastHOC.errorAlert('Please select atleast one value');
         }
     };
-<<<<<<< HEAD
-//     const onContinue = () => {
-//         const setValues:any = filters[currentIndex].values.map((e)=>{
-//             return e._id
-//         });
-
-//         // const filterKeys = selectedValues[filters[currentIndex].key]
-// //    const check = setValues === filterKeys;
-// //    console.log("SAME",setValues,filterKeys);
-//     //    const isTrue = setValues[0] === selectedValues[filterKeys][0];
-//         if (selectedValues[filters[currentIndex].key] )  {
-//             saveSelectedFilterValues(() => {
-//                 if (currentIndex != filters.length - 1) {
-//                     listRef?.current?.scrollToOffset({
-//                         animated: true,
-//                         offset: (currentIndex + 1) * getWP(10),
-//                     });
-//                     setCurrentIndex(currentIndex + 1);
-//                 }
-//             });
-//         } else if(filters[currentIndex].key  ) {
-//              selectedValues[filters[currentIndex].key] = setValues;
-//              saveSelectedFilterValues(() => {
-//                 if (currentIndex != filters.length - 1) {
-//                     listRef?.current?.scrollToOffset({
-//                         animated: true,
-//                         offset: (currentIndex + 1) * getWP(10),
-//                     });
-//                     setCurrentIndex(currentIndex + 1);
-//                 }
-//             });
-           
-//         }else{
-//              ToastHOC.errorAlert('Please select atleast odne value');
-//         }
-//     };
-=======
 
     console.log('selee', selectedValues, currentIndex);
->>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
     return (
         <View style={[FLEX(1)]}>
             {filters.length > 0 && (
@@ -296,6 +191,7 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 // snapToInterval={getWP(10)}
                 renderItem={({ item, index }) => (
                     <FilterValues
+                    
                         filter={item}
                         selectedValues={selectedValues[item.key] || []}
                         setSelectedValues={(indexOfValue: number) =>

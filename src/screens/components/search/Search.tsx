@@ -9,20 +9,11 @@ import { fs20, NavigationProps } from '@app/common';
 export interface SearchProps {
     containerStyle?: ViewStyle[] | ViewStyle;
     placeholder: string;
-<<<<<<< HEAD
-    setSearchText:Function;
-    searchText:string
-}
-
-const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder,setSearchText,searchText }) => {
-    // const [searchedText, setSearchText] = React.useState('');
-=======
     searchText: string;
     setSearchString: Function;
 }
 
 const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder, searchText, setSearchString }) => {
->>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
     return (
         <View
             style={[
@@ -46,11 +37,7 @@ const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder, sea
                     },
                 ]}
                 value={searchText}
-<<<<<<< HEAD
-                onChangeText={(searchedText: string) => setSearchText(searchedText)}
-=======
                 onChangeText={(searchedText: string) => setSearchString(searchedText)}
->>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
                 placeholder={placeholder}
                 placeholderTextColor={'#8A8A8A'}
             />

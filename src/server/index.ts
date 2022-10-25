@@ -3,13 +3,8 @@ import { Platform } from 'react-native';
 import { Storage, StorageItemKeys } from '../storage';
 
 //export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.29.186:2112';
-<<<<<<< HEAD
 //export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.1.3:2112';
-export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.1.6:2112';
-=======
-export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.21.83:2112';
-//export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://10.0.2.2:2112';
->>>>>>> 0f59a69e5f1efa98d9e9e446b5c9233880276706
+export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.58.78:2112';
 const handleError = (error: { isAxiosError: any; response: { data: any } }) => {
     let message = '';
 
