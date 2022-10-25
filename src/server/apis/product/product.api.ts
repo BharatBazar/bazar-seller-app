@@ -55,6 +55,11 @@ export async function APICreateProductSize(data: Partial<choosenSize>): Promise<
     return axios.post('/product/size/create', data);
 }
 
+export async function APIGetItemSize(data: IProductSize): Promise<IRProductSize> {
+    console.log('PRODUCT_SIZE_DATA', data);
+    return axios.post('/product/size/getItem', data);
+}
+
 export async function APIDeleteProductSize(data: { _id: string; parentId?: string }): Promise<IRProductSize> {
     return axios.delete(
         '/product/size/delete?' + '_id=' + data._id + (data.parentId ? '&parentId=' + data.parentId : ''),

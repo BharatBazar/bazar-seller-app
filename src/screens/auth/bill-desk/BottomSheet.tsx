@@ -49,6 +49,8 @@ const BottomSheet = ({
         }
     }, [modalHeight]);
 
+    console.log("ALLL",allProducts[0].color.image);
+
 
     const [quantity, setQuantity] = useState<Number>()
 
@@ -202,21 +204,21 @@ const BottomSheet = ({
                                         <View style={styles.card}>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                                 <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                                                    <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts[0].img }} />
+                                                    <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts[0].color.image }} />
                                                     <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
-                                                        <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].name}</Text>
-                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts[0].productName}</Text>
+                                                        <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].color.name}</Text>
+                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productName}</Text>
                                                     </View>
 
 
                                                 </View>
-                                                <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: allProducts[0].color ? allProducts[0].color : "red" }}>
+                                                <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: allProducts.color ? allProducts.color : "red" }}>
 
                                                 </View>
                                                 <View style={{ alignSelf: "center", flexDirection: "row" }}>
-                                                    <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{allProducts[0].quantity}</Text>
+                                                    <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{allProducts[0].sizes[0].quantity}</Text>
                                                 </View>
-                                                <Text style={{ fontFamily: FontFamily.Black, fontSize: 15, color: "#252525", alignSelf: "center", paddingRight: 5 }}>$ {allProducts[0].price}</Text>
+                                                <Text style={{ fontFamily: FontFamily.Black, fontSize: 15, color: "#252525", alignSelf: "center", paddingRight: 5 }}>$ {allProducts.price}</Text>
 
 
                                             </View>
@@ -224,11 +226,11 @@ const BottomSheet = ({
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 20 }}>
                                             <Text style={{ fontFamily: FontFamily.Bold, color: "#252525", fontSize: 17, alignSelf: "center" }}>Quantity</Text>
-                                            <TextInput onChangeText={(e) => ChangeQuantity(e, allProducts[0])} style={{ borderWidth: 1, height: 36, borderRadius: 5, width: 40, alignSelf: "center", fontSize: 16, fontFamily: FontFamily.Bold, }} />
+                                            <TextInput onChangeText={(e) => ChangeQuantity(e, allProducts)} style={{ borderWidth: 1, height: 36, borderRadius: 5, width: 40, alignSelf: "center", fontSize: 16, fontFamily: FontFamily.Bold, }} />
                                         </View>
                                         <View style={{ flexDirection: "row", marginTop: 25, justifyContent: "space-between" }}>
                                             <Text style={{ fontFamily: FontFamily.Bold, fontSize: 17, color: "#252525", alignSelf: "center", }}>Selling Price</Text>
-                                            <Text style={{ fontFamily: FontFamily.Bold, color: "#252525", marginRight: 10, fontSize: 17 }}>₹ {allProducts[0].quantity * allProducts[0].price}</Text>
+                                            <Text style={{ fontFamily: FontFamily.Bold, color: "#252525", marginRight: 10, fontSize: 17 }}>₹ {allProducts.quantity * allProducts.price}</Text>
                                         </View>
                                     </>
                                 ) : (null)
@@ -241,7 +243,7 @@ const BottomSheet = ({
                                 buttonText={'Add'}
                                 containerStyle={[MT(0.1)]}
                                 onPress={() => {
-                                    Add(allProducts[0])
+                                    Add(allProducts)
                                 }}
                                 disabled={allProducts.length > 0 ? (false) : (true)}
                             />

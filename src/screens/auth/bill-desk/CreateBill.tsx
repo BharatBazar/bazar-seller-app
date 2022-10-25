@@ -14,6 +14,8 @@ import { Image } from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo'
 import { products } from './products';
 import BottomSheet from './BottomSheet';
+import { Storage, StorageItemKeys } from '@app/storage';
+import { APIGetItemSize } from '@app/server/apis/product/product.api';
 
 var totalItem: [] = []
 
@@ -39,6 +41,7 @@ const CreateBill: React.FC = ({ navigation, route }) => {
     }
 
 
+
 var total = 0;
 
 k.forEach(i=>{
@@ -49,12 +52,21 @@ k.forEach(i=>{
 
 
 
-    const findProduct = (id: number) => {
-        const product = products.filter(e => e.kkd === Number(id))
-        setModalHeight(600)
+    const findProduct =async (id: number) => {
+        // const product = products.filter(e => e.kkd === Number(id))
+        const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
+        const itemResponse = await  APIGetItemSize({shopId:shopId.shop,itemId:id})
+        const product = itemResponse.payload.productId.colors
+        console.log("RESPOnse",product);
+        if(itemResponse.status === 1){
+            setModalHeight(600)
         setAllProducts(product)
         setItem([product])
         setShowEnter(false)
+        }
+        else{
+            console.log("Product not found");
+        }
     }
 
     const Add = (item: any) => {
@@ -88,10 +100,14 @@ k.forEach(i=>{
      
     }
     
- 
+// useEffect(() => {
+//  console.log("USER_DETAIL", Storage.getItem(StorageItemKeys.userDetail));
+// }, [])
+
     
 
     const renderData = ({ item }) => {
+        console.log("ITEMS",item);
         return (
             <>
                 {/* <TouchableOpacity onPress={() => editProductModal(item)} style={styles.card}> */}
