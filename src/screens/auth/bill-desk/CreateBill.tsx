@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, Alert, } from 'react-native';
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { AIC, BGCOLOR, FDR, ML, MT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
@@ -80,23 +80,31 @@ k.forEach(i=>{
 
 
     const ChangeQuantity = (quantity: number, item: {}) => {
-        const product = products.find(e => e.kkd === Number(item.kkd)).quantity = quantity
-        const fProduct = products.find(e => e.kkd === Number(item.kkd))
-        setItem([fProduct])
+        console.log(item[0]._id);
+        const product = allProducts.find(e=>e._id === item[0]._id).sizes[0].quantity = quantity
+        const findProduct = allProducts.find(e=>e._id === item[0]._id)
+        console.log(findProduct);
+        // // const product = allProducts.find(e => e.kkd === Number(item.kkd)).quantity = quantity
+        // // const fProduct = products.find(e => e.kkd === Number(item.kkd))
+        setItem([findProduct])
 
 
     }
 
     const IncreaseQuantity=(item:{})=>{
-        const u = k.find(e=>e.kkd === Number(item.kkd)).quantity++
-        
-       setK([...k])
+        const increaseQuantity = k.find(e=>e[0]._id === item[0]._id)[0].sizes[0].quantity++
+        setK([...k])
      
     }
     const DecreaseQuantity=(item:{})=>{
-        const u = k.find(e=>e.kkd === Number(item.kkd)).quantity--
-        
-       setK([...k])
+        const decreaseQuantity = k.find(e=>e[0]._id === item[0]._id)[0].sizes[0].quantity--
+        if(decreaseQuantity <= 0){
+Alert.alert("Please remove item")
+        } 
+        else{
+            setK([...k])
+        }
+       
      
     }
     
@@ -114,9 +122,9 @@ k.forEach(i=>{
                 <View style={styles.card}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.img }} />
+                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item[0].color.image }} />
                             <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
-                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.name}</Text>
+                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item[0].color.name}</Text>
                                 <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.productName}</Text>
                                 <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>$ {item.quantity * item.price}</Text>
                             </View>
@@ -128,7 +136,7 @@ k.forEach(i=>{
                         </View> */}
                         <View style={{ alignSelf: "center", flexDirection: "row" }}>
                             <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' />
-                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity}</Text>
+                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item[0].sizes[0].quantity}</Text>
                             <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' />
 
                           </View>

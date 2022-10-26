@@ -49,7 +49,6 @@ const BottomSheet = ({
         }
     }, [modalHeight]);
 
-    console.log("ALLL",allProducts[0].color.image);
 
 
     const [quantity, setQuantity] = useState<Number>()
@@ -57,15 +56,16 @@ const BottomSheet = ({
 
 
     const renderReview = ({ item }) => {
+        console.log("RENDER",item);
         return (
             <>
                 <View style={[styles.card]}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.img }} />
+                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item[0].color.image }} />
                         </View>
                         <View style={{ alignSelf: "center" }}>
-                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productName}</Text>
+                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item[0].sizes[0].quantity} × {item.productName}</Text>
                         </View>
                         <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: item.color ? item.color : "red" }}>
 
@@ -85,11 +85,11 @@ const BottomSheet = ({
 
     const AddProduct=async()=>{
         try {
-            console.log(k);
+            console.log("itemss",k[0][0]);
             const bill = await createBill({
                 name:"Babu rao",
                 totalPrice:total,
-                products:k
+                products:k[0][0]._id
             })
             if(bill.status === 1){
                 navigation.navigate(NavigationKey.UPDATEBILL)
@@ -125,7 +125,7 @@ const BottomSheet = ({
                             <FlatList
                                 data={k}
                                 renderItem={renderReview}
-                                keyExtractor={item => item.kkd}
+                                keyExtractor={item => item[0]._id}
                             />
 
                         </View>
