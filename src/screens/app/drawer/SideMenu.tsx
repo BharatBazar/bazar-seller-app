@@ -10,6 +10,7 @@ import { AIC, BGCOLOR, FDR, provideShadow, P, BW, BC } from '../../../common/sty
 import { borderColor, mainColor } from '../../../common/color';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import Zocial from 'react-native-vector-icons/Zocial';
+import Bills from 'react-native-vector-icons/MaterialIcons';
 import { Storage, StorageItemKeys } from '../../../storage';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
 import { BRA, MHA, MTA } from '@app/common/stylesheet';
@@ -100,7 +101,21 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 >
                     <View style={[FDR(), AIC()]}>
                         <Zocial name={'print'} size={fs18} />
-                        <WrappedText text={'Create Bill'} textStyle={styles.textStyle} />
+                        <WrappedText text={'Create Bills'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                   <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                       props.navigation.navigate(NavigationKey.SHOWBILLS,{
+                           openModal:true
+                       })
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <Bills name={'show-chart'} size={fs18} />
+                        <WrappedText text={'Show Bills'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
                    <View style={[BW(0.5), BC(borderColor), MHA()]} />

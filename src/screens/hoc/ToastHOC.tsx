@@ -1,10 +1,10 @@
 import Toast from 'react-native-toast-message';
 
 export class ToastHOC {
-    static errorAlert(text2: string, text1?: string) {
+    static errorAlert(text2: string, text1?: string,position?:string) {
         Toast.show({
             type: 'error',
-            position: 'bottom',
+            position: position === "top"?"top":"bottom",
             text1: text1 || 'Error',
             text2: text2,
             autoHide: true,
@@ -21,10 +21,10 @@ export class ToastHOC {
             autoHide: true,
         });
     }
-    static infoAlert(text2: string, text1?: string) {
+    static infoAlert(text2: string, text1?: string,position?:string) {
         Toast.show({
             type: 'info',
-            position: 'bottom',
+            position: position === "top"?"top":"bottom",
             text1: text1 || 'Info',
             text2: text2,
             autoHide: true,

@@ -16,6 +16,7 @@ import { products } from './products';
 import BottomSheet from './BottomSheet';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 var totalItem: [] = []
 
@@ -25,26 +26,27 @@ const CreateBill: React.FC = ({ navigation, route }) => {
     const [id, setId] = React.useState<Number>()
     const [item, setItem] = useState([])
     const [showEnter, setShowEnter] = useState<Boolean>(true)
-    const [openContinueModal, setOpenContinueModal] = useState<String>()
+    const [openContinueModal, setOpenContinueModal] = useState<String>('')
     const [editItem, setEditItem] = useState<{}>()
     const [allProducts, setAllProducts] = useState([])
-    const [k, setK] = useState([])
+    const [loading, setLoading] = useState(false)
+    const [everyItem, setEveryItem] = useState([])
 
     const refRBSheet = useRef()
 
 
     const removeItem = (id:any)=>{
-        const j = k.filter((e)=>{
-            return e.kkd !== id
+        const j = everyItem.filter((e:any)=>{
+            return e._id !== id
         })
-        setK(j)
+        setEveryItem(j)
     }
 
 
 
 var total = 0;
 
-k.forEach(i=>{
+everyItem.forEach(i=>{
     total +=i.price*i.quantity
 })
 
@@ -53,26 +55,38 @@ k.forEach(i=>{
 
 
     const findProduct =async (id: number) => {
+        setLoading(true)
         // const product = products.filter(e => e.kkd === Number(id))
         const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
         const itemResponse = await  APIGetItemSize({shopId:shopId.shop,itemId:id})
-        const product = itemResponse.payload.productId.colors
+        console.log(itemResponse.payload[0].productId.colors);
+        const product = itemResponse.payload[0].productId.colors
         console.log("RESPOnse",product);
         if(itemResponse.status === 1){
+            
             setModalHeight(600)
+            setLoading(false)
         setAllProducts(product)
         setItem([product])
         setShowEnter(false)
         }
         else{
+            setLoading(false)
             console.log("Product not found");
         }
     }
 
     const Add = (item: any) => {
-        setK([...k,item])
+        const check = everyItem.filter(e=>e._id === item[0]._id)
+        if(check.length === 1){
+           ToastHOC.errorAlert("Item already in list",'',"top")
+        }
+        else{
+        setEveryItem(everyItem.concat(item))
         setItem([])
         refRBSheet.current.close()
+        }
+     
     }
 
    
@@ -80,29 +94,22 @@ k.forEach(i=>{
 
 
     const ChangeQuantity = (quantity: number, item: {}) => {
-        console.log(item[0]._id);
         const product = allProducts.find(e=>e._id === item[0]._id).sizes[0].quantity = quantity
         const findProduct = allProducts.find(e=>e._id === item[0]._id)
-        console.log(findProduct);
-        // // const product = allProducts.find(e => e.kkd === Number(item.kkd)).quantity = quantity
-        // // const fProduct = products.find(e => e.kkd === Number(item.kkd))
         setItem([findProduct])
-
-
     }
 
     const IncreaseQuantity=(item:{})=>{
-        const increaseQuantity = k.find(e=>e[0]._id === item[0]._id)[0].sizes[0].quantity++
-        setK([...k])
+        const increaseQuantity = everyItem.find(e=>e._id === item._id).sizes[0].quantity++ 
+        setEveryItem([...everyItem])
      
     }
     const DecreaseQuantity=(item:{})=>{
-        const decreaseQuantity = k.find(e=>e[0]._id === item[0]._id)[0].sizes[0].quantity--
+        const decreaseQuantity = everyItem.find(e=>e._id === item._id).sizes[0].quantity--
         if(decreaseQuantity <= 0){
-Alert.alert("Please remove item")
         } 
         else{
-            setK([...k])
+            setEveryItem([...everyItem])
         }
        
      
@@ -122,9 +129,9 @@ Alert.alert("Please remove item")
                 <View style={styles.card}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item[0].color.image }} />
+                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.color.image }} />
                             <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
-                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item[0].color.name}</Text>
+                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.color.name}</Text>
                                 <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.productName}</Text>
                                 <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>$ {item.quantity * item.price}</Text>
                             </View>
@@ -136,11 +143,11 @@ Alert.alert("Please remove item")
                         </View> */}
                         <View style={{ alignSelf: "center", flexDirection: "row" }}>
                             <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' />
-                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item[0].sizes[0].quantity}</Text>
+                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.sizes[0].quantity}</Text>
                             <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' />
 
                           </View>
-                        <TouchableOpacity onPress={()=>removeItem(item.kkd)} style={{ paddingRight: 10, marginTop: 5 }}>
+                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ paddingRight: 10, marginTop: 5 }}>
                             <CrossIcon name='cross' color={"#252525"} size={24} />
                         </TouchableOpacity>
                     </View>
@@ -186,9 +193,9 @@ Alert.alert("Please remove item")
 
             <View style={{ paddingHorizontal: 20, flex: .8 }}>
 
-                {k.length > 0 ? (<>
+                {everyItem.length > 0 ? (<>
                     <FlatList
-                        data={k}
+                        data={everyItem}
                         renderItem={renderData}
                         showsVerticalScrollIndicator={false}
                     />
@@ -202,7 +209,7 @@ Alert.alert("Please remove item")
           
             </View>
               <View style={{paddingHorizontal:20,paddingTop:30}}>
-                {k.length>0?(
+                {everyItem.length>0?(
                     <>
                       <View style={{flexDirection:"row",justifyContent:"space-between"}}>
                       <Text style={{fontFamily:FontFamily.Black,color:"#252525",fontSize:16}}>Total Price</Text>
@@ -220,12 +227,12 @@ Alert.alert("Please remove item")
                         refRBSheet.current.open()
                         setModalHeight(500)
                     }}
-                    disabled={k.length > 0 ?false:true}
+                    disabled={everyItem.length > 0 ?false:true}
                 />
                </View>
                 </View>
 
-            <BottomSheet navigation={navigation} total={total} removeItem={removeItem} k={k} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
+            <BottomSheet setEveryItem = {setEveryItem} navigation={navigation} total={total} loading={loading} removeItem={removeItem} everyItem={everyItem} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
         </View>
     );
 };

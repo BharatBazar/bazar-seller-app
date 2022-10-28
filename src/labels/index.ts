@@ -25,5 +25,5 @@ export const NavigationKey = {
     EditProductSize: 'EditProductSize',
     SELECTFILTER: 'SelectFilter',
     CREATEBILL: 'CreateBill',
-    UPDATEBILL: 'UpdateBill',
+    SHOWBILLS: 'ShowBills',
 };

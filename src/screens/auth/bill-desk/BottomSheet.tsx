@@ -13,6 +13,9 @@ import { getHP } from '@app/common/dimension';
 import { createBill } from '@app/server/apis/billdesk/bill.api';
 import { NavigationKey } from '@app/labels';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
+import Loader from '@app/screens/component/Loader';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { Storage, StorageItemKeys } from '@app/storage';
 
 const BottomSheet = ({
     Add,
@@ -34,10 +37,12 @@ const BottomSheet = ({
     ChangeQuantity,
     editItem,
     allProducts,
-    k,
+    everyItem,
     total,
     removeItem,
-    navigation
+    navigation,
+    loading,
+    setEveryItem,
 
 }) => {
     // const refRBSheet = useRef();
@@ -47,13 +52,7 @@ const BottomSheet = ({
             setOpenContinueModal("ADD_PRODUCT")
             refRBSheet.current.open();
         }
-    }, [modalHeight]);
-
-
-
-    const [quantity, setQuantity] = useState<Number>()
-
-
+    }, []);
 
     const renderReview = ({ item }) => {
         console.log("RENDER",item);
@@ -62,10 +61,10 @@ const BottomSheet = ({
                 <View style={[styles.card]}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item[0].color.image }} />
+                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.color.image }} />
                         </View>
                         <View style={{ alignSelf: "center" }}>
-                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item[0].sizes[0].quantity} × {item.productName}</Text>
+                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.sizes[0].quantity} × {item.productName}</Text>
                         </View>
                         <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: item.color ? item.color : "red" }}>
 
@@ -73,7 +72,7 @@ const BottomSheet = ({
                         <View style={{ alignSelf: "center" }}>
                             <Text style={{ fontFamily: FontFamily.Bold, color: "#252525" }}>₹ {item.quantity * item.price}</Text>
                         </View>
-                        <TouchableOpacity onPress={()=>removeItem(item.kkd)} style={{ alignSelf: "center", paddingRight: 10 }}>
+                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ alignSelf: "center", paddingRight: 10 }}>
                             <DeleteIcon name='delete' size={22} color={"#252525"} />
                         </TouchableOpacity>
 
@@ -83,16 +82,21 @@ const BottomSheet = ({
         )
     }
 
-    const AddProduct=async()=>{
+    const AddProduct=async(item:any)=>{
         try {
-            console.log("itemss",k[0][0]);
+
+            const id = everyItem.map((e:any)=>e._id)
+            const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
             const bill = await createBill({
                 name:"Babu rao",
                 totalPrice:total,
-                products:k[0][0]._id
+                products:id,
+                shopId:shopId.shop
             })
             if(bill.status === 1){
-                navigation.navigate(NavigationKey.UPDATEBILL)
+                ToastHOC.infoAlert("Product has been saved","Information","top")
+                setEveryItem([])
+                refRBSheet.current.close()
             }
         } catch (error) {
             console.log("ERROR",error.message);
@@ -123,9 +127,9 @@ const BottomSheet = ({
                                 <Text style={{ fontSize: 16, fontFamily: FontFamily.Regular }}>Review Items</Text>
                             </View>
                             <FlatList
-                                data={k}
+                                data={everyItem}
                                 renderItem={renderReview}
-                                keyExtractor={item => item[0]._id}
+                                keyExtractor={item => item._id}
                             />
 
                         </View>
@@ -140,9 +144,9 @@ const BottomSheet = ({
                             buttonText={'Confirm'}
                             containerStyle={[MT(0.1), { position: "absolute", bottom: 0, width: "100%" }]}
                             onPress={() => {
-                                AddProduct()
+                                AddProduct(everyItem)
                             }}
-                            disabled={allProducts.length > 0 ? (false) : (true)}
+                            disabled={everyItem.length > 0 ? (false) : (true)}
                         />
                     </>
                 ) : openContinueModal === "ADD_PRODUCT" ? (
@@ -199,7 +203,8 @@ const BottomSheet = ({
                                 ) : (null)}
                             </View>
                             {
-                                item.length === 1 && id ? (
+                                loading === true?(<Loader/>):(
+                                    item.length === 1 && id ? (
                                     <>
                                         <View style={styles.card}>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -234,6 +239,7 @@ const BottomSheet = ({
                                         </View>
                                     </>
                                 ) : (null)
+                                )
                             }
 
 

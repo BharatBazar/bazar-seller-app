@@ -33,7 +33,7 @@ import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/product-edit/index';
 import CloseIcon from 'react-native-vector-icons/AntDesign'
 import CreateBill from '@app/screens/auth/bill-desk/CreateBill';
-import UpdateBill from '@app/screens/auth/bill-desk/UpdateBill';
+import ShowBills from '@app/screens/auth/bill-desk/ShowBills';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -163,7 +163,7 @@ const AppNavigation = () => {
                  <Stack.Screen name={NavigationKey.CREATEBILL} component={CreateBill} options={{
                      animation:"slide_from_right"
                  }} />
-                 <Stack.Screen name={NavigationKey.UPDATEBILL} component={UpdateBill} options={{
+                 <Stack.Screen name={NavigationKey.SHOWBILLS} component={ShowBills} options={{
                      animation:"slide_from_right"
                  }} />
                 <Stack.Screen
