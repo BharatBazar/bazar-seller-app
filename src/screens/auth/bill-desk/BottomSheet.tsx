@@ -55,18 +55,19 @@ const BottomSheet = ({
     }, []);
 
     const renderReview = ({ item }) => {
-        console.log("RENDER",item);
+        console.log("LENG",item.productId.colors[0].color.description);
+        // console.log("RENDER",item);
         return (
             <>
                 <View style={[styles.card]}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.color.image }} />
+                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.productId.parentId.image }} />
                         </View>
                         <View style={{ alignSelf: "center" }}>
-                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.sizes[0].quantity} × {item.productName}</Text>
+                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productId.parentId.name}</Text>
                         </View>
-                        <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: item.color ? item.color : "red" }}>
+                        <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor:  item.productId.colors[0].color.description ?  item.productId.colors[0].color.description : "black" }}>
 
                         </View>
                         <View style={{ alignSelf: "center" }}>
@@ -209,21 +210,21 @@ const BottomSheet = ({
                                         <View style={styles.card}>
                                             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                                                 <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                                                    <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts[0].color.image }} />
+                                                    <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts.productId.parentId.image }} />
                                                     <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
-                                                        <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].color.name}</Text>
-                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productName}</Text>
+                                                        {/* <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].color.name}</Text> */}
+                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name} × {allProducts.quantity}</Text>
                                                     </View>
 
 
                                                 </View>
-                                                <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: allProducts.color ? allProducts.color : "red" }}>
+                                                <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: allProducts.productId.colors[0].color.description ? allProducts.productId.colors[0].color.description : "black" }}>
 
                                                 </View>
                                                 <View style={{ alignSelf: "center", flexDirection: "row" }}>
-                                                    <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{allProducts[0].sizes[0].quantity}</Text>
+                                                    {/* <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{allProducts[0].sizes[0].quantity}</Text> */}
                                                 </View>
-                                                <Text style={{ fontFamily: FontFamily.Black, fontSize: 15, color: "#252525", alignSelf: "center", paddingRight: 5 }}>$ {allProducts.price}</Text>
+                                                <Text style={{ fontFamily: FontFamily.Black, fontSize: 15, color: "#252525", alignSelf: "center", paddingRight: 5 }}>$ {allProducts.productId.status}</Text>
 
 
                                             </View>
@@ -251,7 +252,7 @@ const BottomSheet = ({
                                 onPress={() => {
                                     Add(allProducts)
                                 }}
-                                disabled={allProducts.length > 0 ? (false) : (true)}
+                                disabled={allProducts._id !== undefined || null ? (false) : (true)}
                             />
 
                         </View>

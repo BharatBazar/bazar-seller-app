@@ -17,8 +17,9 @@ const ShowBills = ({navigation}) => {
        try {
          const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
          const billResponse:any = await showBill(shopId.shop)
+         console.log("RESPONSe",billResponse.payload[0].products);
          if(billResponse.status === 1){
-           setBill(billResponse.payload)
+           setBill(billResponse.payload[0].products)
          }
          else{
            console.log("Bill not fetched");
@@ -42,19 +43,19 @@ const ShowBills = ({navigation}) => {
     }, []);
 
     const renderData = ({item})=>{
-      console.log("ITEMss",item);
+      console.log("ITEMss",item.productId.parentId.name);
       return <View style={[styles.card,{paddingHorizontal:20,paddingVertical:5,marginTop:"3%"}]} >
-                <View style={{height:40,justifyContent:"space-between",flexDirection:"row"}}>
-                  <Text style={{fontFamily:FontFamily.Helvatica}}>Created on <Text style={{fontFamily:FontFamily.Black}}>{item.createdAt}</Text></Text>
+                 <View style={{height:40,justifyContent:"space-between",flexDirection:"row"}}>
+                   <Text style={{fontFamily:FontFamily.Helvatica}}>Created on <Text style={{fontFamily:FontFamily.Black}}>{item.createdAt}</Text></Text>
                   <Text style={{fontFamily:FontFamily.Helvatica,fontSize:16}}>{item.name}</Text>
-                </View>
-                 <View style={[BW(0.5), BC(borderColor), MHA()]} />
-                 <Text>{item.products}</Text>
-                <View style={{flexDirection:"row",justifyContent:"space-between",paddingHorizontal:5,marginTop:"3%"}}>
-                  <Image style={{width:50,height:50,borderRadius:5}} source={{uri:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSgmbqtuO4c4wR-hcbjscIeVeT4cy2_AOen-Q&usqp=CAU"}}/>
-                  <View style={{width:24,height:24,alignSelf:"center",borderRadius:12.5,backgroundColor:"red"}}></View>
-                  <Text style={{fontFamily:FontFamily.Regular,alignSelf:"center"}}>5 pc.</Text>
-                </View>
+                </View> 
+                 {/* <View style={[BW(0.5), BC(borderColor), MHA()]} /> */}
+                 {/* <Text>{item.products}</Text> */}
+                {/* <View style={{flexDirection:"row",justifyContent:"space-between",paddingHorizontal:5,marginTop:"3%"}}>
+                  <Image style={{width:50,height:50,borderRadius:5}} source={{uri:item.products.productId.parentId.image}}/>
+                  <Text style={{alignSelf:"center"}}>{item.products[0].productId.parentId.name} × {item.products.quantity} pcs.</Text>
+                  <View style={{width:24,height:24,alignSelf:"center",borderRadius:12.5,backgroundColor:item.products.productId.colors[0].color.description}}></View>
+                </View> */}
                 </View>
     }
 

@@ -59,8 +59,9 @@ everyItem.forEach(i=>{
         // const product = products.filter(e => e.kkd === Number(id))
         const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
         const itemResponse = await  APIGetItemSize({shopId:shopId.shop,itemId:id})
-        console.log(itemResponse.payload[0].productId.colors);
-        const product = itemResponse.payload[0].productId.colors
+        console.log(itemResponse.payload);
+        const product = itemResponse.payload[0]
+        // .productId.parentId.name
         console.log("RESPOnse",product);
         if(itemResponse.status === 1){
             
@@ -72,12 +73,12 @@ everyItem.forEach(i=>{
         }
         else{
             setLoading(false)
-            console.log("Product not found");
+            ToastHOC.errorAlert("Item not found","","top")
         }
     }
 
     const Add = (item: any) => {
-        const check = everyItem.filter(e=>e._id === item[0]._id)
+        const check = everyItem.filter(e=>e._id === item._id)
         if(check.length === 1){
            ToastHOC.errorAlert("Item already in list",'',"top")
         }
@@ -94,18 +95,26 @@ everyItem.forEach(i=>{
 
 
     const ChangeQuantity = (quantity: number, item: {}) => {
-        const product = allProducts.find(e=>e._id === item[0]._id).sizes[0].quantity = quantity
-        const findProduct = allProducts.find(e=>e._id === item[0]._id)
-        setItem([findProduct])
+        if(allProducts._id === item._id){
+            const updateQuantity = allProducts.quantity = quantity
+            console.log(updateQuantity);
+            setItem([allProducts])
+        }
+        else{
+            console.log("error occured");
+        }
+        // const product = allProducts.find(e=>e._id === item[0]._id).sizes[0].quantity = quantity
+        // const findProduct = allProducts.find(e=>e._id === item[0]._id)
+        // setItem([findProduct])
     }
 
     const IncreaseQuantity=(item:{})=>{
-        const increaseQuantity = everyItem.find(e=>e._id === item._id).sizes[0].quantity++ 
+        const increaseQuantity = everyItem.find(e=>e._id === item._id).quantity++ 
         setEveryItem([...everyItem])
      
     }
     const DecreaseQuantity=(item:{})=>{
-        const decreaseQuantity = everyItem.find(e=>e._id === item._id).sizes[0].quantity--
+        const decreaseQuantity = everyItem.find(e=>e._id === item._id).quantity--
         if(decreaseQuantity <= 0){
         } 
         else{
@@ -122,16 +131,15 @@ everyItem.forEach(i=>{
     
 
     const renderData = ({ item }) => {
-        console.log("ITEMS",item);
         return (
             <>
                 {/* <TouchableOpacity onPress={() => editProductModal(item)} style={styles.card}> */}
                 <View style={styles.card}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                         <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.color.image }} />
+                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.productId.parentId.image }} />
                             <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
-                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.color.name}</Text>
+                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.productId.parentId.name}</Text>
                                 <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.productName}</Text>
                                 <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>$ {item.quantity * item.price}</Text>
                             </View>
@@ -143,7 +151,7 @@ everyItem.forEach(i=>{
                         </View> */}
                         <View style={{ alignSelf: "center", flexDirection: "row" }}>
                             <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' />
-                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.sizes[0].quantity}</Text>
+                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity}</Text>
                             <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' />
 
                           </View>
