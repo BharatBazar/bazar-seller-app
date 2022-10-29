@@ -21,9 +21,7 @@ const BottomSheet = ({
     Add,
     item,
     modalHeight,
-    setColor,
     openContinueModal,
-    totalItem,
     showEnter,
     setShowEnter,
     setItem,
@@ -33,16 +31,17 @@ const BottomSheet = ({
     refRBSheet,
     setId,
     setOpenContinueModal,
-    products,
     ChangeQuantity,
     editItem,
     allProducts,
     everyItem,
     total,
     removeItem,
-    navigation,
     loading,
     setEveryItem,
+    ChangeSellingPrice,
+    price,
+    quantity
 
 }) => {
     // const refRBSheet = useRef();
@@ -86,12 +85,17 @@ const BottomSheet = ({
     const AddProduct=async(item:any)=>{
         try {
 
-            const id = everyItem.map((e:any)=>e._id)
+            const id = everyItem.map((e:any)=>e)
             const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
             const bill = await createBill({
                 name:"Babu rao",
                 totalPrice:total,
-                products:id,
+                products:id.map((e:any)=>{
+
+                    return {"quantity":e.quantity,
+                    "price":e.price*e.quantity,
+                    "productSize":e._id}
+                }),
                 shopId:shopId.shop
             })
             if(bill.status === 1){
@@ -213,7 +217,8 @@ const BottomSheet = ({
                                                     <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts.productId.parentId.image }} />
                                                     <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
                                                         {/* <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].color.name}</Text> */}
-                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name} × {allProducts.quantity}</Text>
+                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name} × {quantity}</Text>
+                                                        {/* <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name}</Text> */}
                                                     </View>
 
 
@@ -224,19 +229,24 @@ const BottomSheet = ({
                                                 <View style={{ alignSelf: "center", flexDirection: "row" }}>
                                                     {/* <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{allProducts[0].sizes[0].quantity}</Text> */}
                                                 </View>
-                                                <Text style={{ fontFamily: FontFamily.Black, fontSize: 15, color: "#252525", alignSelf: "center", paddingRight: 5 }}>$ {allProducts.productId.status}</Text>
+                                                <Text style={{ fontFamily: FontFamily.Black, fontSize: 15, color: "#252525", alignSelf: "center", paddingRight: 5 }}>₹ {price * quantity}</Text>
 
 
                                             </View>
                                         </View>
 
                                         <View style={{ flexDirection: "row", justifyContent: "space-between", marginTop: 20 }}>
-                                            <Text style={{ fontFamily: FontFamily.Bold, color: "#252525", fontSize: 17, alignSelf: "center" }}>Quantity</Text>
-                                            <TextInput onChangeText={(e) => ChangeQuantity(e, allProducts)} style={{ borderWidth: 1, height: 36, borderRadius: 5, width: 40, alignSelf: "center", fontSize: 16, fontFamily: FontFamily.Bold, }} />
+                                        <View >
+                                                <Text style={{ fontFamily: FontFamily.Bold, color: "#252525", fontSize: 17}}>Quantity</Text>
+                                                <Text style={{alignSelf:"center",color:"green",fontSize:14}}>Quantity available {allProducts.quantity}</Text>
+
                                         </View>
+                                                <TextInput onChangeText={(e) => ChangeQuantity(e, allProducts)} keyboardType="number-pad" style={{ borderWidth: 1, height: 36, borderRadius: 5, width: 40, alignSelf: "center", fontSize: 16, fontFamily: FontFamily.Bold, }} />
+                                        </View>
+                                        
                                         <View style={{ flexDirection: "row", marginTop: 25, justifyContent: "space-between" }}>
                                             <Text style={{ fontFamily: FontFamily.Bold, fontSize: 17, color: "#252525", alignSelf: "center", }}>Selling Price</Text>
-                                            <Text style={{ fontFamily: FontFamily.Bold, color: "#252525", marginRight: 10, fontSize: 17 }}>₹ {allProducts.quantity * allProducts.price}</Text>
+                                            <TextInput onChangeText={(e) => ChangeSellingPrice(e)} keyboardType="numeric" style={{ borderWidth: 1, height: 36, borderRadius: 5, width: 40, alignSelf: "center", fontSize: 16, fontFamily: FontFamily.Bold, }} />
                                         </View>
                                     </>
                                 ) : (null)
@@ -263,7 +273,7 @@ const BottomSheet = ({
                             <Text style={{ fontFamily: FontFamily.Helvatica, alignSelf: "center", fontSize: 16 }}>Edit Product</Text>
 
                             <View>
-                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 15 }}>Item Id {editItem.kkd}</Text>
+                                {/* <Text style={{ fontFamily: FontFamily.Regular, fontSize: 15 }}>Item Id {editItem.kkd}</Text> */}
                             </View>
 
                             <View>

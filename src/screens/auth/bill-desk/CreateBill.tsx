@@ -31,6 +31,8 @@ const CreateBill: React.FC = ({ navigation, route }) => {
     const [allProducts, setAllProducts] = useState([])
     const [loading, setLoading] = useState(false)
     const [everyItem, setEveryItem] = useState([])
+    const [quantity, setQuantity] = useState(1)
+    const [price, setPrice] = useState(0)
 
     const refRBSheet = useRef()
 
@@ -78,6 +80,18 @@ everyItem.forEach(i=>{
     }
 
     const Add = (item: any) => {
+        item['price'] = price
+
+                if(allProducts._id === item._id){
+            const updateQuantity = allProducts.quantity = quantity
+            console.log(updateQuantity);
+                setQuantity(1)
+                setPrice(0)
+                setItem([allProducts])
+        }
+        else{
+            console.log("error occured");
+        }
         const check = everyItem.filter(e=>e._id === item._id)
         if(check.length === 1){
            ToastHOC.errorAlert("Item already in list",'',"top")
@@ -93,19 +107,16 @@ everyItem.forEach(i=>{
    
     
 
+    const ChangeQuantity = (quantity: number) => {
+       if(quantity > allProducts.quantity){
+           Alert.alert("you cannot add item")
+       }else{
+           setQuantity(quantity)
+       }
+    }
 
-    const ChangeQuantity = (quantity: number, item: {}) => {
-        if(allProducts._id === item._id){
-            const updateQuantity = allProducts.quantity = quantity
-            console.log(updateQuantity);
-            setItem([allProducts])
-        }
-        else{
-            console.log("error occured");
-        }
-        // const product = allProducts.find(e=>e._id === item[0]._id).sizes[0].quantity = quantity
-        // const findProduct = allProducts.find(e=>e._id === item[0]._id)
-        // setItem([findProduct])
+    const ChangeSellingPrice = (price: number) => {
+        setPrice(price)
     }
 
     const IncreaseQuantity=(item:{})=>{
@@ -141,7 +152,7 @@ everyItem.forEach(i=>{
                             <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
                                 <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.productId.parentId.name}</Text>
                                 <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.productName}</Text>
-                                <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>$ {item.quantity * item.price}</Text>
+                                <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>₹ {item.quantity * item.price}</Text>
                             </View>
 
 
@@ -149,10 +160,12 @@ everyItem.forEach(i=>{
                         {/* <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: "red" }}>
 
                         </View> */}
+ <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor:  item.productId.colors[0].color.description ?  item.productId.colors[0].color.description : "black" }}/>
+
                         <View style={{ alignSelf: "center", flexDirection: "row" }}>
-                            <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' />
-                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity}</Text>
-                            <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' />
+                            {/* <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' /> */}
+                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity} pcs.</Text>
+                            {/* <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' /> a*/}
 
                           </View>
                         <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ paddingRight: 10, marginTop: 5 }}>
@@ -240,7 +253,7 @@ everyItem.forEach(i=>{
                </View>
                 </View>
 
-            <BottomSheet setEveryItem = {setEveryItem} navigation={navigation} total={total} loading={loading} removeItem={removeItem} everyItem={everyItem} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
+            <BottomSheet quantity={quantity} price={price} ChangeSellingPrice={ChangeSellingPrice} setEveryItem = {setEveryItem} navigation={navigation} total={total} loading={loading} removeItem={removeItem} everyItem={everyItem} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
         </View>
     );
 };

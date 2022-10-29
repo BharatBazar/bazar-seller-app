@@ -47,7 +47,7 @@ const ShowBills = ({navigation}) => {
       return <View style={[styles.card,{paddingHorizontal:20,paddingVertical:5,marginTop:"3%"}]} >
                  <View style={{height:40,justifyContent:"space-between",flexDirection:"row"}}>
                    <Text style={{fontFamily:FontFamily.Helvatica}}>Created on <Text style={{fontFamily:FontFamily.Black}}>{item.createdAt}</Text></Text>
-                  <Text style={{fontFamily:FontFamily.Helvatica,fontSize:16}}>{item.name}</Text>
+                  <Text style={{fontFamily:FontFamily.Helvatica,fontSize:16}}>{item.productId.name}</Text>
                 </View> 
                  {/* <View style={[BW(0.5), BC(borderColor), MHA()]} /> */}
                  {/* <Text>{item.products}</Text> */}
