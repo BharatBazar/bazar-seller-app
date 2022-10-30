@@ -124,7 +124,8 @@ const BottomSheet = ({
                         backgroundColor: '#000',
                     },
                     container: {
-                        backgroundColor: "#f9f6ee"
+                        // backgroundColor: "#f9f6ee"
+                        backgroundColor: "#fff"
                     }
                 }}
             >

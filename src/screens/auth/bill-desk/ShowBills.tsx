@@ -1,5 +1,5 @@
-import { FlatList, Image, ScrollView, StyleSheet, Text, View } from 'react-native'
-import React, { useState } from 'react'
+import { FlatList, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useRef, useState } from 'react'
 import { AIC, BC, BGCOLOR, BW, FDR } from '@app/common/styles';
 import { borderColor, colorCode, mainColor } from '@app/common/color';
 import { GENERAL_PADDING, MHA, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
@@ -9,10 +9,15 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { showBill } from '@app/server/apis/billdesk/bill.api';
 import moment from 'moment';
+import Edit from 'react-native-vector-icons/Feather'
+import UpdateBottomSheet from './UpdateBottomSheet';
 
 const ShowBills = ({navigation}) => {
 
      const [bill, setBill] = useState([])
+     const [opensheet, setOpensheet] = useState(false)
+
+     const refRBSheet = useRef()
 
      const getBills = async()=>{
        try {
@@ -44,6 +49,11 @@ const ShowBills = ({navigation}) => {
             });
         };
     }, []);
+    
+
+    const openUpdateSheet = ()=>{
+        refRBSheet.current.open();
+    }
 
     const renderData = ({item})=>{
       console.log("ITE",item);
@@ -63,6 +73,9 @@ const ShowBills = ({navigation}) => {
                   <Text style={{alignSelf:"center"}}>{e.productSize.productId.parentId.name} × {e.quantity} pcs.</Text>
                   <View style={{width:24,height:24,alignSelf:"center",borderRadius:12.5,backgroundColor:e.productSize.productId.colors[0].color.description}}></View>
                   <Text style={{alignSelf:"center"}}>₹ {e.price}</Text>
+                 <TouchableOpacity onPress={()=>openUpdateSheet()} style={{alignSelf:"center"}}>
+                    <Edit name="edit"  color="#252525" size={18}/>
+                 </TouchableOpacity>
                 </View>
               })}
                 </View>
@@ -74,7 +87,7 @@ const ShowBills = ({navigation}) => {
     }
 
   return (
-    <View>
+    <View style={{flex:.7}}>
       <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
                 {
                     <ButtonMaterialIcons
@@ -100,7 +113,10 @@ const ShowBills = ({navigation}) => {
                 renderItem={renderData}
                 keyExtractor={bill=>bill._id}
                 />
+<UpdateBottomSheet refRBSheet={refRBSheet}/>
+                
     </View>
+    
   )
 }
 

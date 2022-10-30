@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, Alert, } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, Alert, Keyboard, } from 'react-native';
 import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import { AIC, BGCOLOR, FDR, ML, MT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
@@ -17,6 +17,7 @@ import BottomSheet from './BottomSheet';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+
 
 var totalItem: [] = []
 
@@ -95,6 +96,7 @@ everyItem.forEach(i=>{
         const check = everyItem.filter(e=>e._id === item._id)
         if(check.length === 1){
            ToastHOC.errorAlert("Item already in list",'',"top")
+           Keyboard.dismiss()
         }
         else{
         setEveryItem(everyItem.concat(item))

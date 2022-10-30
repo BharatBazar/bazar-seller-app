@@ -11,3 +11,7 @@ export function createBill(data: Partial<IBill>): Promise<CommonApiResponse> {
 export function showBill(shopId: any): Promise<CommonApiResponse> {
     return axios.get(`bill/show/${shopId._id}`);
 }
+
+export function updateBill(shopId: any): Promise<CommonApiResponse> {
+    return axios.get(`bill/update/${shopId._id}`);
+}
