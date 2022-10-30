@@ -9,5 +9,5 @@ export function createBill(data: Partial<IBill>): Promise<CommonApiResponse> {
 }
 
 export function showBill(shopId: any): Promise<CommonApiResponse> {
-    return axios.get(`bill/show/${shopId}`);
+    return axios.get(`bill/show/${shopId._id}`);
 }

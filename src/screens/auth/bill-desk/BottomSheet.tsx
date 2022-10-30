@@ -41,7 +41,8 @@ const BottomSheet = ({
     setEveryItem,
     ChangeSellingPrice,
     price,
-    quantity
+    quantity,
+    navigation
 
 }) => {
     // const refRBSheet = useRef();
@@ -102,6 +103,8 @@ const BottomSheet = ({
                 ToastHOC.infoAlert("Product has been saved","Information","top")
                 setEveryItem([])
                 refRBSheet.current.close()
+                navigation.goBack()
+                
             }
         } catch (error) {
             console.log("ERROR",error.message);

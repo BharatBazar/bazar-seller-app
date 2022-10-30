@@ -253,7 +253,7 @@ everyItem.forEach(i=>{
                </View>
                 </View>
 
-            <BottomSheet quantity={quantity} price={price} ChangeSellingPrice={ChangeSellingPrice} setEveryItem = {setEveryItem} navigation={navigation} total={total} loading={loading} removeItem={removeItem} everyItem={everyItem} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
+            <BottomSheet navigation={navigation} quantity={quantity} price={price} ChangeSellingPrice={ChangeSellingPrice} setEveryItem = {setEveryItem} navigation={navigation} total={total} loading={loading} removeItem={removeItem} everyItem={everyItem} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
         </View>
     );
 };
