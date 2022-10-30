@@ -58,11 +58,11 @@ const ShowBills = ({navigation}) => {
                  <View style={[BW(0.5), BC(borderColor), MHA()]} />
                  {/* <Text>{item.products}</Text> */}
               {item.products.map((e)=>{
-                return   <View style={{flexDirection:"row",justifyContent:"space-between",paddingHorizontal:5,marginTop:"3%"}}>
-                  {/* <Image style={{width:50,height:50,borderRadius:5}} source={{uri:e.productSize.productId.parentId.image}}/>
+                return   <View key={e._id} style={{flexDirection:"row",justifyContent:"space-between",paddingHorizontal:5,marginTop:"3%"}}>
+                  <Image style={{width:50,height:50,borderRadius:5}} source={{uri:e.productSize.productId.parentId.image}}/>
                   <Text style={{alignSelf:"center"}}>{e.productSize.productId.parentId.name} × {e.quantity} pcs.</Text>
-                  <View style={{width:24,height:24,alignSelf:"center",borderRadius:12.5,backgroundColor:e.productSize.productId.colors[0].color.description}}></View> */}
-                  <Text style={{alignSelf:"center"}}>{e.price}</Text>
+                  <View style={{width:24,height:24,alignSelf:"center",borderRadius:12.5,backgroundColor:e.productSize.productId.colors[0].color.description}}></View>
+                  <Text style={{alignSelf:"center"}}>₹ {e.price}</Text>
                 </View>
               })}
                 </View>

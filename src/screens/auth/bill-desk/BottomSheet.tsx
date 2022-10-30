@@ -220,7 +220,7 @@ const BottomSheet = ({
                                                     <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: allProducts.productId.parentId.image }} />
                                                     <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
                                                         {/* <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{allProducts[0].color.name}</Text> */}
-                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name} × {quantity}</Text>
+                                                        <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name} × {quantity < 1 ? 1 : quantity }</Text>
                                                         {/* <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{allProducts.productId.parentId.name}</Text> */}
                                                     </View>
 
@@ -265,7 +265,7 @@ const BottomSheet = ({
                                 onPress={() => {
                                     Add(allProducts)
                                 }}
-                                disabled={allProducts._id !== undefined || null ? (false) : (true)}
+                                disabled={allProducts._id !== (undefined || null ) && (price > 0 ) && (quantity >0) ? (false) : (true)}
                             />
 
                         </View>
