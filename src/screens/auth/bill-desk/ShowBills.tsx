@@ -14,8 +14,12 @@ import UpdateBottomSheet from './UpdateBottomSheet';
 
 const ShowBills = ({navigation}) => {
 
-     const [bill, setBill] = useState([])
-     const [opensheet, setOpensheet] = useState(false)
+     const [bill, setBill] = React.useState([])
+     const [opensheet, setOpensheet] = React.useState(false)
+     const [billId, setBillId] = React.useState('')
+     const [itemId, setItemId] = React.useState('')
+     const [quantity, setQuantity] = useState(1)
+     const [price, setPrice] = useState(1)
 
      const refRBSheet = useRef()
 
@@ -51,8 +55,11 @@ const ShowBills = ({navigation}) => {
     }, []);
     
 
-    const openUpdateSheet = ()=>{
+    const openUpdateSheet = (billId,productId)=>{
         refRBSheet.current.open();
+        console.log("ITT",billId,productId.productSize._id);
+        setBillId(billId)
+        setItemId(productId.productSize._id)
     }
 
     const renderData = ({item})=>{
@@ -73,7 +80,7 @@ const ShowBills = ({navigation}) => {
                   <Text style={{alignSelf:"center"}}>{e.productSize.productId.parentId.name} × {e.quantity} pcs.</Text>
                   <View style={{width:24,height:24,alignSelf:"center",borderRadius:12.5,backgroundColor:e.productSize.productId.colors[0].color.description}}></View>
                   <Text style={{alignSelf:"center"}}>₹ {e.price}</Text>
-                 <TouchableOpacity onPress={()=>openUpdateSheet()} style={{alignSelf:"center"}}>
+                 <TouchableOpacity onPress={()=>openUpdateSheet(item._id,e)} style={{alignSelf:"center"}}>
                     <Edit name="edit"  color="#252525" size={18}/>
                  </TouchableOpacity>
                 </View>
@@ -113,7 +120,7 @@ const ShowBills = ({navigation}) => {
                 renderItem={renderData}
                 keyExtractor={bill=>bill._id}
                 />
-<UpdateBottomSheet refRBSheet={refRBSheet}/>
+<UpdateBottomSheet price={price} quantity={quantity} billId={billId} itemId={itemId} setQuantity={setQuantity} setPrice={setPrice} refRBSheet={refRBSheet}/>
                 
     </View>
     

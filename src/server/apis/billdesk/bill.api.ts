@@ -12,6 +12,7 @@ export function showBill(shopId: any): Promise<CommonApiResponse> {
     return axios.get(`bill/show/${shopId._id}`);
 }
 
-export function updateBill(shopId: any): Promise<CommonApiResponse> {
-    return axios.get(`bill/update/${shopId._id}`);
+export function updateBill(shopId: any, data: any): Promise<CommonApiResponse> {
+    console.log('DATAs', data);
+    return axios.patch(`bill/update/${shopId}`, data);
 }
