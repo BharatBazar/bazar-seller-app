@@ -1,17 +1,14 @@
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, FlatList, Alert, Keyboard, } from 'react-native';
-import React, { useCallback, useEffect, useReducer, useRef, useState } from 'react';
-import { AIC, BGCOLOR, FDR, ML, MT } from '@app/common/styles';
-import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert, Keyboard, } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { AIC, AS, BC, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, JCC, ML, MT, P, PH, PL, PR, PT, PV, W } from '@app/common/styles';
+import { GENERAL_PADDING, MLA, PA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import CrossIcon from 'react-native-vector-icons/Entypo';
 import { colorCode, mainColor } from '@app/common/color';
 import WrappedText from '@app/screens/component/WrappedText';
 import { FontFamily, fs18 } from '@app/common';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Image } from 'react-native';
-import Entypo from 'react-native-vector-icons/Entypo'
 import { products } from './products';
 import BottomSheet from './BottomSheet';
 import { Storage, StorageItemKeys } from '@app/storage';
@@ -21,25 +18,25 @@ import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 var totalItem: [] = []
 
-const CreateBill: React.FC = ({ navigation, route }) => {
+const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState(500)
     const [color, setColor] = React.useState("#ffffff")
     const [id, setId] = React.useState<Number>()
-    const [item, setItem] = useState([])
-    const [showEnter, setShowEnter] = useState<Boolean>(true)
-    const [openContinueModal, setOpenContinueModal] = useState<String>('')
+    const [item, setItem]: any = React.useState([])
+    const [showEnter, setShowEnter] = React.useState<Boolean>(true)
+    const [openContinueModal, setOpenContinueModal] = React.useState<String>('')
     const [editItem, setEditItem] = useState<{}>()
-    const [allProducts, setAllProducts] = useState([])
-    const [loading, setLoading] = useState(false)
-    const [everyItem, setEveryItem] = useState([])
-    const [quantity, setQuantity] = useState(1)
-    const [price, setPrice] = useState(0)
+    const [allProducts, setAllProducts]: any = React.useState([])
+    const [loading, setLoading] = React.useState(false)
+    const [everyItem, setEveryItem]: any = React.useState([])
+    const [quantity, setQuantity] = React.useState(1)
+    const [price, setPrice] = React.useState(0)
 
-    const refRBSheet = useRef()
+    const refRBSheet: any = useRef()
 
 
-    const removeItem = (id:any)=>{
-        const j = everyItem.filter((e:any)=>{
+    const removeItem = (id: any) => {
+        const j = everyItem.filter((e: any) => {
             return e._id !== id
         })
         setEveryItem(j)
@@ -47,130 +44,96 @@ const CreateBill: React.FC = ({ navigation, route }) => {
 
 
 
-var total = 0;
+    var total = 0;
 
-everyItem.forEach(i=>{
-    total +=i.price*i.quantity
-})
-
-
+    everyItem.forEach((i: any) => {
+        total += i.price * i.quantity
+    })
 
 
 
-    const findProduct =async (id: number) => {
+
+
+    const findProduct = async (id: number) => {
         setLoading(true)
-        // const product = products.filter(e => e.kkd === Number(id))
-        const shopId = await  Storage.getItem(StorageItemKeys.userDetail);
-        const itemResponse = await  APIGetItemSize({shopId:shopId.shop,itemId:id})
-        console.log(itemResponse.payload);
+        const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+        const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id })
         const product = itemResponse.payload[0]
-        // .productId.parentId.name
-        console.log("RESPOnse",product);
-        if(itemResponse.status === 1){
-            
+        if (itemResponse.status === 1) {
+
             setModalHeight(600)
             setLoading(false)
-        setAllProducts(product)
-        setItem([product])
-        setShowEnter(false)
+            setAllProducts(product)
+            setItem([product])
+            setShowEnter(false)
         }
-        else{
+        else {
             setLoading(false)
-            ToastHOC.errorAlert("Item not found","","top")
+            ToastHOC.errorAlert("Item not found", "", "top")
         }
     }
 
     const Add = (item: any) => {
         item['price'] = price
 
-                if(allProducts._id === item._id){
+        if (allProducts._id === item._id) {
             const updateQuantity = allProducts.quantity = quantity
             console.log(updateQuantity);
-                setQuantity(1)
-                setPrice(0)
-                setItem([allProducts])
+            setQuantity(1)
+            setPrice(0)
+            setItem([allProducts])
         }
-        else{
+        else {
             console.log("error occured");
         }
-        const check = everyItem.filter(e=>e._id === item._id)
-        if(check.length === 1){
-           ToastHOC.errorAlert("Item already in list",'',"top")
-           Keyboard.dismiss()
+        const check = everyItem.filter((e: any) => e._id === item._id)
+        if (check.length === 1) {
+            ToastHOC.errorAlert("Item already in list", '', "top")
+            Keyboard.dismiss()
         }
-        else{
-        setEveryItem(everyItem.concat(item))
-        setItem([])
-        refRBSheet.current.close()
+        else {
+            setEveryItem(everyItem.concat(item))
+            setItem([])
+            refRBSheet.current.close()
         }
-     
+
     }
 
-   
-    
 
     const ChangeQuantity = (quantity: number) => {
-       if(quantity > allProducts.quantity){
-           Alert.alert("you cannot add item")
-       }else{
-           setQuantity(quantity)
-       }
+        if (quantity > allProducts.quantity) {
+            Alert.alert("you cannot add item")
+        } else {
+            setQuantity(quantity)
+        }
     }
 
     const ChangeSellingPrice = (price: number) => {
         setPrice(price)
     }
 
-    const IncreaseQuantity=(item:{})=>{
-        const increaseQuantity = everyItem.find(e=>e._id === item._id).quantity++ 
-        setEveryItem([...everyItem])
-     
-    }
-    const DecreaseQuantity=(item:{})=>{
-        const decreaseQuantity = everyItem.find(e=>e._id === item._id).quantity--
-        if(decreaseQuantity <= 0){
-        } 
-        else{
-            setEveryItem([...everyItem])
-        }
-       
-     
-    }
-    
-// useEffect(() => {
-//  console.log("USER_DETAIL", Storage.getItem(StorageItemKeys.userDetail));
-// }, [])
-
-    
-
-    const renderData = ({ item }) => {
+    const renderData = ({ item }: any) => {
         return (
             <>
-                {/* <TouchableOpacity onPress={() => editProductModal(item)} style={styles.card}> */}
                 <View style={styles.card}>
-                    <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                        <View style={{ padding: 5, paddingHorizontal: 10, flexDirection: "row" }}>
-                            <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.productId.parentId.image }} />
-                            <View style={{ alignSelf: "center", paddingLeft: 10, flexDirection: "column", justifyContent: "space-between" }}>
-                                <Text style={{ fontFamily: FontFamily.Black, color: "#252525", fontSize: 16 }}>{item.productId.parentId.name}</Text>
-                                <Text style={{ fontFamily: FontFamily.Regular, fontSize: 14 }}>{item.productName}</Text>
-                                <Text style={{ marginTop: 2, fontFamily: FontFamily.Black, fontSize: 12, color: "red", borderWidth: 1, paddingHorizontal: 13, paddingVertical: 2, borderRadius: 10, borderColor: "red" }}>₹ {item.quantity * item.price}</Text>
+                    <View style={[FDR(), JCC('space-between')]}>
+                        <View style={[PA(5), PH(), FDR()]}>
+                            <Image style={{width:80,height:80,borderRadius:10}} source={{ uri: item.productId.parentId.image }} />
+                            <View style={[AS(), PL(.2), FDR('column'), JCC('space-between')]}>
+                                <Text style={[FS(16), FC("#252525"), { fontFamily: FontFamily.Black, }]}>{item.productId.parentId.name}</Text>
+                                <Text style={[FS(14), { fontFamily: FontFamily.Regular }]}>{item.productName}</Text>
+                                <Text style={[MT(.1), FS(12), FC("red"), BW(1), PH(), PV(), BR(10), BC("red")]}>₹ {item.quantity * item.price}</Text>
                             </View>
 
 
                         </View>
-                        {/* <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor: "red" }}>
 
-                        </View> */}
- <View style={{ alignSelf: "center", width: 25, height: 25, borderRadius: 12.5, backgroundColor:  item.productId.colors[0].color.description ?  item.productId.colors[0].color.description : "black" }}/>
+                        <View style={[AS(), W(25), H(25), BR(25), BGCOLOR(item.productId.colors[0].color.description ? item.productId.colors[0].color.description : "black")]} />
 
-                        <View style={{ alignSelf: "center", flexDirection: "row" }}>
-                            {/* <Entypo onPress={()=>DecreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='minus' /> */}
-                            <Text style={{ padding: 5, fontSize: 17, alignSelf: "center", fontFamily: FontFamily.Black, color: "#252525" }}>{item.quantity} pcs.</Text>
-                            {/* <Entypo onPress={()=>IncreaseQuantity(item)} size={24} color={"#ffffff"} style={styles.circle} name='plus' /> a*/}
-
-                          </View>
-                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={{ paddingRight: 10, marginTop: 5 }}>
+                        <View style={[AS(), FDR()]}>
+                            <Text style={[P(), FS(17), AS("center"), FC("#252525"), { fontFamily: FontFamily.Black }]}>{item.quantity} pcs.</Text>
+                        </View>
+                        <TouchableOpacity onPress={() => removeItem(item._id)} style={[PR(.2), MT(.2)]}>
                             <CrossIcon name='cross' color={"#252525"} size={24} />
                         </TouchableOpacity>
                     </View>
@@ -181,7 +144,7 @@ everyItem.forEach(i=>{
 
 
     return (
-        <View style={{ flex: 1, backgroundColor: "#f9f6ee" }}>
+        <View style={[FLEX(1), BGCOLOR("#f9f6ee")]}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
                 {
                     <ButtonMaterialIcons
@@ -198,7 +161,7 @@ everyItem.forEach(i=>{
                     fontSize={fs18}
                     textColor={'#ffffff'}
                     textAlign="center"
-                    containerStyle={{ marginLeft: 20 }}
+                    containerStyle={[ML(.2)]}
                     fontFamily={FontFamily.Medium}
                 />
             </View>
@@ -214,7 +177,7 @@ everyItem.forEach(i=>{
                 />
             </View>
 
-            <View style={{ paddingHorizontal: 20, flex: .8 }}>
+            <View style={[FLEX(.8), PH(.5)]}>
 
                 {everyItem.length > 0 ? (<>
                     <FlatList
@@ -224,38 +187,58 @@ everyItem.forEach(i=>{
                     />
                 </>) : (null)}
 
-                <View style={{ width: "100%", }}>
-
-               
-
             </View>
-          
-            </View>
-              <View style={{paddingHorizontal:20,paddingTop:30}}>
-                {everyItem.length>0?(
+            <View style={[PH(), PT()]}>
+                {everyItem.length > 0 ? (
                     <>
-                      <View style={{flexDirection:"row",justifyContent:"space-between"}}>
-                      <Text style={{fontFamily:FontFamily.Black,color:"#252525",fontSize:16}}>Total Price</Text>
-                      <Text style={{fontFamily:FontFamily.Black,color:"#252525",fontSize:16}}>$ {total}</Text>
-                  </View>
+                        <View style={[FDR(), JCC("space-between")]}>
+                            <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>Total Price</Text>
+                            <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>$ {total}</Text>
+                        </View>
                     </>
-                ):(null)}
-                 
-               <View style={{paddingTop:20}}>
-                    <RightComponentButtonWithLeftText
-                    buttonText={'Continue'}
-                    containerStyle={[MT(0.1),{borderRadius:30,width:"70%",alignSelf:"center"}]}
-                    onPress={() => {
-                        setOpenContinueModal("CONTINUE")
-                        refRBSheet.current.open()
-                        setModalHeight(500)
-                    }}
-                    disabled={everyItem.length > 0 ?false:true}
-                />
-               </View>
-                </View>
+                ) : (null)}
 
-            <BottomSheet navigation={navigation} quantity={quantity} price={price} ChangeSellingPrice={ChangeSellingPrice} setEveryItem = {setEveryItem} navigation={navigation} total={total} loading={loading} removeItem={removeItem} everyItem={everyItem} editItem={editItem} ChangeQuantity={ChangeQuantity} Add={Add} allProducts={allProducts} item={item} modalHeight={modalHeight} setColor={setColor} openContinueModal={openContinueModal} totalItem={totalItem} showEnter={showEnter} setShowEnter={setShowEnter} setId={setId} setItem={setItem} findProduct={findProduct} id={id} route={route} refRBSheet={refRBSheet} setOpenContinueModal={setOpenContinueModal} products={products} />
+                <View style={{ paddingTop: 20 }}>
+                    <RightComponentButtonWithLeftText
+                        buttonText={'Continue'}
+                        containerStyle={[MT(0.1), { borderRadius: 30, width: "70%", alignSelf: "center" }]}
+                        onPress={() => {
+                            setOpenContinueModal("CONTINUE")
+                            refRBSheet.current.open()
+                            setModalHeight(500)
+                        }}
+                        disabled={everyItem.length > 0 ? false : true}
+                    />
+                </View>
+            </View>
+
+            <BottomSheet 
+                navigation={navigation}
+                quantity={quantity}
+                price={price}
+                ChangeSellingPrice={ChangeSellingPrice}
+                setEveryItem={setEveryItem}
+                total={total}
+                loading={loading}
+                removeItem={removeItem}
+                everyItem={everyItem}
+                editItem={editItem}
+                ChangeQuantity={ChangeQuantity}
+                Add={Add}
+                allProducts={allProducts}
+                item={item}
+                modalHeight={modalHeight}
+                openContinueModal={openContinueModal}
+                showEnter={showEnter}
+                setShowEnter={setShowEnter}
+                setId={setId}
+                setItem={setItem}
+                findProduct={findProduct}
+                id={id}
+                route={route}
+                refRBSheet={refRBSheet}
+                setOpenContinueModal={setOpenContinueModal}
+                />
         </View>
     );
 };
@@ -266,8 +249,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 24,
-        // justifyContent: 'center',
-        // backgroundColor: 'grey',
     },
     contentContainer: {
         flex: 1,

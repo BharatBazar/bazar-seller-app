@@ -7,6 +7,7 @@ import {
     IRProductSize,
     IRProduct,
     IRProductStatus,
+    IFindProduct,
 } from './product.interface';
 import axios from 'axios';
 import { choosenSize } from '@app/screens/app/product-edit/data-types';
@@ -55,8 +56,7 @@ export async function APICreateProductSize(data: Partial<choosenSize>): Promise<
     return axios.post('/product/size/create', data);
 }
 
-export async function APIGetItemSize(data: IProductSize): Promise<IRProductSize> {
-    console.log('PRODUCT_SIZE_DATA', data);
+export async function APIGetItemSize(data: IFindProduct): Promise<IRProductSize> {
     return axios.post('/product/size/getItem', data);
 }
 
