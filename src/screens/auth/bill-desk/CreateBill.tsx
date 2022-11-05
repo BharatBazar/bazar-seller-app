@@ -9,37 +9,32 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { FontFamily, fs18 } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { Image } from 'react-native';
-import { products } from './products';
 import BottomSheet from './BottomSheet';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 
-var totalItem: [] = []
-
 const CreateBill: React.FC = ({ navigation, route }: any) => {
-    const [modalHeight, setModalHeight] = React.useState(500)
-    const [color, setColor] = React.useState("#ffffff")
+    const [modalHeight, setModalHeight] = React.useState<Number>(500)
     const [id, setId] = React.useState<Number>()
-    const [item, setItem]: any = React.useState([])
+    const [item, setItem]: any = React.useState<[]>([])
     const [showEnter, setShowEnter] = React.useState<Boolean>(true)
     const [openContinueModal, setOpenContinueModal] = React.useState<String>('')
-    const [editItem, setEditItem] = useState<{}>()
-    const [allProducts, setAllProducts]: any = React.useState([])
-    const [loading, setLoading] = React.useState(false)
-    const [everyItem, setEveryItem]: any = React.useState([])
-    const [quantity, setQuantity] = React.useState(1)
-    const [price, setPrice] = React.useState(0)
+    const [allProducts, setAllProducts]: any = React.useState<[]>([])
+    const [loading, setLoading] = React.useState<Boolean>(false)
+    const [everyItem, setEveryItem]: any = React.useState<[]>([])
+    const [quantity, setQuantity] = React.useState<Number>(1)
+    const [price, setPrice] = React.useState<Number>(0)
 
     const refRBSheet: any = useRef()
 
 
     const removeItem = (id: any) => {
-        const j = everyItem.filter((e: any) => {
+        const removeItem = everyItem.filter((e: any) => {
             return e._id !== id
         })
-        setEveryItem(j)
+        setEveryItem(removeItem)
     }
 
 
@@ -222,7 +217,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 loading={loading}
                 removeItem={removeItem}
                 everyItem={everyItem}
-                editItem={editItem}
                 ChangeQuantity={ChangeQuantity}
                 Add={Add}
                 allProducts={allProducts}

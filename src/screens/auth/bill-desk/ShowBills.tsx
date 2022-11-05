@@ -14,7 +14,6 @@ import UpdateBottomSheet from './UpdateBottomSheet';
 
 const ShowBills = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
-    const [opensheet, setOpensheet] = React.useState(false);
     const [billId, setBillId] = React.useState('');
     const [itemId, setItemId] = React.useState('');
     const [quantity, setQuantity] = React.useState(1);

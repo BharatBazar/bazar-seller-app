@@ -1,6 +1,6 @@
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import RBSheet from 'react-native-raw-bottom-sheet'; 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect} from 'react'
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CrossIcon from 'react-native-vector-icons/Entypo';
@@ -8,10 +8,8 @@ import { FontFamily, fs12 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import WrappedTextInput from '@app/screens/component/WrappedTextInput';
-import Entypo from 'react-native-vector-icons/Entypo'
 import { getHP } from '@app/common/dimension';
 import { createBill } from '@app/server/apis/billdesk/bill.api';
-import { NavigationKey } from '@app/labels';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import Loader from '@app/screens/component/Loader';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
@@ -32,7 +30,6 @@ const BottomSheet = ({
     setId,
     setOpenContinueModal,
     ChangeQuantity,
-    editItem,
     allProducts,
     everyItem,
     total,
@@ -64,9 +61,7 @@ const BottomSheet = ({
                         <View style={[AS("center")]}>
                             <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productId.parentId.name}</Text>
                         </View>
-                        <View style={[AS("center"),W(25),H(25),BR(12.5),BGCOLOR(item.productId.colors[0].color.description ?  item.productId.colors[0].color.description : "black" )]}>
-
-                        </View>
+                        <View style={[AS("center"),W(25),H(25),BR(12.5),BGCOLOR(item.productId.colors[0].color.description ?  item.productId.colors[0].color.description : "black" )]}/>
                         <View style={[AS("center")]}>
                             <Text style={[FC("#252525"),{ fontFamily: FontFamily.Bold}]}>₹ {item.quantity * item.price}</Text>
                         </View>
@@ -279,7 +274,7 @@ const BottomSheet = ({
                                     ]}
                                     textInputStyle={[FS(fs12), HP(0.4)]}
                                     keyboardType="number-pad"
-                                    onChangeText={(e) => ChangeQuantity(e, editItem)}
+                                    onChangeText={(e) => ChangeQuantity(e)}
                                 />
                                 <WrappedTextInput
                                     placeholder='Price'
