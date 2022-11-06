@@ -14,10 +14,10 @@ import UpdateBottomSheet from './UpdateBottomSheet';
 
 const ShowBills = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
-    const [billId, setBillId] = React.useState('');
-    const [itemId, setItemId] = React.useState('');
-    const [quantity, setQuantity] = React.useState(1);
-    const [price, setPrice] = React.useState(1);
+    const [billId, setBillId] = React.useState<String>('');
+    const [itemId, setItemId] = React.useState<String>('');
+    const [quantity, setQuantity] = React.useState<Number>(1);
+    const [price, setPrice] = React.useState<Number>(1);
 
     const refRBSheet: any = useRef();
 

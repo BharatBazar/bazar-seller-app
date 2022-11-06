@@ -63,6 +63,7 @@ export const fs90 = provideFontSize(90);
 export const fs104 = provideFontSize(104);
 
 export interface NavigationProps {
+    goBack(): any;
     navigation: any;
 }
 

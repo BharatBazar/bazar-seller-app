@@ -4,7 +4,7 @@ import React, { useEffect} from 'react'
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import CrossIcon from 'react-native-vector-icons/Entypo';
-import { FontFamily, fs12 } from '@app/common';
+import { FontFamily, fs12, NavigationProps } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import WrappedTextInput from '@app/screens/component/WrappedTextInput';
@@ -15,7 +15,36 @@ import Loader from '@app/screens/component/Loader';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { Storage, StorageItemKeys } from '@app/storage';
 
-const BottomSheet = ({
+interface BottomSheet{
+    Add:Function,
+    item:String[],
+    modalHeight:number,
+    openContinueModal:String,
+    showEnter:Boolean,
+    setShowEnter:(value:boolean)=>boolean,
+    setItem:(value:[])=>string[],
+    findProduct:Function,
+    id:Number,
+    route:any,
+    refRBSheet:any,
+    setId:(value:string)=>Number,
+    setOpenContinueModal:(value:string)=>string,
+    ChangeQuantity:Function,
+    allProducts:any,
+    everyItem:any[],
+    total:number,
+    removeItem:Function,
+    loading:Boolean,
+    setEveryItem:(value:any)=>string[],
+    ChangeSellingPrice:Function,
+    price:Number,
+    quantity:Number,
+    navigation:NavigationProps
+
+
+}
+
+const BottomSheet:React.FC<BottomSheet> = ({
     Add,
     item,
     modalHeight,
@@ -41,7 +70,7 @@ const BottomSheet = ({
     quantity,
     navigation
 
-}:any) => {
+}) => {
 
       useEffect(() => {
         if (route.params.openModal === true) {
@@ -217,7 +246,7 @@ const BottomSheet = ({
                                                 </View>
                                                 <View style={[AS("center"),FDR()]}>
                                                 </View>
-                                                <Text style={[FS(15),FC("#252525"),AS("center"),PR(.2),{ fontFamily: FontFamily.Black}]}>₹ {price * quantity}</Text>
+                                                <Text style={[FS(15),FC("#252525"),AS("center"),PR(.2),{ fontFamily: FontFamily.Black}]}>₹ {Number(price) * Number(quantity)}</Text>
 
 
                                             </View>

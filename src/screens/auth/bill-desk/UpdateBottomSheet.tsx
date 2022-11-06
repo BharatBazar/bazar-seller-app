@@ -6,14 +6,23 @@ import { AIC, AS, BR, BW, FDR, FLEX, FS, H, JCC, MT, PH, PV, W } from '@app/comm
 import { FontFamily } from '@app/common';
 import { updateBill } from '@app/server/apis/billdesk/bill.api';
 
-const UpdateBottomSheet = ({
+interface UpdateBill {
+    refRBSheet:Function,
+    setQuantity:(value:any)=>Number|String,
+    setPrice:(value:any)=>Number|String,
+    billId:String,
+    itemId:String,
+    quantity:Number
+}
+
+const UpdateBottomSheet:React.FC<UpdateBill> = ({
   refRBSheet,
   setQuantity,
   setPrice,
   billId,
   itemId,
   quantity
-}: any) => {
+}) => {
 
   const updateBills = async () => {
     try {

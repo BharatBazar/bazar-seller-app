@@ -3,7 +3,7 @@ export interface IBill {
     name: String;
     totalPrice: Number;
     shopId: [];
-    products: [];
+    products: any;
 }
 
 export interface IGetBillResponse extends CommonApiResponse {
