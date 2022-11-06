@@ -7,7 +7,7 @@ import { FontFamily } from '@app/common';
 import { updateBill } from '@app/server/apis/billdesk/bill.api';
 
 interface UpdateBill {
-    refRBSheet:Function,
+    refRBSheet:Function|any,
     setQuantity:(value:any)=>Number|String,
     setPrice:(value:any)=>Number|String,
     billId:String,
