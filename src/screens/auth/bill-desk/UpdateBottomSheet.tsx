@@ -4,14 +4,13 @@ import React from 'react'
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { AIC, AS, BR, BW, FDR, FLEX, FS, H, JCC, MT, PH, PV, W } from '@app/common/styles';
 import { FontFamily } from '@app/common';
-import { updateBill } from '@app/server/apis/billdesk/bill.api';
 
 interface UpdateBill {
     refRBSheet:Function|any,
-    setQuantity:(value:any)=>Number|String,
-    setPrice:(value:any)=>Number|String,
-    billId:String,
-    itemId:String,
+    setQuantity:(value:any)=>Number|any,
+    setPrice:(value:any)=>Number|any,
+    updateBills:Function,
+    price:Number,
     quantity:Number
 }
 
@@ -19,21 +18,10 @@ const UpdateBottomSheet:React.FC<UpdateBill> = ({
   refRBSheet,
   setQuantity,
   setPrice,
-  billId,
-  itemId,
+  updateBills,
+  price,
   quantity
 }) => {
-
-  const updateBills = async () => {
-    try {
-      const prices = 90
-      const update:{} = await updateBill(billId, { prices, quantity, itemId })
-      console.log("UPDATE_RESPONSE", update);
-    } catch (error: any) {
-      console.log("ERROR", error.message);
-    }
-  }
-
 
   return (
 
@@ -63,7 +51,7 @@ const UpdateBottomSheet:React.FC<UpdateBill> = ({
           </View>
           <View style={[AIC(), FDR(), JCC("space-between")]}>
             <Text>Price Per Item</Text>
-            <TextInput onChange={(e) => setPrice(e)} keyboardType="number-pad" style={[BW(1), H(36), BR(), W(50), AS("center"), FS(16), { fontFamily: FontFamily.Bold }]} />
+            <TextInput onChangeText={(e) => setPrice(e)} keyboardType="number-pad" style={[BW(1), H(36), BR(), W(50), AS("center"), FS(16), { fontFamily: FontFamily.Bold }]} />
 
           </View>
 
@@ -75,7 +63,7 @@ const UpdateBottomSheet:React.FC<UpdateBill> = ({
             onPress={() => {
               updateBills()
             }}
-            disabled={false}
+            disabled={(price && quantity) <= 0 ?true:false}
           />
         </View>
       </RBSheet>
