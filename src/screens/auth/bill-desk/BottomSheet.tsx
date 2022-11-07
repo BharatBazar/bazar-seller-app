@@ -17,14 +17,14 @@ import { Storage, StorageItemKeys } from '@app/storage';
 
 interface BottomSheet{
     Add:Function,
-    item:String[],
+    item:string[],
     modalHeight:Number|number,
-    openContinueModal:String,
+    openContinueModal:string,
     showEnter:Boolean,
     setShowEnter:(value:boolean)=>void,
     setItem:(value:[])=>string[],
     findProduct:Function,
-    id:Number|String|undefined,
+    id:number|string|undefined,
     route:any,
     refRBSheet:any,
     setId:(value:any)=>any,
@@ -34,11 +34,11 @@ interface BottomSheet{
     everyItem:any[],
     total:number,
     removeItem:Function,
-    loading:Boolean,
+    loading:boolean,
     setEveryItem:(value:any)=>string[],
     ChangeSellingPrice:Function,
-    price:Number,
-    quantity:Number,
+    price:number,
+    quantity:number,
     navigation:NavigationProps
 
 

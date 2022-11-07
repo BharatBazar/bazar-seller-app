@@ -16,16 +16,16 @@ import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
-    const [modalHeight, setModalHeight] = React.useState<Number>(500)
-    const [id, setId] = React.useState<Number>()
+    const [modalHeight, setModalHeight] = React.useState<number>(500)
+    const [id, setId] = React.useState<number>()
     const [item, setItem]: any = React.useState<[]>([])
-    const [showEnter, setShowEnter] = React.useState<Boolean>(true)
-    const [openContinueModal, setOpenContinueModal] = React.useState<String>('')
+    const [showEnter, setShowEnter] = React.useState<boolean>(true)
+    const [openContinueModal, setOpenContinueModal] = React.useState<string>('')
     const [allProducts, setAllProducts]: any = React.useState<[]>([])
-    const [loading, setLoading] = React.useState<Boolean>(false)
+    const [loading, setLoading] = React.useState<boolean>(false)
     const [everyItem, setEveryItem]: any = React.useState<[]>([])
-    const [quantity, setQuantity] = React.useState<Number>(1)
-    const [price, setPrice] = React.useState<Number>(0)
+    const [quantity, setQuantity] = React.useState<number>(1)
+    const [price, setPrice] = React.useState<number>(0)
 
     const refRBSheet: any = useRef()
 

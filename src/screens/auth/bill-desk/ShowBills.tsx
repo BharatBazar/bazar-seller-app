@@ -13,13 +13,15 @@ import Edit from 'react-native-vector-icons/Feather';
 import UpdateBottomSheet from './UpdateBottomSheet';
 import Loader from '@app/screens/component/Loader';
 
-const ShowBills = ({ navigation }: any) => {
+const ShowBills:React.FC = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
-    const [billId, setBillId] = React.useState<String>('');
-    const [itemId, setItemId] = React.useState<String>('');
-    const [quantity, setQuantity] = React.useState<Number>(1);
-    const [price, setPrice] = React.useState<Number>(1);
+    const [billId, setBillId] = React.useState<string>('');
+    const [itemId, setItemId] = React.useState<string>('');
+    const [quantity, setQuantity] = React.useState<number>(1);
+    const [price, setPrice] = React.useState<number>(1);
     const [loading, setLoading] = useState(false)
+
+    
 
     const refRBSheet: any = useRef();
 

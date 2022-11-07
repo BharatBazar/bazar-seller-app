@@ -7,11 +7,11 @@ import { FontFamily } from '@app/common';
 
 interface UpdateBill {
     refRBSheet:Function|any,
-    setQuantity:(value:any)=>Number|any,
-    setPrice:(value:any)=>Number|any,
+    setQuantity:(value:any)=>number|any,
+    setPrice:(value:any)=>number|any,
     updateBills:Function,
-    price:Number,
-    quantity:Number
+    price:number,
+    quantity:number
 }
 
 const UpdateBottomSheet:React.FC<UpdateBill> = ({
