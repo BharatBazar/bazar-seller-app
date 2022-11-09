@@ -4,17 +4,10 @@ import React from 'react'
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { AIC, AS, BR, BW, FDR, FLEX, FS, H, JCC, MT, PH, PV, W } from '@app/common/styles';
 import { FontFamily } from '@app/common';
+import { IUpdateBill } from './billInterface/Interfaces';
 
-interface UpdateBill {
-    refRBSheet:Function|any,
-    setQuantity:(value:any)=>number|any,
-    setPrice:(value:any)=>number|any,
-    updateBills:Function,
-    price:number,
-    quantity:number
-}
 
-const UpdateBottomSheet:React.FC<UpdateBill> = ({
+const UpdateBottomSheet: React.FC<IUpdateBill> = ({
   refRBSheet,
   setQuantity,
   setPrice,
@@ -63,7 +56,7 @@ const UpdateBottomSheet:React.FC<UpdateBill> = ({
             onPress={() => {
               updateBills()
             }}
-            disabled={(price && quantity) <= 0 ?true:false}
+            disabled={(price && quantity) <= 0 ? true : false}
           />
         </View>
       </RBSheet>

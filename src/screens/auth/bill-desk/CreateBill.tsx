@@ -1,18 +1,17 @@
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert, Keyboard, } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { AIC, AS, BC, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, JCC, ML, MT, P, PH, PL, PR, PT, PV, W } from '@app/common/styles';
-import { GENERAL_PADDING, MLA, PA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import { StyleSheet, Text, View, FlatList, Alert, Keyboard, } from 'react-native';
+import React, { useRef } from 'react';
+import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT, } from '@app/common/styles';
+import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
-import CrossIcon from 'react-native-vector-icons/Entypo';
 import { colorCode, mainColor } from '@app/common/color';
 import WrappedText from '@app/screens/component/WrappedText';
 import { FontFamily, fs18 } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { Image } from 'react-native';
 import BottomSheet from './BottomSheet';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import ProductRender from './ProductRenders/ProductsRender';
 
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
@@ -29,6 +28,13 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
 
     const refRBSheet: any = useRef()
 
+    var total = 0;
+
+    everyItem.forEach((i: any) => {
+        total += i.price * i.quantity
+    })
+
+
 
     const removeItem = (id: any) => {
         const removeItem = everyItem.filter((e: any) => {
@@ -39,20 +45,12 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
 
 
 
-    var total = 0;
-
-    everyItem.forEach((i: any) => {
-        total += i.price * i.quantity
-    })
-
-
-
-
 
     const findProduct = async (id: number) => {
         setLoading(true)
         const shopId = await Storage.getItem(StorageItemKeys.userDetail);
         const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id })
+        console.log("RESPPO", itemResponse);
         const product = itemResponse.payload[0]
         if (itemResponse.status === 1) {
 
@@ -107,36 +105,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         setPrice(price)
     }
 
-    const renderData = ({ item }: any) => {
-        return (
-            <>
-                <View style={styles.card}>
-                    <View style={[FDR(), JCC('space-between')]}>
-                        <View style={[PA(5), PH(), FDR()]}>
-                            <Image style={{width:80,height:80,borderRadius:10}} source={{ uri: item.productId.parentId.image }} />
-                            <View style={[AS(), PL(.2), FDR('column'), JCC('space-between')]}>
-                                <Text style={[FS(16), FC("#252525"), { fontFamily: FontFamily.Black, }]}>{item.productId.parentId.name}</Text>
-                                <Text style={[FS(14), { fontFamily: FontFamily.Regular }]}>{item.productName}</Text>
-                                <Text style={[MT(.1), FS(12), FC("red"), BW(1), PH(), PV(), BR(10), BC("red")]}>₹ {item.quantity * item.price}</Text>
-                            </View>
-
-
-                        </View>
-
-                        <View style={[AS(), W(25), H(25), BR(25), BGCOLOR(item.productId.colors[0].color.description ? item.productId.colors[0].color.description : "black")]} />
-
-                        <View style={[AS(), FDR()]}>
-                            <Text style={[P(), FS(17), AS("center"), FC("#252525"), { fontFamily: FontFamily.Black }]}>{item.quantity} pcs.</Text>
-                        </View>
-                        <TouchableOpacity onPress={() => removeItem(item._id)} style={[PR(.2), MT(.2)]}>
-                            <CrossIcon name='cross' color={"#252525"} size={24} />
-                        </TouchableOpacity>
-                    </View>
-                </View>
-            </>
-        )
-    }
-
 
     return (
         <View style={[FLEX(1), BGCOLOR("#f9f6ee")]}>
@@ -177,21 +145,19 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 {everyItem.length > 0 ? (<>
                     <FlatList
                         data={everyItem}
-                        renderItem={renderData}
+                        renderItem={({ item }) => (
+                            <ProductRender item={item} removeItem={removeItem} />
+                        )}
                         showsVerticalScrollIndicator={false}
                     />
+                    <View style={[FDR(), JCC("space-between")]}>
+                        <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>Total Price</Text>
+                        <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>$ {total}</Text>
+                    </View>
                 </>) : (null)}
 
             </View>
             <View style={[PH(), PT()]}>
-                {everyItem.length > 0 ? (
-                    <>
-                        <View style={[FDR(), JCC("space-between")]}>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>Total Price</Text>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>$ {total}</Text>
-                        </View>
-                    </>
-                ) : (null)}
 
                 <View style={{ paddingTop: 20 }}>
                     <RightComponentButtonWithLeftText
@@ -207,7 +173,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 </View>
             </View>
 
-            <BottomSheet 
+            <BottomSheet
                 navigation={navigation}
                 quantity={quantity}
                 price={price}
@@ -232,7 +198,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 route={route}
                 refRBSheet={refRBSheet}
                 setOpenContinueModal={setOpenContinueModal}
-                />
+            />
         </View>
     );
 };
