@@ -37,27 +37,27 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                     <View style={AS('center')}>
                         <Text>Update Item</Text>
                     </View>
-                    <View style={[ JCC('space-between'),  PV(0.2)]}>
+                    <View style={[JCC('space-between'), PV(0.2)]}>
                         <Text>Quantity</Text>
 
-                          <WrappedTextInput
-                    onChangeText={(e) => setQuantity(e)}
-                    placeholder="Eg 12"
-                    containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
-                    textInputStyle={[FS(fs12), HP(0.4)]}
-                    keyboardType="number-pad"
-                />
+                        <WrappedTextInput
+                            onChangeText={(e) => setQuantity(e)}
+                            placeholder="Eg 12"
+                            containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
+                            textInputStyle={[FS(fs12), HP(0.4)]}
+                            keyboardType="number-pad"
+                        />
                     </View>
-                    <View style={[ JCC('space-between')]}>
+                    <View style={[JCC('space-between')]}>
                         <Text>Price Per Item</Text>
 
-                           <WrappedTextInput
-                    onChangeText={(e) => setPrice(e)}
-                    placeholder="Eg 500"
-                    containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
-                    textInputStyle={[FS(fs12), HP(0.4)]}
-                    keyboardType="number-pad"
-                />
+                        <WrappedTextInput
+                            onChangeText={(e) => setPrice(e)}
+                            placeholder="Eg 500"
+                            containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
+                            textInputStyle={[FS(fs12), HP(0.4)]}
+                            keyboardType="number-pad"
+                        />
                     </View>
                 </View>
                 <View>

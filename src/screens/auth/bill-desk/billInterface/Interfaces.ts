@@ -105,3 +105,10 @@ export interface IShowBillsRender {
     item: IItem;
     openUpdateSheet: Function;
 }
+
+export interface IPreEdit {
+    setEveryItem: (value: any) => void;
+    everyItem: any[];
+    preEditItem: any;
+    refRBSheet: any;
+}

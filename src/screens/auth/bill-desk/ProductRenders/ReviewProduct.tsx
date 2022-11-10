@@ -12,7 +12,7 @@ const ReviewProduct: React.FC<IReviewProduct> = ({ item, removeItem }) => {
         <View style={[styles.card]}>
             <View style={[FDR(), JCC("space-between")]}>
                 <View style={[P(), PH(), FDR()]}>
-                    <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.productId.sellerIdentificationPhoto  }} />
+                    <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.productId.sellerIdentificationPhoto }} />
                 </View>
                 <View style={[AS("center")]}>
                     <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productId.parentId.name}</Text>

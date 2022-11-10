@@ -1,6 +1,6 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { AS, FDR, FLEX, FS, H, JCC, MT, PH,  } from '@app/common/styles';
+import { AS, FDR, FLEX, FS, H, JCC, MT, PH, } from '@app/common/styles';
 import { FontFamily } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { Storage, StorageItemKeys } from '@app/storage';

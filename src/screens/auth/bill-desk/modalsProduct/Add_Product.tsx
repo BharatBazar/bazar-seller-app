@@ -34,19 +34,19 @@ const Add_Product: React.FC<IAdd_Product> = ({
             <View style={[PH(), FLEX(1)]}>
                 <View style={[FDR(), JCC('space-between')]}>
 
-                    <GeneralText fontFamily={'Helvatica'} fontSize={16} textAlign="center" text="Add Product"/>
+                    <GeneralText fontFamily={'Helvatica'} fontSize={16} textAlign="center" text="Add Product" />
                     <TouchableOpacity onPress={() => {
                         refRBSheet.current.close()
                         setItem([])
                     }} style={[BR(15), BGCOLOR(mainColor)]}>
                         <CrossIcon name="cancel" color={"#ffffff"} size={24} style={{ alignSelf: "center" }} />
                     </TouchableOpacity>
-                    
+
                 </View>
 
                 <View style={[MT(0.2)]}>
 
-                    <GeneralText fontFamily={'Regular'} text="Enter Item Id"/>
+                    <GeneralText fontFamily={'Regular'} text="Enter Item Id" />
 
 
                     <WrappedTextInput
@@ -70,10 +70,10 @@ const Add_Product: React.FC<IAdd_Product> = ({
                         <>
                             <TouchableOpacity
                                 onPress={() => findProduct(id)}
-                                style={[MT(0.2), P(),H(35),JCC("center"),AIC("center"), BR(), BGCOLOR(mainColor)]}
+                                style={[MT(0.2), P(), H(35), JCC("center"), AIC("center"), BR(), BGCOLOR(mainColor)]}
                             >
 
-                     <GeneralText fontFamily={'Bold'} textColor={"#ffffff"} textStyle={AS("center")}  text="Enter"/>
+                                <GeneralText fontFamily={'Bold'} textColor={"#ffffff"} textStyle={AS("center")} text="Enter" />
 
                             </TouchableOpacity>
                         </>

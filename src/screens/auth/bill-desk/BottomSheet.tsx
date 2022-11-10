@@ -92,16 +92,16 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                     <>
                         <Edit changeQuantity={changeQuantity} />
                     </>
-                ) : openContinueModal === 'PRE-EDIT'?(
+                ) : openContinueModal === 'PRE-EDIT' ? (
                     <>
-                    <PreEdit
-                    setEveryItem={setEveryItem}
-                    everyItem={everyItem}
-                    preEditItem={preEditItem}
-                    refRBSheet={refRBSheet}
-                    />
+                        <PreEdit
+                            setEveryItem={setEveryItem}
+                            everyItem={everyItem}
+                            preEditItem={preEditItem}
+                            refRBSheet={refRBSheet}
+                        />
                     </>
-                ):null}
+                ) : null}
             </RBSheet>
         </View>
     );

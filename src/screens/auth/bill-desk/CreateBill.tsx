@@ -26,7 +26,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [price, setPrice] = React.useState<number>(0);
     const [preEditItem, setPreEditItem] = React.useState<[]>([])
 
-    
+
 
     const refRBSheet: any = useRef();
 
@@ -62,41 +62,42 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 Keyboard.dismiss()
                 ToastHOC.errorAlert('Item not found', '', 'top');
             }
-        } catch (error:any) {
+        } catch (error: any) {
             setLoading(false);
             Keyboard.dismiss()
-            ToastHOC.errorAlert('Not found', error.message,"top");
+            ToastHOC.errorAlert('Not found', error.message, "top");
         }
     };
 
     const add = (item: any) => {
-     try {
-           item['price'] = price;
+        try {
+            item['price'] = price;
+            item['fixedQuantity'] = item.quantity
 
-        if (allProducts._id === item._id) {
-            const updateQuantity = (allProducts.quantity = quantity);
-            console.log(updateQuantity);
-            setQuantity(1);
-            setPrice(0);
-            setItem([allProducts]);
+            if (allProducts._id === item._id) {
+                const updateQuantity = (allProducts.quantity = quantity);
+                console.log(updateQuantity);
+                setQuantity(1);
+                setPrice(0);
+                setItem([allProducts]);
+                Keyboard.dismiss()
+            } else {
+                console.log('error occured');
+                Keyboard.dismiss()
+            }
+            const check = everyItem.filter((e: any) => e._id === item._id);
+            if (check.length === 1) {
+                ToastHOC.errorAlert('Item already in list', '', 'top');
+                Keyboard.dismiss();
+            } else {
+                setEveryItem(everyItem.concat(item));
+                setItem([]);
+                refRBSheet.current.close();
+            }
+        } catch (error) {
             Keyboard.dismiss()
-        } else {
-            console.log('error occured');
-            Keyboard.dismiss()
+            ToastHOC.errorAlert('Item not added', 'Not added', "top");
         }
-        const check = everyItem.filter((e: any) => e._id === item._id);
-        if (check.length === 1) {
-            ToastHOC.errorAlert('Item already in list', '', 'top');
-            Keyboard.dismiss();
-        } else {
-            setEveryItem(everyItem.concat(item));
-            setItem([]);
-            refRBSheet.current.close();
-        }
-     } catch (error) {
-         Keyboard.dismiss()
-         ToastHOC.errorAlert('Item not added', 'Not added',"top");
-     }
     };
 
     const changeQuantity = (quantity: number) => {
@@ -151,17 +152,17 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                     <>
                         <FlatList
                             data={everyItem}
-                            renderItem={({ item }) => 
-                            <ProductRender 
-                            setOpenContinueModal={setOpenContinueModal} 
-                            item={item} 
-                            removeItem={removeItem} 
-                            refRBSheet={refRBSheet}
-                            setModalHeight={setModalHeight}
-                            setEveryItem={setEveryItem}
-                            setPreEditItem={setPreEditItem}
-                            />
-                        }
+                            renderItem={({ item }) =>
+                                <ProductRender
+                                    setOpenContinueModal={setOpenContinueModal}
+                                    item={item}
+                                    removeItem={removeItem}
+                                    refRBSheet={refRBSheet}
+                                    setModalHeight={setModalHeight}
+                                    setEveryItem={setEveryItem}
+                                    setPreEditItem={setPreEditItem}
+                                />
+                            }
                             showsVerticalScrollIndicator={false}
                         />
                         <View style={[FDR(), JCC('space-between')]}>
