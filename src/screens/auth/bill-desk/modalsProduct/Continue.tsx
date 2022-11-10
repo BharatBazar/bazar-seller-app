@@ -22,7 +22,7 @@ const Continue: React.FC<IContinueModal> = ({
 
 
 
-    const AddProduct = async () => {
+    const addProduct = async () => {
         try {
 
             const id = everyItem.map((e: any) => e)
@@ -83,7 +83,7 @@ const Continue: React.FC<IContinueModal> = ({
                 buttonText={'Confirm'}
                 containerStyle={[MT(0.1), { position: "absolute", bottom: 0, width: "100%" }]}
                 onPress={() => {
-                    AddProduct()
+                    addProduct()
                 }}
                 disabled={everyItem.length > 0 ? (false) : (true)}
             />

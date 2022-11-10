@@ -27,7 +27,7 @@ const ShowBillsRender: React.FC<IShowBillsRender> = ({ item, openUpdateSheet }) 
                     <View key={e._id} style={[FDR(), JCC('space-between'), PH(0.2), MT(0.2)]}>
                         <Image
                             style={{ width: 50, height: 50, borderRadius: 5 }}
-                            source={{ uri: e.productSize.productId.parentId.image }}
+                            source={{ uri: e.productSize.productId.sellerIdentificationPhoto }}
                         />
                         <Text style={[AS('center')]}>
                             {e.productSize.productId.parentId.name} × {e.quantity} pcs.

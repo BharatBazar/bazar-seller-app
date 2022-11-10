@@ -8,8 +8,6 @@ import { FontFamily, fs18 } from '@app/common';
 import WrappedText from '@app/screens/component/WrappedText';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { showBill, updateBill } from '@app/server/apis/billdesk/bill.api';
-import moment from 'moment';
-
 import UpdateBottomSheet from './UpdateBottomSheet';
 import Loader from '@app/screens/component/Loader';
 import ShowBillsRender from './ProductRenders/ShowBillsRender';
@@ -28,8 +26,8 @@ const ShowBills: React.FC = ({ navigation }: any) => {
         setLoading(true);
         try {
             const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            console.log('Shop id', shopId);
-            const billResponse: any = await showBill(shopId.shop);
+            console.log('Shop ids', shopId.shop._id);
+            const billResponse: any = await showBill(shopId.shop._id);
             if (billResponse.status === 1) {
                 setLoading(false);
                 setBill(billResponse.payload);

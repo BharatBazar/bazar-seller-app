@@ -5,9 +5,10 @@ import { IBottomSheet } from './billInterface/Interfaces';
 import Continue from './modalsProduct/Continue';
 import Add_Product from './modalsProduct/Add_Product';
 import Edit from './modalsProduct/Edit';
+import PreEdit from './PreEdit';
 
 const BottomSheet: React.FC<IBottomSheet> = ({
-    Add,
+    add,
     item,
     modalHeight,
     openContinueModal,
@@ -20,14 +21,14 @@ const BottomSheet: React.FC<IBottomSheet> = ({
     refRBSheet,
     setId,
     setOpenContinueModal,
-    ChangeQuantity,
+    changeQuantity,
     allProducts,
     everyItem,
     total,
     removeItem,
     loading,
     setEveryItem,
-    ChangeSellingPrice,
+    changeSellingPrice,
     price,
     quantity,
     navigation,
@@ -81,16 +82,20 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             allProducts={allProducts}
                             quantity={quantity}
                             price={price}
-                            ChangeQuantity={ChangeQuantity}
-                            Add={Add}
-                            ChangeSellingPrice={ChangeSellingPrice}
+                            changeQuantity={changeQuantity}
+                            add={add}
+                            changeSellingPrice={changeSellingPrice}
                         />
                     </>
                 ) : openContinueModal === 'EDIT' ? (
                     <>
-                        <Edit ChangeQuantity={ChangeQuantity} />
+                        <Edit changeQuantity={changeQuantity} />
                     </>
-                ) : null}
+                ) : openContinueModal === 'PRE-EDIT'?(
+                    <>
+                    <PreEdit/>
+                    </>
+                ):null}
             </RBSheet>
         </View>
     );

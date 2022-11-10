@@ -6,15 +6,28 @@ import { FontFamily } from '@app/common'
 import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IBillProductRendering } from '../billInterface/Interfaces'
 import { mainColor } from '@app/common/color'
+import PreEdit from '../PreEdit'
 
 
 
-const ProductRender: React.FC<IBillProductRendering> = ({ item, removeItem }) => {
+const ProductRender: React.FC<IBillProductRendering> = ({ 
+     item,
+     removeItem , 
+     setOpenContinueModal , 
+     refRBSheet,
+     setModalHeight,
+    }) => {
+        
     return (
-        <View style={styles.card}>
+      <>
+        <TouchableOpacity onPress={()=>{
+            setOpenContinueModal("PRE-EDIT")
+            setModalHeight(500)
+            refRBSheet.current.open();
+        }} style={styles.card}>
             <View style={[FDR(), JCC('space-between')]}>
                 <View style={[PA(5), PH(), FDR()]}>
-                    <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.productId.parentId.image }} />
+                    <Image style={{ width: 80, height: 80, borderRadius: 10 }} source={{ uri: item.productId.sellerIdentificationPhoto  }} />
                     <View style={[AS(), PL(.2), FDR('column'), JCC('space-between')]}>
                         <Text style={[FS(16), FC("#252525"), { fontFamily: FontFamily.Black, }]}>{item.productId.parentId.name}</Text>
                         <Text style={[FS(14), { fontFamily: FontFamily.Regular }]}>{item.productName}</Text>
@@ -34,7 +47,9 @@ const ProductRender: React.FC<IBillProductRendering> = ({ item, removeItem }) =>
                 </TouchableOpacity>
                 
             </View>
-        </View>
+        </TouchableOpacity>
+      </>
+        
     )
 }
 

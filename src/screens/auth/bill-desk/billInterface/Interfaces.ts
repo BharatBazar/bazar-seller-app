@@ -1,7 +1,7 @@
 import { NavigationProps } from '@app/common';
 
 export interface IBottomSheet {
-    Add: Function;
+    add: Function;
     item: string[];
     modalHeight: Number | number;
     openContinueModal: string;
@@ -14,14 +14,14 @@ export interface IBottomSheet {
     refRBSheet: any;
     setId: (value: any) => any;
     setOpenContinueModal: (value: string) => void;
-    ChangeQuantity: Function;
+    changeQuantity: Function;
     allProducts: any;
     everyItem: any[];
     total: number;
     removeItem: Function;
     loading: boolean;
     setEveryItem: (value: any) => string[];
-    ChangeSellingPrice: Function;
+    changeSellingPrice: Function;
     price: number;
     quantity: number;
     navigation: NavigationProps;
@@ -57,6 +57,9 @@ export interface IItem {
 export interface IBillProductRendering {
     item: IItem;
     removeItem: Function;
+    setOpenContinueModal: (value: any) => void;
+    refRBSheet: Function | any;
+    setModalHeight: (value: any) => void;
 }
 
 export interface IAdd_Product {
@@ -72,9 +75,9 @@ export interface IAdd_Product {
     allProducts: IItem;
     quantity: number;
     price: number;
-    ChangeQuantity: Function;
-    Add: Function;
-    ChangeSellingPrice: Function;
+    changeQuantity: Function;
+    add: Function;
+    changeSellingPrice: Function;
 }
 
 export interface IContinueModal {
@@ -87,7 +90,7 @@ export interface IContinueModal {
 }
 
 export interface IEdit {
-    ChangeQuantity: Function;
+    changeQuantity: Function;
 }
 
 export interface IReviewProduct {

@@ -7,7 +7,7 @@ import { border, borRad } from '@app/screens/app/product-edit/component/generalC
 import { getHP } from '@app/common/dimension';
 import { IEdit } from '../billInterface/Interfaces';
 
-const Edit: React.FC<IEdit> = ({ ChangeQuantity }) => {
+const Edit: React.FC<IEdit> = ({ changeQuantity }) => {
     return (
         <View style={{ paddingHorizontal: 20, flex: 1 }}>
             <Text style={[{ fontFamily: FontFamily.Helvatica }, AS("center"), FS(16)]}>Edit Product</Text>
@@ -26,7 +26,7 @@ const Edit: React.FC<IEdit> = ({ ChangeQuantity }) => {
                     ]}
                     textInputStyle={[FS(fs12), HP(0.4)]}
                     keyboardType="number-pad"
-                    onChangeText={(e) => ChangeQuantity(e)}
+                    onChangeText={(e) => changeQuantity(e)}
                 />
                 <WrappedTextInput
                     placeholder="Price"

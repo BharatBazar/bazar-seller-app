@@ -2,9 +2,12 @@ import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React from 'react';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { AIC, AS, BR, BW, FDR, FLEX, FS, H, JCC, MT, PH, PV, W } from '@app/common/styles';
-import { FontFamily } from '@app/common';
+import { AIC, AS, BR, BW, FDR, FLEX, FS, H, HP, JCC, MT, PH, PV, W } from '@app/common/styles';
+import { FontFamily, fs12 } from '@app/common';
 import { IUpdateBill } from './billInterface/Interfaces';
+import WrappedTextInput from '@app/screens/component/WrappedTextInput';
+import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
+import { getHP } from '@app/common/dimension';
 
 const UpdateBottomSheet: React.FC<IUpdateBill> = ({
     refRBSheet,
@@ -34,21 +37,27 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                     <View style={AS('center')}>
                         <Text>Update Item</Text>
                     </View>
-                    <View style={[FDR(), JCC('space-between'), AIC(), PV(0.2)]}>
+                    <View style={[ JCC('space-between'),  PV(0.2)]}>
                         <Text>Quantity</Text>
-                        <TextInput
-                            onChangeText={(e) => setQuantity(e)}
-                            keyboardType="number-pad"
-                            style={[BW(1), H(36), BR(), W(50), AS('center'), FS(16), { fontFamily: FontFamily.Bold }]}
-                        />
+
+                          <WrappedTextInput
+                    onChangeText={(e) => setQuantity(e)}
+                    placeholder="Eg 12"
+                    containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
+                    textInputStyle={[FS(fs12), HP(0.4)]}
+                    keyboardType="number-pad"
+                />
                     </View>
-                    <View style={[AIC(), FDR(), JCC('space-between')]}>
+                    <View style={[ JCC('space-between')]}>
                         <Text>Price Per Item</Text>
-                        <TextInput
-                            onChangeText={(e) => setPrice(e)}
-                            keyboardType="number-pad"
-                            style={[BW(1), H(36), BR(), W(50), AS('center'), FS(16), { fontFamily: FontFamily.Bold }]}
-                        />
+
+                           <WrappedTextInput
+                    onChangeText={(e) => setPrice(e)}
+                    placeholder="Eg 500"
+                    containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
+                    textInputStyle={[FS(fs12), HP(0.4)]}
+                    keyboardType="number-pad"
+                />
                     </View>
                 </View>
                 <View>

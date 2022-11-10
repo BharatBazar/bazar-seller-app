@@ -10,6 +10,7 @@ import Loader from '@app/screens/component/Loader';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IAdd_Product } from '../billInterface/Interfaces';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const Add_Product: React.FC<IAdd_Product> = ({
     refRBSheet,
@@ -24,35 +25,29 @@ const Add_Product: React.FC<IAdd_Product> = ({
     allProducts,
     quantity,
     price,
-    ChangeQuantity,
-    Add,
-    ChangeSellingPrice,
+    changeQuantity,
+    add,
+    changeSellingPrice,
 }) => {
     return (
         <>
             <View style={[PH(), FLEX(1)]}>
                 <View style={[FDR(), JCC('space-between')]}>
-                    <Text
-                        style={[
-                            {
-                                fontFamily: FontFamily.Helvatica,
-                            },
-                            FS(16),
-                            AS('center'),
-                        ]}
-                    >
-                        Add Product
-                    </Text>
+
+                    <GeneralText fontFamily={'Helvatica'} fontSize={16} textAlign="center" text="Add Product"/>
                     <TouchableOpacity onPress={() => {
                         refRBSheet.current.close()
                         setItem([])
                     }} style={[BR(15), BGCOLOR(mainColor)]}>
                         <CrossIcon name="cancel" color={"#ffffff"} size={24} style={{ alignSelf: "center" }} />
                     </TouchableOpacity>
+                    
                 </View>
 
                 <View style={[MT(0.2)]}>
-                    <Text style={{ fontFamily: FontFamily.Regular }}>Enter Item Id</Text>
+
+                    <GeneralText fontFamily={'Regular'} text="Enter Item Id"/>
+
 
                     <WrappedTextInput
                         placeholder="Id"
@@ -75,17 +70,11 @@ const Add_Product: React.FC<IAdd_Product> = ({
                         <>
                             <TouchableOpacity
                                 onPress={() => findProduct(id)}
-                                style={[MT(0.2), P(), W(70), BR(), BGCOLOR(mainColor)]}
+                                style={[MT(0.2), P(),H(35),JCC("center"),AIC("center"), BR(), BGCOLOR(mainColor)]}
                             >
-                                <Text
-                                    style={[
-                                        { fontFamily: FontFamily.Bold, color: '#ffffff', alignSelf: 'center' },
-                                        FC('#ffffff'),
-                                        AS('center'),
-                                    ]}
-                                >
-                                    Enter
-                                </Text>
+
+                     <GeneralText fontFamily={'Bold'} textColor={"#ffffff"} textStyle={AS("center")}  text="Enter"/>
+
                             </TouchableOpacity>
                         </>
                     ) : null}
@@ -143,7 +132,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                 </Text>
                             </View>
                             <TextInput
-                                onChangeText={(e) => ChangeQuantity(e, allProducts)}
+                                onChangeText={(e) => changeQuantity(e, allProducts)}
                                 keyboardType="number-pad"
                                 style={[
                                     BW(1),
@@ -162,7 +151,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                 Selling Price
                             </Text>
                             <TextInput
-                                onChangeText={(e) => ChangeSellingPrice(e)}
+                                onChangeText={(e) => changeSellingPrice(e)}
                                 keyboardType="numeric"
                                 style={[
                                     BW(1),
@@ -183,7 +172,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                     buttonText={'Add'}
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
-                        Add(allProducts);
+                        add(allProducts);
                     }}
                     disabled={allProducts._id !== (undefined || null) && price > 0 && quantity > 0 ? false : true}
                 />

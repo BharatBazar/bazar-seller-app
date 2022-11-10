@@ -24,6 +24,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(0);
+    
 
     const refRBSheet: any = useRef();
 
@@ -53,18 +54,22 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 setAllProducts(product);
                 setItem([product]);
                 setShowEnter(false);
+                Keyboard.dismiss()
             } else {
                 setLoading(false);
+                Keyboard.dismiss()
                 ToastHOC.errorAlert('Item not found', '', 'top');
             }
-        } catch (error) {
+        } catch (error:any) {
             setLoading(false);
-            ToastHOC.errorAlert('', error.message);
+            Keyboard.dismiss()
+            ToastHOC.errorAlert('Not found', error.message,"top");
         }
     };
 
-    const Add = (item: any) => {
-        item['price'] = price;
+    const add = (item: any) => {
+     try {
+           item['price'] = price;
 
         if (allProducts._id === item._id) {
             const updateQuantity = (allProducts.quantity = quantity);
@@ -72,8 +77,10 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             setQuantity(1);
             setPrice(0);
             setItem([allProducts]);
+            Keyboard.dismiss()
         } else {
             console.log('error occured');
+            Keyboard.dismiss()
         }
         const check = everyItem.filter((e: any) => e._id === item._id);
         if (check.length === 1) {
@@ -84,9 +91,13 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             setItem([]);
             refRBSheet.current.close();
         }
+     } catch (error) {
+         Keyboard.dismiss()
+         ToastHOC.errorAlert('Item not added', 'Not added',"top");
+     }
     };
 
-    const ChangeQuantity = (quantity: number) => {
+    const changeQuantity = (quantity: number) => {
         if (quantity > allProducts.quantity) {
             Alert.alert('you cannot add item');
         } else {
@@ -94,7 +105,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         }
     };
 
-    const ChangeSellingPrice = (price: number) => {
+    const changeSellingPrice = (price: number) => {
         setPrice(price);
     };
 
@@ -137,7 +148,15 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                     <>
                         <FlatList
                             data={everyItem}
-                            renderItem={({ item }) => <ProductRender item={item} removeItem={removeItem} />}
+                            renderItem={({ item }) => 
+                            <ProductRender 
+                            setOpenContinueModal={setOpenContinueModal} 
+                            item={item} removeItem={removeItem} 
+                            refRBSheet={refRBSheet}
+                            setModalHeight={setModalHeight}
+                            
+                            />
+                        }
                             showsVerticalScrollIndicator={false}
                         />
                         <View style={[FDR(), JCC('space-between')]}>
@@ -166,14 +185,14 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 navigation={navigation}
                 quantity={quantity}
                 price={price}
-                ChangeSellingPrice={ChangeSellingPrice}
+                changeSellingPrice={changeSellingPrice}
                 setEveryItem={setEveryItem}
                 total={total}
                 loading={loading}
                 removeItem={removeItem}
                 everyItem={everyItem}
-                ChangeQuantity={ChangeQuantity}
-                Add={Add}
+                changeQuantity={changeQuantity}
+                add={add}
                 allProducts={allProducts}
                 item={item}
                 modalHeight={modalHeight}
@@ -187,6 +206,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 route={route}
                 refRBSheet={refRBSheet}
                 setOpenContinueModal={setOpenContinueModal}
+
             />
         </View>
     );

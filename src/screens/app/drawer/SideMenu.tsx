@@ -9,7 +9,7 @@ import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, provideShadow, P, BW, BC } from '../../../common/styles';
 import { borderColor, mainColor } from '../../../common/color';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import Zocial from 'react-native-vector-icons/Zocial';
+import CreateBillIcon from 'react-native-vector-icons/MaterialIcons';
 import Bills from 'react-native-vector-icons/MaterialIcons';
 import { Storage, StorageItemKeys } from '../../../storage';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
@@ -100,7 +100,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                     }}
                 >
                     <View style={[FDR(), AIC()]}>
-                        <Zocial name={'print'} size={fs18} />
+                        <CreateBillIcon name={'request-page'} size={fs18} />
                         <WrappedText text={'Create Bills'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
