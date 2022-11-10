@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Alert, Keyboard } from 'react-native';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
@@ -24,6 +24,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(0);
+    const [preEditItem, setPreEditItem] = React.useState<[]>([])
+
     
 
     const refRBSheet: any = useRef();
@@ -109,6 +111,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         setPrice(price);
     };
 
+
     return (
         <View style={[FLEX(1), BGCOLOR('#f9f6ee')]}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
@@ -151,10 +154,12 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                             renderItem={({ item }) => 
                             <ProductRender 
                             setOpenContinueModal={setOpenContinueModal} 
-                            item={item} removeItem={removeItem} 
+                            item={item} 
+                            removeItem={removeItem} 
                             refRBSheet={refRBSheet}
                             setModalHeight={setModalHeight}
-                            
+                            setEveryItem={setEveryItem}
+                            setPreEditItem={setPreEditItem}
                             />
                         }
                             showsVerticalScrollIndicator={false}
@@ -206,7 +211,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 route={route}
                 refRBSheet={refRBSheet}
                 setOpenContinueModal={setOpenContinueModal}
-
+                preEditItem={preEditItem}
             />
         </View>
     );

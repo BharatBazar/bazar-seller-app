@@ -5,7 +5,7 @@ import { IBottomSheet } from './billInterface/Interfaces';
 import Continue from './modalsProduct/Continue';
 import Add_Product from './modalsProduct/Add_Product';
 import Edit from './modalsProduct/Edit';
-import PreEdit from './PreEdit';
+import PreEdit from './modalsProduct/PreEdit';
 
 const BottomSheet: React.FC<IBottomSheet> = ({
     add,
@@ -32,6 +32,7 @@ const BottomSheet: React.FC<IBottomSheet> = ({
     price,
     quantity,
     navigation,
+    preEditItem
 }) => {
     useEffect(() => {
         if (route.params.openModal === true) {
@@ -93,7 +94,12 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                     </>
                 ) : openContinueModal === 'PRE-EDIT'?(
                     <>
-                    <PreEdit/>
+                    <PreEdit
+                    setEveryItem={setEveryItem}
+                    everyItem={everyItem}
+                    preEditItem={preEditItem}
+                    refRBSheet={refRBSheet}
+                    />
                     </>
                 ):null}
             </RBSheet>

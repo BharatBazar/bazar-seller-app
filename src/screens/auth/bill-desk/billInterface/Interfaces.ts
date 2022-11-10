@@ -25,6 +25,7 @@ export interface IBottomSheet {
     price: number;
     quantity: number;
     navigation: NavigationProps;
+    preEditItem: any[];
 }
 
 export interface IUpdateBill {
@@ -55,11 +56,13 @@ export interface IItem {
 }
 
 export interface IBillProductRendering {
+    setOpenContinueModal: (value: any) => void;
+    setEveryItem: (value: any) => void;
+    setModalHeight: (value: any) => void;
+    setPreEditItem: (value: any) => void;
     item: IItem;
     removeItem: Function;
-    setOpenContinueModal: (value: any) => void;
     refRBSheet: Function | any;
-    setModalHeight: (value: any) => void;
 }
 
 export interface IAdd_Product {

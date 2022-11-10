@@ -6,7 +6,7 @@ import { FontFamily } from '@app/common'
 import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IBillProductRendering } from '../billInterface/Interfaces'
 import { mainColor } from '@app/common/color'
-import PreEdit from '../PreEdit'
+
 
 
 
@@ -16,6 +16,8 @@ const ProductRender: React.FC<IBillProductRendering> = ({
      setOpenContinueModal , 
      refRBSheet,
      setModalHeight,
+     setEveryItem,
+     setPreEditItem,
     }) => {
         
     return (
@@ -24,6 +26,7 @@ const ProductRender: React.FC<IBillProductRendering> = ({
             setOpenContinueModal("PRE-EDIT")
             setModalHeight(500)
             refRBSheet.current.open();
+            setPreEditItem(item)
         }} style={styles.card}>
             <View style={[FDR(), JCC('space-between')]}>
                 <View style={[PA(5), PH(), FDR()]}>
