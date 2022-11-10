@@ -1,3 +1,4 @@
+import { getWP } from '@app/common/dimension';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import { deleteImage, getSignedPhotoUrl } from '@app/server/apis/multimedia/multimedia.api';
 import { s3BucketKeys } from '@app/server/apis/multimedia/multimedia.interface';
@@ -67,17 +68,14 @@ export const useUploadImage = (folder: s3BucketKeys, setLoader: Function) => {
                 //     OpenSettings.openSettings();
                 // } else
 
+                const imageOption = {
+                    width: 1000,
+                    height: 1000,
+                    cropping: true,
+                };
                 const image: ImageOrVideo = !fromCamera
-                    ? await ImageCropPicker.openPicker({
-                          width: 200,
-                          height: 200,
-                          cropping: true,
-                      })
-                    : await ImageCropPicker.openCamera({
-                          width: 200,
-                          height: 200,
-                          cropping: true,
-                      });
+                    ? await ImageCropPicker.openPicker(imageOption)
+                    : await ImageCropPicker.openCamera(imageOption);
                 if (image) {
                     setLoader(true);
                     const url = await uploadPhoto(image, key);

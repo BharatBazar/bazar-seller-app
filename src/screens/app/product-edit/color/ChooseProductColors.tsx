@@ -1,23 +1,18 @@
 import * as React from 'react';
 import { ScrollView, View } from 'react-native';
 import { getHP, getWP } from '../../../../common/dimension';
-import { borderColor, colorCode, mainColor } from '../../../../common/color';
+import { colorCode, mainColor } from '../../../../common/color';
 import ModalHOC from '../../../hoc/ModalHOC';
 import ModalHeader from '../../../component/ModalHeader';
-import {
-    FilterInterface,
-    FilterValueInterface,
-    IFilter,
-    IProductColor,
-} from '../../../../server/apis/product/product.interface';
+import { FilterValueInterface, IProductColor } from '../../../../server/apis/product/product.interface';
 import { choosenColor, choosenSize, ProductIdContext, provideDefaultColorState } from '../data-types';
 import WrappedText from '@app/screens/component/WrappedText';
-import { AIC, BC, BGCOLOR, BR, BW, FDR, MH, MT, MV, PL, PR } from '@app/common/styles';
+import { AIC, BC, BGCOLOR, BR, BW, FDR, MT, MV, PL, PR } from '@app/common/styles';
 import Border from '@app/screens/components/border/Border';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import Ripple from 'react-native-material-ripple';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import { DEFAULT_IMAGE_URL, FontFamily, fs14, fs16 } from '@app/common';
+import { FontFamily, fs14 } from '@app/common';
 
 import { createProductColor, deleteProductColor, updateProductColor } from '../component/generalConfig';
 
@@ -172,7 +167,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
 
                 <ScrollView style={{ maxHeight: getHP(7.8) }} contentContainerStyle={[PHA(), PBA()]}>
                     <View style={{}}>
-                        {[...colors].map((item: FilterValueInterface, index: number) => {
+                        {colors.map((item: FilterValueInterface, index: number) => {
                             const indexInSelectedColor = chosenColor.findIndex((color) => color.color._id == item._id);
                             const selected = indexInSelectedColor > -1;
                             //    const selected = true;
@@ -183,7 +178,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
                                         onPress={async () => {
-                                            const getUrl: string | void = await uploadImageFunction(false);
+                                            const getUrl: string | void = await uploadImageFunction(true);
 
                                             if (getUrl) {
                                                 console.log('Urrll', getUrl);
