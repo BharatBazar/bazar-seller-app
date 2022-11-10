@@ -1,11 +1,10 @@
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { IBottomSheet } from './billInterface/Interfaces';
 import Continue from './modalsProduct/Continue';
 import Add_Product from './modalsProduct/Add_Product';
 import Edit from './modalsProduct/Edit';
-
 
 const BottomSheet: React.FC<IBottomSheet> = ({
     Add,
@@ -31,17 +30,14 @@ const BottomSheet: React.FC<IBottomSheet> = ({
     ChangeSellingPrice,
     price,
     quantity,
-    navigation
-
+    navigation,
 }) => {
-
     useEffect(() => {
         if (route.params.openModal === true) {
-            setOpenContinueModal("ADD_PRODUCT")
+            setOpenContinueModal('ADD_PRODUCT');
             refRBSheet.current.open();
         }
     }, []);
-
 
     return (
         <View>
@@ -49,18 +45,17 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                 ref={refRBSheet}
                 closeOnDragDown={true}
                 height={modalHeight}
-                animationType={"slide"}
+                animationType={'slide'}
                 customStyles={{
                     draggableIcon: {
                         backgroundColor: '#000',
                     },
                     container: {
-                        backgroundColor: "#fff"
-                    }
+                        backgroundColor: '#fff',
+                    },
                 }}
             >
-                {openContinueModal === "CONTINUE" ? (
-
+                {openContinueModal === 'CONTINUE' ? (
                     <>
                         <Continue
                             setEveryItem={setEveryItem}
@@ -68,11 +63,10 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             navigation={navigation}
                             everyItem={everyItem}
                             total={total}
-                            removeItem={removeItem} />
+                            removeItem={removeItem}
+                        />
                     </>
-
-                ) : openContinueModal === "ADD_PRODUCT" ? (
-
+                ) : openContinueModal === 'ADD_PRODUCT' ? (
                     <>
                         <Add_Product
                             refRBSheet={refRBSheet}
@@ -92,22 +86,16 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             ChangeSellingPrice={ChangeSellingPrice}
                         />
                     </>
-
-                ) : openContinueModal === "EDIT" ? (
-
+                ) : openContinueModal === 'EDIT' ? (
                     <>
                         <Edit ChangeQuantity={ChangeQuantity} />
                     </>
-
-                ) : (null)}
-
-
-
+                ) : null}
             </RBSheet>
         </View>
-    )
-}
+    );
+};
 
-export default BottomSheet
+export default BottomSheet;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
