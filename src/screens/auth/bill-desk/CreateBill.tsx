@@ -1,6 +1,6 @@
-import { StyleSheet, Text, View, FlatList, Alert, Keyboard, } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert, Keyboard } from 'react-native';
 import React, { useRef } from 'react';
-import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT, } from '@app/common/styles';
+import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { colorCode, mainColor } from '@app/common/color';
@@ -13,101 +13,93 @@ import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
 
-
 const CreateBill: React.FC = ({ navigation, route }: any) => {
-    const [modalHeight, setModalHeight] = React.useState<number>(500)
-    const [id, setId] = React.useState<number>()
-    const [item, setItem]: any = React.useState<[]>([])
-    const [showEnter, setShowEnter] = React.useState<boolean>(true)
-    const [openContinueModal, setOpenContinueModal] = React.useState<string>('')
-    const [allProducts, setAllProducts]: any = React.useState<[]>([])
-    const [loading, setLoading] = React.useState<boolean>(false)
-    const [everyItem, setEveryItem]: any = React.useState<[]>([])
-    const [quantity, setQuantity] = React.useState<number>(1)
-    const [price, setPrice] = React.useState<number>(0)
+    const [modalHeight, setModalHeight] = React.useState<number>(500);
+    const [id, setId] = React.useState<number>();
+    const [item, setItem]: any = React.useState<[]>([]);
+    const [showEnter, setShowEnter] = React.useState<boolean>(true);
+    const [openContinueModal, setOpenContinueModal] = React.useState<string>('');
+    const [allProducts, setAllProducts]: any = React.useState<[]>([]);
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [everyItem, setEveryItem]: any = React.useState<[]>([]);
+    const [quantity, setQuantity] = React.useState<number>(1);
+    const [price, setPrice] = React.useState<number>(0);
 
-    const refRBSheet: any = useRef()
+    const refRBSheet: any = useRef();
 
     var total = 0;
 
     everyItem.forEach((i: any) => {
-        total += i.price * i.quantity
-    })
-
-
+        total += i.price * i.quantity;
+    });
 
     const removeItem = (id: any) => {
         const removeItem = everyItem.filter((e: any) => {
-            return e._id !== id
-        })
-        setEveryItem(removeItem)
-    }
-
-
-
+            return e._id !== id;
+        });
+        setEveryItem(removeItem);
+    };
 
     const findProduct = async (id: number) => {
-        setLoading(true)
-        const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-        const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id })
-        console.log("RESPPO", itemResponse);
-        const product = itemResponse.payload[0]
-        if (itemResponse.status === 1) {
-
-            setModalHeight(600)
-            setLoading(false)
-            setAllProducts(product)
-            setItem([product])
-            setShowEnter(false)
+        try {
+            setLoading(true);
+            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+            const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
+            console.log('RESPPO', itemResponse);
+            const product = itemResponse.payload[0];
+            if (itemResponse.status == 1) {
+                setModalHeight(600);
+                setLoading(false);
+                setAllProducts(product);
+                setItem([product]);
+                setShowEnter(false);
+            } else {
+                setLoading(false);
+                ToastHOC.errorAlert('Item not found', '', 'top');
+            }
+        } catch (error) {
+            setLoading(false);
+            ToastHOC.errorAlert('', error.message);
         }
-        else {
-            setLoading(false)
-            ToastHOC.errorAlert("Item not found", "", "top")
-        }
-    }
+    };
 
     const Add = (item: any) => {
-        item['price'] = price
+        item['price'] = price;
 
         if (allProducts._id === item._id) {
-            const updateQuantity = allProducts.quantity = quantity
+            const updateQuantity = (allProducts.quantity = quantity);
             console.log(updateQuantity);
-            setQuantity(1)
-            setPrice(0)
-            setItem([allProducts])
+            setQuantity(1);
+            setPrice(0);
+            setItem([allProducts]);
+        } else {
+            console.log('error occured');
         }
-        else {
-            console.log("error occured");
-        }
-        const check = everyItem.filter((e: any) => e._id === item._id)
+        const check = everyItem.filter((e: any) => e._id === item._id);
         if (check.length === 1) {
-            ToastHOC.errorAlert("Item already in list", '', "top")
-            Keyboard.dismiss()
+            ToastHOC.errorAlert('Item already in list', '', 'top');
+            Keyboard.dismiss();
+        } else {
+            setEveryItem(everyItem.concat(item));
+            setItem([]);
+            refRBSheet.current.close();
         }
-        else {
-            setEveryItem(everyItem.concat(item))
-            setItem([])
-            refRBSheet.current.close()
-        }
-
-    }
-
+    };
 
     const ChangeQuantity = (quantity: number) => {
         if (quantity > allProducts.quantity) {
-            Alert.alert("you cannot add item")
+            Alert.alert('you cannot add item');
         } else {
-            setQuantity(quantity)
+            setQuantity(quantity);
         }
-    }
+    };
 
     const ChangeSellingPrice = (price: number) => {
-        setPrice(price)
-    }
-
+        setPrice(price);
+    };
 
     return (
-        <View style={[FLEX(1), BGCOLOR("#f9f6ee")]}>
+        <View style={[FLEX(1), BGCOLOR('#f9f6ee')]}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
                 {
                     <ButtonMaterialIcons
@@ -124,7 +116,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                     fontSize={fs18}
                     textColor={'#ffffff'}
                     textAlign="center"
-                    containerStyle={[ML(.2)]}
+                    containerStyle={[ML(0.2)]}
                     fontFamily={FontFamily.Medium}
                 />
             </View>
@@ -133,40 +125,37 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                     buttonText={'Add Product'}
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
-                        setOpenContinueModal("ADD_PRODUCT")
-                        refRBSheet.current.open()
-                        setModalHeight(500)
+                        setOpenContinueModal('ADD_PRODUCT');
+                        refRBSheet.current.open();
+                        setModalHeight(500);
                     }}
                 />
             </View>
 
-            <View style={[FLEX(.8), PH(.5)]}>
-
-                {everyItem.length > 0 ? (<>
-                    <FlatList
-                        data={everyItem}
-                        renderItem={({ item }) => (
-                            <ProductRender item={item} removeItem={removeItem} />
-                        )}
-                        showsVerticalScrollIndicator={false}
-                    />
-                    <View style={[FDR(), JCC("space-between")]}>
-                        <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>Total Price</Text>
-                        <Text style={[{ fontFamily: FontFamily.Black }, FC("#252525"), FS(16)]}>$ {total}</Text>
-                    </View>
-                </>) : (null)}
-
+            <View style={[FLEX(0.8), PH(0.5)]}>
+                {everyItem.length > 0 ? (
+                    <>
+                        <FlatList
+                            data={everyItem}
+                            renderItem={({ item }) => <ProductRender item={item} removeItem={removeItem} />}
+                            showsVerticalScrollIndicator={false}
+                        />
+                        <View style={[FDR(), JCC('space-between')]}>
+                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>Total Price</Text>
+                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>$ {total}</Text>
+                        </View>
+                    </>
+                ) : null}
             </View>
             <View style={[PH(), PT()]}>
-
                 <View style={{ paddingTop: 20 }}>
                     <RightComponentButtonWithLeftText
                         buttonText={'Continue'}
-                        containerStyle={[MT(0.1), { borderRadius: 30, width: "70%", alignSelf: "center" }]}
+                        containerStyle={[MT(0.1), { borderRadius: 30, width: '70%', alignSelf: 'center' }]}
                         onPress={() => {
-                            setOpenContinueModal("CONTINUE")
-                            refRBSheet.current.open()
-                            setModalHeight(500)
+                            setOpenContinueModal('CONTINUE');
+                            refRBSheet.current.open();
+                            setModalHeight(500);
                         }}
                         disabled={everyItem.length > 0 ? false : true}
                     />
@@ -217,19 +206,18 @@ const styles = StyleSheet.create({
     card: {
         borderRadius: 10,
         elevation: 3,
-        backgroundColor: "#fff",
+        backgroundColor: '#fff',
         shadowOffset: { width: 1, height: 1 },
-        shadowColor: "#333",
+        shadowColor: '#333',
         shadowOpacity: 0.3,
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
     },
     circle: {
-        alignSelf: "center",
+        alignSelf: 'center',
         borderRadius: 30,
         padding: 1,
-        backgroundColor: mainColor
-
-    }
+        backgroundColor: mainColor,
+    },
 });

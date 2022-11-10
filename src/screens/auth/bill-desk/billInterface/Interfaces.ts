@@ -42,6 +42,7 @@ export interface IProductId {
         name: string;
     };
     colors: any;
+    sellerIdentificationPhoto: string;
 }
 export interface IItem {
     productId: IProductId;

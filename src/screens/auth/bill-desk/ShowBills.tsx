@@ -28,7 +28,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
         setLoading(true);
         try {
             const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-
+            console.log('Shop id', shopId);
             const billResponse: any = await showBill(shopId.shop);
             if (billResponse.status === 1) {
                 setLoading(false);

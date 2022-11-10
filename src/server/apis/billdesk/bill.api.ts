@@ -8,8 +8,8 @@ export function createBill(data: Partial<IBill>): Promise<CommonApiResponse> {
     return axios.post('/bill/create', data);
 }
 
-export function showBill(shopId: any): Promise<CommonApiResponse> {
-    return axios.get(`bill/show/${shopId._id}`);
+export function showBill(shopId: string): Promise<CommonApiResponse> {
+    return axios.get(`bill/show/${shopId}`);
 }
 
 export function updateBill(shopId: any, data: any): Promise<CommonApiResponse> {

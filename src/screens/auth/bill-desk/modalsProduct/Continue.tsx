@@ -1,13 +1,13 @@
-import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import { AS, BGCOLOR, BR, FC, FDR, FLEX, FS, H, JCC, MT, P, PH, PR, W } from '@app/common/styles'
-import { FontFamily } from '@app/common'
-import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText'
-import { Storage, StorageItemKeys } from '@app/storage'
-import { createBill } from '@app/server/apis/billdesk/bill.api'
-import { ToastHOC } from '@app/screens/hoc/ToastHOC'
-import ReviewProduct from '../ProductRenders/ReviewProduct'
-import { IContinueModal } from '../billInterface/Interfaces'
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+import React from 'react';
+import { AS, FDR, FLEX, FS, H, JCC, MT, PH,  } from '@app/common/styles';
+import { FontFamily } from '@app/common';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import { Storage, StorageItemKeys } from '@app/storage';
+import { createBill } from '@app/server/apis/billdesk/bill.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import ReviewProduct from '../ProductRenders/ReviewProduct';
+import { IContinueModal } from '../billInterface/Interfaces';
 
 
 
@@ -50,7 +50,7 @@ const Continue: React.FC<IContinueModal> = ({
         } catch (error: any) {
             console.log("ERROR", error.message);
         }
-    }
+    };
 
     const renderReview = ({ item }: any) => {
         return (
@@ -91,6 +91,6 @@ const Continue: React.FC<IContinueModal> = ({
     )
 }
 
-export default Continue
+export default Continue;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});
