@@ -4,7 +4,7 @@ import { Storage, StorageItemKeys } from '../storage';
 
 //export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.29.186:2112';
 //export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.1.3:2112';
-export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.1.36:2112';
+export const apiEndPoint = Platform.OS == 'ios' ? 'http://localhost:2112' : 'http://192.168.162.83:2112';
 const handleError = (error: { isAxiosError: any; response: { data: any } }) => {
     let message = '';
 

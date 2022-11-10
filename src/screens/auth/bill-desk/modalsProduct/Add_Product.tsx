@@ -102,7 +102,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                 <View style={[P(), PH(0.3), FDR()]}>
                                     <Image
                                         style={{ width: 80, height: 80, borderRadius: 10 }}
-                                        source={{ uri: allProducts.productId.parentId.image }}
+                                        source={{ uri: allProducts.productId.sellerIdentificationPhoto }}
                                     />
                                     <View style={[AS('center'), JCC('space-between'), FDR('column'), PL(0.2)]}>
                                         <Text style={[{ fontFamily: FontFamily.Regular }, FS(14)]}>

@@ -41,20 +41,25 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     };
 
     const findProduct = async (id: number) => {
-        setLoading(true);
-        const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-        const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
-        console.log('RESPPO', itemResponse);
-        const product = itemResponse.payload[0];
-        if (itemResponse.status === 1) {
-            setModalHeight(600);
+        try {
+            setLoading(true);
+            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+            const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
+            console.log('RESPPO', itemResponse);
+            const product = itemResponse.payload[0];
+            if (itemResponse.status == 1) {
+                setModalHeight(600);
+                setLoading(false);
+                setAllProducts(product);
+                setItem([product]);
+                setShowEnter(false);
+            } else {
+                setLoading(false);
+                ToastHOC.errorAlert('Item not found', '', 'top');
+            }
+        } catch (error) {
             setLoading(false);
-            setAllProducts(product);
-            setItem([product]);
-            setShowEnter(false);
-        } else {
-            setLoading(false);
-            ToastHOC.errorAlert('Item not found', '', 'top');
+            ToastHOC.errorAlert('', error.message);
         }
     };
 
