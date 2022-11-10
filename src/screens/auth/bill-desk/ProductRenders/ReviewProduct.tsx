@@ -1,7 +1,7 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import { AS, BGCOLOR, BR, FC, FDR, H, JCC, P, PH, PR, W } from '@app/common/styles'
-import DeleteIcon from 'react-native-vector-icons/MaterialCommunityIcons'
+import DeleteIcon from 'react-native-vector-icons/MaterialIcons'
 import { FontFamily } from '@app/common'
 import { IReviewProduct } from '../billInterface/Interfaces'
 
