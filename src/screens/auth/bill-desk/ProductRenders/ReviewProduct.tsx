@@ -7,33 +7,33 @@ import { IReviewProduct } from '../billInterface/Interfaces'
 
 
 
-const ReviewProduct:React.FC<IReviewProduct> = ({item,removeItem}) => {
-  return (
-     <View style={[styles.card]}>
-                    <View style={[FDR(),JCC("space-between")]}>
-                        <View style={[P(),PH(),FDR()]}>
-                            <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.productId.parentId.image }} />
-                        </View>
-                        <View style={[AS("center")]}>
-                            <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productId.parentId.name}</Text>
-                        </View>
-                        <View style={[AS("center"),W(25),H(25),BR(12.5),BGCOLOR(item.productId.colors[0].color.description ?  item.productId.colors[0].color.description : "black" )]}/>
-                        <View style={[AS("center")]}>
-                            <Text style={[FC("#252525"),{ fontFamily: FontFamily.Bold}]}>₹ {item.quantity * item.price}</Text>
-                        </View>
-                        <TouchableOpacity onPress={()=>removeItem(item._id)} style={[AS(),PR(.2)]}>
-                            <DeleteIcon name='delete' size={22} color={"#252525"} />
-                        </TouchableOpacity>
-
-                    </View>
+const ReviewProduct: React.FC<IReviewProduct> = ({ item, removeItem }) => {
+    return (
+        <View style={[styles.card]}>
+            <View style={[FDR(), JCC("space-between")]}>
+                <View style={[P(), PH(), FDR()]}>
+                    <Image style={{ width: 50, height: 50, borderRadius: 10 }} source={{ uri: item.productId.parentId.image }} />
                 </View>
-  )
+                <View style={[AS("center")]}>
+                    <Text style={{ fontFamily: FontFamily.Helvatica }}>{item.quantity} × {item.productId.parentId.name}</Text>
+                </View>
+                <View style={[AS("center"), W(25), H(25), BR(12.5), BGCOLOR(item.productId.colors[0].color.description ? item.productId.colors[0].color.description : "black")]} />
+                <View style={[AS("center")]}>
+                    <Text style={[FC("#252525"), { fontFamily: FontFamily.Bold }]}>₹ {item.quantity * item.price}</Text>
+                </View>
+                <TouchableOpacity onPress={() => removeItem(item._id)} style={[AS(), PR(.2)]}>
+                    <DeleteIcon name='delete' size={22} color={"#252525"} />
+                </TouchableOpacity>
+
+            </View>
+        </View>
+    )
 }
 
 export default ReviewProduct
 
 const styles = StyleSheet.create({
-          card: {
+    card: {
         borderRadius: 10,
         elevation: 3,
         backgroundColor: "#fff",

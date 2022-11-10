@@ -8,7 +8,7 @@ import { border, borRad } from '@app/screens/app/product-edit/component/generalC
 import { getHP } from '@app/common/dimension'
 import Loader from '@app/screens/component/Loader'
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText'
-import CrossIcon from 'react-native-vector-icons/Entypo';
+import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IAdd_Product } from '../billInterface/Interfaces'
 
 
@@ -44,7 +44,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                         refRBSheet.current.close()
                         setItem([])
                     }} style={[BR(15), BGCOLOR(mainColor)]}>
-                        <CrossIcon name="cross" color={"#ffffff"} size={24} style={{ alignSelf: "center" }} />
+                        <CrossIcon name="cancel" color={"#ffffff"} size={24} style={{ alignSelf: "center" }} />
                     </TouchableOpacity>
                 </View>
 

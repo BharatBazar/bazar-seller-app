@@ -7,49 +7,49 @@ import { border, borRad } from '@app/screens/app/product-edit/component/generalC
 import { getHP } from '@app/common/dimension'
 import { IEdit } from '../billInterface/Interfaces'
 
-const Edit:React.FC<IEdit> = ({ChangeQuantity}) => {
-  return (
-      <View style={{ paddingHorizontal: 20, flex: 1 }}>
-                            <Text style={[{ fontFamily: FontFamily.Helvatica},AS("center"),FS(16)]}>Edit Product</Text>
-                            <View>
-                                <WrappedTextInput
+const Edit: React.FC<IEdit> = ({ ChangeQuantity }) => {
+    return (
+        <View style={{ paddingHorizontal: 20, flex: 1 }}>
+            <Text style={[{ fontFamily: FontFamily.Helvatica }, AS("center"), FS(16)]}>Edit Product</Text>
+            <View>
+                <WrappedTextInput
 
-                                    placeholder='Quantity'
-                                    containerStyle={[
-                                        border,
-                                        MT(0.15),
-                                        HP(.5),
-                                        borRad,
-                                        AIC('flex-start'),
-                                        { paddingLeft: getHP(0.1) },
+                    placeholder='Quantity'
+                    containerStyle={[
+                        border,
+                        MT(0.15),
+                        HP(.5),
+                        borRad,
+                        AIC('flex-start'),
+                        { paddingLeft: getHP(0.1) },
 
-                                    ]}
-                                    textInputStyle={[FS(fs12), HP(0.4)]}
-                                    keyboardType="number-pad"
-                                    onChangeText={(e) => ChangeQuantity(e)}
-                                />
-                                <WrappedTextInput
-                                    placeholder='Price'
-                                    containerStyle={[
-                                        border,
-                                        MT(0.15),
-                                        HP(.5),
-                                        borRad,
-                                        AIC('flex-start'),
-                                        { paddingLeft: getHP(0.1) },
+                    ]}
+                    textInputStyle={[FS(fs12), HP(0.4)]}
+                    keyboardType="number-pad"
+                    onChangeText={(e) => ChangeQuantity(e)}
+                />
+                <WrappedTextInput
+                    placeholder='Price'
+                    containerStyle={[
+                        border,
+                        MT(0.15),
+                        HP(.5),
+                        borRad,
+                        AIC('flex-start'),
+                        { paddingLeft: getHP(0.1) },
 
-                                    ]}
-                                    textInputStyle={[FS(fs12), HP(0.4)]}
-                                    keyboardType="number-pad"
-                                />
-                            </View>
+                    ]}
+                    textInputStyle={[FS(fs12), HP(0.4)]}
+                    keyboardType="number-pad"
+                />
+            </View>
 
-                        </View>
-  )
+        </View>
+    )
 }
 
 export default Edit
 
 const styles = StyleSheet.create({
-    
+
 })
