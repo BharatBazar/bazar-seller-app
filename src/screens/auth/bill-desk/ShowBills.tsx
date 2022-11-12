@@ -1,8 +1,8 @@
-import { FlatList, Image, Keyboard, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
 import React, { useRef, useState } from 'react';
-import { AIC, AS, BC, BGCOLOR, BR, BW, FDR, FLEX, H, JCC, MT, PH, PV, W } from '@app/common/styles';
-import { borderColor, colorCode, mainColor } from '@app/common/color';
-import { GENERAL_PADDING, MHA, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import { AIC, BGCOLOR, FDR, FLEX } from '@app/common/styles';
+import { colorCode, mainColor } from '@app/common/color';
+import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { FontFamily, fs18 } from '@app/common';
 import WrappedText from '@app/screens/component/WrappedText';

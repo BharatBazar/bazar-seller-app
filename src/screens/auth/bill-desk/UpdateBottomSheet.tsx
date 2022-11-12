@@ -1,9 +1,9 @@
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React from 'react';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { AIC, AS, BR, BW, FDR, FLEX, FS, H, HP, JCC, MT, PH, PV, W } from '@app/common/styles';
-import { FontFamily, fs12 } from '@app/common';
+import { AIC, AS, FLEX, FS, HP, JCC, MT, PH, PV } from '@app/common/styles';
+import { fs12 } from '@app/common';
 import { IUpdateBill } from './billInterface/Interfaces';
 import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
@@ -43,7 +43,14 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                         <WrappedTextInput
                             onChangeText={(e) => setQuantity(e)}
                             placeholder="Eg 12"
-                            containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
+                            containerStyle={[
+                                border,
+                                MT(0.15),
+                                HP(0.5),
+                                borRad,
+                                AIC('flex-start'),
+                                { paddingLeft: getHP(0.1) },
+                            ]}
                             textInputStyle={[FS(fs12), HP(0.4)]}
                             keyboardType="number-pad"
                         />
@@ -54,7 +61,14 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                         <WrappedTextInput
                             onChangeText={(e) => setPrice(e)}
                             placeholder="Eg 500"
-                            containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
+                            containerStyle={[
+                                border,
+                                MT(0.15),
+                                HP(0.5),
+                                borRad,
+                                AIC('flex-start'),
+                                { paddingLeft: getHP(0.1) },
+                            ]}
                             textInputStyle={[FS(fs12), HP(0.4)]}
                             keyboardType="number-pad"
                         />

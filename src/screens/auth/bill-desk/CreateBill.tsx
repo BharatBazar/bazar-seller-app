@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, FlatList, Alert, Keyboard } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
@@ -24,9 +24,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(0);
-    const [preEditItem, setPreEditItem] = React.useState<[]>([])
-
-
+    const [preEditItem, setPreEditItem] = React.useState<[]>([]);
 
     const refRBSheet: any = useRef();
 
@@ -56,23 +54,23 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 setAllProducts(product);
                 setItem([product]);
                 setShowEnter(false);
-                Keyboard.dismiss()
+                Keyboard.dismiss();
             } else {
                 setLoading(false);
-                Keyboard.dismiss()
+                Keyboard.dismiss();
                 ToastHOC.errorAlert('Item not found', '', 'top');
             }
         } catch (error: any) {
             setLoading(false);
-            Keyboard.dismiss()
-            ToastHOC.errorAlert('Not found', error.message, "top");
+            Keyboard.dismiss();
+            ToastHOC.errorAlert('Not found', error.message, 'top');
         }
     };
 
     const add = (item: any) => {
         try {
             item['price'] = price;
-            item['fixedQuantity'] = item.quantity
+            item['fixedQuantity'] = item.quantity;
 
             if (allProducts._id === item._id) {
                 const updateQuantity = (allProducts.quantity = quantity);
@@ -80,10 +78,10 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 setQuantity(1);
                 setPrice(0);
                 setItem([allProducts]);
-                Keyboard.dismiss()
+                Keyboard.dismiss();
             } else {
                 console.log('error occured');
-                Keyboard.dismiss()
+                Keyboard.dismiss();
             }
             const check = everyItem.filter((e: any) => e._id === item._id);
             if (check.length === 1) {
@@ -95,8 +93,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 refRBSheet.current.close();
             }
         } catch (error) {
-            Keyboard.dismiss()
-            ToastHOC.errorAlert('Item not added', 'Not added', "top");
+            Keyboard.dismiss();
+            ToastHOC.errorAlert('Item not added', 'Not added', 'top');
         }
     };
 
@@ -111,7 +109,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const changeSellingPrice = (price: number) => {
         setPrice(price);
     };
-
 
     return (
         <View style={[FLEX(1), BGCOLOR('#f9f6ee')]}>
@@ -152,7 +149,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                     <>
                         <FlatList
                             data={everyItem}
-                            renderItem={({ item }) =>
+                            renderItem={({ item }) => (
                                 <ProductRender
                                     setOpenContinueModal={setOpenContinueModal}
                                     item={item}
@@ -162,7 +159,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                                     setEveryItem={setEveryItem}
                                     setPreEditItem={setPreEditItem}
                                 />
-                            }
+                            )}
                             showsVerticalScrollIndicator={false}
                         />
                         <View style={[FDR(), JCC('space-between')]}>
