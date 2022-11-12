@@ -27,7 +27,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
         try {
             const userDetail = await Storage.getItem(StorageItemKeys.userDetail);
             console.log('Shop ids', userDetail);
-            const billResponse: any = await showBill(userDetail.shop || userDetail.shop._id);
+            const billResponse: any = await showBill(userDetail.shop._id || userDetail.shop);
             console.log('bill response', billResponse);
             if (billResponse.status == 1) {
                 setLoading(false);
@@ -38,7 +38,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             }
         } catch (error: any) {
             setLoading(false);
-            ToastAndroid.show(error.message, 200);
+            ToastAndroid.show(error.message, 400);
             console.log('ERRROR_OCCURED', error.message);
         }
     };

@@ -1,3 +1,6 @@
+import { FontFamily, fs11, fs13 } from '@app/common';
+import { errorColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
 import React, { Component } from 'react';
 import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
@@ -41,7 +44,7 @@ export default class GeneralTextInput extends Component<Props, State> {
         super(props);
     }
 
-    componentDidMount() {}
+    componentDidMount() { }
 
     render() {
         const {
@@ -132,7 +135,7 @@ const styles = StyleSheet.create({
     errorText: {
         fontSize: fs11,
         color: errorColor,
-        fontStyle: 'normal',
+        fontStyle: 'norma',
         fontFamily: FontFamily.Regular,
         marginTop: 3,
     },

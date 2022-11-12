@@ -30,7 +30,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                     },
                 ],
             });
-        } catch (error) {}
+        } catch (error) { }
     }
     const [userDetail, setUserDetail] = React.useState({ name: '', phoneNumber: '' });
 
@@ -41,7 +41,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 name: userDetails.firstName + ' ' + userDetails.lastName,
                 phoneNumber: userDetails.phoneNumber,
             });
-        } catch (error) {}
+        } catch (error) { }
     };
     React.useEffect(() => {
         setUserDetails();
@@ -61,7 +61,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 </View>
             </View>
             <View style={[MHA(), BGCOLOR('#FFFFFF'), provideShadow(2), BRA(10), MTA()]}>
-                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => {}}>
+                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => { }}>
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'person'} size={fs18} />
                         <WrappedText text={'Member Details'} textStyle={styles.textStyle} />
@@ -69,7 +69,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 </WrappedRectangleButton>
                 <View style={[BW(0.5), BC(borderColor), MHA()]} />
 
-                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => {}}>
+                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => { }}>
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'edit'} size={fs18} />
                         <WrappedText text={'Shop Details'} textStyle={styles.textStyle} />
@@ -94,9 +94,24 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 <WrappedRectangleButton
                     containerStyle={[styles.containerStyle]}
                     onPress={() => {
-                       props.navigation.navigate(NavigationKey.CREATEBILL,{
-                           openModal:true
-                       })
+                        props.navigation.navigate(NavigationKey.PRODUCTDETAILS, {
+                            ownerDetails: userDetail,
+                            update: true,
+                        });
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <MaterialIcon name={'search'} size={fs18} />
+                        <WrappedText text={'Search'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                        props.navigation.navigate(NavigationKey.CREATEBILL, {
+                            openModal: true
+                        })
                     }}
                 >
                     <View style={[FDR(), AIC()]}>
@@ -104,13 +119,13 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                         <WrappedText text={'Create Bills'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
-                   <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
                 <WrappedRectangleButton
                     containerStyle={[styles.containerStyle]}
                     onPress={() => {
-                       props.navigation.navigate(NavigationKey.SHOWBILLS,{
-                           openModal:true
-                       })
+                        props.navigation.navigate(NavigationKey.SHOWBILLS, {
+                            openModal: true
+                        })
                     }}
                 >
                     <View style={[FDR(), AIC()]}>
@@ -118,7 +133,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                         <WrappedText text={'Show Bills'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
-                   <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
                 <WrappedRectangleButton
                     containerStyle={[styles.containerStyle]}
                     onPress={() => {

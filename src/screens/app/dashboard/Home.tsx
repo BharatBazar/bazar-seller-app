@@ -13,9 +13,9 @@ import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
 import { NavigationKey } from '@app/labels';
 import AddShopMemberBanner from './component/AddShopMemberBanner';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
-interface Props extends NavigationProps {}
+
+interface Props extends NavigationProps { }
 
 const Home = (props: Props) => {
     const [shop, setShop] = React.useState<Partial<IShop>>({});
@@ -95,7 +95,7 @@ const Home = (props: Props) => {
                         active={true}
                         paddingVertical={'1%'}
                         height={getHP(0.5)}
-                        //paddingLeft={getWP(1)}
+                    //paddingLeft={getWP(1)}
                     />
                 ))}
 

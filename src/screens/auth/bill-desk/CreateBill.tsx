@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Alert, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, FlatList, Alert, Keyboard, ToastAndroid } from 'react-native';
 import React, { useRef } from 'react';
 import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
@@ -12,6 +12,7 @@ import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
+import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
@@ -28,6 +29,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
 
     const refRBSheet: any = useRef();
 
+
+
     var total = 0;
 
     everyItem.forEach((i: any) => {
@@ -39,6 +42,11 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             return e._id !== id;
         });
         setEveryItem(removeItem);
+        if (everyItem.length === 1) {
+            refRBSheet.current.close()
+        }
+
+
     };
 
     const findProduct = async (id: number) => {
@@ -67,31 +75,40 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         }
     };
 
-    const add = (item: any) => {
+    const add = async (item: any) => {
         try {
-            item['price'] = price;
-            item['fixedQuantity'] = item.quantity;
+            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: item._id })
+            console.log("Checking...", checkItemExist)
+            if (checkItemExist.payload === true) {
+                ToastAndroid.show("Item already listed in bill", 402)
+            }
+            else {
+                item['price'] = price;
+                item['fixedQuantity'] = item.quantity;
 
-            if (allProducts._id === item._id) {
-                const updateQuantity = (allProducts.quantity = quantity);
-                console.log(updateQuantity);
-                setQuantity(1);
-                setPrice(0);
-                setItem([allProducts]);
-                Keyboard.dismiss();
-            } else {
-                console.log('error occured');
-                Keyboard.dismiss();
+                if (allProducts._id === item._id) {
+                    const updateQuantity = (allProducts.quantity = quantity);
+                    console.log(updateQuantity);
+                    setQuantity(1);
+                    setPrice(0);
+                    setItem([allProducts]);
+                    Keyboard.dismiss();
+                } else {
+                    console.log('error occured');
+                    Keyboard.dismiss();
+                }
+                const check = everyItem.filter((e: any) => e._id === item._id);
+                if (check.length === 1) {
+                    ToastHOC.errorAlert('Item already in list', '', 'top');
+                    Keyboard.dismiss();
+                } else {
+                    setEveryItem(everyItem.concat(item));
+                    setItem([]);
+                    refRBSheet.current.close();
+                }
             }
-            const check = everyItem.filter((e: any) => e._id === item._id);
-            if (check.length === 1) {
-                ToastHOC.errorAlert('Item already in list', '', 'top');
-                Keyboard.dismiss();
-            } else {
-                setEveryItem(everyItem.concat(item));
-                setItem([]);
-                refRBSheet.current.close();
-            }
+
         } catch (error) {
             Keyboard.dismiss();
             ToastHOC.errorAlert('Item not added', 'Not added', 'top');

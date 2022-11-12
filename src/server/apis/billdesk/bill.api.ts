@@ -16,3 +16,8 @@ export function updateBill(shopId: any, data: any): Promise<CommonApiResponse> {
     console.log('DATAs', data);
     return axios.patch(`bill/update/${shopId}`, data);
 }
+
+export function checkBillProductExistOrNot(data: any): Promise<CommonApiResponse> {
+    console.log('DATAs2', data);
+    return axios.post(`bill/fetch/`, data);
+}
