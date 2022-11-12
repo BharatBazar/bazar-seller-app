@@ -1,4 +1,4 @@
-import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
 import React, { useRef, useState } from 'react';
 import { AIC, BGCOLOR, FDR, FLEX } from '@app/common/styles';
 import { colorCode, mainColor } from '@app/common/color';
@@ -25,10 +25,11 @@ const ShowBills: React.FC = ({ navigation }: any) => {
     const getBills = async () => {
         setLoading(true);
         try {
-            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            console.log('Shop ids', shopId.shop._id);
-            const billResponse: any = await showBill(shopId.shop._id);
-            if (billResponse.status === 1) {
+            const userDetail = await Storage.getItem(StorageItemKeys.userDetail);
+            console.log('Shop ids', userDetail);
+            const billResponse: any = await showBill(userDetail.shop || userDetail.shop._id);
+            console.log('bill response', billResponse);
+            if (billResponse.status == 1) {
                 setLoading(false);
                 setBill(billResponse.payload);
             } else {
@@ -37,6 +38,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             }
         } catch (error: any) {
             setLoading(false);
+            ToastAndroid.show(error.message, 200);
             console.log('ERRROR_OCCURED', error.message);
         }
     };
@@ -76,7 +78,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
     };
 
     return (
-        <View style={[FLEX(1)]}>
+        <View style={[FLEX(1), BGCOLOR('#ffffff')]}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
                 {
                     <ButtonMaterialIcons

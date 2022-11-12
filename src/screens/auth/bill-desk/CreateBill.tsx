@@ -111,7 +111,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     };
 
     return (
-        <View style={[FLEX(1), BGCOLOR('#f9f6ee')]}>
+        <View style={[FLEX(1), BGCOLOR('#ffffff')]}>
             <View style={[BGCOLOR(mainColor), PVA(), AIC(), PTA(STATUS_BAR_HEIGHT + GENERAL_PADDING), FDR('row')]}>
                 {
                     <ButtonMaterialIcons
