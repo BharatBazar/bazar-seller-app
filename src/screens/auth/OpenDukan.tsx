@@ -23,6 +23,7 @@ import { commonButtonProps } from '../components/button';
 import TextRippleButton from '../components/button/TextRippleB';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { PHA, PTA, PVA } from '@app/common/stylesheet';
+import ButtonMaterialIcons from '../components/button/ButtonMaterialIcons';
 
 export interface OpenDukanProps extends NavigationProps {}
 
@@ -164,11 +165,11 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF'), PTA(STATUS_BAR_HEIGHT)]}>
             <View style={[PVA(), PHA(), BGCOLOR(colorCode.WHITE)]}>
-                <WrappedFeatherIcon
+                <ButtonMaterialIcons
                     onPress={() => {
                         navigation.goBack();
                     }}
-                    iconName={'arrow-left'}
+                    iconName={'chevron-left'}
                     iconColor="#000"
                     containerHeight={getHP(0.5)}
                     containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
