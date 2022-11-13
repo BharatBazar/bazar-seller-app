@@ -47,54 +47,54 @@ const config: TransitionSpec = {
 
 const toastConfig = {
 
-  success: (props:any) => (
-    <BaseToast
-      {...props}
-      style={{ borderLeftColor: 'green' }}
-      contentContainerStyle={{ paddingHorizontal: 15 }}
-      text1Style={{
-        fontSize: 15,
-        fontFamily:FontFamily.Helvatica,
-      }}
-      text2Style={{
-        fontSize: 13,
-        fontFamily:FontFamily.Helvatica,
-      }}
-      renderTrailingIcon={()=><TouchableOpacity style={{ alignSelf:"center",paddingRight:10}} onPress={()=>Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
-    />
-  ),
+    success: (props: any) => (
+        <BaseToast
+            {...props}
+            style={{ borderLeftColor: 'green' }}
+            contentContainerStyle={{ paddingHorizontal: 15 }}
+            text1Style={{
+                fontSize: 15,
+                fontFamily: FontFamily.Helvatica,
+            }}
+            text2Style={{
+                fontSize: 13,
+                fontFamily: FontFamily.Helvatica,
+            }}
+            renderTrailingIcon={() => <TouchableOpacity style={{ alignSelf: "center", paddingRight: 10 }} onPress={() => Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
+        />
+    ),
 
-  error: (props:any) => (
-    <ErrorToast
-      {...props}
-      text1Style={{
-        fontSize: 15,
-        fontFamily:FontFamily.Helvatica,
-      }}
-      text2Style={{
-        fontSize: 13,
-        fontFamily:FontFamily.Helvatica,
-      }}
-      renderTrailingIcon={()=><TouchableOpacity style={{ alignSelf:"center",paddingRight:10}} onPress={()=>Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
-   
-    />
-  ),
+    error: (props: any) => (
+        <ErrorToast
+            {...props}
+            text1Style={{
+                fontSize: 15,
+                fontFamily: FontFamily.Helvatica,
+            }}
+            text2Style={{
+                fontSize: 13,
+                fontFamily: FontFamily.Helvatica,
+            }}
+            renderTrailingIcon={() => <TouchableOpacity style={{ alignSelf: "center", paddingRight: 10 }} onPress={() => Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
 
-  info: (props:any) => (
-    <InfoToast
-      {...props}
-      text1Style={{
-        fontSize: 15,
-        fontFamily:FontFamily.Helvatica,
-      }}
-      text2Style={{
-        fontSize: 13,
-        fontFamily:FontFamily.Helvatica,
-      }}
-      renderTrailingIcon={()=><TouchableOpacity style={{ alignSelf:"center",paddingRight:10}} onPress={()=>Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
-   
-    />
-  ),
+        />
+    ),
+
+    info: (props: any) => (
+        <InfoToast
+            {...props}
+            text1Style={{
+                fontSize: 15,
+                fontFamily: FontFamily.Helvatica,
+            }}
+            text2Style={{
+                fontSize: 13,
+                fontFamily: FontFamily.Helvatica,
+            }}
+            renderTrailingIcon={() => <TouchableOpacity style={{ alignSelf: "center", paddingRight: 10 }} onPress={() => Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
+
+        />
+    ),
 };
 const AppNavigation = () => {
     return (
@@ -160,12 +160,12 @@ const AppNavigation = () => {
                         animation: 'fade',
                     }}
                 />
-                 <Stack.Screen name={NavigationKey.CREATEBILL} component={CreateBill} options={{
-                     animation:"slide_from_right"
-                 }} />
-                 <Stack.Screen name={NavigationKey.SHOWBILLS} component={ShowBills} options={{
-                     animation:"slide_from_right"
-                 }} />
+                <Stack.Screen name={NavigationKey.CREATEBILL} component={CreateBill} options={{
+                    animation: "slide_from_right"
+                }} />
+                <Stack.Screen name={NavigationKey.SHOWBILLS} component={ShowBills} options={{
+                    animation: "slide_from_right"
+                }} />
                 <Stack.Screen
                     name={NavigationKey.RESETPASSWORD}
                     component={ResetPassword}

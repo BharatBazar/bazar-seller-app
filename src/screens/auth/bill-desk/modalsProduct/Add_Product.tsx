@@ -29,6 +29,11 @@ const Add_Product: React.FC<IAdd_Product> = ({
     add,
     changeSellingPrice,
 }) => {
+
+
+    const [quan, setQuan] = React.useState<String>('1')
+
+
     return (
         <>
             <View style={[PH(), FLEX(1)]}>
@@ -129,13 +134,14 @@ const Add_Product: React.FC<IAdd_Product> = ({
                         <View style={[FDR(), JCC('space-between'), MT(0.2)]}>
                             <View>
                                 <Text style={[{ fontFamily: FontFamily.Bold }, FC('#252525'), FS(17)]}>Quantity</Text>
-                                <Text style={[AS('center'), FC('green'), FS(14)]}>
-                                    Quantity available {allProducts.quantity}
+                                <Text style={[AS('center'), FC(allProducts.quantity === 0 ? 'red' : 'green'), FS(14)]}>
+                                    {allProducts.quantity === 0 ? <Text>Out of stock</Text> : <Text> Quantity available {allProducts.quantity}</Text>}
                                 </Text>
                             </View>
                             <TextInput
+                                value={allProducts.quantity === 0 ? '0' : quan}
                                 textAlign="center"
-                                onChangeText={(e) => changeQuantity(e, allProducts)}
+                                onChangeText={(e) => changeQuantity(e, setQuan)}
                                 keyboardType="number-pad"
                                 style={[
                                     BW(1),
@@ -146,6 +152,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                     FS(16),
                                     { fontFamily: FontFamily.Bold, padding: 0, paddingHorizontal: 2, minWidth: 40 },
                                 ]}
+
                             />
                         </View>
 

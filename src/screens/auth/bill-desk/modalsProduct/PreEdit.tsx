@@ -27,6 +27,8 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
         }
     };
 
+    const quantity = preEditItem
+
     return (
         <>
             <View style={{ paddingHorizontal: 20, flex: 1 }}>

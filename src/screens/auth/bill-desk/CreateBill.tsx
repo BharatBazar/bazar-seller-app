@@ -81,7 +81,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: item._id })
             console.log("Checking...", checkItemExist)
             if (checkItemExist.payload === true) {
-                ToastAndroid.show("Item already listed in bill", 402)
+                ToastAndroid.show("Item already listed in bill", 404)
             }
             else {
                 item['price'] = price;
@@ -109,16 +109,18 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 }
             }
 
-        } catch (error) {
+        } catch (error: any) {
             Keyboard.dismiss();
-            ToastHOC.errorAlert('Item not added', 'Not added', 'top');
+            ToastAndroid.show(error.message, 404)
         }
     };
 
-    const changeQuantity = (quantity: number) => {
+    const changeQuantity = (quantity: number, setQuan: any) => {
         if (quantity > allProducts.quantity) {
+            setQuan(' ')
             Alert.alert('you cannot add item');
         } else {
+            setQuan(quantity)
             setQuantity(quantity);
         }
     };
@@ -181,7 +183,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         />
                         <View style={[FDR(), JCC('space-between')]}>
                             <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>Total Price</Text>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>$ {total}</Text>
+                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>₹ {total}</Text>
                         </View>
                     </>
                 ) : null}
@@ -194,7 +196,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         onPress={() => {
                             setOpenContinueModal('CONTINUE');
                             refRBSheet.current.open();
-                            setModalHeight(500);
+                            setModalHeight(700);
                         }}
                         disabled={everyItem.length > 0 ? false : true}
                     />

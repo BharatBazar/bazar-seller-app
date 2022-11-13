@@ -1,6 +1,6 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import { AS, FDR, FLEX, FS, H, JCC, MT, PH, } from '@app/common/styles';
+import { AS, BW, FDR, FLEX, FS, H, JCC, MT, PH, } from '@app/common/styles';
 import { FontFamily } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { Storage, StorageItemKeys } from '@app/storage';
@@ -52,30 +52,29 @@ const Continue: React.FC<IContinueModal> = ({
         }
     };
 
-    const renderReview = ({ item }: any) => {
-        return (
-            <>
-                <ReviewProduct item={item} removeItem={removeItem} />
-            </>
-        )
-    }
+
+
     return (
         <>
             <View style={[PH(), FLEX(.8)]}>
                 <View style={[AS("center")]}>
                     <Text style={[FS(16), { fontFamily: FontFamily.Regular }]}>Review Items</Text>
                 </View>
-                <FlatList
-                    data={everyItem}
-                    renderItem={renderReview}
-                    keyExtractor={item => item._id}
-                />
+                <View >
+                    <ScrollView  >
+
+                        {everyItem?.map((e) => {
+                            return (<ReviewProduct item={e} removeItem={removeItem} />)
+                        })}
+
+                    </ScrollView>
+                </View>
 
             </View>
             <View style={[PH(), MT(.2)]}>
                 <View style={[FDR(), JCC("space-between")]}>
                     <Text style={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]}>Total Price</Text>
-                    <Text style={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]}>$ {total} </Text>
+                    <Text style={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]}>₹ {total} </Text>
                 </View>
             </View>
 
