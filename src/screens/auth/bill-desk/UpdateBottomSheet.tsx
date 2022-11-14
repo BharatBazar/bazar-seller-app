@@ -5,10 +5,10 @@ import RightComponentButtonWithLeftText from '@app/screens/components/button/Rig
 import { AIC, AS, FLEX, FS, HP, JCC, MT, PH, PV } from '@app/common/styles';
 import { fs12 } from '@app/common';
 import { IUpdateBill } from './billInterface/Interfaces';
-import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
 import GeneralText from '@app/screens/components/text/GeneralText';
+import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
 
 const UpdateBottomSheet: React.FC<IUpdateBill> = ({
     refRBSheet,
@@ -36,12 +36,12 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
             >
                 <View style={[PH(), FLEX(1)]}>
                     <View style={AS('center')}>
-                        <GeneralText text='Update item' />
+                        <GeneralText text="Update item" />
                     </View>
                     <View style={[JCC('space-between'), PV(0.2)]}>
-                        <GeneralText text='Quantity' />
+                        <GeneralText text="Quantity" />
 
-                        <WrappedTextInput
+                        <GeneralTextInput
                             onChangeText={(e) => setQuantity(e)}
                             placeholder="Eg 12"
                             containerStyle={[
@@ -57,9 +57,9 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                         />
                     </View>
                     <View style={[JCC('space-between')]}>
-                        <GeneralText text='Price per item' />
+                        <GeneralText text="Price per item" />
 
-                        <WrappedTextInput
+                        <GeneralTextInput
                             onChangeText={(e) => setPrice(e)}
                             placeholder="Eg 500"
                             containerStyle={[

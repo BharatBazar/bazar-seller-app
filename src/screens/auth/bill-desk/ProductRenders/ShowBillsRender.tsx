@@ -1,5 +1,5 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React from 'react';
 import { AS, BC, BGCOLOR, BR, BW, FDR, H, JCC, MT, PH, PV, W } from '@app/common/styles';
 import { FontFamily } from '@app/common';
 import moment from 'moment';
@@ -9,19 +9,14 @@ import Edit from 'react-native-vector-icons/MaterialIcons';
 import { IShowBillsRender } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
 
-
-
 const ShowBillsRender: React.FC<IShowBillsRender> = ({ item, openUpdateSheet }) => {
     return (
         <View style={[styles.card, PH(), PV(), MT(0.2)]}>
             <View style={[H(40), JCC('space-between'), FDR()]}>
-                <Text style={{ fontFamily: FontFamily.Helvatica }}>
-                    Created on{' '}
-                    <Text style={{ fontFamily: FontFamily.Black }}>
-                        {moment(item.createdAt).format('DD-MM-YY')}
-                    </Text>
-                </Text>
-
+                <GeneralText
+                    text={`Created on ${moment(item.createdAt).format('DD-MM-YY')}`}
+                    textStyle={{ fontFamily: FontFamily.Helvatica }}
+                />
             </View>
             <View style={[BW(0.5), BC(borderColor), MHA()]} />
             {item.products.map((e: any) => {
@@ -31,9 +26,11 @@ const ShowBillsRender: React.FC<IShowBillsRender> = ({ item, openUpdateSheet }) 
                             style={{ width: 50, height: 50, borderRadius: 5 }}
                             source={{ uri: e.productSize.productId.sellerIdentificationPhoto }}
                         />
-                        <Text style={[AS('center')]}>
-                            {e.productSize.productId.parentId.name} × {e.quantity} pcs.
-                        </Text>
+                        <GeneralText
+                            text={`${e.productSize.productId.parentId.name} × ${e.quantity}  pcs. `}
+                            textStyle={[AS('center')]}
+                        />
+
                         <View
                             style={[
                                 W(24),
@@ -51,10 +48,10 @@ const ShowBillsRender: React.FC<IShowBillsRender> = ({ item, openUpdateSheet }) 
                 );
             })}
         </View>
-    )
-}
+    );
+};
 
-export default ShowBillsRender
+export default ShowBillsRender;
 
 const styles = StyleSheet.create({
     card: {
@@ -65,4 +62,4 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 2,
     },
-})
+});

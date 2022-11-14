@@ -75,7 +75,7 @@ export default class WrappedTextInput extends Component<Props, State> {
             maxLength,
             title,
         } = this.props;
-        console.log('rendering', placeholder);
+        console.log('renderingPlaceholder', placeholder);
         const { secureTextEntry } = this.state;
         return (
             <View>

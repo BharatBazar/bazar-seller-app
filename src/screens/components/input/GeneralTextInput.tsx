@@ -68,7 +68,7 @@ export default class GeneralTextInput extends Component<Props, State> {
             title,
         } = this.props;
         console.log('rendering', placeholder);
-        const { secureTextEntry } = this.state;
+
         return (
             <View>
                 {title != undefined && (
@@ -93,7 +93,7 @@ export default class GeneralTextInput extends Component<Props, State> {
                                 backgroundColor: editable == false ? '#64646433' : '#00000000',
                             },
                         ]}
-                        secureTextEntry={secureTextEntry || false}
+
                         maxLength={maxLength}
                         keyboardType={keyBoard}
                     />
