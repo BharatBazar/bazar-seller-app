@@ -6,11 +6,12 @@ import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
 import { IEdit } from '../billInterface/Interfaces';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const Edit: React.FC<IEdit> = ({ changeQuantity }) => {
     return (
         <View style={{ paddingHorizontal: 20, flex: 1 }}>
-            <Text style={[{ fontFamily: FontFamily.Helvatica }, AS("center"), FS(16)]}>Edit Product</Text>
+            <GeneralText text="Edit Product" textStyle={[{ fontFamily: FontFamily.Helvatica }, AS("center"), FS(16)]} />
             <View>
                 <WrappedTextInput
 

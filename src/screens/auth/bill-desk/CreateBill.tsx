@@ -13,6 +13,7 @@ import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
 import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
@@ -182,8 +183,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                             showsVerticalScrollIndicator={false}
                         />
                         <View style={[FDR(), JCC('space-between')]}>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>Total Price</Text>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>₹ {total}</Text>
+                            <GeneralText text="Total Price" textStyle={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]} />
+                            <GeneralText text={"₹" + { total }} textStyle={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]} />
                         </View>
                     </>
                 ) : null}

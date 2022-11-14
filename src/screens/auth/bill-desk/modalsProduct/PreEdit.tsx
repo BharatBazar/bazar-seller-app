@@ -7,6 +7,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { IPreEdit } from '../billInterface/Interfaces';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, refRBSheet }) => {
     const changeQuantity = (e: string | number) => {
@@ -32,13 +33,12 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
     return (
         <>
             <View style={{ paddingHorizontal: 20, flex: 1 }}>
-                <Text style={[{ fontFamily: FontFamily.Helvatica }, AS('center'), FS(16)]}>Edit Product</Text>
+                <GeneralText text="Edit Product" textStyle={[{ fontFamily: FontFamily.Helvatica }, AS("center"), FS(16)]} />
                 <View>
                     <View style={[MT(0.2), JCC('space-between')]}>
-                        <Text style={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(17)]}>Quantity</Text>
-                        <Text style={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(13), FC('green')]}>
-                            {preEditItem.fixedQuantity} (quantity available)
-                        </Text>
+                        <GeneralText text="Qantity" textStyle={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(17)]} />
+                        <GeneralText text={preEditItem.fixedQuantity + ` quantity available`} textStyle={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(13), FC('green')]} />
+
 
                         <WrappedTextInput
                             onChangeText={(e) => changeQuantity(e)}
@@ -57,10 +57,9 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
                     </View>
 
                     <View style={[MT(0.2), JCC('space-between')]}>
-                        <Text style={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(17)]}>Selling Price</Text>
-                        <Text style={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(13), FC('green')]}>
-                            ₹ {preEditItem.price} (change price)
-                        </Text>
+                        <GeneralText text="Selling Price" textStyle={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(17)]} />
+                        <GeneralText text={"₹ " + preEditItem.price + `change price`} textStyle={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(13), FC('green')]} />
+
 
                         <WrappedTextInput
                             onChangeText={(e) => changeSellingPrice(e)}

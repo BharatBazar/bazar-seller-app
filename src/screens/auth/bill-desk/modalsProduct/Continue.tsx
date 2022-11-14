@@ -8,6 +8,7 @@ import { createBill } from '@app/server/apis/billdesk/bill.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ReviewProduct from '../ProductRenders/ReviewProduct';
 import { IContinueModal } from '../billInterface/Interfaces';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 
 
@@ -58,7 +59,7 @@ const Continue: React.FC<IContinueModal> = ({
         <>
             <View style={[PH(), FLEX(.8)]}>
                 <View style={[AS("center")]}>
-                    <Text style={[FS(16), { fontFamily: FontFamily.Regular }]}>Review Items</Text>
+                    <GeneralText text='Review Items' textStyle={[FS(16), { fontFamily: FontFamily.Regular }]} />
                 </View>
                 <View >
                     <ScrollView  >
@@ -73,8 +74,8 @@ const Continue: React.FC<IContinueModal> = ({
             </View>
             <View style={[PH(), MT(.2)]}>
                 <View style={[FDR(), JCC("space-between")]}>
-                    <Text style={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]}>Total Price</Text>
-                    <Text style={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]}>₹ {total} </Text>
+                    <GeneralText text='Total Price' textStyle={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]} />
+                    <GeneralText text={"₹" + total} textStyle={[{ fontFamily: FontFamily.Black, color: "#252525" }, FS(16)]} />
                 </View>
             </View>
 

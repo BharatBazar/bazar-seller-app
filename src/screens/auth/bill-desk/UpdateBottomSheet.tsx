@@ -8,6 +8,7 @@ import { IUpdateBill } from './billInterface/Interfaces';
 import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const UpdateBottomSheet: React.FC<IUpdateBill> = ({
     refRBSheet,
@@ -35,10 +36,10 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
             >
                 <View style={[PH(), FLEX(1)]}>
                     <View style={AS('center')}>
-                        <Text>Update Item</Text>
+                        <GeneralText text='Update item' />
                     </View>
                     <View style={[JCC('space-between'), PV(0.2)]}>
-                        <Text>Quantity</Text>
+                        <GeneralText text='Quantity' />
 
                         <WrappedTextInput
                             onChangeText={(e) => setQuantity(e)}
@@ -56,7 +57,7 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                         />
                     </View>
                     <View style={[JCC('space-between')]}>
-                        <Text>Price Per Item</Text>
+                        <GeneralText text='Price per item' />
 
                         <WrappedTextInput
                             onChangeText={(e) => setPrice(e)}

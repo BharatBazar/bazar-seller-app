@@ -7,6 +7,7 @@ import { borderColor } from '@app/common/color';
 import { MHA } from '@app/common/stylesheet';
 import Edit from 'react-native-vector-icons/MaterialIcons';
 import { IShowBillsRender } from '../billInterface/Interfaces';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 
 
@@ -20,6 +21,7 @@ const ShowBillsRender: React.FC<IShowBillsRender> = ({ item, openUpdateSheet }) 
                         {moment(item.createdAt).format('DD-MM-YY')}
                     </Text>
                 </Text>
+
             </View>
             <View style={[BW(0.5), BC(borderColor), MHA()]} />
             {item.products.map((e: any) => {
@@ -41,7 +43,7 @@ const ShowBillsRender: React.FC<IShowBillsRender> = ({ item, openUpdateSheet }) 
                                 BGCOLOR(e.productSize.productId.colors[0].color.description),
                             ]}
                         ></View>
-                        <Text style={[AS('center')]}>₹ {e.price}</Text>
+                        <GeneralText text={'₹' + e.price} textStyle={[AS('center')]} />
                         <TouchableOpacity onPress={() => openUpdateSheet(item._id, e)} style={[AS('center')]}>
                             <Edit name="edit" color="#252525" size={18} />
                         </TouchableOpacity>
