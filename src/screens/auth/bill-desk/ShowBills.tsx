@@ -1,8 +1,8 @@
-import { FlatList, Keyboard, StyleSheet, ToastAndroid, View } from 'react-native';
+import { FlatList, Keyboard, StyleSheet, Text, ToastAndroid, View } from 'react-native';
 import React, { useRef, useState } from 'react';
-import { AIC, BGCOLOR, FDR, FLEX } from '@app/common/styles';
+import { AIC, AS, BGCOLOR, FDR, FLEX, FS, JCC } from '@app/common/styles';
 import { colorCode, mainColor } from '@app/common/color';
-import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
+import { FF, GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { FontFamily, fs18 } from '@app/common';
 import WrappedText from '@app/screens/component/WrappedText';
@@ -11,6 +11,7 @@ import { showBill, updateBill } from '@app/server/apis/billdesk/bill.api';
 import UpdateBottomSheet from './UpdateBottomSheet';
 import Loader from '@app/screens/component/Loader';
 import ShowBillsRender from './ProductRenders/ShowBillsRender';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const ShowBills: React.FC = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
@@ -18,9 +19,11 @@ const ShowBills: React.FC = ({ navigation }: any) => {
     const [itemId, setItemId] = React.useState<string>('');
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(1);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [noItemText, setNoItemText] = React.useState<string>('')
 
     const refRBSheet: any = useRef();
+    const noItem: string = "No bills created !"
 
     const getBills = async () => {
         setLoading(true);
@@ -31,6 +34,9 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             console.log('bill response', billResponse);
             if (billResponse.status == 1) {
                 setLoading(false);
+                // if (billResponse.payload.length === 0) {
+                //     setNoItemText('No bills created !')
+                // }
                 setBill(billResponse.payload);
             } else {
                 setLoading(false);
@@ -102,20 +108,35 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             {loading === true ? (
                 <Loader />
             ) : (
+
+
                 <>
-                    <FlatList
-                        data={bill}
-                        renderItem={({ item }) => <ShowBillsRender item={item} openUpdateSheet={openUpdateSheet} />}
-                        keyExtractor={(bill: any) => bill._id}
-                    />
-                    <UpdateBottomSheet
-                        setQuantity={setQuantity}
-                        setPrice={setPrice}
-                        quantity={quantity}
-                        price={price}
-                        refRBSheet={refRBSheet}
-                        updateBills={updateBills}
-                    />
+                    {bill.length === 0 ? (
+                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
+                            <GeneralText text={noItem} textStyle={[FF("Regular"), FS(18)]} />
+                        </View>
+                    ) : (
+                        <>
+                            <FlatList
+                                data={bill}
+                                renderItem={({ item }) => <ShowBillsRender item={item} openUpdateSheet={openUpdateSheet} />}
+                                keyExtractor={(bill: any) => bill._id}
+                            />
+                            <UpdateBottomSheet
+                                setQuantity={setQuantity}
+                                setPrice={setPrice}
+                                quantity={quantity}
+                                price={price}
+                                refRBSheet={refRBSheet}
+                                updateBills={updateBills}
+                            />
+                        </>
+                    )}
+
+
+
+
+
                 </>
             )}
         </View>
