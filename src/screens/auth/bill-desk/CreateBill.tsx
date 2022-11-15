@@ -199,7 +199,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         onPress={() => {
                             setOpenContinueModal('CONTINUE');
                             refRBSheet.current.open();
-                            setModalHeight(700);
+                            setModalHeight(600);
                         }}
                         disabled={everyItem.length > 0 ? false : true}
                     />

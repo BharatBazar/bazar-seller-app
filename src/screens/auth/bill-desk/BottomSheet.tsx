@@ -48,6 +48,7 @@ const BottomSheet: React.FC<IBottomSheet> = ({
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
+                dragFromTopOnly={true}
                 height={modalHeight}
                 animationType={'slide'}
                 customStyles={{

@@ -55,9 +55,9 @@ const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyIte
                             <GeneralText text="Review Items" textStyle={[FS(16), { fontFamily: FontFamily.Regular }]} />
                         </View>
                         <View>
-                            <ScrollView>
+                            <ScrollView showsVerticalScrollIndicator={false}>
                                 {everyItem?.map((e) => {
-                                    return <ReviewProduct item={e} removeItem={removeItem} />;
+                                    return <ReviewProduct key={e._id} item={e} removeItem={removeItem} />
                                 })}
                             </ScrollView>
                         </View>

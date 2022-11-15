@@ -20,10 +20,10 @@ const ShowBills: React.FC = ({ navigation }: any) => {
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(1);
     const [loading, setLoading] = React.useState<boolean>(false);
-    const [noItemText, setNoItemText] = React.useState<string>('')
+
 
     const refRBSheet: any = useRef();
-    const noItem: string = "No bills created !"
+    const noItemText: string = "No bills created !"
 
     const getBills = async () => {
         setLoading(true);
@@ -34,9 +34,6 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             console.log('bill response', billResponse);
             if (billResponse.status == 1) {
                 setLoading(false);
-                // if (billResponse.payload.length === 0) {
-                //     setNoItemText('No bills created !')
-                // }
                 setBill(billResponse.payload);
             } else {
                 setLoading(false);
@@ -113,7 +110,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
                 <>
                     {bill.length === 0 ? (
                         <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-                            <GeneralText text={noItem} textStyle={[FF("Regular"), FS(18)]} />
+                            <GeneralText text={noItemText} textStyle={[FF("Regular"), FS(18)]} />
                         </View>
                     ) : (
                         <>
