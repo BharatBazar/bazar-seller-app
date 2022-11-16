@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, FlatList, Alert, Keyboard, ToastAndroid } from 'react-native';
+import { StyleSheet, View, FlatList, Alert, Keyboard, ToastAndroid } from 'react-native';
 import React, { useRef } from 'react';
 import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
@@ -13,6 +13,7 @@ import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
 import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
+import GeneralText from '@app/screens/components/text/GeneralText';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
@@ -26,10 +27,9 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(0);
     const [preEditItem, setPreEditItem] = React.useState<[]>([]);
+    const [errorText, setErrorText] = React.useState<string>('');
 
     const refRBSheet: any = useRef();
-
-
 
     var total = 0;
 
@@ -43,10 +43,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         });
         setEveryItem(removeItem);
         if (everyItem.length === 1) {
-            refRBSheet.current.close()
+            refRBSheet.current.close();
         }
-
-
     };
 
     const findProduct = async (id: number) => {
@@ -66,30 +64,28 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             } else {
                 setLoading(false);
                 Keyboard.dismiss();
-                ToastHOC.errorAlert('Item not found', '', 'top');
+                setErrorText('Item not found');
             }
         } catch (error: any) {
             setLoading(false);
             Keyboard.dismiss();
-            ToastHOC.errorAlert('Not found', error.message, 'top');
+            setErrorText(error.message);
         }
     };
 
     const add = async (item: any) => {
         try {
             const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: item._id })
-            console.log("Checking...", checkItemExist)
+            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: item._id });
+            console.log('Checking...', checkItemExist);
             if (checkItemExist.payload === true) {
-                ToastAndroid.show("Item already listed in bill", 402)
-            }
-            else {
+                ToastAndroid.show('Item already listed in bill', 404);
+            } else {
                 item['price'] = price;
                 item['fixedQuantity'] = item.quantity;
 
                 if (allProducts._id === item._id) {
                     const updateQuantity = (allProducts.quantity = quantity);
-                    console.log(updateQuantity);
                     setQuantity(1);
                     setPrice(0);
                     setItem([allProducts]);
@@ -108,17 +104,18 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                     refRBSheet.current.close();
                 }
             }
-
-        } catch (error) {
+        } catch (error: any) {
             Keyboard.dismiss();
-            ToastHOC.errorAlert('Item not added', 'Not added', 'top');
+            ToastAndroid.show(error.message, 404);
         }
     };
 
-    const changeQuantity = (quantity: number) => {
+    const changeQuantity = (quantity: number, setQuan: any) => {
         if (quantity > allProducts.quantity) {
+            setQuan(' ');
             Alert.alert('you cannot add item');
         } else {
+            setQuan(quantity);
             setQuantity(quantity);
         }
     };
@@ -157,6 +154,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         setOpenContinueModal('ADD_PRODUCT');
                         refRBSheet.current.open();
                         setModalHeight(500);
+                        setErrorText('');
                     }}
                 />
             </View>
@@ -175,13 +173,20 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                                     setModalHeight={setModalHeight}
                                     setEveryItem={setEveryItem}
                                     setPreEditItem={setPreEditItem}
+                                    setErrorText={setErrorText}
                                 />
                             )}
                             showsVerticalScrollIndicator={false}
                         />
                         <View style={[FDR(), JCC('space-between')]}>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>Total Price</Text>
-                            <Text style={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}>$ {total}</Text>
+                            <GeneralText
+                                text="Total Price"
+                                textStyle={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}
+                            />
+                            <GeneralText
+                                text={'₹' + total}
+                                textStyle={[{ fontFamily: FontFamily.Black }, FC('#252525'), FS(16)]}
+                            />
                         </View>
                     </>
                 ) : null}
@@ -194,7 +199,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         onPress={() => {
                             setOpenContinueModal('CONTINUE');
                             refRBSheet.current.open();
-                            setModalHeight(500);
+                            setModalHeight(600);
                         }}
                         disabled={everyItem.length > 0 ? false : true}
                     />
@@ -227,6 +232,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 refRBSheet={refRBSheet}
                 setOpenContinueModal={setOpenContinueModal}
                 preEditItem={preEditItem}
+                errorText={errorText}
+                setErrorText={setErrorText}
             />
         </View>
     );

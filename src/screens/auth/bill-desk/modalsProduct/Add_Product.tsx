@@ -11,6 +11,7 @@ import RightComponentButtonWithLeftText from '@app/screens/components/button/Rig
 import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IAdd_Product } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
+import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
 
 const Add_Product: React.FC<IAdd_Product> = ({
     refRBSheet,
@@ -28,7 +29,13 @@ const Add_Product: React.FC<IAdd_Product> = ({
     changeQuantity,
     add,
     changeSellingPrice,
+    errorText,
+    setErrorText,
 }) => {
+    const [quan, setQuan] = React.useState<String>('1');
+
+    const multiply: string = '×';
+
     return (
         <>
             <View style={[PH(), FLEX(1)]}>
@@ -48,7 +55,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                 <View style={[MT(0.2)]}>
                     <GeneralText fontFamily={'Regular'} text="Enter Item Id" />
 
-                    <WrappedTextInput
+                    <GeneralTextInput
                         placeholder="Id"
                         containerStyle={[
                             border,
@@ -63,7 +70,9 @@ const Add_Product: React.FC<IAdd_Product> = ({
                         onChangeText={(id) => {
                             setId(id);
                             setShowEnter(true), setItem([]);
+                            setErrorText('');
                         }}
+                        errorText={errorText}
                     />
                     {id && showEnter !== false ? (
                         <>
@@ -93,9 +102,11 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                         source={{ uri: allProducts.productId.sellerIdentificationPhoto }}
                                     />
                                     <View style={[AS('center'), JCC('space-between'), FDR('column'), PL(0.2)]}>
-                                        <Text style={[{ fontFamily: FontFamily.Regular }, FS(14)]}>
-                                            {allProducts.productId.parentId.name} × {quantity < 1 ? 1 : quantity}
-                                        </Text>
+                                        <GeneralText
+                                            text={`${allProducts.productId.parentId.name} × ${quantity < 1 ? 1 : quantity
+                                                } `}
+                                            textStyle={[{ fontFamily: FontFamily.Regular }, FS(14)]}
+                                        />
                                     </View>
                                 </View>
                                 <View
@@ -112,30 +123,34 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                     ]}
                                 ></View>
                                 <View style={[AS('center'), FDR()]}></View>
-                                <Text
-                                    style={[
-                                        FS(15),
-                                        FC('#252525'),
-                                        AS('center'),
-                                        PR(0.2),
-                                        { fontFamily: FontFamily.Black },
-                                    ]}
-                                >
-                                    ₹ {Number(price) * Number(quantity)}
-                                </Text>
+
+                                <GeneralText
+                                    text={'₹' + price * quantity}
+                                    fontFamily="Black"
+                                    fontSize={15}
+                                    textColor="#252525"
+                                    textStyle={[AS('center'), PR(0.2)]}
+                                />
                             </View>
                         </View>
 
                         <View style={[FDR(), JCC('space-between'), MT(0.2)]}>
                             <View>
-                                <Text style={[{ fontFamily: FontFamily.Bold }, FC('#252525'), FS(17)]}>Quantity</Text>
-                                <Text style={[AS('center'), FC('green'), FS(14)]}>
-                                    Quantity available {allProducts.quantity}
-                                </Text>
+                                <GeneralText text="Quantity" fontFamily="Bold" textColor="#252525" fontSize={17} />
+
+                                <GeneralText
+                                    text={
+                                        allProducts.quantity === 0
+                                            ? 'Out of stock'
+                                            : `Quantity available ${allProducts.quantity}`
+                                    }
+                                    textStyle={[AS('center'), FC(allProducts.quantity === 0 ? 'red' : 'green'), FS(14)]}
+                                />
                             </View>
                             <TextInput
+                                value={allProducts.quantity === 0 ? '0' : quan}
                                 textAlign="center"
-                                onChangeText={(e) => changeQuantity(e, allProducts)}
+                                onChangeText={(e) => changeQuantity(e, setQuan)}
                                 keyboardType="number-pad"
                                 style={[
                                     BW(1),
@@ -150,9 +165,11 @@ const Add_Product: React.FC<IAdd_Product> = ({
                         </View>
 
                         <View style={[FDR(), MT(0.2), JCC('space-between')]}>
-                            <Text style={[{ fontFamily: FontFamily.Bold }, AS('center'), FC('#252525'), FS(17)]}>
-                                Selling Price
-                            </Text>
+                            <GeneralText
+                                text="Selling Price"
+                                textStyle={[{ fontFamily: FontFamily.Bold }, AS('center'), FC('#252525'), FS(17)]}
+                            />
+
                             <TextInput
                                 textAlign="center"
                                 onChangeText={(e) => changeSellingPrice(e)}

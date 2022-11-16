@@ -32,7 +32,9 @@ const BottomSheet: React.FC<IBottomSheet> = ({
     price,
     quantity,
     navigation,
-    preEditItem
+    preEditItem,
+    errorText,
+    setErrorText,
 }) => {
     useEffect(() => {
         if (route.params.openModal === true) {
@@ -46,6 +48,7 @@ const BottomSheet: React.FC<IBottomSheet> = ({
             <RBSheet
                 ref={refRBSheet}
                 closeOnDragDown={true}
+                dragFromTopOnly={true}
                 height={modalHeight}
                 animationType={'slide'}
                 customStyles={{
@@ -86,6 +89,8 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             changeQuantity={changeQuantity}
                             add={add}
                             changeSellingPrice={changeSellingPrice}
+                            errorText={errorText}
+                            setErrorText={setErrorText}
                         />
                     </>
                 ) : openContinueModal === 'EDIT' ? (
