@@ -106,6 +106,8 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'token exist');
                 await Storage.setItem(StorageItemKeys.userDetail, currentAccountState.data);
+
+                console.log(CoreConfig.setShopId);
                 await CoreConfig.setShopId(response.payload.data.shop._id);
                 await CoreConfig.setUserId(response.payload.data._id);
                 let screen = '';

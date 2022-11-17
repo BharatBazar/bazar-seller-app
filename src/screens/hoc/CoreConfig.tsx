@@ -1,15 +1,14 @@
 import { Storage, StorageItemKeys } from '@app/storage';
 
 class CoreConfig {
-    checkData(data: string, name: string) {
-        if (!data) {
-            throw new Error(`setting empty ${name} in coreconfig`);
-        }
-    }
-
     static async setUserId(userId: string) {
         this.checkData(userId, 'userId');
         await Storage.setItem(StorageItemKeys.userId, userId);
+    }
+    static checkData(data: string, name: string) {
+        if (!data) {
+            throw new Error(`setting empty ${name} in coreconfig`);
+        }
     }
 
     static async setShopId(shopId: string) {
