@@ -31,7 +31,7 @@ import ProductCategory from '../screens/app/dashboard/ProductCategory';
 import ProdcutSearch from '../screens/app/search/Search';
 import Product from '../screens/app/listing/Main';
 import CreateProduct from '../screens/app/product-edit/index';
-import CloseIcon from 'react-native-vector-icons/AntDesign'
+import CloseIcon from 'react-native-vector-icons/AntDesign';
 import CreateBill from '@app/screens/auth/bill-desk/CreateBill';
 import ShowBills from '@app/screens/auth/bill-desk/ShowBills';
 
@@ -46,7 +46,6 @@ const config: TransitionSpec = {
 };
 
 const toastConfig = {
-
     success: (props: any) => (
         <BaseToast
             {...props}
@@ -60,7 +59,11 @@ const toastConfig = {
                 fontSize: 13,
                 fontFamily: FontFamily.Helvatica,
             }}
-            renderTrailingIcon={() => <TouchableOpacity style={{ alignSelf: "center", paddingRight: 10 }} onPress={() => Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
+            renderTrailingIcon={() => (
+                <TouchableOpacity style={{ alignSelf: 'center', paddingRight: 10 }} onPress={() => Toast.hide()}>
+                    {<CloseIcon name="close" size={22} color="#222222" />}
+                </TouchableOpacity>
+            )}
         />
     ),
 
@@ -75,8 +78,11 @@ const toastConfig = {
                 fontSize: 13,
                 fontFamily: FontFamily.Helvatica,
             }}
-            renderTrailingIcon={() => <TouchableOpacity style={{ alignSelf: "center", paddingRight: 10 }} onPress={() => Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
-
+            renderTrailingIcon={() => (
+                <TouchableOpacity style={{ alignSelf: 'center', paddingRight: 10 }} onPress={() => Toast.hide()}>
+                    {<CloseIcon name="close" size={22} color="#222222" />}
+                </TouchableOpacity>
+            )}
         />
     ),
 
@@ -91,8 +97,11 @@ const toastConfig = {
                 fontSize: 13,
                 fontFamily: FontFamily.Helvatica,
             }}
-            renderTrailingIcon={() => <TouchableOpacity style={{ alignSelf: "center", paddingRight: 10 }} onPress={() => Toast.hide()}>{<CloseIcon name='close' size={22} color="#222222" />}</TouchableOpacity>}
-
+            renderTrailingIcon={() => (
+                <TouchableOpacity style={{ alignSelf: 'center', paddingRight: 10 }} onPress={() => Toast.hide()}>
+                    {<CloseIcon name="close" size={22} color="#222222" />}
+                </TouchableOpacity>
+            )}
         />
     ),
 };
@@ -102,10 +111,6 @@ const AppNavigation = () => {
             <Stack.Navigator
                 screenOptions={{
                     headerShown: false,
-                    // transitionSpec: {
-                    //     open: config,
-                    //     close: config,
-                    // },
                 }}
                 initialRouteName={NavigationKey.SPLASH}
             >
@@ -160,12 +165,20 @@ const AppNavigation = () => {
                         animation: 'fade',
                     }}
                 />
-                <Stack.Screen name={NavigationKey.CREATEBILL} component={CreateBill} options={{
-                    animation: "slide_from_right"
-                }} />
-                <Stack.Screen name={NavigationKey.SHOWBILLS} component={ShowBills} options={{
-                    animation: "slide_from_right"
-                }} />
+                <Stack.Screen
+                    name={NavigationKey.CREATEBILL}
+                    component={CreateBill}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
+                <Stack.Screen
+                    name={NavigationKey.SHOWBILLS}
+                    component={ShowBills}
+                    options={{
+                        animation: 'slide_from_right',
+                    }}
+                />
                 <Stack.Screen
                     name={NavigationKey.RESETPASSWORD}
                     component={ResetPassword}

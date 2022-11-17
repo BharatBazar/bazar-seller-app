@@ -12,6 +12,7 @@ import UpdateBottomSheet from './UpdateBottomSheet';
 import Loader from '@app/screens/component/Loader';
 import ShowBillsRender from './ProductRenders/ShowBillsRender';
 import GeneralText from '@app/screens/components/text/GeneralText';
+import CoreConfig from '@app/screens/hoc/CoreConfig';
 
 const ShowBills: React.FC = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
@@ -21,16 +22,15 @@ const ShowBills: React.FC = ({ navigation }: any) => {
     const [price, setPrice] = React.useState<number>(1);
     const [loading, setLoading] = React.useState<boolean>(false);
 
-
     const refRBSheet: any = useRef();
-    const noItemText: string = "No bills created !"
+    const noItemText: string = 'No bills created !';
 
     const getBills = async () => {
         setLoading(true);
         try {
-            const userDetail = await Storage.getItem(StorageItemKeys.userDetail);
-            console.log('Shop ids', userDetail);
-            const billResponse: any = await showBill(userDetail.shop._id || userDetail.shop);
+            const shopId = await CoreConfig.getShopId();
+
+            const billResponse: any = await showBill(shopId);
             console.log('bill response', billResponse);
             if (billResponse.status == 1) {
                 setLoading(false);
@@ -105,18 +105,18 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             {loading === true ? (
                 <Loader />
             ) : (
-
-
                 <>
                     {bill.length === 0 ? (
-                        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }} >
-                            <GeneralText text={noItemText} textStyle={[FF("Regular"), FS(18)]} />
+                        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                            <GeneralText text={noItemText} textStyle={[FF('Regular'), FS(18)]} />
                         </View>
                     ) : (
                         <>
                             <FlatList
                                 data={bill}
-                                renderItem={({ item }) => <ShowBillsRender item={item} openUpdateSheet={openUpdateSheet} />}
+                                renderItem={({ item }) => (
+                                    <ShowBillsRender item={item} openUpdateSheet={openUpdateSheet} />
+                                )}
                                 keyExtractor={(bill: any) => bill._id}
                             />
                             <UpdateBottomSheet
@@ -129,11 +129,6 @@ const ShowBills: React.FC = ({ navigation }: any) => {
                             />
                         </>
                     )}
-
-
-
-
-
                 </>
             )}
         </View>

@@ -24,6 +24,7 @@ import TextRippleButton from '../components/button/TextRippleB';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { PHA, PTA, PVA } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '../components/button/ButtonMaterialIcons';
+import CoreConfig from '../hoc/CoreConfig';
 
 export interface OpenDukanProps extends NavigationProps {}
 
@@ -105,6 +106,8 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                 const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'token exist');
                 await Storage.setItem(StorageItemKeys.userDetail, currentAccountState.data);
+                await CoreConfig.setShopId(response.payload.data.shop._id);
+                await CoreConfig.setUserId(response.payload.data._id);
                 let screen = '';
                 if (currentAccountState.notPasswordAvailable) {
                     screen = NavigationKey.SETPASSWORD;

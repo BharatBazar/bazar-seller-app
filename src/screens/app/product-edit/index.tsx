@@ -1,12 +1,11 @@
 import { AlertContext } from '@app/../App';
-import { FontFamily, fs16, fs20, NavigationProps } from '@app/common';
-import { black100, mainColor } from '@app/common/color';
-import { BGCOLOR, DSP, FLEX, HP, MV, PH, PV } from '@app/common/styles';
-import { HA, MHA, MTA, PBA, PHA, PTA, PVA, WA } from '@app/common/stylesheet';
+import { NavigationProps } from '@app/common';
+import { mainColor } from '@app/common/color';
+import { BGCOLOR, DSP, PV } from '@app/common/styles';
+import { HA, MHA, PBA, WA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import StatusBar from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
 import ButtonAddWithTitleAndSubTitle from '@app/screens/components/button/ButtonAddWithTitleAndSubTitle';
 import HeaderWithBackButtonTitleAndrightButton from '@app/screens/components/header/HeaderWithBackButtonTitleAndrightButton';

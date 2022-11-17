@@ -14,6 +14,7 @@ import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
 import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
 import GeneralText from '@app/screens/components/text/GeneralText';
+import CoreConfig from '@app/screens/hoc/CoreConfig';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
@@ -50,8 +51,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const findProduct = async (id: number) => {
         try {
             setLoading(true);
-            const userDetails = await Storage.getItem(StorageItemKeys.userDetail);
-            const itemResponse: any = await APIGetItemSize({ shopId: userDetails.shop._id, itemId: id });
+            const shopId = await CoreConfig.getShopId();
+            const itemResponse: any = await APIGetItemSize({ shopId: shopId, itemId: id });
             console.log('RESPPO', itemResponse);
             const product = itemResponse.payload[0];
             if (itemResponse.status == 1) {
@@ -75,8 +76,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
 
     const add = async (item: any) => {
         try {
-            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: item._id });
+            const shopId = await CoreConfig.getShopId();
+            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId, productId: item._id });
             console.log('Checking...', checkItemExist);
             if (checkItemExist.payload === true) {
                 ToastAndroid.show('Item already listed in bill', 404);

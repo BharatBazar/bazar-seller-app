@@ -30,4 +30,6 @@ export const StorageItemKeys = {
     isCustomerOnboardingCompleted: 'isSignupComplete',
     currentScreen: 'currentScreen',
     userDetail: 'userDetails',
+    userId: 'userId',
+    shopId: 'shopId',
 };

@@ -10,6 +10,7 @@ import ReviewProduct from '../ProductRenders/ReviewProduct';
 import { IContinueModal } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import Loader from '@app/screens/component/Loader';
+import CoreConfig from '@app/screens/hoc/CoreConfig';
 
 const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyItem, total, navigation, removeItem }) => {
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -18,7 +19,7 @@ const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyIte
         try {
             setLoading(true);
             const id = everyItem.map((e: any) => e);
-            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+            const shopId = await CoreConfig.getShopId();
             const bill = await createBill({
                 name: 'Babu rao',
                 totalPrice: total,
@@ -29,7 +30,7 @@ const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyIte
                         productSize: e._id,
                     };
                 }),
-                shopId: shopId.shop,
+                shopId: shopId,
             });
             if (bill.status === 1) {
                 ToastHOC.infoAlert('Product has been saved', 'Information', 'top');
@@ -57,7 +58,7 @@ const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyIte
                         <View>
                             <ScrollView showsVerticalScrollIndicator={false}>
                                 {everyItem?.map((e) => {
-                                    return <ReviewProduct key={e._id} item={e} removeItem={removeItem} />
+                                    return <ReviewProduct key={e._id} item={e} removeItem={removeItem} />;
                                 })}
                             </ScrollView>
                         </View>
