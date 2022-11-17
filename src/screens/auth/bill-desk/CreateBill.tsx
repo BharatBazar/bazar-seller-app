@@ -50,8 +50,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const findProduct = async (id: number) => {
         try {
             setLoading(true);
-            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
+            const userDetails = await Storage.getItem(StorageItemKeys.userDetail);
+            const itemResponse: any = await APIGetItemSize({ shopId: userDetails.shop._id, itemId: id });
             console.log('RESPPO', itemResponse);
             const product = itemResponse.payload[0];
             if (itemResponse.status == 1) {

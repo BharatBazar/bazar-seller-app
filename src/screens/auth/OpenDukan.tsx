@@ -100,7 +100,6 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             setLoader(true);
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
 
-            setLoader(false);
             console.log('Response', response);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
@@ -136,7 +135,9 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     navigateTo(screen, currentAccountState.data);
                 }
+                setLoader(false);
             } else {
+                setLoader(false);
                 setError({ error: response.message });
             }
         } catch (error) {
@@ -169,8 +170,8 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     onPress={() => {
                         navigation.goBack();
                     }}
-                    iconName={'chevron-left'}
-                    iconColor="#000"
+                    iconName={'arrow-back'}
+                    iconColor={mainColor}
                     containerHeight={getHP(0.5)}
                     containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                 />

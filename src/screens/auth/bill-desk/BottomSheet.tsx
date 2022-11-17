@@ -1,6 +1,7 @@
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import React, { useEffect } from 'react';
+
 import { IBottomSheet } from './billInterface/Interfaces';
 import Continue from './modalsProduct/Continue';
 import Add_Product from './modalsProduct/Add_Product';
@@ -60,7 +61,7 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                     },
                 }}
             >
-                {openContinueModal === 'CONTINUE' ? (
+                {openContinueModal == 'CONTINUE' ? (
                     <>
                         <Continue
                             setEveryItem={setEveryItem}
@@ -71,7 +72,7 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             removeItem={removeItem}
                         />
                     </>
-                ) : openContinueModal === 'ADD_PRODUCT' ? (
+                ) : openContinueModal == 'ADD_PRODUCT' ? (
                     <>
                         <Add_Product
                             refRBSheet={refRBSheet}
@@ -93,11 +94,11 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             setErrorText={setErrorText}
                         />
                     </>
-                ) : openContinueModal === 'EDIT' ? (
+                ) : openContinueModal == 'EDIT' ? (
                     <>
                         <Edit changeQuantity={changeQuantity} />
                     </>
-                ) : openContinueModal === 'PRE-EDIT' ? (
+                ) : openContinueModal == 'PRE-EDIT' ? (
                     <>
                         <PreEdit
                             setEveryItem={setEveryItem}

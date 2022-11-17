@@ -3,9 +3,9 @@ import { NavigationProps } from '@app/common';
 export interface IBottomSheet {
     add: Function;
     item: string[];
-    modalHeight: Number | number;
+    modalHeight: number | number;
     openContinueModal: string;
-    showEnter: Boolean;
+    showEnter: boolean;
     setShowEnter: (value: boolean) => void;
     setItem: (value: []) => string[];
     findProduct: Function;
@@ -26,8 +26,8 @@ export interface IBottomSheet {
     quantity: number;
     navigation: NavigationProps;
     preEditItem: any[];
-    errorText: string
-    setErrorText: (value: any) => any
+    errorText: string;
+    setErrorText: (value: any) => any;
 }
 
 export interface IUpdateBill {
@@ -62,7 +62,7 @@ export interface IBillProductRendering {
     setEveryItem: (value: any) => void;
     setModalHeight: (value: any) => void;
     setPreEditItem: (value: any) => void;
-    setErrorText: (value: any) => any
+    setErrorText: (value: any) => any;
     item: IItem;
     removeItem: Function;
     refRBSheet: Function | any;
@@ -84,8 +84,8 @@ export interface IAdd_Product {
     changeQuantity: Function;
     add: Function;
     changeSellingPrice: Function;
-    errorText: string,
-    setErrorText: (value: any) => any
+    errorText: string;
+    setErrorText: (value: any) => any;
 }
 
 export interface IContinueModal {
