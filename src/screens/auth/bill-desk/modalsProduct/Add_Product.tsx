@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Image, Keyboard, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import { FontFamily, fs12 } from '@app/common';
@@ -12,6 +12,10 @@ import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IAdd_Product } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
+import { Storage, StorageItemKeys } from '@app/storage';
+import { APIGetItemSize } from '@app/server/apis/product/product.api';
+import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 const Add_Product: React.FC<IAdd_Product> = ({
     refRBSheet,
@@ -20,21 +24,90 @@ const Add_Product: React.FC<IAdd_Product> = ({
     setShowEnter,
     id,
     showEnter,
-    loading,
     item,
-    findProduct,
     allProducts,
     quantity,
     price,
     changeQuantity,
-    add,
-    changeSellingPrice,
     errorText,
+    setAllProducts,
     setErrorText,
+    setQuantity,
+    everyItem,
+    setEveryItem,
+    setPrice
 }) => {
     const [quan, setQuan] = React.useState<String>('1');
+    const [loading, setLoading] = React.useState<boolean>(false)
 
-    const multiply: string = '×';
+    const changeSellingPrice = (price: number) => {
+        setPrice(price);
+    };
+
+    const findProduct = async (id: number | string) => {
+        try {
+            setLoading(true);
+            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+            const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
+            console.log('RESPPO', itemResponse);
+            const product = itemResponse.payload[0];
+            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: product._id });
+            console.log('Checking...', checkItemExist);
+            if (checkItemExist.payload === true) {
+                setLoading(false)
+                ToastAndroid.show('Item already listed in bill', 404);
+            } else {
+                if (itemResponse.status == 1) {
+                    // setModalHeight(600);
+                    setLoading(false);
+                    setAllProducts(product);
+                    setItem([product]);
+                    setShowEnter(false);
+                    Keyboard.dismiss();
+                } else {
+                    setLoading(false);
+                    Keyboard.dismiss();
+                    setErrorText('Item not found');
+                }
+            }
+
+        } catch (error: any) {
+            setLoading(false);
+            Keyboard.dismiss();
+            setErrorText(error.message);
+        }
+    };
+
+    const add = async (item: any) => {
+        try {
+            item['price'] = price;
+            item['fixedQuantity'] = item.quantity;
+
+            if (allProducts._id === item._id) {
+                const updateQuantity = (allProducts.quantity = quantity);
+                setQuantity(1);
+                setPrice(0);
+                setItem([allProducts]);
+                Keyboard.dismiss();
+            } else {
+                console.log('error occured');
+                Keyboard.dismiss();
+            }
+            const check = everyItem.filter((e: any) => e._id === item._id);
+            if (check.length === 1) {
+                ToastHOC.errorAlert('Item already in list', '', 'top');
+                Keyboard.dismiss();
+            } else {
+                setEveryItem(everyItem.concat(item));
+                setItem([]);
+                refRBSheet.current.close();
+            }
+
+        } catch (error: any) {
+            Keyboard.dismiss();
+            ToastAndroid.show(error.message, 404);
+        }
+    };
 
     return (
         <>

@@ -47,68 +47,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         }
     };
 
-    const findProduct = async (id: number) => {
-        try {
-            setLoading(true);
-            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
-            console.log('RESPPO', itemResponse);
-            const product = itemResponse.payload[0];
-            if (itemResponse.status == 1) {
-                setModalHeight(600);
-                setLoading(false);
-                setAllProducts(product);
-                setItem([product]);
-                setShowEnter(false);
-                Keyboard.dismiss();
-            } else {
-                setLoading(false);
-                Keyboard.dismiss();
-                setErrorText('Item not found');
-            }
-        } catch (error: any) {
-            setLoading(false);
-            Keyboard.dismiss();
-            setErrorText(error.message);
-        }
-    };
-
-    const add = async (item: any) => {
-        try {
-            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
-            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: item._id });
-            console.log('Checking...', checkItemExist);
-            if (checkItemExist.payload === true) {
-                ToastAndroid.show('Item already listed in bill', 404);
-            } else {
-                item['price'] = price;
-                item['fixedQuantity'] = item.quantity;
-
-                if (allProducts._id === item._id) {
-                    const updateQuantity = (allProducts.quantity = quantity);
-                    setQuantity(1);
-                    setPrice(0);
-                    setItem([allProducts]);
-                    Keyboard.dismiss();
-                } else {
-                    console.log('error occured');
-                    Keyboard.dismiss();
-                }
-                const check = everyItem.filter((e: any) => e._id === item._id);
-                if (check.length === 1) {
-                    ToastHOC.errorAlert('Item already in list', '', 'top');
-                    Keyboard.dismiss();
-                } else {
-                    setEveryItem(everyItem.concat(item));
-                    setItem([]);
-                    refRBSheet.current.close();
-                }
-            }
-        } catch (error: any) {
-            Keyboard.dismiss();
-            ToastAndroid.show(error.message, 404);
-        }
-    };
 
     const changeQuantity = (quantity: number, setQuan: any) => {
         if (quantity > allProducts.quantity) {
@@ -120,9 +58,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
         }
     };
 
-    const changeSellingPrice = (price: number) => {
-        setPrice(price);
-    };
+
 
     return (
         <View style={[FLEX(1), BGCOLOR('#ffffff')]}>
@@ -210,14 +146,12 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 navigation={navigation}
                 quantity={quantity}
                 price={price}
-                changeSellingPrice={changeSellingPrice}
                 setEveryItem={setEveryItem}
                 total={total}
                 loading={loading}
                 removeItem={removeItem}
                 everyItem={everyItem}
                 changeQuantity={changeQuantity}
-                add={add}
                 allProducts={allProducts}
                 item={item}
                 modalHeight={modalHeight}
@@ -226,7 +160,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 setShowEnter={setShowEnter}
                 setId={setId}
                 setItem={setItem}
-                findProduct={findProduct}
                 id={id}
                 route={route}
                 refRBSheet={refRBSheet}
@@ -234,6 +167,9 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 preEditItem={preEditItem}
                 errorText={errorText}
                 setErrorText={setErrorText}
+                setAllProducts={setAllProducts}
+                setQuantity={setQuantity}
+                setPrice={setPrice}
             />
         </View>
     );

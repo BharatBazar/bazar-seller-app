@@ -14,12 +14,16 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
     const [errorText2, setErrorText2] = React.useState<string>('');
 
     const changeQuantity = (e: string | number) => {
-        if (e < 1 || e > preEditItem.fixedQuantity) {
-            setErrorText1('This much quantity is not available');
-        } else {
-            everyItem.find((e) => e._id === preEditItem._id).quantity = e;
-            setEveryItem([...everyItem]);
-            setErrorText1('');
+        try {
+            if (e < 1 || e > preEditItem.fixedQuantity) {
+                setErrorText1('This much quantity is not available');
+            } else {
+                everyItem.find((e) => e._id === preEditItem._id).quantity = e;
+                setEveryItem([...everyItem]);
+                setErrorText1('');
+            }
+        } catch (error: any) {
+            console.log("ERROR", error.message);
         }
     };
 
@@ -33,7 +37,7 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
         }
     };
 
-    const quantity = preEditItem;
+
 
     return (
         <>
@@ -49,9 +53,14 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
                             textStyle={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(17)]}
                         />
 
+                        <GeneralText
+                            text={`quantity available ${preEditItem.fixedQuantity.toString()}`}
+                            textStyle={[{ fontFamily: FontFamily.Regular }, FC('green'), FS(12)]}
+                        />
+
                         <GeneralTextInput
                             onChangeText={(e) => changeQuantity(e)}
-                            placeholder={preEditItem.fixedQuantity.toString()}
+                            placeholder={preEditItem.quantity.toString()}
                             containerStyle={[
                                 border,
                                 MT(0.15),
@@ -61,7 +70,7 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
                                 { paddingLeft: getHP(0.1) },
                             ]}
                             textInputStyle={[FS(fs12), HP(0.4)]}
-                            keyboardType="number-pad"
+                            keyboardType="numeric"
                             errorText={errorText1}
                         />
                     </View>

@@ -1,14 +1,12 @@
 import { NavigationProps } from '@app/common';
 
 export interface IBottomSheet {
-    add: Function;
     item: string[];
     modalHeight: Number | number;
     openContinueModal: string;
     showEnter: Boolean;
     setShowEnter: (value: boolean) => void;
     setItem: (value: []) => string[];
-    findProduct: Function;
     id: number | string | undefined;
     route: any;
     refRBSheet: any;
@@ -21,13 +19,15 @@ export interface IBottomSheet {
     removeItem: Function;
     loading: boolean;
     setEveryItem: (value: any) => string[];
-    changeSellingPrice: Function;
     price: number;
     quantity: number;
     navigation: NavigationProps;
     preEditItem: any[];
     errorText: string
     setErrorText: (value: any) => any
+    setAllProducts:(value:any)=>any
+    setQuantity:(value:any)=>any
+    setPrice:(value:any)=>any
 }
 
 export interface IUpdateBill {
@@ -83,9 +83,13 @@ export interface IAdd_Product {
     price: number;
     changeQuantity: Function;
     add: Function;
-    changeSellingPrice: Function;
     errorText: string,
     setErrorText: (value: any) => any
+    setAllProducts:(value:any)=>any
+    setQuantity:(value:any)=>any
+    everyItem:string[]
+    setEveryItem: (value: any) => any;
+    setPrice: (value: any) => any;
 }
 
 export interface IContinueModal {

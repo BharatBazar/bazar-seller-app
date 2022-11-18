@@ -18,7 +18,7 @@ const Edit: React.FC<IEdit> = ({ changeQuantity }) => {
                     placeholder="Quantity"
                     containerStyle={[border, MT(0.15), HP(0.5), borRad, AIC('flex-start'), { paddingLeft: getHP(0.1) }]}
                     textInputStyle={[FS(fs12), HP(0.4)]}
-                    keyboardType="number-pad"
+                    keyboardType="numeric"
                     onChangeText={(e) => changeQuantity(e)}
                 />
                 <GeneralTextInput

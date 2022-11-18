@@ -8,14 +8,12 @@ import Edit from './modalsProduct/Edit';
 import PreEdit from './modalsProduct/PreEdit';
 
 const BottomSheet: React.FC<IBottomSheet> = ({
-    add,
     item,
     modalHeight,
     openContinueModal,
     showEnter,
     setShowEnter,
     setItem,
-    findProduct,
     id,
     route,
     refRBSheet,
@@ -28,13 +26,15 @@ const BottomSheet: React.FC<IBottomSheet> = ({
     removeItem,
     loading,
     setEveryItem,
-    changeSellingPrice,
     price,
     quantity,
     navigation,
     preEditItem,
     errorText,
     setErrorText,
+    setAllProducts,
+    setQuantity,
+    setPrice
 }) => {
     useEffect(() => {
         if (route.params.openModal === true) {
@@ -82,15 +82,17 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             showEnter={showEnter}
                             loading={loading}
                             item={item}
-                            findProduct={findProduct}
                             allProducts={allProducts}
                             quantity={quantity}
                             price={price}
                             changeQuantity={changeQuantity}
-                            add={add}
-                            changeSellingPrice={changeSellingPrice}
                             errorText={errorText}
                             setErrorText={setErrorText}
+                            setAllProducts={setAllProducts}
+                            setQuantity={setQuantity}
+                            everyItem={everyItem}
+                            setEveryItem={setEveryItem}
+                            setPrice={setPrice}
                         />
                     </>
                 ) : openContinueModal === 'EDIT' ? (
