@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React from 'react';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';

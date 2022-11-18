@@ -1,4 +1,4 @@
-import { StyleSheet, View, FlatList, Alert, } from 'react-native';
+import { StyleSheet, View, FlatList, Alert } from 'react-native';
 import React, { useRef } from 'react';
 import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
@@ -25,8 +25,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     everyItem.forEach((i: any) => {
         total += i.price * i.quantity;
     });
-
-
 
     return (
         <View style={[FLEX(1), BGCOLOR('#ffffff')]}>
@@ -58,7 +56,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         setOpenContinueModal('ADD_PRODUCT');
                         refRBSheet.current.open();
                         setModalHeight(500);
-                        setAllProducts([])
+                        setAllProducts([]);
                     }}
                 />
             </View>

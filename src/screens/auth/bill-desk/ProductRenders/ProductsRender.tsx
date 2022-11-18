@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { AS, BC, BGCOLOR, BR, BW, FC, FDR, FS, H, JCC, MT, P, PH, PL, PR, PV, W } from '@app/common/styles';
 import { PA } from '@app/common/stylesheet';

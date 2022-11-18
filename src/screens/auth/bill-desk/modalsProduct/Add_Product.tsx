@@ -1,9 +1,17 @@
-import { Alert, Image, Keyboard, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import {
+    Alert,
+    Image,
+    Keyboard,
+    StyleSheet,
+    TextInput,
+    ToastAndroid,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import React from 'react';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import { FontFamily, fs12 } from '@app/common';
 import { mainColor } from '@app/common/color';
-import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
 import Loader from '@app/screens/component/Loader';
@@ -15,24 +23,16 @@ import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
-const Add_Product: React.FC<IAdd_Product> = ({
-    refRBSheet,
-    allProducts,
-    everyItem,
-    setAllProducts,
-    setEveryItem,
-}) => {
+const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyItem, setAllProducts, setEveryItem }) => {
     const [quan, setQuan] = React.useState<String>('1');
-    const [loading, setLoading] = React.useState<boolean>(false)
-    const [showEnter, setShowEnter] = React.useState<boolean>(false)
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [showEnter, setShowEnter] = React.useState<boolean>(false);
     const [item, setItem]: any = React.useState<[]>([]);
     const [id, setId] = React.useState<number | string>();
-    const [errorText, setErrorText] = React.useState<string>('')
+    const [errorText, setErrorText] = React.useState<string>('');
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(0);
-
 
     const changeQuantity = (quantity: number, setQuan: any) => {
         if (quantity > allProducts.quantity) {
@@ -43,8 +43,6 @@ const Add_Product: React.FC<IAdd_Product> = ({
             setQuantity(quantity);
         }
     };
-
-
 
     const changeSellingPrice = (price: number) => {
         setPrice(price);
@@ -57,10 +55,13 @@ const Add_Product: React.FC<IAdd_Product> = ({
             const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
             console.log('RESPPO', itemResponse);
             const product = itemResponse.payload[0];
-            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId.shop, productId: product._id });
+            const checkItemExist: any = await checkBillProductExistOrNot({
+                shopId: shopId.shop,
+                productId: product._id,
+            });
             console.log('Checking...', checkItemExist);
             if (checkItemExist.payload === true) {
-                setLoading(false)
+                setLoading(false);
                 ToastAndroid.show('Item already listed in bill', 404);
             } else {
                 if (itemResponse.status == 1) {
@@ -76,7 +77,6 @@ const Add_Product: React.FC<IAdd_Product> = ({
                     setErrorText('Item not found');
                 }
             }
-
         } catch (error: any) {
             setLoading(false);
             Keyboard.dismiss();
@@ -101,14 +101,13 @@ const Add_Product: React.FC<IAdd_Product> = ({
             }
             const check = everyItem.filter((e: any) => e._id === item._id);
             if (check.length === 1) {
-                ToastAndroid.show('Item already in list', 405)
+                ToastAndroid.show('Item already in list', 405);
                 Keyboard.dismiss();
             } else {
                 setEveryItem(everyItem.concat(item));
                 setItem([]);
                 refRBSheet.current.close();
             }
-
         } catch (error: any) {
             Keyboard.dismiss();
             ToastAndroid.show(error.message, 404);
@@ -117,7 +116,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
 
     React.useEffect(() => {
         setTimeout(() => {
-            setErrorText('')
+            setErrorText('');
         }, 5000);
     }, [errorText]);
 
@@ -300,7 +299,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
-        marginTop: '5%'
-
+        marginTop: '5%',
     },
 });
