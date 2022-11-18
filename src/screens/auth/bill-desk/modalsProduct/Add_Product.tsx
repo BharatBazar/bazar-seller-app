@@ -1,4 +1,4 @@
-import { Image, Keyboard, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
+import { Alert, Image, Keyboard, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import { FontFamily, fs12 } from '@app/common';
@@ -20,28 +20,37 @@ import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 const Add_Product: React.FC<IAdd_Product> = ({
     refRBSheet,
     allProducts,
-    quantity,
-    price,
-    changeQuantity,
-    errorText,
     everyItem,
     setAllProducts,
-    setErrorText,
-    setQuantity,
     setEveryItem,
-    setPrice
 }) => {
     const [quan, setQuan] = React.useState<String>('1');
     const [loading, setLoading] = React.useState<boolean>(false)
     const [showEnter, setShowEnter] = React.useState<boolean>(false)
     const [item, setItem]: any = React.useState<[]>([]);
     const [id, setId] = React.useState<number | string>();
+    const [errorText, setErrorText] = React.useState<string>('')
+    const [quantity, setQuantity] = React.useState<number>(1);
+    const [price, setPrice] = React.useState<number>(0);
 
-    const changeSellingPrice = (price: number | string) => {
+
+    const changeQuantity = (quantity: number, setQuan: any) => {
+        if (quantity > allProducts.quantity) {
+            setQuan(' ');
+            Alert.alert('you cannot add item');
+        } else {
+            setQuan(quantity);
+            setQuantity(quantity);
+        }
+    };
+
+
+
+    const changeSellingPrice = (price: number) => {
         setPrice(price);
     };
 
-    const findProduct = async (id: number | string) => {
+    const findProduct: Function = async (id: number | string) => {
         try {
             setLoading(true);
             const shopId = await Storage.getItem(StorageItemKeys.userDetail);
@@ -92,7 +101,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
             }
             const check = everyItem.filter((e: any) => e._id === item._id);
             if (check.length === 1) {
-                ToastHOC.errorAlert('Item already in list', '', 'top');
+                ToastAndroid.show('Item already in list', 405)
                 Keyboard.dismiss();
             } else {
                 setEveryItem(everyItem.concat(item));
@@ -105,6 +114,12 @@ const Add_Product: React.FC<IAdd_Product> = ({
             ToastAndroid.show(error.message, 404);
         }
     };
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setErrorText('')
+        }, 5000);
+    }, [errorText]);
 
     return (
         <>
@@ -220,7 +235,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                             <TextInput
                                 value={allProducts.quantity === 0 ? '0' : quan}
                                 textAlign="center"
-                                onChangeText={(e) => changeQuantity(e, setQuan)}
+                                onChangeText={(e: any) => changeQuantity(Number(e), setQuan)}
                                 keyboardType="number-pad"
                                 style={[
                                     BW(1),
@@ -242,7 +257,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
 
                             <TextInput
                                 textAlign="center"
-                                onChangeText={(e) => changeSellingPrice(e)}
+                                onChangeText={(e: any) => changeSellingPrice(e)}
                                 keyboardType="numeric"
                                 style={[
                                     BW(1),
@@ -285,5 +300,7 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
+        marginTop: '5%'
+
     },
 });

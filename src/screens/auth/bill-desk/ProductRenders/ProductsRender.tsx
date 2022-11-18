@@ -10,13 +10,24 @@ import GeneralText from '@app/screens/components/text/GeneralText';
 
 const ProductRender: React.FC<IBillProductRendering> = ({
     item,
-    removeItem,
     setOpenContinueModal,
     refRBSheet,
     setModalHeight,
     setPreEditItem,
-    setErrorText,
+    setEveryItem,
+    everyItem
 }) => {
+
+    const removeItem: Function = (id: any) => {
+        const removeItem = everyItem.filter((e: any) => {
+            return e._id !== id;
+        });
+        setEveryItem(removeItem);
+        if (everyItem.length === 1) {
+            refRBSheet.current.close();
+        }
+    };
+
     return (
         <>
             <TouchableOpacity
@@ -25,7 +36,6 @@ const ProductRender: React.FC<IBillProductRendering> = ({
                     setModalHeight(500);
                     refRBSheet.current.open();
                     setPreEditItem(item);
-                    setErrorText('');
                 }}
                 style={styles.card}
             >

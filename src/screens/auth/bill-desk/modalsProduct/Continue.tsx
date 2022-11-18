@@ -11,10 +11,28 @@ import { IContinueModal } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import Loader from '@app/screens/component/Loader';
 
-const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyItem, total, navigation, removeItem }) => {
+const Continue: React.FC<IContinueModal> = ({
+    setEveryItem,
+    refRBSheet,
+    everyItem,
+    total,
+    navigation,
+
+}) => {
+
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    const addProduct = async () => {
+    const removeItem: Function = (id: any) => {
+        const removeItem = everyItem.filter((e: any) => {
+            return e._id !== id;
+        });
+        setEveryItem(removeItem);
+        if (everyItem.length === 1) {
+            refRBSheet.current.close();
+        }
+    };
+
+    const addProduct: Function = async () => {
         try {
             setLoading(true);
             const id = everyItem.map((e: any) => e);

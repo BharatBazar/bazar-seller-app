@@ -4,7 +4,6 @@ import React, { useEffect } from 'react';
 import { IBottomSheet } from './billInterface/Interfaces';
 import Continue from './modalsProduct/Continue';
 import Add_Product from './modalsProduct/Add_Product';
-import Edit from './modalsProduct/Edit';
 import PreEdit from './modalsProduct/PreEdit';
 
 const BottomSheet: React.FC<IBottomSheet> = ({
@@ -12,22 +11,14 @@ const BottomSheet: React.FC<IBottomSheet> = ({
     openContinueModal,
     route,
     refRBSheet,
-    changeQuantity,
     allProducts,
     everyItem,
     total,
-    removeItem,
-    price,
-    quantity,
     navigation,
     preEditItem,
-    errorText,
     setEveryItem,
     setOpenContinueModal,
-    setErrorText,
     setAllProducts,
-    setQuantity,
-    setPrice
 }) => {
     useEffect(() => {
         if (route.params.openModal === true) {
@@ -61,7 +52,6 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             navigation={navigation}
                             everyItem={everyItem}
                             total={total}
-                            removeItem={removeItem}
                         />
                     </>
                 ) : openContinueModal === 'ADD_PRODUCT' ? (
@@ -69,21 +59,10 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                         <Add_Product
                             refRBSheet={refRBSheet}
                             allProducts={allProducts}
-                            quantity={quantity}
-                            price={price}
-                            changeQuantity={changeQuantity}
-                            errorText={errorText}
-                            setErrorText={setErrorText}
                             setAllProducts={setAllProducts}
-                            setQuantity={setQuantity}
                             everyItem={everyItem}
                             setEveryItem={setEveryItem}
-                            setPrice={setPrice}
                         />
-                    </>
-                ) : openContinueModal === 'EDIT' ? (
-                    <>
-                        <Edit changeQuantity={changeQuantity} />
                     </>
                 ) : openContinueModal === 'PRE-EDIT' ? (
                     <>

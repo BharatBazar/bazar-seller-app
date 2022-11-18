@@ -16,10 +16,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [openContinueModal, setOpenContinueModal] = React.useState<string>('');
     const [allProducts, setAllProducts]: any = React.useState<[]>([]);
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
-    const [quantity, setQuantity] = React.useState<number>(1);
-    const [price, setPrice] = React.useState<number>(0);
     const [preEditItem, setPreEditItem] = React.useState<[]>([]);
-    const [errorText, setErrorText] = React.useState<string>('');
 
     const refRBSheet: any = useRef();
 
@@ -28,27 +25,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     everyItem.forEach((i: any) => {
         total += i.price * i.quantity;
     });
-
-    const removeItem = (id: any) => {
-        const removeItem = everyItem.filter((e: any) => {
-            return e._id !== id;
-        });
-        setEveryItem(removeItem);
-        if (everyItem.length === 1) {
-            refRBSheet.current.close();
-        }
-    };
-
-
-    const changeQuantity = (quantity: number, setQuan: any) => {
-        if (quantity > allProducts.quantity) {
-            setQuan(' ');
-            Alert.alert('you cannot add item');
-        } else {
-            setQuan(quantity);
-            setQuantity(quantity);
-        }
-    };
 
 
 
@@ -82,7 +58,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         setOpenContinueModal('ADD_PRODUCT');
                         refRBSheet.current.open();
                         setModalHeight(500);
-                        setErrorText('');
+                        setAllProducts([])
                     }}
                 />
             </View>
@@ -94,14 +70,13 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                             data={everyItem}
                             renderItem={({ item }) => (
                                 <ProductRender
-                                    setOpenContinueModal={setOpenContinueModal}
                                     item={item}
-                                    removeItem={removeItem}
+                                    everyItem={everyItem}
                                     refRBSheet={refRBSheet}
-                                    setModalHeight={setModalHeight}
                                     setEveryItem={setEveryItem}
+                                    setModalHeight={setModalHeight}
                                     setPreEditItem={setPreEditItem}
-                                    setErrorText={setErrorText}
+                                    setOpenContinueModal={setOpenContinueModal}
                                 />
                             )}
                             showsVerticalScrollIndicator={false}
@@ -141,17 +116,9 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                 refRBSheet={refRBSheet}
                 setAllProducts={setAllProducts}
                 preEditItem={preEditItem}
-                errorText={errorText}
-                quantity={quantity}
-                price={price}
                 setEveryItem={setEveryItem}
                 everyItem={everyItem}
-                changeQuantity={changeQuantity}
-                removeItem={removeItem}
                 setOpenContinueModal={setOpenContinueModal}
-                setErrorText={setErrorText}
-                setQuantity={setQuantity}
-                setPrice={setPrice}
                 navigation={navigation}
                 route={route}
                 total={total}
