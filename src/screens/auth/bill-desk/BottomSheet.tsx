@@ -8,29 +8,22 @@ import Edit from './modalsProduct/Edit';
 import PreEdit from './modalsProduct/PreEdit';
 
 const BottomSheet: React.FC<IBottomSheet> = ({
-    item,
     modalHeight,
     openContinueModal,
-    showEnter,
-    setShowEnter,
-    setItem,
-    id,
     route,
     refRBSheet,
-    setId,
-    setOpenContinueModal,
     changeQuantity,
     allProducts,
     everyItem,
     total,
     removeItem,
-    loading,
-    setEveryItem,
     price,
     quantity,
     navigation,
     preEditItem,
     errorText,
+    setEveryItem,
+    setOpenContinueModal,
     setErrorText,
     setAllProducts,
     setQuantity,
@@ -75,13 +68,6 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                     <>
                         <Add_Product
                             refRBSheet={refRBSheet}
-                            setItem={setItem}
-                            setId={setId}
-                            setShowEnter={setShowEnter}
-                            id={id}
-                            showEnter={showEnter}
-                            loading={loading}
-                            item={item}
                             allProducts={allProducts}
                             quantity={quantity}
                             price={price}

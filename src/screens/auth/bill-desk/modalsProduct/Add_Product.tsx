@@ -19,28 +19,25 @@ import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 const Add_Product: React.FC<IAdd_Product> = ({
     refRBSheet,
-    setItem,
-    setId,
-    setShowEnter,
-    id,
-    showEnter,
-    item,
     allProducts,
     quantity,
     price,
     changeQuantity,
     errorText,
+    everyItem,
     setAllProducts,
     setErrorText,
     setQuantity,
-    everyItem,
     setEveryItem,
     setPrice
 }) => {
     const [quan, setQuan] = React.useState<String>('1');
     const [loading, setLoading] = React.useState<boolean>(false)
+    const [showEnter, setShowEnter] = React.useState<boolean>(false)
+    const [item, setItem]: any = React.useState<[]>([]);
+    const [id, setId] = React.useState<number | string>();
 
-    const changeSellingPrice = (price: number) => {
+    const changeSellingPrice = (price: number | string) => {
         setPrice(price);
     };
 

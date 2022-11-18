@@ -1,6 +1,6 @@
-import { StyleSheet, View, FlatList, Alert, Keyboard, ToastAndroid } from 'react-native';
+import { StyleSheet, View, FlatList, Alert, } from 'react-native';
 import React, { useRef } from 'react';
-import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
+import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { colorCode, mainColor } from '@app/common/color';
@@ -8,21 +8,13 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { FontFamily, fs18 } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import BottomSheet from './BottomSheet';
-import { Storage, StorageItemKeys } from '@app/storage';
-import { APIGetItemSize } from '@app/server/apis/product/product.api';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
-import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
 import GeneralText from '@app/screens/components/text/GeneralText';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
-    const [id, setId] = React.useState<number>();
-    const [item, setItem]: any = React.useState<[]>([]);
-    const [showEnter, setShowEnter] = React.useState<boolean>(true);
     const [openContinueModal, setOpenContinueModal] = React.useState<string>('');
     const [allProducts, setAllProducts]: any = React.useState<[]>([]);
-    const [loading, setLoading] = React.useState<boolean>(false);
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
     const [quantity, setQuantity] = React.useState<number>(1);
     const [price, setPrice] = React.useState<number>(0);
@@ -143,33 +135,26 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             </View>
 
             <BottomSheet
-                navigation={navigation}
+                allProducts={allProducts}
+                modalHeight={modalHeight}
+                openContinueModal={openContinueModal}
+                refRBSheet={refRBSheet}
+                setAllProducts={setAllProducts}
+                preEditItem={preEditItem}
+                errorText={errorText}
                 quantity={quantity}
                 price={price}
                 setEveryItem={setEveryItem}
-                total={total}
-                loading={loading}
-                removeItem={removeItem}
                 everyItem={everyItem}
                 changeQuantity={changeQuantity}
-                allProducts={allProducts}
-                item={item}
-                modalHeight={modalHeight}
-                openContinueModal={openContinueModal}
-                showEnter={showEnter}
-                setShowEnter={setShowEnter}
-                setId={setId}
-                setItem={setItem}
-                id={id}
-                route={route}
-                refRBSheet={refRBSheet}
+                removeItem={removeItem}
                 setOpenContinueModal={setOpenContinueModal}
-                preEditItem={preEditItem}
-                errorText={errorText}
                 setErrorText={setErrorText}
-                setAllProducts={setAllProducts}
                 setQuantity={setQuantity}
                 setPrice={setPrice}
+                navigation={navigation}
+                route={route}
+                total={total}
             />
         </View>
     );
