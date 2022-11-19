@@ -12,30 +12,41 @@ import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
 const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, refRBSheet }) => {
     const [errorText1, setErrorText1] = React.useState<string>('');
     const [errorText2, setErrorText2] = React.useState<string>('');
+    const [quantity, setQuantity] = React.useState<number>(1)
+    const [price, setPrice] = React.useState<string | number>('10')
 
-    const changeQuantity = (e: string | number) => {
-        try {
-            if (e < 1 || e > preEditItem.fixedQuantity) {
-                setErrorText1('This much quantity is not available');
-            } else {
-                everyItem.find((e) => e._id === preEditItem._id).quantity = e;
-                setEveryItem([...everyItem]);
-                setErrorText1('');
-            }
-        } catch (error: any) {
-            console.log("ERROR", error.message);
-        }
+    const changeQuantity = (e: string | number | any) => {
+        setQuantity(e)
     };
 
-    const changeSellingPrice = (e: string | number) => {
-        if (e < 1) {
-            setErrorText2('Please enter correct amount');
+    const changeSellingPrice = (e: string) => {
+        setPrice(e)
+    };
+
+    var regExp = /[a-zA-Z]/;
+    const updateItem: Function = () => {
+        // if (regExp.test(quantity)) {
+        //     console.log("TEST!", regExp.test(quantity) && regExp.test(price))
+        // } else {
+        //     console.log("Test2", regExp.test(quantity) && regExp.test(price));
+        // }
+        if (quantity < 1 || quantity > preEditItem.fixedQuantity) {
+            setErrorText1('This much quantity is not available');
         } else {
-            everyItem.find((e) => e._id === preEditItem._id).price = e;
+            everyItem.find((e) => e._id === preEditItem._id).quantity = quantity;
+            setEveryItem([...everyItem]);
+            setErrorText1('');
+        }
+
+
+        if (price < 10) {
+            setErrorText2('Please enter amount of atleast 10 rupees');
+        } else {
+            everyItem.find((e) => e._id === preEditItem._id).price = price;
             setEveryItem([...everyItem]);
             setErrorText2('');
         }
-    };
+    }
 
 
 
@@ -93,8 +104,10 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
                                 { paddingLeft: getHP(0.1) },
                             ]}
                             textInputStyle={[FS(fs12), HP(0.4)]}
-                            keyboardType="number-pad"
+                            keyboardType="numeric"
+                            maxLength={8}
                             errorText={errorText2}
+
                         />
                     </View>
                 </View>
@@ -104,7 +117,8 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
                     buttonText={'Done'}
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
-                        refRBSheet.current.close();
+                        updateItem()
+                        // refRBSheet.current.close();
                     }}
                 />
             </View>
