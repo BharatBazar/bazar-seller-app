@@ -1,13 +1,4 @@
-import {
-    Alert,
-    Image,
-    Keyboard,
-    StyleSheet,
-    TextInput,
-    ToastAndroid,
-    TouchableOpacity,
-    View,
-} from 'react-native';
+import { Alert, Image, Keyboard, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import { FontFamily, fs12 } from '@app/common';
@@ -23,6 +14,7 @@ import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
 import { Storage, StorageItemKeys } from '@app/storage';
 import { APIGetItemSize } from '@app/server/apis/product/product.api';
 import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyItem, setAllProducts, setEveryItem }) => {
     const [quan, setQuan] = React.useState<String>('1');
@@ -62,7 +54,7 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
             console.log('Checking...', checkItemExist);
             if (checkItemExist.payload === true) {
                 setLoading(false);
-                ToastAndroid.show('Item already listed in bill', 404);
+                ToastHOC.errorAlert('Item already listed in bill');
             } else {
                 if (itemResponse.status == 1) {
                     // setModalHeight(600);
@@ -101,7 +93,7 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
             }
             const check = everyItem.filter((e: any) => e._id === item._id);
             if (check.length === 1) {
-                ToastAndroid.show('Item already in list', 405);
+                ToastHOC.errorAlert('Item already in list');
                 Keyboard.dismiss();
             } else {
                 setEveryItem(everyItem.concat(item));
@@ -110,7 +102,7 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
             }
         } catch (error: any) {
             Keyboard.dismiss();
-            ToastAndroid.show(error.message, 404);
+            ToastHOC.errorAlert(error.message);
         }
     };
 
@@ -155,7 +147,7 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
                             setShowEnter(true), setItem([]);
                             setErrorText('');
                         }}
-                        keyboardType='numeric'
+                        keyboardType="numeric"
                         errorText={errorText}
                     />
                     {id && showEnter !== false ? (
@@ -187,8 +179,9 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
                                     />
                                     <View style={[AS('center'), JCC('space-between'), FDR('column'), PL(0.2)]}>
                                         <GeneralText
-                                            text={`${allProducts.productId.parentId.name} × ${quantity < 1 ? 1 : quantity
-                                                } `}
+                                            text={`${allProducts.productId.parentId.name} × ${
+                                                quantity < 1 ? 1 : quantity
+                                            } `}
                                             textStyle={[{ fontFamily: FontFamily.Medium }, FS(14)]}
                                         />
                                         <GeneralText
