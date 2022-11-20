@@ -13,6 +13,7 @@ import Loader from '@app/screens/component/Loader';
 import ShowBillsRender from './ProductRenders/ShowBillsRender';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import CoreConfig from '@app/screens/hoc/CoreConfig';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 const ShowBills: React.FC = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
@@ -41,7 +42,7 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             }
         } catch (error: any) {
             setLoading(false);
-            ToastAndroid.show(error.message, 400);
+            ToastHOC.errorAlert(error.message);
             console.log('ERRROR_OCCURED', error.message);
         }
     };

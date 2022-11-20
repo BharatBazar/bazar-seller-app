@@ -80,7 +80,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId, productId: item._id });
             console.log('Checking...', checkItemExist);
             if (checkItemExist.payload === true) {
-                ToastAndroid.show('Item already listed in bill', 404);
+                ToastHOC.errorAlert('Item already exist in the bill');
             } else {
                 item['price'] = price;
                 item['fixedQuantity'] = item.quantity;

@@ -1,7 +1,6 @@
 import { getWP } from '@app/common/dimension';
 
 import Border from '@app/screens/components/border/Border';
-import { createNavigationContainerRef } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { FlatList, View } from 'react-native';
@@ -191,7 +190,6 @@ const FilterNavigator: React.FunctionComponent<FilterNavigatorProps> = ({ goBack
                 // snapToInterval={getWP(10)}
                 renderItem={({ item, index }) => (
                     <FilterValues
-                    
                         filter={item}
                         selectedValues={selectedValues[item.key] || []}
                         setSelectedValues={(indexOfValue: number) =>

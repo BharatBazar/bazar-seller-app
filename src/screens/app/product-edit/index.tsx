@@ -84,26 +84,6 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [errors, setErrors] = React.useState<string[]>([]);
     const setAlertState = React.useContext(AlertContext);
 
-    const createProductInServer = async (data: Partial<IProduct>) => {
-        try {
-            setLoader(true);
-            const product: Partial<IProduct> = {
-                ...data,
-
-                shopId: shopId,
-            };
-            const response: IRProduct = await createProduct(data);
-            setLoader(false);
-            if (response.status == 1) {
-                setProductId(response.payload._id);
-            } else {
-                throw new Error(response.message);
-            }
-        } catch (error) {
-            showMessage({ type: 'danger', message: error.message });
-        }
-    };
-
     // console.log(shopId);
     const fetchProduct = async () => {
         try {
@@ -129,13 +109,12 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         try {
             const response: IRGetFilterWithValue = await getFilterWithValue({ shopId: shopId, parentId: parentId });
 
+            setFilter(response.payload.filter);
+            setDistribution(response.payload.distribution);
             setLoader(false);
-            if (response.status == 1) {
-                setFilter(response.payload.filter);
-                setDistribution(response.payload.distribution);
-            }
         } catch (error) {
             setLoader(false);
+            ToastHOC.errorAlert(error.message);
         }
     };
 
@@ -151,15 +130,22 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             filter.map((item) => {
                 filtersV[item.key] = productDetails[item.key] || [];
             });
-            // console.log(filtersV, 'filter values here');
+
             setFilterValues(filtersV);
         }
     }, [productDetails, filter]);
 
     React.useEffect(() => {
+        if (!updateFlow && distribution.length > 0) {
+            setOpenChooseColor(true);
+        }
+    }, [distribution]);
+
+    React.useEffect(() => {
         //console.log(update, _id, shopId);
         if (update) {
             fetchProduct();
+        } else {
         }
         loadFilter();
     }, []);
@@ -356,14 +342,17 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                 {productDetails.status == productStatus.REJECTED && <HowToImprove note={productDetails.note} />}
                 <ScrollView contentContainerStyle={[PBA()]}>
                     {distribution.length > 0 && distribution[0].filterLevel == 1 && (
-                        <ButtonAddWithTitleAndSubTitle
-                            title={distribution[0].name}
-                            subTitle={distribution[0].description}
-                            onPressPlus={() => {
-                                setOpenChooseColor(true);
-                            }}
-                            containerStyle={[MHA()]}
-                        />
+                        <>
+                            <ButtonAddWithTitleAndSubTitle
+                                title={distribution[0].name}
+                                subTitle={distribution[0].description}
+                                onPressPlus={() => {
+                                    setOpenChooseColor(true);
+                                }}
+                                containerStyle={[MHA()]}
+                            />
+                            <Border />
+                        </>
                     )}
 
                     {/* {choosenColor && choosenColor.length > 0 && (
@@ -384,7 +373,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     {/* {choosenColor.map((item: choosenColor, index: number) => (
                        
                     ))} */}
-                    <Border />
+
                     {choosenColor.length > 0 && (
                         <ColorTabBar
                             colors={choosenColor}
