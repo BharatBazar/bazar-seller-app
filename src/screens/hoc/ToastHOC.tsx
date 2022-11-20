@@ -1,16 +1,19 @@
+import { ToastAndroid } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 export class ToastHOC {
-    static errorAlert(text2: string, text1?: string,position?:string) {
-        Toast.show({
-            type: 'error',
-            position: position === "top"?"top":"bottom",
-            text1: text1 || 'Error',
-            text2: text2,
-            autoHide: true,
-            // onPress:()=>Toast.hide()
-            
-        });
+    static errorAlert(text2: string, text1?: string, position?: string) {
+        ToastAndroid.show(text2, 404);
+
+        // Toast.show({
+        //     type: 'error',
+        //     position: position === "top"?"top":"bottom",
+        //     text1: text1 || 'Error',
+        //     text2: text2,
+        //     autoHide: true,
+        //     // onPress:()=>Toast.hide()
+
+        // });
     }
     static successAlert(text2: string, text1?: string) {
         Toast.show({
@@ -21,10 +24,10 @@ export class ToastHOC {
             autoHide: true,
         });
     }
-    static infoAlert(text2: string, text1?: string,position?:string) {
+    static infoAlert(text2: string, text1?: string, position?: string) {
         Toast.show({
             type: 'info',
-            position: position === "top"?"top":"bottom",
+            position: position === 'top' ? 'top' : 'bottom',
             text1: text1 || 'Info',
             text2: text2,
             autoHide: true,
