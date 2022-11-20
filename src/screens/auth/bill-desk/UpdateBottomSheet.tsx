@@ -1,14 +1,16 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import React from 'react';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { AIC, AS, FLEX, FS, HP, JCC, MT, PH, PV } from '@app/common/styles';
+import { AIC, AS, BGCOLOR, BR, FDR, FLEX, FS, HP, JCC, MT, PH, PV } from '@app/common/styles';
 import { fs12 } from '@app/common';
 import { IUpdateBill } from './billInterface/Interfaces';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
+import CrossIcon from 'react-native-vector-icons/MaterialIcons';
+import { mainColor } from '@app/common/color';
 
 const UpdateBottomSheet: React.FC<IUpdateBill> = ({
     refRBSheet,
@@ -35,8 +37,16 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                 }}
             >
                 <View style={[PH(), FLEX(1)]}>
-                    <View style={AS('center')}>
-                        <GeneralText text="Update item" />
+                    <View style={[FDR(), JCC('space-between')]}>
+                        <GeneralText fontFamily={'Helvatica'} fontSize={16} textAlign="center" text="Update Product" />
+                        <TouchableOpacity
+                            onPress={() => {
+                                refRBSheet.current.close();
+                            }}
+                            style={[BR(15), BGCOLOR(mainColor)]}
+                        >
+                            <CrossIcon name="cancel" color={'#ffffff'} size={24} style={{ alignSelf: 'center' }} />
+                        </TouchableOpacity>
                     </View>
                     <View style={[JCC('space-between'), PV(0.2)]}>
                         <GeneralText text="Quantity" />
@@ -82,7 +92,7 @@ const UpdateBottomSheet: React.FC<IUpdateBill> = ({
                         onPress={() => {
                             updateBills();
                         }}
-                        disabled={(price && quantity) <= 0 ? true : false}
+                        disabled={(price || quantity) <= 0 ? true : false}
                     />
                 </View>
             </RBSheet>

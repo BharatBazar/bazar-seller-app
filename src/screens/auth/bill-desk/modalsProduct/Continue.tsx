@@ -1,6 +1,6 @@
-import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { AS, BW, FDR, FLEX, FS, H, JCC, MT, PH } from '@app/common/styles';
+import { AS, FDR, FLEX, FS, JCC, MT, PH } from '@app/common/styles';
 import { FontFamily } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { Storage, StorageItemKeys } from '@app/storage';
@@ -12,10 +12,28 @@ import GeneralText from '@app/screens/components/text/GeneralText';
 import Loader from '@app/screens/component/Loader';
 import CoreConfig from '@app/screens/hoc/CoreConfig';
 
-const Continue: React.FC<IContinueModal> = ({ setEveryItem, refRBSheet, everyItem, total, navigation, removeItem }) => {
+const Continue: React.FC<IContinueModal> = ({
+    setEveryItem,
+    refRBSheet,
+    everyItem,
+    total,
+    navigation,
+
+}) => {
+
     const [loading, setLoading] = React.useState<boolean>(false);
 
-    const addProduct = async () => {
+    const removeItem: Function = (id: any) => {
+        const removeItem = everyItem.filter((e: any) => {
+            return e._id !== id;
+        });
+        setEveryItem(removeItem);
+        if (everyItem.length === 1) {
+            refRBSheet.current.close();
+        }
+    };
+
+    const addProduct: Function = async () => {
         try {
             setLoading(true);
             const id = everyItem.map((e: any) => e);

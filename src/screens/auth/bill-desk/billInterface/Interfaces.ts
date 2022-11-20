@@ -1,39 +1,24 @@
 import { NavigationProps } from '@app/common';
 
 export interface IBottomSheet {
-    add: Function;
-    item: string[];
-    modalHeight: number | number;
-    openContinueModal: string;
-    showEnter: boolean;
-    setShowEnter: (value: boolean) => void;
-    setItem: (value: []) => string[];
-    findProduct: Function;
-    id: number | string | undefined;
-    route: any;
-    refRBSheet: any;
-    setId: (value: any) => any;
+    setEveryItem: (value: any) => string[];
     setOpenContinueModal: (value: string) => void;
-    changeQuantity: Function;
+    setAllProducts: (value: any) => any;
+    modalHeight: Number | number;
+    openContinueModal: string;
+    route: any;
+    refRBSheet: Function | any;
     allProducts: any;
     everyItem: any[];
     total: number;
-    removeItem: Function;
-    loading: boolean;
-    setEveryItem: (value: any) => string[];
-    changeSellingPrice: Function;
-    price: number;
-    quantity: number;
     navigation: NavigationProps;
     preEditItem: any[];
-    errorText: string;
-    setErrorText: (value: any) => any;
 }
 
 export interface IUpdateBill {
-    refRBSheet: Function | any;
     setQuantity: (value: any) => number | any;
     setPrice: (value: any) => number | any;
+    refRBSheet: Function | any;
     updateBills: Function;
     price: number;
     quantity: number;
@@ -43,6 +28,7 @@ export interface IProductId {
     parentId: {
         image: string;
         name: string;
+        type: string;
     };
     colors: any;
     sellerIdentificationPhoto: string;
@@ -55,6 +41,7 @@ export interface IItem {
     _id: string;
     createdAt: string;
     products: string[];
+    itemId: string;
 }
 
 export interface IBillProductRendering {
@@ -62,30 +49,17 @@ export interface IBillProductRendering {
     setEveryItem: (value: any) => void;
     setModalHeight: (value: any) => void;
     setPreEditItem: (value: any) => void;
-    setErrorText: (value: any) => any;
     item: IItem;
-    removeItem: Function;
     refRBSheet: Function | any;
+    everyItem: string[];
 }
 
 export interface IAdd_Product {
+    setAllProducts: (value: any) => any;
+    setEveryItem: (value: any) => any;
     refRBSheet: any;
-    setItem: (value: any) => {};
-    setId: (value: any) => number;
-    setShowEnter: (value: boolean) => void;
-    id: number | string | undefined;
-    showEnter: Boolean;
-    loading: boolean;
-    item: string[];
-    findProduct: Function;
     allProducts: IItem;
-    quantity: number;
-    price: number;
-    changeQuantity: Function;
-    add: Function;
-    changeSellingPrice: Function;
-    errorText: string;
-    setErrorText: (value: any) => any;
+    everyItem: string[];
 }
 
 export interface IContinueModal {
@@ -94,11 +68,6 @@ export interface IContinueModal {
     everyItem: any[];
     total: number;
     navigation: NavigationProps;
-    removeItem: Function;
-}
-
-export interface IEdit {
-    changeQuantity: Function;
 }
 
 export interface IReviewProduct {

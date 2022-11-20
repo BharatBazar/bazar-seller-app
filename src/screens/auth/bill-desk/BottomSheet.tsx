@@ -5,37 +5,21 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import { IBottomSheet } from './billInterface/Interfaces';
 import Continue from './modalsProduct/Continue';
 import Add_Product from './modalsProduct/Add_Product';
-import Edit from './modalsProduct/Edit';
 import PreEdit from './modalsProduct/PreEdit';
 
 const BottomSheet: React.FC<IBottomSheet> = ({
-    add,
-    item,
     modalHeight,
     openContinueModal,
-    showEnter,
-    setShowEnter,
-    setItem,
-    findProduct,
-    id,
     route,
     refRBSheet,
-    setId,
-    setOpenContinueModal,
-    changeQuantity,
     allProducts,
     everyItem,
     total,
-    removeItem,
-    loading,
-    setEveryItem,
-    changeSellingPrice,
-    price,
-    quantity,
     navigation,
     preEditItem,
-    errorText,
-    setErrorText,
+    setEveryItem,
+    setOpenContinueModal,
+    setAllProducts,
 }) => {
     useEffect(() => {
         if (route.params.openModal === true) {
@@ -69,36 +53,19 @@ const BottomSheet: React.FC<IBottomSheet> = ({
                             navigation={navigation}
                             everyItem={everyItem}
                             total={total}
-                            removeItem={removeItem}
                         />
                     </>
                 ) : openContinueModal == 'ADD_PRODUCT' ? (
                     <>
                         <Add_Product
                             refRBSheet={refRBSheet}
-                            setItem={setItem}
-                            setId={setId}
-                            setShowEnter={setShowEnter}
-                            id={id}
-                            showEnter={showEnter}
-                            loading={loading}
-                            item={item}
-                            findProduct={findProduct}
                             allProducts={allProducts}
-                            quantity={quantity}
-                            price={price}
-                            changeQuantity={changeQuantity}
-                            add={add}
-                            changeSellingPrice={changeSellingPrice}
-                            errorText={errorText}
-                            setErrorText={setErrorText}
+                            setAllProducts={setAllProducts}
+                            everyItem={everyItem}
+                            setEveryItem={setEveryItem}
                         />
                     </>
-                ) : openContinueModal == 'EDIT' ? (
-                    <>
-                        <Edit changeQuantity={changeQuantity} />
-                    </>
-                ) : openContinueModal == 'PRE-EDIT' ? (
+                ) : openContinueModal === 'PRE-EDIT' ? (
                     <>
                         <PreEdit
                             setEveryItem={setEveryItem}

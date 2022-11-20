@@ -1,9 +1,17 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import {
+    Alert,
+    Image,
+    Keyboard,
+    StyleSheet,
+    TextInput,
+    ToastAndroid,
+    TouchableOpacity,
+    View,
+} from 'react-native';
 import React from 'react';
 import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import { FontFamily, fs12 } from '@app/common';
 import { mainColor } from '@app/common/color';
-import WrappedTextInput from '@app/screens/component/WrappedTextInput';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
 import Loader from '@app/screens/component/Loader';
@@ -12,29 +20,105 @@ import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { IAdd_Product } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
+import { Storage, StorageItemKeys } from '@app/storage';
+import { APIGetItemSize } from '@app/server/apis/product/product.api';
+import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
 
-const Add_Product: React.FC<IAdd_Product> = ({
-    refRBSheet,
-    setItem,
-    setId,
-    setShowEnter,
-    id,
-    showEnter,
-    loading,
-    item,
-    findProduct,
-    allProducts,
-    quantity,
-    price,
-    changeQuantity,
-    add,
-    changeSellingPrice,
-    errorText,
-    setErrorText,
-}) => {
+const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyItem, setAllProducts, setEveryItem }) => {
     const [quan, setQuan] = React.useState<String>('1');
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [showEnter, setShowEnter] = React.useState<boolean>(false);
+    const [item, setItem]: any = React.useState<[]>([]);
+    const [id, setId] = React.useState<number | string>();
+    const [errorText, setErrorText] = React.useState<string>('');
+    const [quantity, setQuantity] = React.useState<number>(1);
+    const [price, setPrice] = React.useState<number>(0);
 
-    const multiply: string = '×';
+    const changeQuantity = (quantity: number, setQuan: any) => {
+        if (quantity > allProducts.quantity) {
+            setQuan(' ');
+            Alert.alert('you cannot add item');
+        } else {
+            setQuan(quantity);
+            setQuantity(quantity);
+        }
+    };
+
+    const changeSellingPrice = (price: number) => {
+        setPrice(price);
+    };
+
+    const findProduct: Function = async (id: number | string) => {
+        try {
+            setLoading(true);
+            const shopId = await Storage.getItem(StorageItemKeys.userDetail);
+            const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
+            console.log('RESPPO', itemResponse);
+            const product = itemResponse.payload[0];
+            const checkItemExist: any = await checkBillProductExistOrNot({
+                shopId: shopId.shop,
+                productId: product._id,
+            });
+            console.log('Checking...', checkItemExist);
+            if (checkItemExist.payload === true) {
+                setLoading(false);
+                ToastAndroid.show('Item already listed in bill', 404);
+            } else {
+                if (itemResponse.status == 1) {
+                    // setModalHeight(600);
+                    setLoading(false);
+                    setAllProducts(product);
+                    setItem([product]);
+                    setShowEnter(false);
+                    Keyboard.dismiss();
+                } else {
+                    setLoading(false);
+                    Keyboard.dismiss();
+                    setErrorText('Item not found');
+                }
+            }
+        } catch (error: any) {
+            setLoading(false);
+            Keyboard.dismiss();
+            setErrorText(error.message);
+        }
+    };
+
+    const add = async (item: any) => {
+        try {
+            item['price'] = price;
+            item['fixedQuantity'] = item.quantity;
+
+            if (allProducts._id === item._id) {
+                const updateQuantity = (allProducts.quantity = quantity);
+                setQuantity(1);
+                setPrice(0);
+                setItem([allProducts]);
+                Keyboard.dismiss();
+            } else {
+                console.log('error occured');
+                Keyboard.dismiss();
+            }
+            const check = everyItem.filter((e: any) => e._id === item._id);
+            if (check.length === 1) {
+                ToastAndroid.show('Item already in list', 405);
+                Keyboard.dismiss();
+            } else {
+                setEveryItem(everyItem.concat(item));
+                setItem([]);
+                refRBSheet.current.close();
+            }
+        } catch (error: any) {
+            Keyboard.dismiss();
+            ToastAndroid.show(error.message, 404);
+        }
+    };
+
+    React.useEffect(() => {
+        setTimeout(() => {
+            setErrorText('');
+        }, 5000);
+    }, [errorText]);
 
     return (
         <>
@@ -66,12 +150,12 @@ const Add_Product: React.FC<IAdd_Product> = ({
                             { paddingLeft: getHP(0.1) },
                         ]}
                         textInputStyle={[FS(fs12), HP(0.4)]}
-                        keyboardType="numeric"
                         onChangeText={(id) => {
                             setId(id);
                             setShowEnter(true), setItem([]);
                             setErrorText('');
                         }}
+                        keyboardType='numeric'
                         errorText={errorText}
                     />
                     {id && showEnter !== false ? (
@@ -105,6 +189,10 @@ const Add_Product: React.FC<IAdd_Product> = ({
                                         <GeneralText
                                             text={`${allProducts.productId.parentId.name} × ${quantity < 1 ? 1 : quantity
                                                 } `}
+                                            textStyle={[{ fontFamily: FontFamily.Medium }, FS(14)]}
+                                        />
+                                        <GeneralText
+                                            text={allProducts.productId.parentId.type}
                                             textStyle={[{ fontFamily: FontFamily.Regular }, FS(14)]}
                                         />
                                     </View>
@@ -150,7 +238,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
                             <TextInput
                                 value={allProducts.quantity === 0 ? '0' : quan}
                                 textAlign="center"
-                                onChangeText={(e) => changeQuantity(e, setQuan)}
+                                onChangeText={(e: any) => changeQuantity(Number(e), setQuan)}
                                 keyboardType="number-pad"
                                 style={[
                                     BW(1),
@@ -172,7 +260,7 @@ const Add_Product: React.FC<IAdd_Product> = ({
 
                             <TextInput
                                 textAlign="center"
-                                onChangeText={(e) => changeSellingPrice(e)}
+                                onChangeText={(e: any) => changeSellingPrice(e)}
                                 keyboardType="numeric"
                                 style={[
                                     BW(1),
@@ -215,5 +303,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
+        marginTop: '5%',
     },
 });

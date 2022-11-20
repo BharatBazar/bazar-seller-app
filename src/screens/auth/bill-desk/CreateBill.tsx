@@ -1,6 +1,6 @@
-import { StyleSheet, View, FlatList, Alert, Keyboard, ToastAndroid } from 'react-native';
+import { StyleSheet, View, FlatList, Alert } from 'react-native';
 import React, { useRef } from 'react';
-import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PR, PT } from '@app/common/styles';
+import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PT } from '@app/common/styles';
 import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { colorCode, mainColor } from '@app/common/color';
@@ -8,27 +8,16 @@ import WrappedText from '@app/screens/component/WrappedText';
 import { FontFamily, fs18 } from '@app/common';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import BottomSheet from './BottomSheet';
-import { Storage, StorageItemKeys } from '@app/storage';
-import { APIGetItemSize } from '@app/server/apis/product/product.api';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import ProductRender from './ProductRenders/ProductsRender';
-import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import CoreConfig from '@app/screens/hoc/CoreConfig';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
-    const [id, setId] = React.useState<number>();
-    const [item, setItem]: any = React.useState<[]>([]);
-    const [showEnter, setShowEnter] = React.useState<boolean>(true);
     const [openContinueModal, setOpenContinueModal] = React.useState<string>('');
     const [allProducts, setAllProducts]: any = React.useState<[]>([]);
-    const [loading, setLoading] = React.useState<boolean>(false);
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
-    const [quantity, setQuantity] = React.useState<number>(1);
-    const [price, setPrice] = React.useState<number>(0);
     const [preEditItem, setPreEditItem] = React.useState<[]>([]);
-    const [errorText, setErrorText] = React.useState<string>('');
 
     const refRBSheet: any = useRef();
 
@@ -37,93 +26,6 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     everyItem.forEach((i: any) => {
         total += i.price * i.quantity;
     });
-
-    const removeItem = (id: any) => {
-        const removeItem = everyItem.filter((e: any) => {
-            return e._id !== id;
-        });
-        setEveryItem(removeItem);
-        if (everyItem.length === 1) {
-            refRBSheet.current.close();
-        }
-    };
-
-    const findProduct = async (id: number) => {
-        try {
-            setLoading(true);
-            const shopId = await CoreConfig.getShopId();
-            const itemResponse: any = await APIGetItemSize({ shopId: shopId, itemId: id });
-            console.log('RESPPO', itemResponse);
-            const product = itemResponse.payload[0];
-            if (itemResponse.status == 1) {
-                setModalHeight(600);
-                setLoading(false);
-                setAllProducts(product);
-                setItem([product]);
-                setShowEnter(false);
-                Keyboard.dismiss();
-            } else {
-                setLoading(false);
-                Keyboard.dismiss();
-                setErrorText('Item not found');
-            }
-        } catch (error: any) {
-            setLoading(false);
-            Keyboard.dismiss();
-            setErrorText(error.message);
-        }
-    };
-
-    const add = async (item: any) => {
-        try {
-            const shopId = await CoreConfig.getShopId();
-            const checkItemExist: any = await checkBillProductExistOrNot({ shopId: shopId, productId: item._id });
-            console.log('Checking...', checkItemExist);
-            if (checkItemExist.payload === true) {
-                ToastHOC.errorAlert('Item already exist in the bill');
-            } else {
-                item['price'] = price;
-                item['fixedQuantity'] = item.quantity;
-
-                if (allProducts._id === item._id) {
-                    const updateQuantity = (allProducts.quantity = quantity);
-                    setQuantity(1);
-                    setPrice(0);
-                    setItem([allProducts]);
-                    Keyboard.dismiss();
-                } else {
-                    console.log('error occured');
-                    Keyboard.dismiss();
-                }
-                const check = everyItem.filter((e: any) => e._id === item._id);
-                if (check.length === 1) {
-                    ToastHOC.errorAlert('Item already in list', '', 'top');
-                    Keyboard.dismiss();
-                } else {
-                    setEveryItem(everyItem.concat(item));
-                    setItem([]);
-                    refRBSheet.current.close();
-                }
-            }
-        } catch (error: any) {
-            Keyboard.dismiss();
-            ToastAndroid.show(error.message, 404);
-        }
-    };
-
-    const changeQuantity = (quantity: number, setQuan: any) => {
-        if (quantity > allProducts.quantity) {
-            setQuan(' ');
-            Alert.alert('you cannot add item');
-        } else {
-            setQuan(quantity);
-            setQuantity(quantity);
-        }
-    };
-
-    const changeSellingPrice = (price: number) => {
-        setPrice(price);
-    };
 
     return (
         <View style={[FLEX(1), BGCOLOR('#ffffff')]}>
@@ -155,7 +57,7 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                         setOpenContinueModal('ADD_PRODUCT');
                         refRBSheet.current.open();
                         setModalHeight(500);
-                        setErrorText('');
+                        setAllProducts([]);
                     }}
                 />
             </View>
@@ -167,14 +69,13 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
                             data={everyItem}
                             renderItem={({ item }) => (
                                 <ProductRender
-                                    setOpenContinueModal={setOpenContinueModal}
                                     item={item}
-                                    removeItem={removeItem}
+                                    everyItem={everyItem}
                                     refRBSheet={refRBSheet}
-                                    setModalHeight={setModalHeight}
                                     setEveryItem={setEveryItem}
+                                    setModalHeight={setModalHeight}
                                     setPreEditItem={setPreEditItem}
-                                    setErrorText={setErrorText}
+                                    setOpenContinueModal={setOpenContinueModal}
                                 />
                             )}
                             showsVerticalScrollIndicator={false}
@@ -208,33 +109,18 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
             </View>
 
             <BottomSheet
-                navigation={navigation}
-                quantity={quantity}
-                price={price}
-                changeSellingPrice={changeSellingPrice}
-                setEveryItem={setEveryItem}
-                total={total}
-                loading={loading}
-                removeItem={removeItem}
-                everyItem={everyItem}
-                changeQuantity={changeQuantity}
-                add={add}
                 allProducts={allProducts}
-                item={item}
                 modalHeight={modalHeight}
                 openContinueModal={openContinueModal}
-                showEnter={showEnter}
-                setShowEnter={setShowEnter}
-                setId={setId}
-                setItem={setItem}
-                findProduct={findProduct}
-                id={id}
-                route={route}
                 refRBSheet={refRBSheet}
-                setOpenContinueModal={setOpenContinueModal}
+                setAllProducts={setAllProducts}
                 preEditItem={preEditItem}
-                errorText={errorText}
-                setErrorText={setErrorText}
+                setEveryItem={setEveryItem}
+                everyItem={everyItem}
+                setOpenContinueModal={setOpenContinueModal}
+                navigation={navigation}
+                route={route}
+                total={total}
             />
         </View>
     );
