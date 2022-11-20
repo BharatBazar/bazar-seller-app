@@ -28,6 +28,7 @@ export interface IProductId {
     parentId: {
         image: string;
         name: string;
+        type:string
     };
     colors: any;
     sellerIdentificationPhoto: string;
@@ -40,6 +41,7 @@ export interface IItem {
     _id: string;
     createdAt: string;
     products: string[];
+    itemId:string
 }
 
 export interface IBillProductRendering {

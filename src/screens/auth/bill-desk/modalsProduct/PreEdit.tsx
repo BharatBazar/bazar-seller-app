@@ -1,13 +1,15 @@
 import { FontFamily, fs12 } from '@app/common';
-import { AIC, AS, FC, FS, HP, JCC, MT } from '@app/common/styles';
+import { AIC, AS, BGCOLOR, BR, FC, FDR, FS, HP, JCC, MT } from '@app/common/styles';
 import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import React from 'react';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 import { IPreEdit } from '../billInterface/Interfaces';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
+import CrossIcon from 'react-native-vector-icons/MaterialIcons';
+import { mainColor } from '@app/common/color';
 
 const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, refRBSheet }) => {
     const [errorText1, setErrorText1] = React.useState<string>('');
@@ -23,8 +25,9 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
         setPrice(e)
     };
 
-    var regExp = /[a-zA-Z]/;
+
     const updateItem: Function = () => {
+        // const regExp = /[a-zA-Z]/;
         // if (regExp.test(quantity)) {
         //     console.log("TEST!", regExp.test(quantity) && regExp.test(price))
         // } else {
@@ -46,6 +49,7 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
             setEveryItem([...everyItem]);
             setErrorText2('');
         }
+        refRBSheet.current.close();
     }
 
 
@@ -53,10 +57,17 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
     return (
         <>
             <View style={{ paddingHorizontal: 20, flex: 1 }}>
-                <GeneralText
-                    text="Edit Product"
-                    textStyle={[{ fontFamily: FontFamily.Helvatica }, AS('center'), FS(16)]}
-                />
+                <View style={[FDR(), JCC('space-between')]}>
+                    <GeneralText fontFamily={'Helvatica'} fontSize={16} textAlign="center" text="Edit Product" />
+                    <TouchableOpacity
+                        onPress={() => {
+                            refRBSheet.current.close();
+                        }}
+                        style={[BR(15), BGCOLOR(mainColor)]}
+                    >
+                        <CrossIcon name="cancel" color={'#ffffff'} size={24} style={{ alignSelf: 'center' }} />
+                    </TouchableOpacity>
+                </View>
                 <View>
                     <View style={[MT(0.2), JCC('space-between')]}>
                         <GeneralText
@@ -118,7 +129,6 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
                     containerStyle={[MT(0.1)]}
                     onPress={() => {
                         updateItem()
-                        // refRBSheet.current.close();
                     }}
                 />
             </View>

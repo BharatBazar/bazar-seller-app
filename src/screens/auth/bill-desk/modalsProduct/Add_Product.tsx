@@ -150,12 +150,12 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
                             { paddingLeft: getHP(0.1) },
                         ]}
                         textInputStyle={[FS(fs12), HP(0.4)]}
-                        keyboardType="numeric"
                         onChangeText={(id) => {
                             setId(id);
                             setShowEnter(true), setItem([]);
                             setErrorText('');
                         }}
+                        keyboardType='numeric'
                         errorText={errorText}
                     />
                     {id && showEnter !== false ? (
@@ -189,6 +189,10 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
                                         <GeneralText
                                             text={`${allProducts.productId.parentId.name} × ${quantity < 1 ? 1 : quantity
                                                 } `}
+                                            textStyle={[{ fontFamily: FontFamily.Medium }, FS(14)]}
+                                        />
+                                        <GeneralText
+                                            text={allProducts.productId.parentId.type}
                                             textStyle={[{ fontFamily: FontFamily.Regular }, FS(14)]}
                                         />
                                     </View>
