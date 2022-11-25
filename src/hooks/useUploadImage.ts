@@ -7,11 +7,6 @@ import ImageCropPicker, { ImageOrVideo } from 'react-native-image-crop-picker';
 import Permission from 'react-native-permissions';
 
 const GENERAL_S3_URL = 'https://lababeen-admin-multimedia-bucket.s3.ap-south-1.amazonaws.com/';
-interface imageType {
-    fileName: string;
-    mime: string;
-    path: string;
-}
 export const useUploadImage = (folder: s3BucketKeys, setLoader: Function) => {
     const getUrl = async (key: [string]) => {
         const response = key.map(async (item) => {

@@ -50,7 +50,7 @@ const ModalHOC: React.FC<ModalProps> = ({
                 setPopup();
             }}
             onBackButtonPress={() => {
-                setPopup();
+                // setPopup();
             }}
             deviceHeight={getHP(10) + STATUS_BAR_HEIGHT}
             statusBarTranslucent={Platform.OS == 'android' ? statusBarTranlucent : false}

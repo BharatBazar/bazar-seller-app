@@ -55,19 +55,6 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerS
                 images = await uploadImageFunction(true);
             }
 
-            // const url =
-
-            // const result = [];
-
-            // for (const image of images) {
-            //     let data = {
-            //         path: image.path,
-            //         width: 1000,
-            //         height: 1000,
-            //     };
-            //     result.push(await ImageCropPicker.openCropper(data));
-            // }
-            // console.log(result);
             if (images) {
                 addImage(images.map((item) => ({ path: item, _id: new Date().getTime().toString() })));
                 setShowImageSelect(false);

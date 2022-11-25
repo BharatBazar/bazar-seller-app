@@ -2,6 +2,7 @@ import { FontFamily, fs13, fs15, fs20 } from '@app/common';
 import { mainColor } from '@app/common/color';
 import { getHP, getWP } from '@app/common/dimension';
 import { AIC, BGCOLOR, BR, BW, DSP, FDR, JCC, MH, ML, MT, PH, provideShadow, PV } from '@app/common/styles';
+import { MBA, MHA, PHA, PVA } from '@app/common/stylesheet';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedRectangleButton from '@app/screens/component/WrappedRectangleButton';
@@ -123,33 +124,6 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                                 textColor={'#646464'}
                                 containerStyle={[MT(0.05)]}
                             />
-                            {this.state.orderChanged && (
-                                <WrappedRectangleButton
-                                    containerStyle={[
-                                        FDR(),
-                                        JCC(),
-                                        AIC(),
-                                        BGCOLOR(mainColor),
-                                        PH(0.5),
-                                        PV(0.1),
-                                        BR(0.05),
-                                        MT(0.1),
-                                    ]}
-                                    onPress={() => {
-                                        this.props.setPhotosArrayAfterReordering(items);
-                                    }}
-                                >
-                                    <WrappedText
-                                        text={'Reorder'}
-                                        textColor={'#FFFFFF'}
-                                        textStyle={{
-                                            color: '#FFFFFF',
-                                            fontSize: fs15,
-                                        }}
-                                        containerStyle={[ML(0.2)]}
-                                    />
-                                </WrappedRectangleButton>
-                            )}
                         </View>
 
                         <AnySizeDragSortableView
@@ -171,6 +145,35 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                                 });
                             }}
                         />
+                        {this.state.orderChanged && (
+                            <WrappedRectangleButton
+                                containerStyle={[
+                                    FDR(),
+                                    JCC(),
+                                    AIC(),
+                                    BGCOLOR(mainColor),
+                                    PHA(),
+                                    PVA(),
+                                    BR(0.05),
+                                    // MT(0.1),
+                                    MBA(),
+                                    MHA(),
+                                ]}
+                                onPress={() => {
+                                    this.props.setPhotosArrayAfterReordering(items);
+                                }}
+                            >
+                                <WrappedText
+                                    text={'Confirm Reorder'}
+                                    textColor={'#FFFFFF'}
+                                    textStyle={{
+                                        color: '#FFFFFF',
+                                        fontSize: fs15,
+                                    }}
+                                    containerStyle={[ML(0.2)]}
+                                />
+                            </WrappedRectangleButton>
+                        )}
                     </SafeAreaView>
                 </ModalHOC>
             </View>

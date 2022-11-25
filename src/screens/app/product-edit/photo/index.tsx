@@ -29,7 +29,13 @@ const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
     const [photo, setPhotos] = React.useState<string[]>([]);
     console.log('existing Photos', existingPhotos);
     return (
-        <ModalHOC statusBarTranlucent={true} isVisible={isVisible} setPopup={setPopup}>
+        <ModalHOC
+            statusBarTranlucent={true}
+            isVisible={isVisible}
+            setPopup={() => {
+                setPopup(false);
+            }}
+        >
             <View style={{ flex: 1, backgroundColor: '#FFFFFF', padding: DSP, paddingTop: STATUS_BAR_HEIGHT + DSP }}>
                 {openCamera ? (
                     <WrappedFeatherIcon
@@ -41,21 +47,22 @@ const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
                         containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
                     />
                 ) : (
-                    <TextRippleButton
-                        onPress={() => {
-                            setPopup();
-                        }}
-                        buttonText="do later"
-                        fontSize={fs14}
-                        buttonTextColor={colorCode.CHAKRALOW(100)}
-                        containerStyle={{
-                            alignSelf: 'flex-end',
-                            backgroundColor: colorCode.CHAKRALOW(20),
-                            paddingHorizontal: '5%',
-                            paddingVertical: '1%',
-                            borderRadius: 4,
-                        }}
-                    />
+                    // <TextRippleButton
+                    //     onPress={() => {
+                    //         setPopup();
+                    //     }}
+                    //     buttonText="do later"
+                    //     fontSize={fs14}
+                    //     buttonTextColor={colorCode.CHAKRALOW(100)}
+                    //     containerStyle={{
+                    //         alignSelf: 'flex-end',
+                    //         backgroundColor: colorCode.CHAKRALOW(20),
+                    //         paddingHorizontal: '5%',
+                    //         paddingVertical: '1%',
+                    //         borderRadius: 4,
+                    //     }}
+                    // />
+                    <View />
                 )}
 
                 <HeaderWithTitleAndSubHeading

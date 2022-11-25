@@ -14,6 +14,7 @@ import RightComponentButtonWithLeftText from '@app/screens/components/button/Rig
 import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFeatherIconWithRightText';
 import WrappedText from '@app/screens/component/WrappedText';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
+import { MTA } from '@app/common/stylesheet';
 export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
@@ -115,7 +116,8 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                 <WrappedText text={error} textColor={errorColor} containerStyle={[MT(0.1)]} />
             )}
             <ScrollView>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginTop: DSP }}>
+                <Border />
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
                     {photos.map((item, index) => renderItem(item, index))}
                     <AddPhoto
                         openCamera={openCamera}
@@ -123,7 +125,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                         containerStyle={{ marginTop: DSP, marginRight: getWP(0.3) }}
                     />
                 </View>
-                <View style={{ marginTop: DSP }} />
+                <Border />
 
                 {photos.length > 1 && (
                     <ButtonFeatherIconRightText
@@ -133,7 +135,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                         iconName="edit"
                         buttonText="Reorder images"
                         fontSize={fs14}
-                        containerStyle={[BGCOLOR(colorCode.CHAKRALOW(56))]}
+                        containerStyle={[BGCOLOR(colorCode.CHAKRALOW(20)), MTA()]}
                         iconColor={mainColor}
                         buttonTextColor={mainColor}
                         textStyle={{ marginLeft: 20 }}
