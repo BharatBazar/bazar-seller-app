@@ -4,8 +4,8 @@ import { AlertContext } from '@app/../App';
 import { fs14 } from '@app/common';
 import { colorCode, errorColor, mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { BGCOLOR, FDR, provideShadow } from '@app/common/styles';
-import { BTRA, MBA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
+import { BGCOLOR, DSP, FDR, provideShadow } from '@app/common/styles';
+import { BTRA, GENERAL_PADDING, MBA, MHA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
@@ -20,6 +20,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import WrappedSize from './WrappedSize';
 import { choosenSize, ProductIdContext, provideDefaultSizeState } from '../data-types';
 import Size from './Size';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
 
 interface ProvideSizeProps {
     isVisible: boolean;
@@ -199,32 +200,15 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
         >
             <View style={[BGCOLOR('#FFFFFF'), PVA(), BTRA(), MTA()]}>
                 <View style={[PHA()]}>
-                    {showBack ? (
-                        <WrappedFeatherIcon
-                            iconName={'chevron-left'}
-                            onPress={() => {
-                                checkError();
-                            }}
-                            iconColor={mainColor}
-                            containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
-                        />
-                    ) : (
-                        <TextRippleButton
-                            onPress={() => {
-                                onPressDoLater();
-                            }}
-                            buttonText="do later"
-                            fontSize={fs14}
-                            buttonTextColor={mainColor}
-                            containerStyle={{
-                                alignSelf: 'flex-end',
-                                backgroundColor: colorCode.CHAKRALOW(20),
-                                paddingHorizontal: '5%',
-                                paddingVertical: '1%',
-                                borderRadius: 4,
-                            }}
-                        />
-                    )}
+                    <WrappedFeatherIcon
+                        iconName={'chevron-left'}
+                        onPress={() => {
+                            checkError();
+                        }}
+                        iconColor={mainColor}
+                        containerStyle={[provideShadow(), BGCOLOR('#FFFFFF'), { marginBottom: 10 }]}
+                    />
+
                     <HeaderWithTitleAndSubHeading
                         borderNeeded={false}
                         heading="Select Size"
@@ -313,7 +297,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                     <View />
                 )}
 
-                {/* <Border marginTop={0} />
+                <Border marginTop={0} />
 
                 <RightComponentButtonWithLeftText
                     buttonText={'Continue'}
@@ -322,7 +306,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                         checkError();
                     }}
                     disabled={!selectedSize.some((item) => item.itemId.length != 0)}
-                /> */}
+                />
             </View>
             {loader && <Loader />}
         </ModalHOC>

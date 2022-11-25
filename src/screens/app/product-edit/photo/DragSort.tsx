@@ -161,6 +161,8 @@ export default class DragSort extends React.Component<DragSortProps, DragSortSta
                                 ]}
                                 onPress={() => {
                                     this.props.setPhotosArrayAfterReordering(items);
+                                    this.props.setPopup(false);
+                                    this.setState({ orderChanged: false });
                                 }}
                             >
                                 <WrappedText
