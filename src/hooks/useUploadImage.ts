@@ -13,42 +13,49 @@ interface imageType {
     path: string;
 }
 export const useUploadImage = (folder: s3BucketKeys, setLoader: Function) => {
-    const getUrl = async (key: string) => {
-        const url = await getSignedPhotoUrl({ key });
-        console.log('url singed', url);
-        return url.payload.url;
+    const getUrl = async (key: [string]) => {
+        const response = key.map(async (item) => {
+            const response = await getSignedPhotoUrl({ key: item });
+            return response.payload.url;
+        });
+        console.log('url singed', response);
+        return response;
     };
 
-    const createFormData = (photo: ImageOrVideo, body = {}) => {
+    const createFormData = (photo: ImageOrVideo & { fileName: string }, body = {}) => {
         return {
             name: `${photo.fileName}`,
             type: photo.mime,
-            uri: Platform.OS === 'ios' ? photo.path.replace('file://', '') : photo.path,
+            uri: Platform.OS == 'ios' ? photo.path.replace('file://', '') : photo.path,
         };
     };
 
-    const getBlob = async (fileUri: string) => {
-        const resp = await fetch(fileUri);
-        const imageBody = await resp.blob();
-        return imageBody;
-    };
-    const uploadImage = async (url: string, image: ImageOrVideo) => {
-        const formData = createFormData(image, {});
-        console.log('Form data', formData);
-        await fetch(url, {
-            method: 'PUT',
-            body: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-        });
+    const uploadImage = async (url: [string], image: ImageOrVideo[]) => {
+        try {
+            url.every(async (item, index) => {
+                const url = await item;
+                const formData = createFormData(image[index], {});
+                //console.log('Form data', item, url);
+                const response = await fetch(url, {
+                    method: 'PUT',
+                    body: formData,
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    },
+                });
+
+                // console.log('respnse from upoad', response);
+            });
+        } catch (error) {
+            ToastHOC.errorAlert('Problem in putting image data to s3');
+        }
     };
 
-    const uploadPhoto = async (image: ImageOrVideo, Key?: string) => {
+    const uploadPhoto = async (image: ImageOrVideo[], Key?: [string]) => {
         if (Key) {
-            await deleteImage({ key: Key as string });
+            Key.every(async (item) => await deleteImage({ key: item }));
         }
-        let key = `${folder}/${new Date().getTime()}`;
+        let key: [string] = image.map((item, index) => `${folder}/${new Date().getTime() + index}`);
 
         console.log('key', key);
         let url = await getUrl(key);
@@ -56,10 +63,10 @@ export const useUploadImage = (folder: s3BucketKeys, setLoader: Function) => {
         await uploadImage(url, image);
         console.log('Photo uploaded');
         ToastHOC.successAlert('Photo uploaded');
-        return GENERAL_S3_URL + key;
+        return key.map((key) => GENERAL_S3_URL + key);
     };
 
-    const initiateUploadFromCamera = (fromCamera: boolean, key?: string) => {
+    const initiateUpload = (fromCamera: boolean, key?: [string], multiple?: boolean) => {
         return Permission.request(
             Platform.OS === 'ios' ? Permission.PERMISSIONS.IOS.CAMERA : Permission.PERMISSIONS.ANDROID.CAMERA,
         )
@@ -69,16 +76,14 @@ export const useUploadImage = (folder: s3BucketKeys, setLoader: Function) => {
                 // } else
 
                 const imageOption = {
-                    width: 1000,
-                    height: 1000,
-                    cropping: true,
+                    multiple,
                 };
                 const image: ImageOrVideo = !fromCamera
                     ? await ImageCropPicker.openPicker(imageOption)
                     : await ImageCropPicker.openCamera(imageOption);
                 if (image) {
                     setLoader(true);
-                    const url = await uploadPhoto(image, key);
+                    const url = await uploadPhoto(multiple ? image : [image], key);
                     setLoader(false);
                     console.log('url', url);
                     return url;
@@ -93,5 +98,5 @@ export const useUploadImage = (folder: s3BucketKeys, setLoader: Function) => {
             });
     };
 
-    return initiateUploadFromCamera;
+    return initiateUpload;
 };

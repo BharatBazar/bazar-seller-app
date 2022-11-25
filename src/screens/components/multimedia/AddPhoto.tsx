@@ -69,7 +69,7 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerS
             // }
             // console.log(result);
             if (images) {
-                addImage([{ path: images, _id: new Date().getTime().toString() }]);
+                addImage(images.map((item) => ({ path: item, _id: new Date().getTime().toString() })));
                 setShowImageSelect(false);
             } else {
                 setShowImageSelect(false);

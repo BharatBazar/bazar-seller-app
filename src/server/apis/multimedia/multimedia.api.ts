@@ -1,6 +1,6 @@
 import Axios from 'axios';
 
-export async function getSignedPhotoUrl(data: { key: string }) {
+export async function getSignedPhotoUrl(data: { key: string }): Promise<{ payload: { url: string } }> {
     return await Axios.post('multimedia/getPhotoUrl', data);
 }
 

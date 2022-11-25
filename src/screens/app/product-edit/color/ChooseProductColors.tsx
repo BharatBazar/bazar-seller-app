@@ -62,16 +62,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     const uploadImageFunction = useUploadImage(s3BucketKeys.productImage, setLoader);
 
     //console.log('product DI', productId);
-    const createColorInServer = async (colorChoosen: FilterValueInterface, url: string) => {
+    const createColorInServer = async (colorChoosen: FilterValueInterface, url: [string]) => {
         try {
             setLoader(true);
             let data: IProductColor = {
                 color: colorChoosen._id,
                 parentId: productId ? productId : undefined,
                 shopId: shopId,
-                photos: [url],
-                identificationPhoto: url,
-
+                photos: url,
                 catalogueId: catalogueId,
             };
 
@@ -84,7 +82,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             }
             showMessage({ type: 'success', message: 'Product size created' });
             addColorsToChoosenArray(
-                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, [url]),
+                provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, url),
             );
             setCurrentColorIndex(chosenColor.length);
             setShowSizePopup(true);
@@ -170,15 +168,18 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                         {colors.map((item: FilterValueInterface, index: number) => {
                             const indexInSelectedColor = chosenColor.findIndex((color) => color.color._id == item._id);
                             const selected = indexInSelectedColor > -1;
-                            //    const selected = true;
-                            console.log('selected =>', selected);
+
                             const selectedStyle = selected ? [BW(1.5), BC(mainColor), BR(0.1)] : {};
                             return (
                                 <View style={[selectedStyle, MT(0.2)]}>
                                     <Ripple
                                         style={arrayStyle.colorContainerStyle}
                                         onPress={async () => {
-                                            const getUrl: string | void = await uploadImageFunction(true);
+                                            const getUrl: [string] | [void] = await uploadImageFunction(
+                                                false,
+                                                undefined,
+                                                true,
+                                            );
 
                                             if (getUrl) {
                                                 console.log('Urrll', getUrl);
