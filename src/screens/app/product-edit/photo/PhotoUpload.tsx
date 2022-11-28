@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { fs14, fs15, fs20 } from '@app/common';
 import { BGCOLOR, DSP, MT } from '@app/common/styles';

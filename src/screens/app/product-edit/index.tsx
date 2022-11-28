@@ -26,7 +26,6 @@ import { showMessage } from 'react-native-flash-message';
 import { ImageOrVideo } from 'react-native-image-crop-picker';
 import {
     border,
-    createProduct,
     deleteProductColor,
     deleteProductFromServer,
     updateProduct,

@@ -1,13 +1,11 @@
-import { DEFAULT_IMAGE_URL, fs14 } from '@app/common';
-import { colorCode, mainColor } from '@app/common/color';
-import { BGCOLOR, DSP, FLEX, provideShadow } from '@app/common/styles';
+import { mainColor } from '@app/common/color';
+import { BGCOLOR, DSP, provideShadow } from '@app/common/styles';
 import { STATUS_BAR_HEIGHT } from '@app/screens/component/StatusBar';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
-import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
 import * as React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import PhotoUpload from './PhotoUpload';
 
 interface AddPhotoPopupProps {
