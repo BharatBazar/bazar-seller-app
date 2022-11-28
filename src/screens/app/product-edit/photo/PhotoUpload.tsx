@@ -15,6 +15,7 @@ import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFea
 import WrappedText from '@app/screens/component/WrappedText';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { MTA } from '@app/common/stylesheet';
+import { FastImageWrapper } from '@app/screens/component/FastImage';
 export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
@@ -40,6 +41,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
             ]);
         }
     }, [existingPhotos]);
+
     const deleteImage = (index: number) => {
         const photo = [...photos];
         photo.splice(index, 1);
@@ -60,6 +62,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
     };
 
     const renderItem = (item, index) => {
+        console.log('item', item, index);
         return (
             <View
                 style={{
@@ -70,6 +73,7 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                     marginRight: getWP(0.3),
                     marginTop: DSP,
                 }}
+                key={item._id}
             >
                 <Ripple
                     onPress={() => {
@@ -81,9 +85,9 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                         width: '100%',
                     }}
                 >
-                    <Image
+                    <FastImageWrapper
                         source={{ uri: item.path }}
-                        style={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
+                        imageStyle={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
                         resizeMode={'cover'}
                     />
                 </Ripple>
