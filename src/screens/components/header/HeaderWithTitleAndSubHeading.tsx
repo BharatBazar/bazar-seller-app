@@ -1,5 +1,5 @@
-import { FontFamily, fs12, fs16, fs20, fs25, fs30 } from '@app/common';
-import { MT } from '@app/common/styles';
+import { FontFamily, fs12, fs20 } from '@app/common';
+
 import WrappedText from '@app/screens/component/WrappedText';
 import * as React from 'react';
 import { View, StyleSheet, ViewStyle, TextStyle } from 'react-native';
@@ -27,10 +27,10 @@ const HeaderWithTitleAndSubHeading: React.FunctionComponent<HeaderWithTitleAndSu
 }) => {
     return (
         <View style={headerContainerStyle}>
-            {heading && (
+            {typeof heading == 'string' && (
                 <WrappedText text={heading} fontFamily={FontFamily.Medium} fontSize={fs20} textStyle={headerStyle} />
             )}
-            {typeof subHeading === 'string' && (
+            {typeof subHeading == 'string' && (
                 <WrappedText
                     text={subHeading}
                     fontSize={fs12}
