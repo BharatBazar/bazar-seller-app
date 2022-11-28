@@ -175,7 +175,7 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
                                 <View style={[P(), PH(0.3), FDR()]}>
                                     <Image
                                         style={{ width: 80, height: 80, borderRadius: 10 }}
-                                        source={{ uri: allProducts.productId.sellerIdentificationPhoto }}
+                                        source={{ uri: allProducts.productId.identificationPhoto }}
                                     />
                                     <View style={[AS('center'), JCC('space-between'), FDR('column'), PL(0.2)]}>
                                         <GeneralText

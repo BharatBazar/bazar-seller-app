@@ -13,7 +13,7 @@ const ReviewProduct: React.FC<IReviewProduct> = ({ item, removeItem }) => {
                 <View style={[P(), PH(), FDR()]}>
                     <Image
                         style={{ width: 50, height: 50, borderRadius: 10 }}
-                        source={{ uri: item.productId.sellerIdentificationPhoto }}
+                        source={{ uri: item.productId.identificationPhoto }}
                     />
                 </View>
                 <View style={[AS('center')]}>

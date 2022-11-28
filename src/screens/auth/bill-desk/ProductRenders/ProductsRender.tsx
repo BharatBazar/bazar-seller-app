@@ -15,9 +15,8 @@ const ProductRender: React.FC<IBillProductRendering> = ({
     setModalHeight,
     setPreEditItem,
     setEveryItem,
-    everyItem
+    everyItem,
 }) => {
-
     const removeItem: Function = (id: any) => {
         const removeItem = everyItem.filter((e: any) => {
             return e._id !== id;
@@ -27,7 +26,6 @@ const ProductRender: React.FC<IBillProductRendering> = ({
             refRBSheet.current.close();
         }
     };
-
 
     return (
         <>
@@ -44,7 +42,7 @@ const ProductRender: React.FC<IBillProductRendering> = ({
                     <View style={[PA(10), PH(), FDR()]}>
                         <Image
                             style={{ width: 60, height: 60, borderRadius: 10 }}
-                            source={{ uri: item.productId.sellerIdentificationPhoto }}
+                            source={{ uri: item.productId.identificationPhoto }}
                         />
 
                         <View style={[PL(0.3)]}>
@@ -54,34 +52,30 @@ const ProductRender: React.FC<IBillProductRendering> = ({
                             />
                             <GeneralText
                                 text={item.productId.parentId.type}
-                                textStyle={[FS(14), MT(.05), { fontFamily: FontFamily.Regular }]}
+                                textStyle={[FS(14), MT(0.05), { fontFamily: FontFamily.Regular }]}
                             />
                             <GeneralText
                                 text={'Item id ' + item.itemId}
-                                textStyle={[FS(12), MT(.1), { fontFamily: FontFamily.Regular }]}
+                                textStyle={[FS(12), MT(0.1), { fontFamily: FontFamily.Regular }]}
                             />
-
-
                         </View>
-
                     </View>
 
-
-                    <View style={[FDR("column")]}>
+                    <View style={[FDR('column')]}>
                         <GeneralText
                             text={'₹' + item.quantity * item.price + '.00'}
-                            textStyle={[FS(16), FC('#252525'), { fontFamily: FontFamily.Black }, MT(.14)]}
+                            textStyle={[FS(16), FC('#252525'), { fontFamily: FontFamily.Black }, MT(0.14)]}
                         />
                         <GeneralText
                             text={item.quantity + ' pcs.'}
-                            textStyle={[FS(14), MT(.05), { fontFamily: FontFamily.Regular }]}
+                            textStyle={[FS(14), MT(0.05), { fontFamily: FontFamily.Regular }]}
                         />
                         <View
                             style={[
                                 W(15),
                                 H(15),
                                 BR(7.5),
-                                MT(.05),
+                                MT(0.05),
                                 BGCOLOR(
                                     item.productId.colors[0].color.description
                                         ? item.productId.colors[0].color.description
@@ -91,8 +85,7 @@ const ProductRender: React.FC<IBillProductRendering> = ({
                         />
                     </View>
 
-
-                    <TouchableOpacity onPress={() => removeItem(item._id)} style={[PR(0.2), MT(.1)]}>
+                    <TouchableOpacity onPress={() => removeItem(item._id)} style={[PR(0.2), MT(0.1)]}>
                         <CrossIcon name="cancel" color={mainColor} size={24} />
                     </TouchableOpacity>
                 </View>
@@ -114,6 +107,6 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
-        marginTop: '2%'
+        marginTop: '2%',
     },
 });

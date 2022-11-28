@@ -37,7 +37,7 @@ export interface ProductIdentifierViewProps {
 }
 
 const ProductIdentifierView: React.FC<ProductIdentifierViewProps> = ({
-    product: { _id, title, subTitle, sellerIdentificationPhoto, ...rest },
+    product: { _id, title, subTitle, identificationPhoto, ...rest },
     onPress,
 }) => {
     return (
@@ -59,7 +59,7 @@ const ProductIdentifierView: React.FC<ProductIdentifierViewProps> = ({
                 {/* {rest.status != productStatus.NOTCOMPLETED && <WrappedText text={rest.itemId} />} */}
                 <FastImageWrapper
                     source={{
-                        uri: sellerIdentificationPhoto || DEFAULT_IMAGE_URL,
+                        uri: identificationPhoto || DEFAULT_IMAGE_URL,
                     }}
                     resizeMode={'cover'}
                     imageStyle={[
