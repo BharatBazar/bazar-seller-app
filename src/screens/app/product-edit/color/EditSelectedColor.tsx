@@ -25,6 +25,9 @@ interface EditSelectedColorProps {
     onPressSingleSize: Function;
     // Show image in zoom viewer trigger
     showImageInZoomVeiwer: (value: boolean, imageIndex: number) => void;
+
+    // If delete button pressed confirm photo delete option will show
+    showDeleteImagePopup: (value: boolean, selectedImage: number) => void;
 }
 
 const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
@@ -36,6 +39,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onClickEditSize,
     onPressSingleSize,
     showImageInZoomVeiwer,
+    showDeleteImagePopup,
 }) => {
     // console.log('sizes =>', item.photos);
 
@@ -135,6 +139,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                                 if (item.photos.length == 1) {
                                                     ToastHOC.infoAlert('Cannot delete as only one image is there');
                                                 } else {
+                                                    showDeleteImagePopup(true, index);
                                                 }
                                             }}
                                         />

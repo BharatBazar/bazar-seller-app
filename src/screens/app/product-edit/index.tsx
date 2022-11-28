@@ -45,6 +45,7 @@ import ProvideSize from './size/ProvideSize';
 import SizeUpdatePopup from './size/SizeUpdatePopup';
 import ColorTabBar from './color/ColorTabBar';
 import ImageZoomViewer from './photo/ImageViewer';
+import DeleteImagePopup from './photo/DeleteImage';
 
 interface EditProductProps extends NavigationProps {
     update?: boolean;
@@ -84,7 +85,11 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
         selectedColorIndex: -1,
         selectedImageIndex: -1,
     });
-    const [currentColorAndPhotoToDeleteIndex, setCurrentColorAndPhotoToDeleteIndex] = React.useState(-1);
+    const [currentColorAndPhotoToDeleteIndex, setCurrentColorAndPhotoToDeleteIndex] = React.useState({
+        value: false,
+        selectedColorIndex: -1,
+        selectedImageIndex: -1,
+    });
 
     const [currentColorSizeIndex, setCurrentColorSizeIndex] = React.useState<string>('');
     const [filterValues, setFilterValues] = React.useState<{}>({});
@@ -185,6 +190,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
             const color = await updateProductColor({ ...item });
             let data = [...choosenColor];
             data[index] = { ...data[index], ...item };
+
             setChoosenColor(data);
             setLoader(false);
         } catch (error) {
@@ -414,6 +420,13 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                                             selectedImageIndex: imageIndex,
                                         });
                                     }}
+                                    showDeleteImagePopup={(value, seletedImage) => {
+                                        setCurrentColorAndPhotoToDeleteIndex({
+                                            value: value,
+                                            selectedColorIndex: index,
+                                            selectedImageIndex: seletedImage,
+                                        });
+                                    }}
                                 />
                             )}
                         />
@@ -435,8 +448,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         }}
                     /> */}
                     <ImproveList
-                        notes={productDetails.note}
-                        status={productDetails.status}
+                        notes={productDetails.note as [string]}
+                        status={productDetails.status as productStatus}
                         onPress={() => {
                             checkError();
                         }}
@@ -590,9 +603,51 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     data={choosenColor[currentColorImageViewerIndex.selectedColorIndex].photos.map((item) => ({
                         url: item,
                     }))}
-                    setSelectedIndex={() => {}}
                     currentViewIndex={currentColorImageViewerIndex.selectedImageIndex}
                     updateImageArrayWhenImageIsCropped={() => {}}
+                />
+            )}
+
+            {currentColorAndPhotoToDeleteIndex.value && (
+                <DeleteImagePopup
+                    isVisible={true}
+                    setPopup={() => {
+                        setCurrentColorAndPhotoToDeleteIndex({
+                            value: false,
+                            selectedColorIndex: -1,
+                            selectedImageIndex: -1,
+                        });
+                    }}
+                    rightButtonText={'Yes'}
+                    leftButtonText={'No'}
+                    onPressRightButton={() => {
+                        updateColorInServer(currentColorAndPhotoToDeleteIndex.selectedColorIndex, {
+                            photos: choosenColor[currentColorAndPhotoToDeleteIndex.selectedColorIndex].photos.filter(
+                                (item, index) => index != currentColorAndPhotoToDeleteIndex.selectedImageIndex,
+                            ),
+                            _id: choosenColor[currentColorAndPhotoToDeleteIndex.selectedColorIndex]._id,
+                        });
+                        setCurrentColorAndPhotoToDeleteIndex({
+                            value: false,
+                            selectedColorIndex: -1,
+                            selectedImageIndex: -1,
+                        });
+                    }}
+                    onPressLeftButton={() => {
+                        //  deleteImage((selectedIndex as number) - 1);
+
+                        setCurrentColorAndPhotoToDeleteIndex({
+                            value: false,
+                            selectedColorIndex: -1,
+                            selectedImageIndex: -1,
+                        });
+                    }}
+                    question={'Do you want to delete the below image?'}
+                    image={{
+                        path: choosenColor[currentColorAndPhotoToDeleteIndex.selectedColorIndex].photos[
+                            currentColorAndPhotoToDeleteIndex.selectedImageIndex
+                        ],
+                    }}
                 />
             )}
         </ProductIdContext.Provider>
