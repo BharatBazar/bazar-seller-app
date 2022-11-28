@@ -23,6 +23,7 @@ import AddPhotoPopup from '../photo';
 import { MHA, PBA, PHA, PTA } from '@app/common/stylesheet';
 import { useUploadImage } from '@app/hooks/useUploadImage';
 import { s3BucketKeys } from '@app/server/apis/multimedia/multimedia.interface';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 export interface ChooseProductColorsProps {
     setPopup: Function;
@@ -72,6 +73,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 shopId: shopId,
                 photos: url,
                 catalogueId: catalogueId,
+                //  filterKey: colorFilterKey,
             };
 
             data[colorFilterKey] = [...chosenColor.map((item) => item.color._id), colorChoosen._id];
@@ -185,6 +187,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                             if (getUrl) {
                                                 onPressColor(selected, indexInSelectedColor, item, index, getUrl);
                                             } else {
+                                                ToastHOC.errorAlert('Problem while uploading image');
                                             }
                                         }}
                                     >

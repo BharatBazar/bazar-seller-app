@@ -478,9 +478,11 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     chosenColor={choosenColor}
                     colors={distribution.length > 0 ? distribution[0].values : []}
                     colorFilterKey={distribution.length > 0 ? distribution[0].key : ''}
+                    sizeFilterKey={distribution.length > 1 ? distribution[1].key : ''}
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                 />
-                <ProvideSize
+                {/* <ProvideSize
+                   
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                     isVisible={showSizePopup}
                     setPopup={() => {
@@ -495,7 +497,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     }}
                     shopId={shopId}
                     colorId={currentColorIndex > -1 ? choosenColor[currentColorIndex]._id : ''}
-                />
+                /> */}
                 {loader && <Loader />}
             </View>
             {currentDragStortIndex > -1 && (
@@ -544,6 +546,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     showBack={true}
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                     isVisible={true}
+                    sizeFilterKey={distribution.length > 1 ? distribution[1].key : ''}
                     setPopup={(a: boolean, triggerNextPopup: boolean) => {
                         setCurrentProductSizeIndex(-1);
                     }}

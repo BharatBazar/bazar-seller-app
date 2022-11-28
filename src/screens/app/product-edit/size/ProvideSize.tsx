@@ -1,16 +1,14 @@
 import * as React from 'react';
 import { View } from 'react-native';
 import { AlertContext } from '@app/../App';
-import { fs14 } from '@app/common';
-import { colorCode, errorColor, mainColor } from '@app/common/color';
+import { errorColor, mainColor } from '@app/common/color';
 import { getHP } from '@app/common/dimension';
-import { BGCOLOR, DSP, FDR, provideShadow } from '@app/common/styles';
-import { BTRA, GENERAL_PADDING, MBA, MHA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
+import { BGCOLOR, FDR, provideShadow } from '@app/common/styles';
+import { BTRA, MBA, MHA, MTA, MVA, PHA, PVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import WrappedText from '@app/screens/component/WrappedText';
 import Border from '@app/screens/components/border/Border';
-import TextRippleButton from '@app/screens/components/button/TextRippleB';
 import HeaderWithTitleAndSubHeading from '@app/screens/components/header/HeaderWithTitleAndSubHeading';
 import ModalHOC from '@app/screens/hoc/ModalHOC';
 import { APICreateProductSize, APIDeleteProductSize, APIUpdateProductSize } from '@app/server/apis/product/product.api';
@@ -31,6 +29,7 @@ interface ProvideSizeProps {
     colorId: string;
     shopId: string;
     showBack?: boolean;
+    sizeFilterKey: string;
 }
 
 const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
@@ -42,6 +41,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
     colorId,
     shopId,
     showBack,
+    sizeFilterKey,
 }) => {
     const [selectedSize, setSelectedSize] = React.useState<choosenSize[]>([]);
     const { productId } = React.useContext(ProductIdContext);
@@ -69,8 +69,11 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 productId: productId,
 
                 ...data,
+                filterData: {
+                    filterKey: sizeFilterKey,
+                },
             };
-            console.log('size', sizeData);
+            console.log('size', sizeData, sizeFilterKey);
             const id: IRProductSize = await APICreateProductSize(sizeData);
             setLoader(false);
             if (id && id.status == 1) {
