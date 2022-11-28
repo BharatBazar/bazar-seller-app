@@ -10,7 +10,7 @@ import ButtonFeatherIconRightText from '@app/screens/components/button/ButtonFea
 import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 import * as React from 'react';
-import { ImageBackground, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { ImageBackground, View, StyleSheet, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { border } from '../component/generalConfig';
 import { choosenColor, choosenSize } from '../data-types';
 import ImageCarousel from './ImageCarousel';
@@ -23,6 +23,8 @@ interface EditSelectedColorProps {
     onPressAddMoreImage: Function;
     onClickEditSize: Function;
     onPressSingleSize: Function;
+    // Show image in zoom viewer trigger
+    showImageInZoomVeiwer: (value: boolean, imageIndex: number) => void;
 }
 
 const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
@@ -33,6 +35,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
     onPressAddMoreImage,
     onClickEditSize,
     onPressSingleSize,
+    showImageInZoomVeiwer,
 }) => {
     // console.log('sizes =>', item.photos);
 
@@ -82,7 +85,7 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                 }}
                 screens={providePhotos()}
                 itemWidth={getWP(4)}
-                renderImage={(uri) => {
+                renderImage={(uri, index) => {
                     const isNoUri = uri.length == 0;
                     if (isNoUri) {
                         return (
@@ -111,22 +114,31 @@ const EditSelectedColor: React.FunctionComponent<EditSelectedColorProps> = ({
                                     imageStyle={[imageBackgroundStyle]}
                                     style={[imageBackgroundStyle, MVA(5)]}
                                 >
-                                    <WrappedFeatherIcon
-                                        iconName="delete"
-                                        iconSize={13}
-                                        iconColor={'#FFF'}
-                                        containerHeight={22}
-                                        containerStyle={[
-                                            BGCOLOR('#00000099'),
-                                            { position: 'absolute', right: 7, top: 7 },
-                                        ]}
-                                        onPress={() => {
-                                            if (item.photos.length == 1) {
-                                                ToastHOC.infoAlert('Cannot delete as only one image is there');
-                                            } else {
-                                            }
-                                        }}
-                                    />
+                                    <>
+                                        <TouchableOpacity
+                                            onPress={() => {
+                                                showImageInZoomVeiwer(true, index);
+                                            }}
+                                            style={[StyleSheet.absoluteFillObject]}
+                                        ></TouchableOpacity>
+
+                                        <WrappedFeatherIcon
+                                            iconName="delete"
+                                            iconSize={13}
+                                            iconColor={'#FFF'}
+                                            containerHeight={22}
+                                            containerStyle={[
+                                                BGCOLOR('#00000099'),
+                                                { position: 'absolute', right: 7, top: 7 },
+                                            ]}
+                                            onPress={() => {
+                                                if (item.photos.length == 1) {
+                                                    ToastHOC.infoAlert('Cannot delete as only one image is there');
+                                                } else {
+                                                }
+                                            }}
+                                        />
+                                    </>
                                 </ImageBackground>
                             </View>
                         );

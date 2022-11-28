@@ -9,7 +9,7 @@ import { View, FlatList, Animated, ScrollView, StyleSheet } from 'react-native';
 
 interface ImageCarouselProps {
     screens: string[];
-    renderImage: (item: any) => any;
+    renderImage: (item: any, index: number) => any;
     itemWidth: number;
     onPressDragSort: Function;
     onPressAddMoreImage: Function;
@@ -44,7 +44,7 @@ const ImageCarousel: React.FunctionComponent<ImageCarouselProps> = ({
         <View style={[MT(0.1)]}>
             <FlatList
                 data={screens}
-                renderItem={({ item }) => renderImage(item)}
+                renderItem={({ item, index }) => renderImage(item, index)}
                 horizontal
                 keyExtractor={(item, index) => {
                     let key = getId() + index.toString();

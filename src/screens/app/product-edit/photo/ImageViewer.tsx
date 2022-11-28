@@ -19,7 +19,6 @@ interface ImageZoomViewerProps {
     data: { url: string }[];
     currentViewIndex: number;
     updateImageArrayWhenImageIsCropped: Function;
-    setSelectedIndex: Function;
 }
 
 const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
@@ -28,7 +27,6 @@ const ImageZoomViewer: React.FunctionComponent<ImageZoomViewerProps> = ({
     data,
     currentViewIndex,
     updateImageArrayWhenImageIsCropped,
-    setSelectedIndex,
 }) => {
     const [currentIndex, setCurrentIndex] = React.useState(0);
 

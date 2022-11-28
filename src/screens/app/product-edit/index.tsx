@@ -44,6 +44,7 @@ import DragSort from './photo/DragSort';
 import ProvideSize from './size/ProvideSize';
 import SizeUpdatePopup from './size/SizeUpdatePopup';
 import ColorTabBar from './color/ColorTabBar';
+import ImageZoomViewer from './photo/ImageViewer';
 
 interface EditProductProps extends NavigationProps {
     update?: boolean;
@@ -77,6 +78,14 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     const [currentDragStortIndex, setCurrentDragSortIndex] = React.useState(-1);
     const [currentAddMoreImage, setCurrentAddMoreImage] = React.useState(-1);
     const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
+
+    const [currentColorImageViewerIndex, setCurrentColorImageViewerIndex] = React.useState({
+        value: false,
+        selectedColorIndex: -1,
+        selectedImageIndex: -1,
+    });
+    const [currentColorAndPhotoToDeleteIndex, setCurrentColorAndPhotoToDeleteIndex] = React.useState(-1);
+
     const [currentColorSizeIndex, setCurrentColorSizeIndex] = React.useState<string>('');
     const [filterValues, setFilterValues] = React.useState<{}>({});
     const [productDetails, setProductDetails] = React.useState<Partial<IProduct>>({ status: productStatus.INVENTORY });
@@ -398,6 +407,13 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                                     onPressDeleteColor={() => {
                                         deleteColorFromServer(item._id, index);
                                     }}
+                                    showImageInZoomVeiwer={(value, imageIndex) => {
+                                        setCurrentColorImageViewerIndex({
+                                            value: value,
+                                            selectedColorIndex: index,
+                                            selectedImageIndex: imageIndex,
+                                        });
+                                    }}
                                 />
                             )}
                         />
@@ -559,6 +575,24 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                         colors[currentColorIndexOnSizeClick].sizes.splice(currentSizeIndexOnSizeClick, 1);
                         setChoosenColor(colors);
                     }}
+                />
+            )}
+            {currentColorImageViewerIndex.value && (
+                <ImageZoomViewer
+                    isVisible={true}
+                    setPopup={() => {
+                        setCurrentColorImageViewerIndex({
+                            value: false,
+                            selectedColorIndex: -1,
+                            selectedImageIndex: -1,
+                        });
+                    }}
+                    data={choosenColor[currentColorImageViewerIndex.selectedColorIndex].photos.map((item) => ({
+                        url: item,
+                    }))}
+                    setSelectedIndex={() => {}}
+                    currentViewIndex={currentColorImageViewerIndex.selectedImageIndex}
+                    updateImageArrayWhenImageIsCropped={() => {}}
                 />
             )}
         </ProductIdContext.Provider>

@@ -34,6 +34,7 @@ export interface ChooseProductColorsProps {
     removeColorFromArray: (index: number) => void;
     shopId: string;
     updateColorInArray: (color: Partial<choosenColor>, index: number) => void;
+
     catalogueId: string;
     colorFilterKey: string;
 }
@@ -182,7 +183,6 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                                             );
 
                                             if (getUrl) {
-                                                console.log('Urrll', getUrl);
                                                 onPressColor(selected, indexInSelectedColor, item, index, getUrl);
                                             } else {
                                             }
