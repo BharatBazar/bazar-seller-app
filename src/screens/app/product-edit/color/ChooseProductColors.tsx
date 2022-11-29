@@ -129,7 +129,9 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             });
             setLoader(false);
 
-            showMessage({ type: 'success', message: 'Product size created' });
+            if (colorChoosen.photos) {
+                ToastHOC.successAlert('Image uploaded');
+            }
             updateColorInArray({ ...colorChoosen }, currentColorIndex);
             setCurrentColorIndex(-1);
         } catch (error) {

@@ -21,9 +21,10 @@ export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
     openCamera?: boolean;
+    setPopup: Function;
 }
 
-const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoArray, openCamera }) => {
+const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoArray, openCamera, setPopup }) => {
     const [photos, setPhotos] = React.useState<{ path: string; _id: string }[]>([]);
     const [showImageViewer, setShowImageViewer] = React.useState<boolean>(false);
     const [selectedIndex, setSelectedIndex] = React.useState<number | undefined>(undefined);
@@ -164,7 +165,13 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                 buttonText={'Continue'}
                 containerStyle={[MT(0.1)]}
                 onPress={() => {
-                    if (isArrayEqual(photos, existingPhotos)) {
+                    if (
+                        isArrayEqual(
+                            photos.map((item) => item.path),
+                            existingPhotos,
+                        )
+                    ) {
+                        setPopup(false);
                     } else {
                         updatePhotoArray(photos.map((item) => item.path));
                     }

@@ -70,6 +70,7 @@ const AddPhotoPopup: React.FunctionComponent<AddPhotoPopupProps> = ({
                 />
 
                 <PhotoUpload
+                    setPopup={setPopup}
                     openCamera={openCamera}
                     existingPhotos={existingPhotos}
                     updatePhotoArray={(photos: { path: string }[]) => {
