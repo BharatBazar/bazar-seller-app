@@ -50,9 +50,9 @@ const AddPhoto: React.FunctionComponent<AddPhotoProps> = ({ addImage, containerS
         try {
             let images;
             if (selector == 'file') {
-                images = await uploadImageFunction(false);
+                images = await uploadImageFunction(false, undefined, true);
             } else {
-                images = await uploadImageFunction(true);
+                images = await uploadImageFunction(true, undefined, true);
             }
 
             if (images) {

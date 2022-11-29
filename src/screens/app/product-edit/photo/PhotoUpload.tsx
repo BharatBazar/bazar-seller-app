@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView } from 'react-native';
+import { View, StyleSheet, ScrollView, TouchableOpacity, Image } from 'react-native';
 import Ripple from 'react-native-material-ripple';
 import { fs14, fs15, fs20 } from '@app/common';
 import { BGCOLOR, DSP, MT } from '@app/common/styles';
@@ -17,6 +17,7 @@ import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { MTA } from '@app/common/stylesheet';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
 import { isArrayEqual } from '@app/common/helper';
+import ImageDisplay from './ImageDisplay';
 export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
@@ -51,10 +52,12 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
         setSelectedIndex(undefined);
     };
 
-    const addImageInArray = (image: { path: string; _id: String }[]) => {
-        let images = [...photos];
-        images = [...images, ...image];
-        setPhotos(images);
+    const addImageInArray = (image: { path: string; _id: string }[]) => {
+        setPhotos((item) => {
+            console.log('image before', item, image, typeof item, typeof image);
+
+            return [...item, ...image];
+        });
     };
 
     const updateImageArrary = (index: number, file: { path: string; _id: String }) => {
@@ -63,59 +66,6 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
         setPhotos(photo);
     };
 
-    const renderItem = (item, index) => {
-        console.log('item', item, index);
-        return (
-            <View
-                style={{
-                    height: getWP(2.5),
-                    width: getWP(2.5),
-                    borderRadius: getHP(0.1),
-
-                    marginRight: getWP(0.3),
-                    marginTop: DSP,
-                }}
-                key={item._id}
-            >
-                <Ripple
-                    onPress={() => {
-                        setShowImageViewer(true);
-                        setCurrentViewIndex(index);
-                    }}
-                    style={{
-                        height: '100%',
-                        width: '100%',
-                    }}
-                >
-                    <FastImageWrapper
-                        source={{ uri: item.path }}
-                        imageStyle={{ height: getWP(2.5), width: getWP(2.5), borderRadius: getHP(0.1) }}
-                        resizeMode={'cover'}
-                    />
-                </Ripple>
-                {photos.length > 1 && (
-                    <WrappedFeatherIcon
-                        iconName={'delete'}
-                        iconColor={'#FFFFFF'}
-                        onPress={() => {
-                            setSelectedIndex(index + 1);
-                        }}
-                        containerHeight={fs20}
-                        iconSize={fs15}
-                        containerStyle={[
-                            {
-                                position: 'absolute',
-                                top: getWP(0.1),
-                                right: getWP(0.1),
-                                zIndex: 10000,
-                                backgroundColor: '#00000066',
-                            },
-                        ]}
-                    />
-                )}
-            </View>
-        );
-    };
     return (
         <View style={{ flex: 1 }}>
             {error.length > 0 && photos.length == 0 && (
@@ -124,7 +74,19 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
             <ScrollView>
                 <Border />
                 <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                    {photos.map((item, index) => renderItem(item, index))}
+                    {photos.map((item, index) => {
+                        return (
+                            <ImageDisplay
+                                setShowImageViewer={setShowImageViewer}
+                                showDeleteButton={photos.length > 1}
+                                setCurrentViewIndex={setCurrentViewIndex}
+                                setSelectedIndex={setSelectedIndex}
+                                index={index}
+                                item={{ ...item }}
+                                key={index}
+                            />
+                        );
+                    })}
                     <AddPhoto
                         openCamera={openCamera}
                         addImage={addImageInArray}
