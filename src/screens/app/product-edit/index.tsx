@@ -1,3 +1,7 @@
+import * as React from 'react';
+import { View, StyleSheet, ScrollView, Alert } from 'react-native';
+import { showMessage } from 'react-native-flash-message';
+import { ImageOrVideo } from 'react-native-image-crop-picker';
 import { AlertContext } from '@app/../App';
 import { NavigationProps } from '@app/common';
 import { mainColor } from '@app/common/color';
@@ -20,10 +24,7 @@ import {
     IRProduct,
     productStatus,
 } from '@app/server/apis/product/product.interface';
-import * as React from 'react';
-import { View, StyleSheet, ScrollView, Alert } from 'react-native';
-import { showMessage } from 'react-native-flash-message';
-import { ImageOrVideo } from 'react-native-image-crop-picker';
+
 import {
     border,
     deleteProductColor,
@@ -73,8 +74,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
 
     const [openChooseColor, setOpenChooseColor] = React.useState(false);
     const [productId, setProductId] = React.useState(_id || '');
-    const [showSizePopup, setShowSizePopup] = React.useState(false);
-    const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
+
     const [currentDragStortIndex, setCurrentDragSortIndex] = React.useState(-1);
     const [currentAddMoreImage, setCurrentAddMoreImage] = React.useState(-1);
     const [cuurentProductSizeIndex, setCurrentProductSizeIndex] = React.useState(-1);
@@ -155,10 +155,8 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
     }, [distribution]);
 
     React.useEffect(() => {
-        //console.log(update, _id, shopId);
         if (update) {
             fetchProduct();
-        } else {
         }
         loadFilter();
     }, []);
@@ -481,23 +479,7 @@ const EditProduct: React.FunctionComponent<EditProductProps> = ({
                     sizeFilterKey={distribution.length > 1 ? distribution[1].key : ''}
                     avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
                 />
-                {/* <ProvideSize
-                   
-                    avaialbleSize={distribution.length > 1 ? distribution[1].values : []}
-                    isVisible={showSizePopup}
-                    setPopup={() => {
-                        setShowSizePopup(false);
-                        setCurrentColorIndex(-1);
-                    }}
-                    choosenSize={currentColorIndex > -1 ? choosenColor[currentColorIndex].sizes : []}
-                    setChoosenSize={(sizes: choosenSize[]) => {
-                        const data = [...choosenColor];
-                        data[currentColorIndex] = { ...data[currentColorIndex], sizes };
-                        setChoosenColor(data);
-                    }}
-                    shopId={shopId}
-                    colorId={currentColorIndex > -1 ? choosenColor[currentColorIndex]._id : ''}
-                /> */}
+
                 {loader && <Loader />}
             </View>
             {currentDragStortIndex > -1 && (

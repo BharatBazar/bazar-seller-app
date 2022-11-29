@@ -16,21 +16,23 @@ export class ToastHOC {
         // });
     }
     static successAlert(text2: string, text1?: string) {
-        Toast.show({
-            type: 'success',
-            position: 'bottom',
-            text1: text1 || 'Success',
-            text2: text2,
-            autoHide: true,
-        });
+        // Toast.show({
+        //     type: 'success',
+        //     position: 'bottom',
+        //     text1: text1 || 'Success',
+        //     text2: text2,
+        //     autoHide: true,
+        // });
+        ToastAndroid.show(text2, 404);
     }
     static infoAlert(text2: string, text1?: string, position?: string) {
-        Toast.show({
-            type: 'info',
-            position: position === 'top' ? 'top' : 'bottom',
-            text1: text1 || 'Info',
-            text2: text2,
-            autoHide: true,
-        });
+        // Toast.show({
+        //     type: 'info',
+        //     position: position === 'top' ? 'top' : 'bottom',
+        //     text1: text1 || 'Info',
+        //     text2: text2,
+        //     autoHide: true,
+        // });
+        ToastAndroid.show(text2, 404);
     }
 }

@@ -38,6 +38,7 @@ export interface ChooseProductColorsProps {
 
     catalogueId: string;
     colorFilterKey: string;
+    sizeFilterKey: string;
 }
 
 const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
@@ -52,11 +53,12 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
     updateColorInArray,
     catalogueId,
     colorFilterKey,
+    sizeFilterKey,
 }) => {
     //getting product id from context api
     const { productId, setProductId } = React.useContext(ProductIdContext);
     const [loader, setLoader] = React.useState(false);
-    const [showImageSelect, setShowImageSelect] = React.useState<boolean>(false);
+
     const [showSizePopup, setShowSizePopup] = React.useState(false);
     const [currentColorIndex, setCurrentColorIndex] = React.useState(-1);
     const [showPhotoPopup, setShowPhotoPopup] = React.useState(false);
@@ -79,11 +81,14 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
             data[colorFilterKey] = [...chosenColor.map((item) => item.color._id), colorChoosen._id];
 
             const color = await createProductColor(data);
+
+            console.log('color', color);
             setLoader(false);
             if (!productId) {
                 setProductId(color.payload.productId);
             }
             showMessage({ type: 'success', message: 'Product size created' });
+            ToastHOC.successAlert('Color Creation Successful');
             addColorsToChoosenArray(
                 provideDefaultColorState(color.payload.colorId, colorChoosen, color.payload.productId, url),
             );
@@ -232,6 +237,7 @@ const ChooseProductColors: React.FC<ChooseProductColorsProps> = ({
                 />
             </View>
             <ProvideSize
+                sizeFilterKey={sizeFilterKey}
                 avaialbleSize={avaialbleSize}
                 isVisible={showSizePopup}
                 setPopup={(a: boolean, triggerNextPopup: boolean) => {

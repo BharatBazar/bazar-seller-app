@@ -19,6 +19,7 @@ import WrappedSize from './WrappedSize';
 import { choosenSize, ProductIdContext, provideDefaultSizeState } from '../data-types';
 import Size from './Size';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
 
 interface ProvideSizeProps {
     isVisible: boolean;
@@ -80,6 +81,7 @@ const ProvideSize: React.FunctionComponent<ProvideSizeProps> = ({
                 let sizes = [...selectedSize];
                 sizes[index] = { ...sizes[index], ...id.payload, size: sizes[index].size };
                 setSelectedSize(sizes);
+                ToastHOC.successAlert('Size created!');
                 if (error[data.size]) {
                     let errorr = { ...error };
                     delete errorr[data.size];

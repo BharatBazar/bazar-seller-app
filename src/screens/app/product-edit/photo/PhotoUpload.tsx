@@ -16,6 +16,7 @@ import WrappedText from '@app/screens/component/WrappedText';
 import WrappedFeatherIcon from '@app/screens/component/WrappedFeatherIcon';
 import { MTA } from '@app/common/stylesheet';
 import { FastImageWrapper } from '@app/screens/component/FastImage';
+import { isArrayEqual } from '@app/common/helper';
 export interface PhotoUploadProps {
     existingPhotos: string[];
     updatePhotoArray: Function;
@@ -163,7 +164,10 @@ const PhotoUpload: React.FC<PhotoUploadProps> = ({ existingPhotos, updatePhotoAr
                 buttonText={'Continue'}
                 containerStyle={[MT(0.1)]}
                 onPress={() => {
-                    updatePhotoArray(photos.map((item) => item.path));
+                    if (isArrayEqual(photos, existingPhotos)) {
+                    } else {
+                        updatePhotoArray(photos.map((item) => item.path));
+                    }
                 }}
             />
             <ImageZoomViewer
