@@ -1,16 +1,16 @@
-import { ScrollView, StyleSheet, View } from 'react-native';
-import React from 'react';
-import { AS, FDR, FLEX, FS, JCC, MT, PH } from '@app/common/styles';
 import { FontFamily } from '@app/common';
-import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { Storage, StorageItemKeys } from '@app/storage';
-import { createBill } from '@app/server/apis/billdesk/bill.api';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
-import ReviewProduct from '../ProductRenders/ReviewProduct';
-import { IContinueModal } from '../billInterface/Interfaces';
-import GeneralText from '@app/screens/components/text/GeneralText';
+import { AS, FDR, FLEX, FS, JCC, MT, PH } from '@app/common/styles';
 import Loader from '@app/screens/component/Loader';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import GeneralText from '@app/screens/components/text/GeneralText';
 import CoreConfig from '@app/screens/hoc/CoreConfig';
+import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { createBill } from '@app/server/apis/billdesk/bill.api';
+import React from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+
+import { IContinueModal } from '../billInterface/Interfaces';
+import ReviewProduct from '../ProductRenders/ReviewProduct';
 
 const Continue: React.FC<IContinueModal> = ({
     setEveryItem,
@@ -48,7 +48,7 @@ const Continue: React.FC<IContinueModal> = ({
                         productSize: e._id,
                     };
                 }),
-                shopId: shopId,
+                shopId: shopId.shop,
             });
             if (bill.status === 1) {
                 ToastHOC.infoAlert('Product has been saved', 'Information', 'top');

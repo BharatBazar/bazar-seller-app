@@ -52,6 +52,7 @@ export interface IBillProductRendering {
     item: IItem;
     refRBSheet: Function | any;
     everyItem: string[];
+
 }
 
 export interface IAdd_Product {

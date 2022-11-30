@@ -1,20 +1,21 @@
-import { Alert, Image, Keyboard, StyleSheet, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
 import { FontFamily, fs12 } from '@app/common';
 import { mainColor } from '@app/common/color';
-import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import { getHP } from '@app/common/dimension';
+import { AIC, AS, BGCOLOR, BR, BW, FC, FDR, FLEX, FS, H, HP, JCC, MT, P, PH, PL, PR, W } from '@app/common/styles';
+import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
 import Loader from '@app/screens/component/Loader';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import CrossIcon from 'react-native-vector-icons/MaterialIcons';
-import { IAdd_Product } from '../billInterface/Interfaces';
-import GeneralText from '@app/screens/components/text/GeneralText';
 import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
-import { Storage, StorageItemKeys } from '@app/storage';
-import { APIGetItemSize } from '@app/server/apis/product/product.api';
-import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
+import GeneralText from '@app/screens/components/text/GeneralText';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { checkBillProductExistOrNot } from '@app/server/apis/billdesk/bill.api';
+import { APIGetItemSize } from '@app/server/apis/product/product.api';
+import { Storage, StorageItemKeys } from '@app/storage';
+import React from 'react';
+import { Alert, Image, Keyboard, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import CrossIcon from 'react-native-vector-icons/MaterialIcons';
+
+import { IAdd_Product } from '../billInterface/Interfaces';
 
 const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyItem, setAllProducts, setEveryItem }) => {
     const [quan, setQuan] = React.useState<String>('1');
@@ -42,11 +43,13 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
 
     const findProduct: Function = async (id: number | string) => {
         try {
+            console.log("IDDd", id);
             setLoading(true);
             const shopId = await Storage.getItem(StorageItemKeys.userDetail);
             const itemResponse: any = await APIGetItemSize({ shopId: shopId.shop, itemId: id });
-            console.log('RESPPO', itemResponse);
+
             const product = itemResponse.payload[0];
+            console.log('RESPPO', product);
             const checkItemExist: any = await checkBillProductExistOrNot({
                 shopId: shopId.shop,
                 productId: product._id,
@@ -179,9 +182,8 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
                                     />
                                     <View style={[AS('center'), JCC('space-between'), FDR('column'), PL(0.2)]}>
                                         <GeneralText
-                                            text={`${allProducts.productId.parentId.name} × ${
-                                                quantity < 1 ? 1 : quantity
-                                            } `}
+                                            text={`${allProducts.productId.parentId.name} × ${quantity < 1 ? 1 : quantity
+                                                } `}
                                             textStyle={[{ fontFamily: FontFamily.Medium }, FS(14)]}
                                         />
                                         <GeneralText

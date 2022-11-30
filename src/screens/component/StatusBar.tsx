@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { StatusBarStyle, View } from 'react-native';
 import { getStatusBarHeight } from 'react-native-status-bar-height';
-import { Platform, View, StatusBarStyle } from 'react-native';
+
 
 export const STATUS_BAR_HEIGHT = getStatusBarHeight();
 

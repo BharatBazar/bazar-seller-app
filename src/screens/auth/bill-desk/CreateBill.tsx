@@ -1,16 +1,17 @@
-import { StyleSheet, View, FlatList, Alert } from 'react-native';
-import React, { useRef } from 'react';
-import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PT } from '@app/common/styles';
-import { GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
-import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
-import { colorCode, mainColor } from '@app/common/color';
-import WrappedText from '@app/screens/component/WrappedText';
 import { FontFamily, fs18 } from '@app/common';
+import { colorCode, mainColor } from '@app/common/color';
+import { AIC, BGCOLOR, FC, FDR, FLEX, FS, JCC, ML, MT, PH, PT } from '@app/common/styles';
+import { GENERAL_PADDING, MLA, PTA, PVA } from '@app/common/stylesheet';
+import WrappedText from '@app/screens/component/WrappedText';
+import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import GeneralText from '@app/screens/components/text/GeneralText';
+import React, { useRef } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+
 import BottomSheet from './BottomSheet';
 import ProductRender from './ProductRenders/ProductsRender';
-import GeneralText from '@app/screens/components/text/GeneralText';
-import CoreConfig from '@app/screens/hoc/CoreConfig';
 
 const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [modalHeight, setModalHeight] = React.useState<number>(500);
@@ -18,6 +19,8 @@ const CreateBill: React.FC = ({ navigation, route }: any) => {
     const [allProducts, setAllProducts]: any = React.useState<[]>([]);
     const [everyItem, setEveryItem]: any = React.useState<[]>([]);
     const [preEditItem, setPreEditItem] = React.useState<[]>([]);
+
+    const STATUS_BAR_HEIGHT = getStatusBarHeight();
 
     const refRBSheet: any = useRef();
 

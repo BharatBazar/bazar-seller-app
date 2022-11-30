@@ -1,16 +1,17 @@
+import { fs12 } from '@app/common';
+import { mainColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
+import { AIC, BGCOLOR, BR, FDR, FLEX, FS, HP, JCC, MT, PH, PV } from '@app/common/styles';
+import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
+import GeneralText from '@app/screens/components/text/GeneralText';
+import React from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import React from 'react';
-import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { AIC, AS, BGCOLOR, BR, FDR, FLEX, FS, HP, JCC, MT, PH, PV } from '@app/common/styles';
-import { fs12 } from '@app/common';
-import { IUpdateBill } from './billInterface/Interfaces';
-import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
-import { getHP } from '@app/common/dimension';
-import GeneralText from '@app/screens/components/text/GeneralText';
-import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
 import CrossIcon from 'react-native-vector-icons/MaterialIcons';
-import { mainColor } from '@app/common/color';
+
+import { IUpdateBill } from './billInterface/Interfaces';
 
 const UpdateBottomSheet: React.FC<IUpdateBill> = ({
     refRBSheet,

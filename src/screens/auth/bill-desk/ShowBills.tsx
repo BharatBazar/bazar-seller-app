@@ -1,19 +1,20 @@
-import { FlatList, Keyboard, StyleSheet, Text, ToastAndroid, View } from 'react-native';
-import React, { useRef, useState } from 'react';
-import { AIC, AS, BGCOLOR, FDR, FLEX, FS, JCC } from '@app/common/styles';
-import { colorCode, mainColor } from '@app/common/color';
-import { FF, GENERAL_PADDING, MLA, PTA, PVA, STATUS_BAR_HEIGHT } from '@app/common/stylesheet';
-import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import { FontFamily, fs18 } from '@app/common';
-import WrappedText from '@app/screens/component/WrappedText';
-import { Storage, StorageItemKeys } from '@app/storage';
-import { showBill, updateBill } from '@app/server/apis/billdesk/bill.api';
-import UpdateBottomSheet from './UpdateBottomSheet';
+import { colorCode, mainColor } from '@app/common/color';
+import { AIC, BGCOLOR, FDR, FLEX, FS } from '@app/common/styles';
+import { FF, GENERAL_PADDING, MLA, PTA, PVA } from '@app/common/stylesheet';
 import Loader from '@app/screens/component/Loader';
-import ShowBillsRender from './ProductRenders/ShowBillsRender';
+import WrappedText from '@app/screens/component/WrappedText';
+import ButtonMaterialIcons from '@app/screens/components/button/ButtonMaterialIcons';
 import GeneralText from '@app/screens/components/text/GeneralText';
 import CoreConfig from '@app/screens/hoc/CoreConfig';
 import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import { showBill, updateBill } from '@app/server/apis/billdesk/bill.api';
+import React, { useRef, useState } from 'react';
+import { FlatList, Keyboard, StyleSheet, View } from 'react-native';
+import { getStatusBarHeight } from 'react-native-status-bar-height';
+
+import ShowBillsRender from './ProductRenders/ShowBillsRender';
+import UpdateBottomSheet from './UpdateBottomSheet';
 
 const ShowBills: React.FC = ({ navigation }: any) => {
     const [bill, setBill] = React.useState([]);
@@ -26,13 +27,16 @@ const ShowBills: React.FC = ({ navigation }: any) => {
     const refRBSheet: any = useRef();
     const noItemText: string = 'No bills created !';
 
+    const STATUS_BAR_HEIGHT = getStatusBarHeight();
+
     const getBills = async () => {
         setLoading(true);
         try {
-            const shopId = await CoreConfig.getShopId();
+            const userDetail = await CoreConfig.getShopId();
+            console.log("SHOPSY", userDetail.shop._id);
 
-            const billResponse: any = await showBill(shopId);
-            console.log('bill response', billResponse);
+            const billResponse: any = await showBill(userDetail.shop._id || userDetail.shop);
+            console.log('bill responses', billResponse);
             if (billResponse.status == 1) {
                 setLoading(false);
                 setBill(billResponse.payload);
@@ -46,6 +50,28 @@ const ShowBills: React.FC = ({ navigation }: any) => {
             console.log('ERRROR_OCCURED', error.message);
         }
     };
+
+    // const getBills = async () => {
+    //     setLoading(true);
+    //     try {
+    //         const userDetail = await Storage.getItem(StorageItemKeys.userDetail);
+    //         console.log('Shop ids', userDetail);
+    //         const billResponse: any = await showBill(userDetail.shop._id || userDetail.shop);
+    //         console.log('bill response', billResponse);
+    //         if (billResponse.status == 1) {
+    //             setLoading(false);
+    //             setBill(billResponse.payload);
+    //         } else {
+    //             setLoading(false);
+    //             console.log('Bill not fetched');
+    //         }
+    //     } catch (error: any) {
+    //         setLoading(false);
+    //         ToastAndroid.show(error.message, 400);
+    //         console.log('ERRROR_OCCURED', error.message);
+    //     }
+    // };
+
 
     const updateBills = async () => {
         try {

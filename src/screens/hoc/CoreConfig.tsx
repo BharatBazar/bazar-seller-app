@@ -21,7 +21,7 @@ class CoreConfig {
     }
 
     static async getShopId() {
-        return await Storage.getItem(StorageItemKeys.shopId);
+        return await Storage.getItem(StorageItemKeys.userDetail);
     }
 }
 
