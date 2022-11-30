@@ -50,28 +50,36 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
 
             const product = itemResponse.payload[0];
             console.log('RESPPO', product);
-            const checkItemExist: any = await checkBillProductExistOrNot({
-                shopId: shopId.shop,
-                productId: product._id,
-            });
-            console.log('Checking...', checkItemExist);
-            if (checkItemExist.payload === true) {
-                setLoading(false);
-                ToastHOC.errorAlert('Item already listed in bill');
+            const check = everyItem.filter((e: any) => e._id === product._id);
+            if (check.length === 1) {
+                ToastHOC.errorAlert('Item already in list');
+                setLoading(false)
+                Keyboard.dismiss();
             } else {
-                if (itemResponse.status == 1) {
-                    // setModalHeight(600);
+                const checkItemExist: any = await checkBillProductExistOrNot({
+                    shopId: shopId.shop,
+                    productId: product._id,
+                });
+                console.log('Checking...', checkItemExist);
+                if (checkItemExist.payload === true) {
                     setLoading(false);
-                    setAllProducts(product);
-                    setItem([product]);
-                    setShowEnter(false);
-                    Keyboard.dismiss();
+                    ToastHOC.errorAlert('Item already listed in bill');
                 } else {
-                    setLoading(false);
-                    Keyboard.dismiss();
-                    setErrorText('Item not found');
+                    if (itemResponse.status == 1) {
+                        // setModalHeight(600);
+                        setLoading(false);
+                        setAllProducts(product);
+                        setItem([product]);
+                        setShowEnter(false);
+                        Keyboard.dismiss();
+                    } else {
+                        setLoading(false);
+                        Keyboard.dismiss();
+                        setErrorText('Item not found');
+                    }
                 }
             }
+
         } catch (error: any) {
             setLoading(false);
             Keyboard.dismiss();
@@ -81,6 +89,7 @@ const Add_Product: React.FC<IAdd_Product> = ({ refRBSheet, allProducts, everyIte
 
     const add = async (item: any) => {
         try {
+            console.log("ITEMMM", item._id)
             item['price'] = price;
             item['fixedQuantity'] = item.quantity;
 

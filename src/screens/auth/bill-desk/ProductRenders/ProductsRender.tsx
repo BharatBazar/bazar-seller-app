@@ -1,12 +1,13 @@
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import { AS, BC, BGCOLOR, BR, BW, FC, FDR, FS, H, JCC, MT, P, PH, PL, PR, PV, W } from '@app/common/styles';
-import { FF, PA } from '@app/common/stylesheet';
 import { FontFamily } from '@app/common';
-import CrossIcon from 'react-native-vector-icons/MaterialIcons';
-import { IBillProductRendering } from '../billInterface/Interfaces';
 import { mainColor } from '@app/common/color';
+import { BGCOLOR, BR, FC, FDR, FS, H, JCC, MT, PH, PL, PR, W } from '@app/common/styles';
+import { PA } from '@app/common/stylesheet';
 import GeneralText from '@app/screens/components/text/GeneralText';
+import React from 'react';
+import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import CrossIcon from 'react-native-vector-icons/MaterialIcons';
+
+import { IBillProductRendering } from '../billInterface/Interfaces';
 
 const ProductRender: React.FC<IBillProductRendering> = ({
     item,

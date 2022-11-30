@@ -1,15 +1,16 @@
 import { FontFamily, fs12 } from '@app/common';
-import { AIC, AS, BGCOLOR, BR, FC, FDR, FS, HP, JCC, MT } from '@app/common/styles';
-import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
-import { getHP } from '@app/common/dimension';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import React from 'react';
-import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
-import { IPreEdit } from '../billInterface/Interfaces';
-import GeneralText from '@app/screens/components/text/GeneralText';
-import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
-import CrossIcon from 'react-native-vector-icons/MaterialIcons';
 import { mainColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
+import { AIC, BGCOLOR, BR, FC, FDR, FS, HP, JCC, MT } from '@app/common/styles';
+import { border, borRad } from '@app/screens/app/product-edit/component/generalConfig';
+import RightComponentButtonWithLeftText from '@app/screens/components/button/RightComponentButtonWithLeftText';
+import GeneralTextInput from '@app/screens/components/input/GeneralTextInput';
+import GeneralText from '@app/screens/components/text/GeneralText';
+import React from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import CrossIcon from 'react-native-vector-icons/MaterialIcons';
+
+import { IPreEdit } from '../billInterface/Interfaces';
 
 const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, refRBSheet }) => {
     const [errorText1, setErrorText1] = React.useState<string>('');
@@ -39,6 +40,12 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
             everyItem.find((e) => e._id === preEditItem._id).quantity = quantity;
             setEveryItem([...everyItem]);
             setErrorText1('');
+            if (price < 10) {
+                setErrorText2('Please enter amount of atleast 10 rupees');
+            } else {
+                refRBSheet.current.close();
+            }
+
         }
 
 
@@ -48,8 +55,9 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
             everyItem.find((e) => e._id === preEditItem._id).price = price;
             setEveryItem([...everyItem]);
             setErrorText2('');
+            // refRBSheet.current.close();
         }
-        refRBSheet.current.close();
+
     }
 
 
@@ -99,7 +107,7 @@ const PreEdit: React.FC<IPreEdit> = ({ setEveryItem, everyItem, preEditItem, ref
 
                     <View style={[MT(0.2), JCC('space-between')]}>
                         <GeneralText
-                            text="Selling Price"
+                            text="Sellging Price"
                             textStyle={[{ fontFamily: FontFamily.Regular }, FC('#252525'), FS(17)]}
                         />
 
