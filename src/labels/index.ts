@@ -24,4 +24,6 @@ export const NavigationKey = {
     EDITDUKANMEMBER: 'EditDukanMember',
     EditProductSize: 'EditProductSize',
     SELECTFILTER: 'SelectFilter',
+    CREATEBILL: 'CreateBill',
+    SHOWBILLS: 'ShowBills',
 };

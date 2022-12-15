@@ -15,10 +15,10 @@ export interface IProductCatalogue {
     customer_description: string;
     customer_image: string;
     subCategoryExist: boolean;
-    parent: IProductCatalogue;
+    parent: string | IProductCatalogue;
     active: boolean;
-    child: IProductCatalogue[];
-    path: IProductCatalogue[];
+    child: string[] | IProductCatalogue[];
+    path: string[] | IProductCatalogue[];
     totalFilterAdded: number;
 
     _id: string;

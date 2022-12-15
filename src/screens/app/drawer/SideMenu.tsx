@@ -9,6 +9,8 @@ import { getHP, getWP } from '../../../common/dimension';
 import { AIC, BGCOLOR, FDR, provideShadow, P, BW, BC } from '../../../common/styles';
 import { borderColor, mainColor } from '../../../common/color';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import CreateBillIcon from 'react-native-vector-icons/MaterialIcons';
+import Bills from 'react-native-vector-icons/MaterialIcons';
 import { Storage, StorageItemKeys } from '../../../storage';
 import { IshopMember } from '../../../server/apis/shopMember/shopMember.interface';
 import { BRA, MHA, MTA } from '@app/common/stylesheet';
@@ -28,7 +30,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                     },
                 ],
             });
-        } catch (error) {}
+        } catch (error) { }
     }
     const [userDetail, setUserDetail] = React.useState({ name: '', phoneNumber: '' });
 
@@ -39,7 +41,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 name: userDetails.firstName + ' ' + userDetails.lastName,
                 phoneNumber: userDetails.phoneNumber,
             });
-        } catch (error) {}
+        } catch (error) { }
     };
     React.useEffect(() => {
         setUserDetails();
@@ -59,7 +61,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 </View>
             </View>
             <View style={[MHA(), BGCOLOR('#FFFFFF'), provideShadow(2), BRA(10), MTA()]}>
-                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => {}}>
+                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => { }}>
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'person'} size={fs18} />
                         <WrappedText text={'Member Details'} textStyle={styles.textStyle} />
@@ -67,7 +69,7 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                 </WrappedRectangleButton>
                 <View style={[BW(0.5), BC(borderColor), MHA()]} />
 
-                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => {}}>
+                <WrappedRectangleButton containerStyle={[styles.containerStyle]} onPress={() => { }}>
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'edit'} size={fs18} />
                         <WrappedText text={'Shop Details'} textStyle={styles.textStyle} />
@@ -86,6 +88,49 @@ export const SideMenu = (props: DrawerContentComponentProps & NavigationProps) =
                     <View style={[FDR(), AIC()]}>
                         <MaterialIcon name={'checkroom'} size={fs18} />
                         <WrappedText text={'Catalogue'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                        props.navigation.navigate(NavigationKey.PRODUCTDETAILS, {
+                            ownerDetails: userDetail,
+                            update: true,
+                        });
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <MaterialIcon name={'search'} size={fs18} />
+                        <WrappedText text={'Search'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                        props.navigation.navigate(NavigationKey.CREATEBILL, {
+                            openModal: true
+                        })
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <CreateBillIcon name={'request-page'} size={fs18} />
+                        <WrappedText text={'Create Bills'} textStyle={styles.textStyle} />
+                    </View>
+                </WrappedRectangleButton>
+                <View style={[BW(0.5), BC(borderColor), MHA()]} />
+                <WrappedRectangleButton
+                    containerStyle={[styles.containerStyle]}
+                    onPress={() => {
+                        props.navigation.navigate(NavigationKey.SHOWBILLS, {
+                            openModal: true
+                        })
+                    }}
+                >
+                    <View style={[FDR(), AIC()]}>
+                        <Bills name={'show-chart'} size={fs18} />
+                        <WrappedText text={'Show Bills'} textStyle={styles.textStyle} />
                     </View>
                 </WrappedRectangleButton>
                 <View style={[BW(0.5), BC(borderColor), MHA()]} />

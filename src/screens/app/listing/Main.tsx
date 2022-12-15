@@ -20,6 +20,7 @@ import { Shop } from '@app/server/apis/shop/shop.interface';
 import { IProductCatalogue } from '@app/server/apis/catalogue/catalogue.interface';
 import { getShopCatalgoue } from '@app/server/apis/shop/shop.api';
 
+
 export interface ProductProps extends NavigationProps {
     route: {
         params: { item: IProductCatalogue; shopId: string };

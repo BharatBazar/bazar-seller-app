@@ -27,6 +27,7 @@ import TextButton from '../component/TextButton';
 import WrappedTextInput from '../component/WrappedTextInput';
 import WrappedText from '../component/WrappedText';
 import NormalCheckbox from '../components/checkbox/NormalCheckbox';
+import CoreConfig from '../hoc/CoreConfig';
 export interface CreateDukanProps extends NavigationProps {
     route: {
         params: {
@@ -134,6 +135,8 @@ class CreateDukan extends React.Component<CreateDukanProps, CreateDukanState> {
                     await Storage.setItem(StorageItemKeys.isCustomerOnboardingCompleted, 'false');
                     await Storage.setItem(StorageItemKeys.currentScreen, NavigationKey.SETPASSWORD);
                     await Storage.setItem(StorageItemKeys.userDetail, response.payload);
+                    await CoreConfig.setShopId(response.payload.shop);
+                    await CoreConfig.setUserId(response.payload._id);
                     this.props.navigation.reset({
                         index: 0,
                         routes: [

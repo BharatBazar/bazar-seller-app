@@ -13,7 +13,7 @@ import Loader from '@app/screens/component/Loader';
 import { getHP } from '@app/common/dimension';
 import { NavigationKey } from '@app/labels';
 import AddShopMemberBanner from './component/AddShopMemberBanner';
-import { ToastHOC } from '@app/screens/hoc/ToastHOC';
+import CoreConfig from '@app/screens/hoc/CoreConfig';
 
 interface Props extends NavigationProps {}
 
@@ -25,14 +25,12 @@ const Home = (props: Props) => {
     const getShopDetails = async () => {
         try {
             setLoader(true);
-            const userDetails: IshopMember = await Storage.getItem(StorageItemKeys.userDetail);
-
+            const shopId = await CoreConfig.getShopId();
             setUserDetails(userDetails);
             console.log('userDetails provided', userDetails);
             let response: IRGetShop = await getShop({
-                _id: userDetails.shop,
+                _id: shopId,
             });
-            console.log('response', response);
             setLoader(false);
             if (response.status == 1) {
                 setShop(response.payload);

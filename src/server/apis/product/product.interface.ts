@@ -124,7 +124,8 @@ export interface IProductSize {
     quantity: number;
     sp: string;
     parentId: string;
-    itemId: string;
+    itemId: string | number;
+    shopId: string;
 }
 
 export interface ISizeApp {
@@ -137,6 +138,10 @@ export interface ISizeApp {
     sp: string;
     parentId: string;
     itemId: string;
+}
+export interface IFindProduct {
+    shopId: string;
+    itemId: string | number;
 }
 
 export interface IRProduct extends CommonApiResponse {

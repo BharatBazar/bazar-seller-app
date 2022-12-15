@@ -23,6 +23,8 @@ import { commonButtonProps } from '../components/button';
 import TextRippleButton from '../components/button/TextRippleB';
 import { ToastHOC } from '../hoc/ToastHOC';
 import { PHA, PTA, PVA } from '@app/common/stylesheet';
+import ButtonMaterialIcons from '../components/button/ButtonMaterialIcons';
+import CoreConfig from '../hoc/CoreConfig';
 
 export interface OpenDukanProps extends NavigationProps {}
 
@@ -99,12 +101,15 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
             setLoader(true);
             const response: IRShopMemberLogin = await shopMemberLogin(formData);
 
-            setLoader(false);
             console.log('Response', response);
             if (response.status == 1) {
                 const currentAccountState = response.payload;
                 await Storage.setItem(StorageItemKeys.Token, 'token exist');
                 await Storage.setItem(StorageItemKeys.userDetail, currentAccountState.data);
+
+                console.log(CoreConfig.setShopId);
+                await CoreConfig.setShopId(response.payload.data.shop._id);
+                await CoreConfig.setUserId(response.payload.data._id);
                 let screen = '';
                 if (currentAccountState.notPasswordAvailable) {
                     screen = NavigationKey.SETPASSWORD;
@@ -135,7 +140,9 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
                     await Storage.setItem(StorageItemKeys.currentScreen, screen);
                     navigateTo(screen, currentAccountState.data);
                 }
+                setLoader(false);
             } else {
+                setLoader(false);
                 setError({ error: response.message });
             }
         } catch (error) {
@@ -164,12 +171,12 @@ const OpenDukan: React.SFC<OpenDukanProps> = ({ navigation }) => {
     return (
         <View style={[FLEX(1), BGCOLOR('#FFFFFF'), PTA(STATUS_BAR_HEIGHT)]}>
             <View style={[PVA(), PHA(), BGCOLOR(colorCode.WHITE)]}>
-                <WrappedFeatherIcon
+                <ButtonMaterialIcons
                     onPress={() => {
                         navigation.goBack();
                     }}
-                    iconName={'arrow-left'}
-                    iconColor="#000"
+                    iconName={'arrow-back'}
+                    iconColor={mainColor}
                     containerHeight={getHP(0.5)}
                     containerStyle={[provideShadow(), BGCOLOR(colorCode.WHITE)]}
                 />

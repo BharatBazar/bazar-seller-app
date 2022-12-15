@@ -29,6 +29,7 @@ import { ToastHOC } from '../hoc/ToastHOC';
 import { removeElementFromArray } from '@app/utilities/array';
 import { LoaderContext } from '@app/../App';
 import ButtonMaterialIcons from '../components/button/ButtonMaterialIcons';
+import CoreConfig from '../hoc/CoreConfig';
 
 export interface ProductDetail extends NavigationProps {
     route: {
@@ -68,8 +69,8 @@ const ProductDetails: React.FC<ProductDetail> = ({ navigation, route: { params }
         try {
             if (data) {
                 setLoaderCallBack(true);
-                const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-                let datasend = { sellingItems: data, _id: ownerDetails.shop._id || ownerDetails.shop };
+                const shopId = await CoreConfig.getShopId();
+                let datasend = { sellingItems: data, _id: shopId };
 
                 const response: IRUpdateShopCatalogue = await updateShopCatalogue(datasend);
                 console.log('respinse update', response);
@@ -99,14 +100,16 @@ const ProductDetails: React.FC<ProductDetail> = ({ navigation, route: { params }
 
     const fetchProductDetails = async (data: Partial<IProductCatalogue>) => {
         try {
+            console.log('DATA', data);
             setLoaderCallBack(true);
-            const ownerDetails = await Storage.getItem(StorageItemKeys.userDetail);
-
+            const shopId = await CoreConfig.getShopId();
+            // console.log("OWNER_DETAILS",ownerDetails.shop);
             //getting all the current selected catalogue of an shop with the parent catalogue or top
             //category populated
             const response1: IRGetShopCatalogue = await getShopCatalgoue({
-                _id: ownerDetails.shop,
+                _id: shopId,
             });
+            console.log('RESPONSE_1', response1);
 
             setSelectedCategory([
                 ...response1.payload.selectedCategory,
@@ -116,7 +119,6 @@ const ProductDetails: React.FC<ProductDetail> = ({ navigation, route: { params }
             setSellingItem(response1.payload.sellingItems);
 
             const response: IRGetProductCatalogue = await getProductCatalogueAPI(data);
-
             setLoaderCallBack(false);
 
             setData([...response.payload]);
@@ -124,7 +126,7 @@ const ProductDetails: React.FC<ProductDetail> = ({ navigation, route: { params }
     };
 
     useEffect(() => {
-        fetchProductDetails({ parent: { $exists: false }, active: false });
+        fetchProductDetails({ parent: { $exists: false }, active: true });
 
         StatusBar.setBarStyle('light-content');
 

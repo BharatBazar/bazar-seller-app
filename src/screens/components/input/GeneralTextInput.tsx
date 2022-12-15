@@ -1,12 +1,10 @@
+import { FontFamily, fs11, fs13 } from '@app/common';
+import { errorColor } from '@app/common/color';
+import { getHP } from '@app/common/dimension';
 import React, { Component } from 'react';
 import { KeyboardTypeOptions, StyleProp, StyleSheet, Text, TextInput, View } from 'react-native';
 import Icon from 'react-native-vector-icons/Feather';
-import { FontFamily, fs10, fs11, fs13 } from '../../common';
-import { colorCode, errorColor } from '../../common/color';
-import { getHP } from '../../common/dimension';
-import { AIC, JCC, MT } from '../../common/styles';
-import WrappedRoundButton from './WrappedRoundButton';
-import WrappedText from './WrappedText';
+import GeneralText from '../text/GeneralText';
 
 interface Props {
     containerStyle?: StyleProp<any>;
@@ -15,7 +13,7 @@ interface Props {
     onChangeText?: (text: string) => void;
     placeholder?: string;
     keyboardType?: KeyboardTypeOptions;
-    eyeButton?: any;
+
     icon?: any;
     editable?: boolean;
     textInputStyle?: StyleProp<any>;
@@ -28,7 +26,7 @@ interface Props {
     rightIcon?: string;
     onPressRightIcon?: Function;
     rest?: any;
-    eyeButtonHeight?: number;
+
     paddingLeft?: number;
     multiline?: boolean;
     keyBoard?: string | any;
@@ -41,30 +39,24 @@ interface State {
     secureTextEntry: boolean | undefined;
 }
 
-export default class WrappedTextInput extends Component<Props, State> {
+export default class GeneralTextInput extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
-        this.state = {
-            secureTextEntry: false,
-        };
     }
 
-    componentDidMount() {
-        const { eyeButton } = this.props;
-        this.setState({ secureTextEntry: eyeButton });
-    }
+    componentDidMount() { }
 
     render() {
         const {
             errorText,
             value,
-            eyeButton,
+
             containerStyle,
             placeholder,
             textInputStyle,
             placeholderTextColor,
             errorContainer,
-            eyeButtonHeight,
+
             multiline,
             editable,
             paddingLeft,
@@ -75,16 +67,12 @@ export default class WrappedTextInput extends Component<Props, State> {
             maxLength,
             title,
         } = this.props;
-        console.log('renderingPlaceholder', placeholder);
-        const { secureTextEntry } = this.state;
+        console.log('rendering', placeholder);
+
         return (
             <View>
                 {title != undefined && (
-                    <WrappedText
-                        text={title}
-                        fontFamily={FontFamily.Medium}
-                        textStyle={{ marginTop: 10, marginBottom: 10 }}
-                    />
+                    <GeneralText text={title} fontFamily={'Medium'} textStyle={{ marginTop: 10, marginBottom: 10 }} />
                 )}
                 <View style={[styles.mainContainer, containerStyle]}>
                     <TextInput
@@ -105,35 +93,17 @@ export default class WrappedTextInput extends Component<Props, State> {
                                 backgroundColor: editable == false ? '#64646433' : '#00000000',
                             },
                         ]}
-                        secureTextEntry={secureTextEntry || false}
+
                         maxLength={maxLength}
                         keyboardType={keyBoard}
                     />
-                    {eyeButton ? (
-                        <WrappedRoundButton
-                            onPress={() => {
-                                this.setState((prevState) => ({
-                                    secureTextEntry: !prevState.secureTextEntry,
-                                }));
-                            }}
-                            containerStyle={[AIC(), JCC()]}
-                            height={containerStyle.height}
-                        >
-                            <Icon
-                                name={secureTextEntry ? 'eye-off' : 'eye'}
-                                style={styles.eye}
-                                size={getHP(0.2)}
-                                color={'#1A202C4D'}
-                            />
-                        </WrappedRoundButton>
-                    ) : (
-                        <View />
-                    )}
                 </View>
                 {errorText ? (
-                    <View style={[styles.errorContainer, errorContainer, { paddingLeft: 1 || 0, marginTop: 0 }]}>
-                        <Text style={styles.errorText}>{errorText}</Text>
-                    </View>
+                    <GeneralText
+                        text={errorText}
+                        containerStyle={[styles.errorContainer, errorContainer, { paddingLeft: 1 || 0, marginTop: 0 }]}
+                        textStyle={styles.errorText}
+                    />
                 ) : (
                     <View />
                 )}
@@ -165,7 +135,7 @@ const styles = StyleSheet.create({
     errorText: {
         fontSize: fs11,
         color: errorColor,
-        fontStyle: 'normal',
+        fontStyle: 'norma',
         fontFamily: FontFamily.Regular,
         marginTop: 3,
     },

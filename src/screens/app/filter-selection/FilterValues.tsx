@@ -11,13 +11,17 @@ interface FilterValuesProps {
     filter: FilterInterface;
     selectedValues: string[];
     setSelectedValues: Function;
+    removeSelectedValues: Function;
     index: number;
+
 }
 
 const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
     filter,
     selectedValues,
     setSelectedValues,
+    setSelectedValuesFalse,
+    removeSelectedValues,
     index,
 }) => {
     const [searchString, setSearchString] = React.useState('');
@@ -86,6 +90,7 @@ const FilterValues: React.FunctionComponent<FilterValuesProps> = ({
                     ))
                 )}
             </ScrollView>
+
         </View>
     );
 };

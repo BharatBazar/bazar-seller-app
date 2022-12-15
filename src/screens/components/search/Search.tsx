@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { View, TextInput, ViewStyle } from 'react-native';
+import { View, TextInput, ViewStyle, Text } from 'react-native';
 
 import { getHP } from '@app/common/dimension';
 import { AIC, BC, BR, BW, FDR, MH } from '@app/common/styles';
@@ -52,6 +52,7 @@ const GeneralSearch: React.FC<SearchProps> = ({ containerStyle, placeholder, sea
                     style={[MH(0.2)]}
                 />
             )}
+           
         </View>
     );
 };
